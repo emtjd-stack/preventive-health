@@ -1041,28 +1041,42 @@ function swapLayerWithFade(newLayer){
   newLayer.setOpacity(0);
   newLayer.addTo(map);
 
-  var done = false;
+  var revealed = false;
   function reveal(){
-    if(done) return;
-    done = true;
+    if(revealed) return;
+    revealed = true;
     newLayer.off('tileload', onTile);
-    // Usar setOpacity para actualizar options.opacity + parar el loop de Leaflet
+    // Mostrar nueva capa — los tiles no cargados son transparentes,
+    // la capa vieja debajo cubre esos huecos (sin flash blanco)
     newLayer.setOpacity(targetOpacity);
-    // Capa vieja se elimina solo después de que la nueva es visible
+  }
+
+  // Eliminar capa vieja SOLO cuando la nueva está completamente cargada
+  // Mientras tanto, la vieja sigue visible bajo los huecos de la nueva
+  newLayer.once('load', function(){
+    reveal();
     if(oldLayer && oldLayer !== newLayer && map.hasLayer(oldLayer)){
       map.removeLayer(oldLayer);
     }
-  }
+  });
 
+  // Mostrar la nueva capa al 4to tile (para que el usuario vea progreso)
+  // pero la vieja sigue debajo hasta que 'load' elimine los huecos
   var tilesLoaded = 0;
   function onTile(){
     tilesLoaded++;
     if(tilesLoaded >= 4){ newLayer.off('tileload', onTile); reveal(); }
   }
   newLayer.on('tileload', onTile);
-  newLayer.once('load', function(){ newLayer.off('tileload', onTile); reveal(); });
-  // Red de seguridad: si ningún tile carga en 20s, revelar de todas formas
-  setTimeout(function(){ newLayer.off('tileload', onTile); reveal(); }, 20000);
+
+  // Red de seguridad: eliminar capa vieja en 20s pase lo que pase
+  setTimeout(function(){
+    newLayer.off('tileload', onTile);
+    reveal();
+    if(oldLayer && oldLayer !== newLayer && map.hasLayer(oldLayer)){
+      map.removeLayer(oldLayer);
+    }
+  }, 20000);
 }
 
 function showFrame(idx){
