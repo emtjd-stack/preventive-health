@@ -534,16 +534,16 @@ var CAT = {
     { id:'tc-ann',   name:'Color verdadero anual',      gibs:'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual' }
   ],
   s2: [
-    { cat:'Índices espectrales (Sentinel-2 · 10m · Copernicus Data Space)' },
-    { id:'ndvi',  name:'NDVI — Vegetación',         wmts:'NDVI',              palKey:'ndvi' },
-    { id:'evi',   name:'EVI — Vegetación mejorado', wmts:'EVI',               palKey:'evi'  },
-    { id:'ndwi',  name:'NDWI — Agua / Humedad',     wmts:'NDWI',              palKey:'ndwi' },
-    { id:'nbr',   name:'NBR — Área quemada',         wmts:'NBR_RAW',           palKey:'nbr'  },
-    { cat:'Visualizaciones RGB (Sentinel-2 · 10m · Copernicus Data Space)' },
-    { id:'tc',    name:'Color verdadero',            wmts:'TRUE_COLOR' },
-    { id:'fc',    name:'Falso color NIR',             wmts:'FALSE_COLOR' },
-    { id:'swir',  name:'SWIR — Nieve / Suelo / Fuego', wmts:'SWIR' },
-    { id:'urban', name:'Falso color urbano',         wmts:'FALSE_COLOR_URBAN' }
+    { cat:'Índices espectrales · Sentinel-2 L2A · 10m (STAC + Titiler)' },
+    { id:'ndvi', name:'NDVI — Vegetación',              stac:true, palKey:'ndvi' },
+    { id:'evi',  name:'EVI — Vegetación mejorado',      stac:true, palKey:'evi'  },
+    { id:'ndwi', name:'NDWI — Agua / Humedad',          stac:true, palKey:'ndwi' },
+    { id:'ndsi', name:'NDSI — Nieve',                   stac:true, palKey:'ndsi' },
+    { id:'ndbi', name:'NDBI — Área construida',         stac:true, palKey:'ndbi' },
+    { id:'nbr',  name:'NBR — Área quemada',             stac:true, palKey:'nbr'  },
+    { cat:'Visualizaciones RGB · Sentinel-2 L2A · 10m (STAC + Titiler)' },
+    { id:'tc',   name:'Color verdadero',                stac:true },
+    { id:'fc',   name:'Falso color NIR',                stac:true }
   ],
   s2eox: [
     { cat:'Sentinel-2 Cloudless · EOX · 10m · sin nubes garantizadas' },
