@@ -685,7 +685,7 @@ function buildStacTileUrl(sid, vid, itemId, stacHref) {
 // ESTADO
 // ============================================================
 var map, drawLayer, drawTools;
-var satLayer=null, areaLayer=null;
+var satLayer=null, visibleLayer=null, areaLayer=null;
 var satId='mod', vizId='ndvi';
 var dateMode='single', coordMode='bbox';
 var frames=[], curFrame=0;
@@ -789,6 +789,7 @@ function setupEvents() {
     vizId=preferred?preferred.id:(items.length?items[0].id:'');
     buildVizList(); updateInfoBoxes(); applyDateRangeForCurrentLayer();
     if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+    if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
   });
   document.getElementById('viz-list').addEventListener('click', function(e) {
     var r=e.target.closest('.vrow[data-viz]'); if(!r) return;
@@ -797,6 +798,7 @@ function setupEvents() {
     r.classList.add('on');
     updateLegend(); updateInfoBoxes(); applyDateRangeForCurrentLayer();
     if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+    if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
   });
   document.getElementById('btn-gee-guide').addEventListener('click',function(){openGuide(GUIDE_GEE_HTML,'Guía: Configurar Google Earth Engine');});
   document.getElementById('btn-qgis-guide').addEventListener('click',function(){openGuide(GUIDE_QGIS_HTML,'Guía: Descarga y Cálculo de Índices');});
@@ -1041,27 +1043,36 @@ function swapLayerWithFade(newLayer){
   newLayer.setOpacity(0);
   newLayer.addTo(map);
 
+  // oldVisible = lo que el usuario VE ahora (puede ser distinto de oldLayer si el
+  // frame anterior aún no había terminado de cargar cuando llegó este)
+  var oldVisible = visibleLayer;
+
+  // Cancelar capa en vuelo que no llegó a revelarse (si existe y no es la visible)
+  if(oldLayer && oldLayer !== oldVisible && map.hasLayer(oldLayer)){
+    map.removeLayer(oldLayer);
+  }
+
   var revealed = false;
   function reveal(){
     if(revealed) return;
     revealed = true;
     newLayer.off('tileload', onTile);
-    // Mostrar nueva capa — los tiles no cargados son transparentes,
-    // la capa vieja debajo cubre esos huecos (sin flash blanco)
     newLayer.setOpacity(targetOpacity);
+    visibleLayer = newLayer; // ahora esta ES la capa visible
   }
 
-  // Eliminar capa vieja SOLO cuando la nueva está completamente cargada
-  // Mientras tanto, la vieja sigue visible bajo los huecos de la nueva
-  newLayer.once('load', function(){
-    reveal();
-    if(oldLayer && oldLayer !== newLayer && map.hasLayer(oldLayer)){
-      map.removeLayer(oldLayer);
+  function removeOldVisible(){
+    if(oldVisible && oldVisible !== newLayer && map.hasLayer(oldVisible)){
+      map.removeLayer(oldVisible);
     }
-  });
+  }
 
-  // Mostrar la nueva capa al 4to tile (para que el usuario vea progreso)
-  // pero la vieja sigue debajo hasta que 'load' elimine los huecos
+  // La capa vieja visible se elimina SOLO cuando la nueva termina de cargar
+  // — mientras tanto sus tiles cubren los huecos de la nueva (sin flash)
+  newLayer.once('load', function(){ reveal(); removeOldVisible(); });
+
+  // Al 4to tile revelamos la nueva (el usuario ve progreso inmediato)
+  // pero oldVisible sigue debajo tapando huecos hasta que 'load' la quite
   var tilesLoaded = 0;
   function onTile(){
     tilesLoaded++;
@@ -1069,13 +1080,11 @@ function swapLayerWithFade(newLayer){
   }
   newLayer.on('tileload', onTile);
 
-  // Red de seguridad: eliminar capa vieja en 20s pase lo que pase
+  // Red de seguridad a 20s
   setTimeout(function(){
     newLayer.off('tileload', onTile);
     reveal();
-    if(oldLayer && oldLayer !== newLayer && map.hasLayer(oldLayer)){
-      map.removeLayer(oldLayer);
-    }
+    removeOldVisible();
   }, 20000);
 }
 
@@ -1271,7 +1280,9 @@ function stopPlay(){
   document.getElementById('btn-play').innerHTML='&#9654; Play';
 }
 function closeTL(){
-  stopPlay(); if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+  stopPlay();
+  if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+  if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
   document.getElementById('tl').style.display='none';
   frames=[]; curFrame=0; document.getElementById('sn4').classList.remove('done');
 }
@@ -1290,6 +1301,7 @@ function closeCompare(){
   stopPlay();
   resetCompareUI();
   if(satLayer){ map.removeLayer(satLayer); satLayer=null; }
+  if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
   frames=[]; curFrame=0;
   document.getElementById('sn4').classList.remove('done');
 }
