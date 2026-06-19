@@ -1036,54 +1036,33 @@ function swapLayerWithFade(newLayer){
                       ? newLayer.options.opacity : 0.9;
   satLayer = newLayer;
 
-  // Capa nueva completamente invisible desde el primer frame — vieja sigue visible
+  // Iniciar capa nueva en opacity 0 usando la API de Leaflet
+  // (NO CSS directo — Leaflet's _updateOpacity loop lo sobreescribiría)
   newLayer.setOpacity(0);
   newLayer.addTo(map);
-  // Fuerza CSS directo para cubrir el caso donde _container ya existía
-  if(newLayer._container){
-    newLayer._container.style.transition = '';
-    newLayer._container.style.opacity = '0';
-  }
 
   var done = false;
   function reveal(){
     if(done) return;
     done = true;
     newLayer.off('tileload', onTile);
-
-    var newEl = newLayer._container;
-    if(newEl){
-      newEl.style.transition = 'opacity 0.5s ease';
-      void newEl.offsetWidth;
-      newEl.style.opacity = String(targetOpacity);
-    } else {
-      newLayer.setOpacity(targetOpacity);
-    }
-
-    // Capa vieja se oculta solo DESPUÉS de que la nueva aparece — sin flash
+    // Usar setOpacity para actualizar options.opacity + parar el loop de Leaflet
+    newLayer.setOpacity(targetOpacity);
+    // Capa vieja se elimina solo después de que la nueva es visible
     if(oldLayer && oldLayer !== newLayer && map.hasLayer(oldLayer)){
-      var oldEl = oldLayer._container;
-      if(oldEl){
-        oldEl.style.transition = 'opacity 0.5s ease';
-        void oldEl.offsetWidth;
-        oldEl.style.opacity = '0';
-        setTimeout(function(){ if(map.hasLayer(oldLayer)) map.removeLayer(oldLayer); }, 550);
-      } else {
-        map.removeLayer(oldLayer);
-      }
+      map.removeLayer(oldLayer);
     }
   }
 
-  // Para tiles WMTS (rápidos ~1s): revelar al cargar 6 tiles o al evento load
-  // Para STAC (lentos): la red de seguridad de 15s evita que quede invisible para siempre
   var tilesLoaded = 0;
   function onTile(){
     tilesLoaded++;
-    if(tilesLoaded >= 6){ newLayer.off('tileload', onTile); reveal(); }
+    if(tilesLoaded >= 4){ newLayer.off('tileload', onTile); reveal(); }
   }
   newLayer.on('tileload', onTile);
   newLayer.once('load', function(){ newLayer.off('tileload', onTile); reveal(); });
-  setTimeout(function(){ newLayer.off('tileload', onTile); reveal(); }, 15000);
+  // Red de seguridad: si ningún tile carga en 20s, revelar de todas formas
+  setTimeout(function(){ newLayer.off('tileload', onTile); reveal(); }, 20000);
 }
 
 function showFrame(idx){
