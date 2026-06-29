@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta property="og:title"       content="GeoNorm — Simulador de Normalización Raster · Preventive Health">
+<meta property="og:description" content="Normaliza variables raster GeoTIFF de una banda: Min-Max, Z-Score, Escalado Robusto. Exporta a GeoTIFF Float32 y CSV. Sin instalación.">
+<meta property="og:type"        content="website">
+<meta name="description"        content="Normaliza tus rasters GeoTIFF en el navegador — sin instalación ni servidor. Preventive Health.">
+<meta name="theme-color"        content="#1A509E">
+<title>GeoNorm · Preventive Health</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+/* ══ TOKENS DE MARCA — PREVENTIVE HEALTH ════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ph-blue:    #1A509E;
+  --ph-blue2:   #2B7FCB;
+  --ph-yellow:  #F5B300;
+  --ph-dark:    #333333;
+  --ph-gray:    #5A6B80;
+  --ph-light:   #8A9AB0;
+  --bg:         #EEF4FB;
+  --surface:    #FFFFFF;
+  --surface2:   #F2F7FC;
+  --border:     #CCDDF0;
+  --border2:    #B0CBEA;
+  --radius:     8px;
+  --lw:         308px;
+  --rw:         328px;
+  --hdr:        56px;
+  --bnav:       64px;   /* alto barra móvil */
+  --foot:       23px;
+}
+html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Montserrat',sans-serif;
+  background:var(--bg);color:var(--ph-dark);font-size:13px;
+  display:flex;flex-direction:column;
+}
+button,input,select{font-family:'Montserrat',sans-serif}
+
+/* ══ HEADER ══════════════════════════════════════ */
+header{
+  height:var(--hdr);background:var(--ph-blue);
+  border-bottom:3px solid var(--ph-yellow);
+  display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0;z-index:200;
+  box-shadow:0 2px 12px rgba(26,80,158,.35)
+}
+.hdr-logo{height:34px;display:block;object-fit:contain}
+.hdr-sep{width:1px;height:22px;background:rgba(255,255,255,.3);margin:0 4px}
+.hdr-info{display:flex;flex-direction:column}
+.hdr-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;line-height:1.2}
+.hdr-title span{color:var(--ph-yellow)}
+.hdr-sub{font-size:10px;font-weight:500;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
+.hdr-space{flex:1}
+.hdr-badge{
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  border-radius:12px;padding:3px 12px;font-size:11px;font-weight:600;color:#fff
+}
+
+/* ══ DIVIDER ══════════════════════════════════════ */
+.divider{height:3px;background:linear-gradient(90deg,var(--ph-blue),var(--ph-blue2),var(--ph-yellow));flex-shrink:0}
+
+/* ══ MAIN LAYOUT ════════════════════════════════ */
+main{flex:1;display:flex;overflow:hidden;position:relative}
+
+/* ══ PANELS (desktop) ════════════════════════════ */
+.panel{
+  background:var(--surface);overflow-y:auto;overflow-x:hidden;flex-shrink:0;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  display:flex;flex-direction:column;
+}
+.panel::-webkit-scrollbar{width:5px}
+.panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.lp{width:var(--lw);border-right:1px solid var(--border)}
+.rp{width:var(--rw);border-left:1px solid var(--border)}
+.ps{padding:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.pt{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:var(--ph-blue);margin-bottom:10px;display:flex;align-items:center;gap:6px
+}
+.pt::before{content:'';display:block;width:3px;height:12px;background:var(--ph-yellow);border-radius:2px;flex-shrink:0}
+
+/* ══ DROP ZONE ════════════════════════════════════ */
+#drop-zone{
+  border:2px dashed var(--border2);border-radius:var(--radius);
+  padding:20px 14px;text-align:center;cursor:pointer;
+  transition:.2s;background:var(--surface2)
+}
+#drop-zone:hover,#drop-zone.drag{border-color:var(--ph-blue);background:rgba(26,80,158,.06)}
+.dz-ico{font-size:28px;margin-bottom:7px}
+.dz-t{font-size:13px;font-weight:600;color:var(--ph-blue);margin-bottom:3px}
+.dz-s{font-size:11px;color:var(--ph-gray)}
+#fi{display:none}
+.finfo{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:9px;margin-top:8px;display:none}
+.finfo.on{display:block}
+.fn{font-weight:700;font-size:12px;color:var(--ph-blue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fm{color:var(--ph-gray);font-size:11px;margin-top:2px}
+
+/* ══ METHOD CARDS ════════════════════════════════ */
+.mc{
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:10px 12px;cursor:pointer;
+  transition:.15s;position:relative;margin-bottom:6px
+}
+.mc:last-child{margin-bottom:0}
+.mc:hover{border-color:var(--ph-blue2)}
+.mc.sel{border-color:var(--ph-blue);background:rgba(26,80,158,.07)}
+.mc.sel::after{
+  content:'✓';position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  color:var(--ph-blue);font-weight:800;font-size:16px
+}
+.mc-name{font-weight:700;font-size:13px;color:var(--ph-blue);margin-bottom:2px}
+.mc-formula{
+  font-family:'Courier New',monospace;font-size:11px;color:#1A8040;
+  background:rgba(26,128,64,.07);padding:1px 5px;border-radius:3px;
+  display:inline-block;margin-bottom:3px
+}
+.mc-desc{font-size:11px;color:var(--ph-gray)}
+
+/* ══ COLORMAP CHIPS ══════════════════════════════ */
+#cm-row{display:flex;gap:5px;flex-wrap:wrap}
+.cm-item{display:flex;flex-direction:column;align-items:center}
+.cmc{border:2px solid transparent;border-radius:5px;overflow:hidden;cursor:pointer;width:54px;height:18px;transition:.15s}
+.cmc:hover,.cmc.sel{border-color:var(--ph-blue)}
+.cm-lbl{font-size:9px;color:var(--ph-gray);margin-top:2px;text-align:center;font-weight:500}
+
+/* ══ RANGE ════════════════════════════════════════ */
+.rrow{display:flex;align-items:center;gap:8px}
+.rrow input[type=range]{flex:1;accent-color:var(--ph-blue);cursor:pointer}
+.rval{font-family:'Courier New',monospace;font-size:12px;min-width:32px;text-align:right;font-weight:600;color:var(--ph-blue)}
+
+/* ══ VIEW TOGGLE ══════════════════════════════════ */
+.vtog{display:flex;gap:4px;margin-bottom:9px}
+.vt{
+  flex:1;padding:8px;border:1.5px solid var(--border2);border-radius:var(--radius);
+  background:var(--surface2);color:var(--ph-gray);font-size:12px;font-weight:600;
+  cursor:pointer;text-align:center;transition:.15s;min-height:40px
+}
+.vt:hover{border-color:var(--ph-blue);color:var(--ph-blue)}
+.vt.on{background:var(--ph-blue);border-color:var(--ph-blue);color:#fff}
+
+/* ══ BUTTONS ══════════════════════════════════════ */
+.btn{
+  display:block;width:100%;padding:10px;border:none;border-radius:var(--radius);
+  font-size:13px;font-weight:700;transition:.15s;cursor:pointer;
+  font-family:'Montserrat',sans-serif;min-height:44px
+}
+.btn-blue{background:var(--ph-blue);color:#fff}
+.btn-blue:hover{background:var(--ph-blue2)}
+.btn-blue:disabled{background:#B0CBEA;color:#fff;cursor:not-allowed}
+.btn-yellow{background:var(--ph-yellow);color:var(--ph-dark)}
+.btn-yellow:hover{filter:brightness(1.08)}
+.btn-yellow:disabled{background:#E0DCC0;color:#aaa;cursor:not-allowed}
+.btn-outline{background:var(--surface2);color:var(--ph-blue);border:1.5px solid var(--ph-blue)}
+.btn-outline:hover{background:var(--ph-blue);color:#fff}
+.btn-outline:disabled{border-color:var(--border);color:var(--ph-light);cursor:not-allowed}
+.exp-row{display:flex;gap:6px}
+.exp-row .btn{flex:1}
+.note{font-size:11px;color:var(--ph-gray);line-height:1.5;margin-top:5px}
+
+/* ══ STATS GRID ══════════════════════════════════ */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:7px 9px}
+.sc.s2{grid-column:span 2}
+.sc-l{font-size:10px;color:var(--ph-gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;font-weight:600}
+.sc-v{font-size:13px;font-weight:700;font-family:'Courier New',monospace;color:var(--ph-blue)}
+.chart-wrap{position:relative;height:130px}
+
+/* ══ MAP AREA ════════════════════════════════════ */
+.map-wrap{flex:1;position:relative;background:#111827;overflow:hidden}
+#map{width:100%;height:100%;background:#111827}
+.leaflet-container{background:#111827}
+
+/* Overlay loading/error */
+#mo{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:rgba(17,24,39,.92);z-index:500;pointer-events:none;padding:20px;text-align:center
+}
+#mo.gone{display:none}
+.mo-ico{font-size:44px;margin-bottom:14px}
+.mo-t{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+.mo-s{font-size:12px;color:#8A9AB0;max-width:380px;line-height:1.5}
+.mo-err{
+  font-size:12px;color:#f85149;background:rgba(248,81,73,.12);
+  border:1px solid rgba(248,81,73,.3);border-radius:6px;
+  padding:8px 14px;margin-top:10px;max-width:400px;
+  font-family:'Courier New',monospace;word-break:break-all
+}
+.spin{
+  width:32px;height:32px;border:3px solid #334155;
+  border-top-color:var(--ph-blue);border-radius:50%;
+  animation:sp .7s linear infinite;margin-bottom:14px
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Map toolbar */
+#mtbar{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  z-index:600;background:rgba(255,255,255,.95);border:1px solid var(--border);
+  border-radius:20px;padding:5px 16px;display:none;
+  align-items:center;gap:10px;pointer-events:all;
+  box-shadow:0 2px 8px rgba(0,0,0,.15)
+}
+#mtbar.on{display:flex}
+#view-lbl{font-size:11px;color:var(--ph-blue);font-weight:600}
+
+/* Legend */
+#leg{
+  position:absolute;bottom:30px;right:12px;z-index:600;
+  background:rgba(255,255,255,.95);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 12px;min-width:140px;
+  pointer-events:all;display:none;box-shadow:0 2px 8px rgba(0,0,0,.15)
+}
+#leg.on{display:block}
+.leg-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ph-blue);margin-bottom:6px}
+#leg-bar{display:block;height:12px;border-radius:4px;width:100%;margin-bottom:4px}
+.leg-lbls{display:flex;justify-content:space-between;font-size:10px;color:var(--ph-gray);font-weight:500}
+
+/* Leaflet dark overrides */
+.leaflet-control-zoom a{
+  background:rgba(255,255,255,.92)!important;color:var(--ph-blue)!important;
+  border-color:var(--border)!important;font-weight:700!important
+}
+.leaflet-control-zoom a:hover{background:#fff!important}
+.leaflet-bar{border-color:var(--border)!important}
+
+/* ══ STATUS BAR ══════════════════════════════════ */
+footer{
+  height:var(--foot);background:var(--ph-blue);display:flex;align-items:center;
+  padding:0 14px;gap:10px;font-size:11px;color:rgba(255,255,255,.8);flex-shrink:0
+}
+.sdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.fspace{flex:1}
+#coords{font-family:'Courier New',monospace;font-size:10px;color:rgba(255,255,255,.6)}
+
+/* ══ TOAST ═══════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ph-blue);color:#fff;padding:9px 20px;border-radius:20px;
+  font-size:12px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);
+  opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{background:#c0392b}
+
+/* ══════════════════════════════════════════════════
+   MOBILE DRAWER PANEL
+══════════════════════════════════════════════════ */
+/* Handle superior del drawer */
+.mob-handle{
+  display:none;align-items:center;padding:10px 16px 8px;
+  position:sticky;top:0;background:var(--surface);z-index:2;
+  border-bottom:1px solid var(--border);flex-shrink:0
+}
+.mob-handle-bar{
+  width:40px;height:4px;background:var(--border2);border-radius:2px;
+  position:absolute;top:6px;left:50%;transform:translateX(-50%)
+}
+.mob-handle-title{flex:1;font-weight:700;color:var(--ph-blue);text-align:center;font-size:13px}
+.mob-handle-close{
+  background:none;border:none;font-size:20px;color:var(--ph-gray);
+  cursor:pointer;padding:4px 8px;line-height:1;min-width:44px;min-height:44px;
+  display:flex;align-items:center;justify-content:center
+}
+
+/* Backdrop oscuro cuando hay panel abierto */
+#mob-bd{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);
+  z-index:699;backdrop-filter:blur(2px)
+}
+#mob-bd.on{display:block}
+
+/* ══ BOTTOM NAV (solo móvil) ══════════════════════ */
+.bnav{
+  display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bnav);
+  background:var(--ph-blue);border-top:2px solid var(--ph-yellow);
+  z-index:800;justify-content:space-around;align-items:center;padding:0 4px;
+  safe-area-inset-bottom:env(safe-area-inset-bottom)
+}
+.bnav-b{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:none;border:none;color:rgba(255,255,255,.6);
+  cursor:pointer;padding:6px 4px;transition:.15s;border-radius:var(--radius);
+  min-height:44px;-webkit-tap-highlight-color:transparent
+}
+.bnav-b:active,.bnav-b.on{color:var(--ph-yellow)}
+.bnav-b.on .bnav-dot{background:var(--ph-yellow)}
+.bnav-ic{font-size:20px;line-height:1}
+.bnav-lb{font-size:10px;font-weight:600;letter-spacing:.3px}
+.bnav-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:transparent;transition:.15s
+}
+/* Botón de acción rápida en nav (Aplicar) */
+.bnav-action{
+  background:var(--ph-yellow) !important;color:var(--ph-dark) !important;
+  border-radius:12px;padding:8px 12px !important;flex:1.4 !important
+}
+.bnav-action:disabled{background:rgba(255,255,255,.2) !important;color:rgba(255,255,255,.4) !important}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — TABLET (768px–1100px)
+══════════════════════════════════════════════════ */
+@media (max-width:1100px) and (min-width:769px){
+  :root{--lw:260px;--rw:280px}
+  .hdr-sub{display:none}
+  .hdr-badge{font-size:10px;padding:2px 8px}
+  .mc-desc{display:none}
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — MÓVIL (≤ 768px)
+══════════════════════════════════════════════════ */
+@media (max-width:768px){
+  /* Header compacto */
+  header{padding:0 12px;gap:8px;height:50px}
+  .hdr-sub,.hdr-badge{display:none}
+  .hdr-logo{height:28px}
+  .hdr-title{font-size:13px}
+  :root{--hdr:50px}
+
+  /* El footer desktop se oculta (reemplazado por bnav) */
+  footer{display:none}
+
+  /* Mostrar bottom nav */
+  .bnav{display:flex}
+
+  /* Main: solo mapa visible */
+  main{
+    height:calc(100vh - 50px - 3px); /* hdr + divider */
+  }
+
+  /* Panels: drawers que suben desde abajo */
+  .lp,.rp{
+    position:fixed;
+    left:0;right:0;bottom:var(--bnav);
+    width:100% !important;
+    height:82vh;
+    transform:translateY(105%);
+    transition:transform .38s cubic-bezier(.32,.72,0,1);
+    z-index:700;
+    border-radius:20px 20px 0 0;
+    border:none;
+    border-top:3px solid var(--ph-yellow);
+    box-shadow:0 -6px 30px rgba(0,0,0,.25);
+    flex-direction:column;
+    overflow-y:auto;
+    overflow-x:hidden
+  }
+  .lp.mob-open,.rp.mob-open{transform:translateY(0)}
+
+  /* Handle visible en móvil */
+  .mob-handle{display:flex}
+
+  /* Toast sube para no quedar detrás del nav */
+  #toast{bottom:calc(var(--bnav) + 12px)}
+
+  /* Map toolbar reposicionado */
+  #mtbar{top:8px;padding:4px 12px;font-size:10px}
+
+  /* Legend: más pequeña y a la izquierda */
+  #leg{bottom:calc(var(--bnav) + 12px);right:8px;min-width:110px;padding:8px}
+  .leg-t{font-size:9px}
+  .leg-lbls{font-size:9px}
+
+  /* Buttons más altos para touch */
+  .btn{min-height:48px;font-size:14px}
+  .vt{min-height:46px;font-size:13px}
+
+  /* Cards método: más compactas */
+  .mc{padding:10px}
+  .mc-formula{font-size:10px}
+
+  /* Stats grid más compacto */
+  .sc-v{font-size:12px}
+
+  /* Drop zone adaptado */
+  .dz-t::after{content:' · Toca para seleccionar'}
+  .dz-ico{font-size:24px}
+
+  /* Histogramas un poco más pequeños */
+  .chart-wrap{height:110px}
+
+  /* Colormap chips más grandes */
+  .cmc{width:48px;height:22px}
+
+  /* Mapa ocupa todo */
+  .map-wrap{width:100%;height:100%}
+}
+
+/* Safe-area (iPhone con notch) */
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .bnav{padding-bottom:env(safe-area-inset-bottom)}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <img src="logo.png" class="hdr-logo" alt="Preventive Health" onerror="this.style.display='none'">
+  <div class="hdr-sep"></div>
+  <div class="hdr-info">
+    <div class="hdr-title">Geo<span>Norm</span></div>
+    <div class="hdr-sub">Simulador de Normalización Raster</div>
+  </div>
+  <div class="hdr-space"></div>
+  <span class="hdr-badge">GeoTIFF · 1 Banda</span>
+</header>
+<div class="divider"></div>
+
+<!-- ══ MAIN ══ -->
+<main>
+
+  <!-- ── PANEL IZQUIERDO / DRAWER CONTROLES ── -->
+  <aside class="panel lp" id="panel-lp">
+
+    <!-- Handle móvil -->
+    <div class="mob-handle">
+      <div class="mob-handle-bar"></div>
+      <span class="mob-handle-title">Controles</span>
+      <button class="mob-handle-close" onclick="mobilePanelShow(null)" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="ps">
+      <div class="pt">1 · Cargar GeoTIFF</div>
+      <div id="drop-zone" onclick="document.getElementById('fi').click()">
+        <div class="dz-ico">🗺️</div>
+        <div class="dz-t">Arrastra tu GeoTIFF aquí</div>
+        <div class="dz-s">.tif / .tiff · cualquier proyección</div>
+      </div>
+      <input type="file" id="fi" accept=".tif,.tiff">
+      <div class="finfo" id="finfo">
+        <div class="fn" id="fn">—</div>
+        <div class="fm" id="fm">—</div>
+      </div>
+    </div>
+
+    <div class="ps">
+      <div class="pt">2 · Método de Normalización</div>
+      <div class="mc sel" data-m="minmax" onclick="selMethod('minmax')">
+        <div class="mc-name">Min – Max</div>
+        <div class="mc-formula">x' = (x − min) / (max − min)</div>
+        <div class="mc-desc">Rango [0, 1] · Preserva distribución original</div>
+      </div>
+      <div class="mc" data-m="zscore" onclick="selMethod('zscore')">
+        <div class="mc-name">Z – Score</div>
+        <div class="mc-formula">x' = (x − μ) / σ</div>
+        <div class="mc-desc">Media=0, σ=1 · Compara entre variables</div>
+      </div>
+      <div class="mc" data-m="robust" onclick="selMethod('robust')">
+        <div class="mc-name">Escalado Robusto</div>
+        <div class="mc-formula">x' = (x − P₂) / (P₉₈ − P₂)</div>
+        <div class="mc-desc">Resistente a outliers · ~[0, 1]</div>
+      </div>
+    </div>
+
+    <div class="ps">
+      <div class="pt">3 · Paleta de Colores</div>
+      <div id="cm-row"></div>
+    </div>
+
+    <div class="ps">
+      <div class="pt">Opacidad de la Capa</div>
+      <div class="rrow">
+        <input type="range" id="op-slider" min="10" max="100" value="90">
+        <span class="rval" id="op-val">90%</span>
+      </div>
+    </div>
+
+    <div class="ps">
+      <div class="pt">4 · Visualizar</div>
+      <div class="vtog">
+        <div class="vt on" id="btn-orig" onclick="setView('orig')">Original</div>
+        <div class="vt"    id="btn-norm" onclick="setView('norm')">Normalizado</div>
+      </div>
+      <button class="btn btn-blue" id="btn-apply" disabled onclick="applyNorm()">
+        ▶ Aplicar Normalización
+      </button>
+    </div>
+
+    <div class="ps">
+      <div class="pt">5 · Exportar Resultados</div>
+      <div class="exp-row">
+        <button class="btn btn-yellow" id="btn-exp-tif" disabled onclick="exportGeoTIFF()">⬇ GeoTIFF</button>
+        <button class="btn btn-outline" id="btn-exp-csv" disabled onclick="exportCSV()">⬇ CSV</button>
+      </div>
+      <p class="note">
+        <strong>GeoTIFF:</strong> Float32, georeferenciación original.<br>
+        <strong>CSV:</strong> fila, columna, orig, normalizado.
+      </p>
+    </div>
+
+  </aside>
+
+  <!-- ── MAPA ── -->
+  <div class="map-wrap">
+    <div id="map"></div>
+
+    <div id="mtbar"><span id="view-lbl">Vista: Original</span></div>
+
+    <div id="leg">
+      <div class="leg-t" id="leg-t">Valores Originales</div>
+      <canvas id="leg-bar"></canvas>
+      <div class="leg-lbls">
+        <span id="leg-mn">—</span>
+        <span id="leg-md">—</span>
+        <span id="leg-mx">—</span>
+      </div>
+    </div>
+
+    <div id="mo">
+      <div class="mo-ico">🌍</div>
+      <div class="mo-t">Carga un GeoTIFF para comenzar</div>
+      <div class="mo-s">Arrastra el archivo al área de carga o toca el botón de controles.<br>Compatible con cualquier proyección (UTM, WGS84, etc.)</div>
+    </div>
+  </div>
+
+  <!-- ── PANEL DERECHO / DRAWER ESTADÍSTICAS ── -->
+  <aside class="panel rp" id="panel-rp">
+
+    <!-- Handle móvil -->
+    <div class="mob-handle">
+      <div class="mob-handle-bar"></div>
+      <span class="mob-handle-title">Estadísticas</span>
+      <button class="mob-handle-close" onclick="mobilePanelShow(null)" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="ps">
+      <div class="pt">Metadata del Raster</div>
+      <div class="sgrid">
+        <div class="sc"><div class="sc-l">Columnas</div><div class="sc-v" id="m-w">—</div></div>
+        <div class="sc"><div class="sc-l">Filas</div><div class="sc-v" id="m-h">—</div></div>
+        <div class="sc"><div class="sc-l">Proyección</div><div class="sc-v" id="m-proj">—</div></div>
+        <div class="sc"><div class="sc-l">No Data</div><div class="sc-v" id="m-nd">—</div></div>
+        <div class="sc s2"><div class="sc-l">Tipo de dato</div><div class="sc-v" id="m-dtype">—</div></div>
+        <div class="sc s2"><div class="sc-l">Resolución (CRS)</div><div class="sc-v" id="m-res">—</div></div>
+        <div class="sc s2"><div class="sc-l">Extensión</div><div class="sc-v" id="m-ext" style="font-size:10px">—</div></div>
+      </div>
+    </div>
+
+    <div class="ps">
+      <div class="pt">Estadísticas — Original</div>
+      <div class="sgrid">
+        <div class="sc"><div class="sc-l">Mínimo</div><div class="sc-v" id="s-mn">—</div></div>
+        <div class="sc"><div class="sc-l">Máximo</div><div class="sc-v" id="s-mx">—</div></div>
+        <div class="sc"><div class="sc-l">Media (μ)</div><div class="sc-v" id="s-mu">—</div></div>
+        <div class="sc"><div class="sc-l">Desv.Est. (σ)</div><div class="sc-v" id="s-sg">—</div></div>
+        <div class="sc"><div class="sc-l">Percentil 2</div><div class="sc-v" id="s-p2">—</div></div>
+        <div class="sc"><div class="sc-l">Percentil 98</div><div class="sc-v" id="s-p98">—</div></div>
+        <div class="sc s2"><div class="sc-l">Píxeles válidos</div><div class="sc-v" id="s-valid">—</div></div>
+      </div>
+    </div>
+
+    <div class="ps">
+      <div class="pt">Distribución — Original</div>
+      <div class="chart-wrap"><canvas id="ho"></canvas></div>
+    </div>
+
+    <div class="ps" id="ns-sec" style="display:none">
+      <div class="pt">Estadísticas — Normalizado · <span id="nm-lbl" style="text-transform:none;letter-spacing:0">—</span></div>
+      <div class="sgrid">
+        <div class="sc"><div class="sc-l">Mínimo</div><div class="sc-v" id="ns-mn">—</div></div>
+        <div class="sc"><div class="sc-l">Máximo</div><div class="sc-v" id="ns-mx">—</div></div>
+        <div class="sc"><div class="sc-l">Media</div><div class="sc-v" id="ns-mu">—</div></div>
+        <div class="sc"><div class="sc-l">Desv.Est.</div><div class="sc-v" id="ns-sg">—</div></div>
+      </div>
+    </div>
+
+    <div class="ps" id="hn-sec" style="display:none">
+      <div class="pt">Distribución — Normalizado</div>
+      <div class="chart-wrap"><canvas id="hn"></canvas></div>
+    </div>
+
+  </aside>
+
+</main>
+
+<!-- ══ STATUS BAR (desktop) ══ -->
+<footer>
+  <span id="sdot" class="sdot" style="background:rgba(255,255,255,.4)"></span>
+  <span id="stxt">Listo — carga un GeoTIFF para comenzar</span>
+  <div class="fspace"></div>
+  <span id="coords">Lat: — · Lng: —</span>
+</footer>
+
+<!-- ══ MOBILE BACKDROP ══ -->
+<div id="mob-bd" onclick="mobilePanelShow(null)"></div>
+
+<!-- ══ BOTTOM NAV (solo móvil) ══ -->
+<nav class="bnav" id="bnav" role="navigation" aria-label="Navegación principal">
+  <button class="bnav-b on" id="bnb-map" onclick="mobilePanelShow(null)" aria-label="Ver mapa">
+    <span class="bnav-ic">🗺️</span>
+    <span class="bnav-lb">Mapa</span>
+    <span class="bnav-dot"></span>
+  </button>
+  <button class="bnav-b" id="bnb-ctrl" onclick="mobilePanelShow('lp')" aria-label="Controles">
+    <span class="bnav-ic">⚙️</span>
+    <span class="bnav-lb">Controles</span>
+    <span class="bnav-dot"></span>
+  </button>
+  <button class="bnav-b bnav-action" id="bnb-apply" disabled onclick="applyNorm()" aria-label="Aplicar normalización">
+    <span class="bnav-ic">▶</span>
+    <span class="bnav-lb">Aplicar</span>
+  </button>
+  <button class="bnav-b" id="bnb-stats" onclick="mobilePanelShow('rp')" aria-label="Estadísticas">
+    <span class="bnav-ic">📊</span>
+    <span class="bnav-lb">Resultados</span>
+    <span class="bnav-dot"></span>
+  </button>
+</nav>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- ══ SCRIPTS ════════════════════════════════════ -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/georaster/dist/georaster.browser.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/geotiff/dist-browser/geotiff.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════
+   PROJ4 — Proyecciones Ecuador / América Latina
+══════════════════════════════════════════════════ */
+const PROJ4_DEFS = {
+  32717:'+proj=utm +zone=17 +south +datum=WGS84 +units=m +no_defs',
+  32617:'+proj=utm +zone=17 +datum=WGS84 +units=m +no_defs',
+  32718:'+proj=utm +zone=18 +south +datum=WGS84 +units=m +no_defs',
+  32618:'+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs',
+  32716:'+proj=utm +zone=16 +south +datum=WGS84 +units=m +no_defs',
+  32616:'+proj=utm +zone=16 +datum=WGS84 +units=m +no_defs',
+  32719:'+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs',
+  32619:'+proj=utm +zone=19 +datum=WGS84 +units=m +no_defs',
+  3857: '+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +no_defs',
+  5393: '+proj=utm +zone=17 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+};
+Object.entries(PROJ4_DEFS).forEach(([e,d])=>{ try{proj4.defs('EPSG:'+e,d);}catch(_){} });
+
+/* ══════════════════════════════════════════════════
+   COLORMAPS
+══════════════════════════════════════════════════ */
+const CMS = {
+  viridis:[[68,1,84],[72,40,120],[62,83,160],[49,104,142],[38,130,142],[31,158,137],[53,183,121],[110,206,88],[181,222,43],[253,231,37]],
+  rdylgn: [[165,0,38],[215,48,39],[244,109,67],[253,174,97],[255,255,191],[166,217,106],[102,189,99],[26,152,80],[0,104,55]],
+  plasma: [[13,8,135],[84,2,163],[139,10,165],[185,50,137],[219,92,104],[244,136,73],[254,188,43],[240,249,33]],
+  greys:  [[255,255,255],[220,220,220],[175,175,175],[120,120,120],[65,65,65],[10,10,10]],
+  hot:    [[10,10,10],[130,0,0],[255,0,0],[255,140,0],[255,240,0],[255,255,255]],
+  phblue: [[238,244,251],[176,203,234],[100,158,210],[43,127,203],[26,80,158],[10,40,90]],
+};
+const CM_LABELS={viridis:'Viridis',rdylgn:'RdYlGn',plasma:'Plasma',greys:'Grises',hot:'Hot',phblue:'PH Azul'};
+let activeCM='viridis';
+
+function rgbArr(t,cm){
+  t=Math.max(0,Math.min(1,isNaN(t)?0:t));
+  const c=CMS[cm||activeCM];
+  const fi=t*(c.length-1),lo=Math.floor(fi),hi=Math.min(lo+1,c.length-1),f=fi-lo;
+  return[Math.round(c[lo][0]+f*(c[hi][0]-c[lo][0])),Math.round(c[lo][1]+f*(c[hi][1]-c[lo][1])),Math.round(c[lo][2]+f*(c[hi][2]-c[lo][2]))];
+}
+
+/* ══════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════ */
+let GR=null,ST=null,NF=null;
+let method='minmax',view='orig',opacity=.9;
+let layOrig=null,origUrl=null,layNorm=null,normUrl=null;
+let mapBounds=null, map;
+let isMobile=()=>window.innerWidth<=768;
+
+/* ══════════════════════════════════════════════════
+   MAP INIT
+══════════════════════════════════════════════════ */
+function initMap(){
+  map=L.map('map',{center:[0,0],zoom:2,zoomControl:!isMobile(),attributionControl:false,
+    tap:true,touchZoom:true,dragging:true});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    {subdomains:'abcd',maxZoom:19,opacity:.45,attribution:'© OSM © CARTO'}).addTo(map);
+  L.control.attribution({prefix:'GeoNorm · Preventive Health · © OpenStreetMap © CARTO'}).addTo(map);
+  // Zoom controls reposicionado en móvil
+  if(!isMobile()) L.control.zoom({position:'topleft'}).addTo(map);
+  map.on('mousemove',e=>{
+    document.getElementById('coords').textContent=
+      `Lat: ${e.latlng.lat.toFixed(5)} · Lng: ${e.latlng.lng.toFixed(5)}`;
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   COLORMAP CHIPS
+══════════════════════════════════════════════════ */
+function initChips(){
+  const row=document.getElementById('cm-row');
+  Object.keys(CMS).forEach(name=>{
+    const wrap=document.createElement('div');wrap.className='cm-item';
+    const d=document.createElement('div');
+    d.className='cmc'+(name===activeCM?' sel':'');d.title=CM_LABELS[name];
+    d.onclick=()=>pickCM(name);
+    const cv=document.createElement('canvas');cv.width=54;cv.height=18;
+    const cx=cv.getContext('2d');
+    for(let x=0;x<54;x++){cx.fillStyle=`rgb(${rgbArr(x/53,name).join(',')})`;cx.fillRect(x,0,1,18);}
+    d.appendChild(cv);
+    const lbl=document.createElement('div');lbl.className='cm-lbl';lbl.textContent=CM_LABELS[name];
+    wrap.appendChild(d);wrap.appendChild(lbl);row.appendChild(wrap);
+  });
+}
+function pickCM(name){
+  activeCM=name;
+  document.querySelectorAll('.cmc').forEach((c,i)=>c.classList.toggle('sel',Object.keys(CMS)[i]===name));
+  if(GR&&ST) refreshLayers();
+}
+
+/* ══════════════════════════════════════════════════
+   MOBILE PANEL DRAWER
+══════════════════════════════════════════════════ */
+let openPanel=null;
+function mobilePanelShow(panelId){
+  if(!isMobile()) return;
+  // Cerrar panel anterior
+  if(openPanel){
+    document.getElementById('panel-'+openPanel).classList.remove('mob-open');
+  }
+  document.getElementById('mob-bd').classList.remove('on');
+  // Actualizar nav
+  document.querySelectorAll('.bnav-b:not(.bnav-action)').forEach(b=>b.classList.remove('on'));
+  document.getElementById('bnb-map').classList.add('on');
+
+  if(panelId && panelId!==openPanel){
+    document.getElementById('panel-'+panelId).classList.add('mob-open');
+    document.getElementById('mob-bd').classList.add('on');
+    const navMap={'lp':'bnb-ctrl','rp':'bnb-stats'};
+    if(navMap[panelId]){
+      document.getElementById('bnb-map').classList.remove('on');
+      document.getElementById(navMap[panelId]).classList.add('on');
+    }
+    openPanel=panelId;
+  } else {
+    openPanel=null;
+  }
+}
+// Cerrar drawer con swipe hacia abajo
+function initSwipeClose(){
+  ['panel-lp','panel-rp'].forEach(id=>{
+    const el=document.getElementById(id);
+    let startY=0;
+    el.addEventListener('touchstart',e=>{startY=e.touches[0].clientY;},{passive:true});
+    el.addEventListener('touchmove',e=>{
+      if(el.scrollTop===0&&e.touches[0].clientY-startY>60) mobilePanelShow(null);
+    },{passive:true});
+  });
+}
+// Orientación cambia: cerrar panel
+window.addEventListener('orientationchange',()=>{ if(openPanel) mobilePanelShow(null); });
+
+/* ══════════════════════════════════════════════════
+   COORDINATE CONVERSION
+══════════════════════════════════════════════════ */
+function getBoundsWGS84(gr){
+  const proj=gr.projection;
+  if(!proj||proj===4326) return[[gr.ymin,gr.xmin],[gr.ymax,gr.xmax]];
+  try{
+    const tag='EPSG:'+proj;
+    const toWGS=proj4(tag,'WGS84');
+    const ll=toWGS.forward([gr.xmin,gr.ymin]);
+    const ur=toWGS.forward([gr.xmax,gr.ymax]);
+    if(isFinite(ll[0])&&isFinite(ll[1])&&Math.abs(ll[1])<=90&&Math.abs(ll[0])<=180)
+      return[[ll[1],ll[0]],[ur[1],ur[0]]];
+  }catch(e){console.warn('proj4:',e.message);}
+  return[[gr.ymin,gr.xmin],[gr.ymax,gr.xmax]];
+}
+
+/* ══════════════════════════════════════════════════
+   STATS
+══════════════════════════════════════════════════ */
+function computeStats(vals2D,rawNd){
+  const nd=rawNd!=null?Number(rawNd):null;
+  const hasND=nd!==null&&isFinite(nd);
+  const flat=[];
+  for(const row of vals2D){
+    for(let i=0;i<row.length;i++){
+      const v=Number(row[i]);
+      if(!isFinite(v)||isNaN(v)) continue;
+      if(hasND&&Math.abs(v-nd)<0.5) continue;
+      flat.push(v);
+    }
+  }
+  if(!flat.length) return null;
+  let mn=Infinity,mx=-Infinity,sum=0;
+  for(const v of flat){if(v<mn)mn=v;if(v>mx)mx=v;sum+=v;}
+  const mu=sum/flat.length;
+  let vari=0; for(const v of flat) vari+=(v-mu)**2;
+  const sg=Math.sqrt(vari/flat.length);
+  const MAX_SORT=600000;
+  let fs=flat;
+  if(flat.length>MAX_SORT){const st=Math.ceil(flat.length/MAX_SORT);fs=flat.filter((_,i)=>i%st===0);}
+  const sorted=[...fs].sort((a,b)=>a-b);
+  const pct=p=>{
+    const idx=(p/100)*(sorted.length-1);
+    const lo=Math.floor(idx),hi=Math.min(lo+1,sorted.length-1);
+    return sorted[lo]*(1-(idx-lo))+sorted[hi]*(idx-lo);
+  };
+  return{mn,mx,mu,sg,p2:pct(2),p25:pct(25),p50:pct(50),p75:pct(75),p98:pct(98),
+         count:flat.length,total:vals2D.length*(vals2D[0]?.length||0),flat,nd};
+}
+
+/* ══════════════════════════════════════════════════
+   NORMALIZATION
+══════════════════════════════════════════════════ */
+function normalize(v,st,m){
+  if(m==='minmax') return(v-st.mn)/(st.mx-st.mn);
+  if(m==='zscore') return(v-st.mu)/st.sg;
+  return Math.max(0,Math.min(1,(v-st.p2)/(st.p98-st.p2)));
+}
+function toDisplay(t,m){
+  if(m==='zscore') return Math.max(0,Math.min(1,(t+3)/6));
+  return Math.max(0,Math.min(1,t));
+}
+
+/* ══════════════════════════════════════════════════
+   CANVAS RENDERER
+══════════════════════════════════════════════════ */
+function renderToCanvas(gr,useNorm){
+  const W=gr.width,H=gr.height,vals2D=gr.values[0];
+  const nd=ST.nd,hasND=nd!==null&&isFinite(nd);
+  const alpha=Math.round(opacity*255);
+  const MAX_DIM=isMobile()?1024:2048;
+  const scale=Math.min(1,MAX_DIM/Math.max(W,H));
+  const cW=Math.max(1,Math.round(W*scale)),cH=Math.max(1,Math.round(H*scale));
+  const canvas=document.createElement('canvas');
+  canvas.width=cW;canvas.height=cH;
+  const ctx=canvas.getContext('2d');
+  const img=ctx.createImageData(cW,cH);
+  const d=img.data;
+  for(let r=0;r<cH;r++){
+    const srcR=Math.min(Math.round(r/scale),H-1);
+    const row=vals2D[srcR];
+    for(let c=0;c<cW;c++){
+      const srcC=Math.min(Math.round(c/scale),W-1);
+      const v=Number(row[srcC]);
+      const p=(r*cW+c)*4;
+      if(!isFinite(v)||isNaN(v)||(hasND&&Math.abs(v-nd)<0.5)){d[p+3]=0;continue;}
+      const t=useNorm?toDisplay(normalize(v,ST,method),method):(v-ST.mn)/(ST.mx-ST.mn);
+      const[rr,g,b]=rgbArr(isNaN(t)?0:t);
+      d[p]=rr;d[p+1]=g;d[p+2]=b;d[p+3]=alpha;
+    }
+  }
+  ctx.putImageData(img,0,0);
+  return canvas;
+}
+function canvasToURL(canvas){
+  return new Promise((res,rej)=>{
+    canvas.toBlob(blob=>{
+      if(blob)res(URL.createObjectURL(blob));
+      else rej(new Error('No se pudo crear blob del canvas'));
+    },'image/png');
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   LAYER MANAGEMENT
+══════════════════════════════════════════════════ */
+async function buildLayer(useNorm){
+  const canvas=renderToCanvas(GR,useNorm);
+  const url=await canvasToURL(canvas);
+  const overlay=L.imageOverlay(url,mapBounds,{opacity,interactive:false});
+  return{overlay,url};
+}
+async function addOriginalLayer(){
+  if(layOrig){map.removeLayer(layOrig);if(origUrl)URL.revokeObjectURL(origUrl);}
+  const{overlay,url}=await buildLayer(false);
+  layOrig=overlay;origUrl=url;
+  if(view==='orig')layOrig.addTo(map);
+}
+async function addNormalizedLayer(){
+  if(layNorm){map.removeLayer(layNorm);if(normUrl)URL.revokeObjectURL(normUrl);}
+  const{overlay,url}=await buildLayer(true);
+  layNorm=overlay;normUrl=url;
+  if(view==='norm')layNorm.addTo(map);
+}
+async function refreshLayers(){
+  setStatus('Actualizando capas…','load');
+  if(layOrig){
+    const was=map.hasLayer(layOrig);
+    map.removeLayer(layOrig);if(origUrl)URL.revokeObjectURL(origUrl);
+    const{overlay,url}=await buildLayer(false);
+    layOrig=overlay;origUrl=url;if(was)layOrig.addTo(map);
+  }
+  if(layNorm){
+    const was=map.hasLayer(layNorm);
+    map.removeLayer(layNorm);if(normUrl)URL.revokeObjectURL(normUrl);
+    const{overlay,url}=await buildLayer(true);
+    layNorm=overlay;normUrl=url;if(was)layNorm.addTo(map);
+  }
+  updateLegend();setStatus('Paleta actualizada','ok');
+}
+
+/* ══════════════════════════════════════════════════
+   LOAD FILE
+══════════════════════════════════════════════════ */
+async function loadFile(file){
+  if(isMobile()) mobilePanelShow(null); // cerrar drawer en móvil
+  setStatus('Leyendo archivo…','load');
+  showOverlay('load','Leyendo GeoTIFF…','Procesando datos raster');
+  try{
+    const buf=await file.arrayBuffer();
+    showOverlay('load','Parseando GeoTIFF…','Decodificando cabeceras y valores');
+    const gr=await parseGeoraster(buf);
+    GR=gr;
+    showOverlay('load','Calculando estadísticas…',`${gr.width}×${gr.height} px · EPSG:${gr.projection||4326}`);
+    const vals2D=gr.values[0];
+    ST=computeStats(vals2D,gr.noDataValue);
+    if(!ST) throw new Error('El raster no tiene píxeles válidos. Revisa el valor NoData.');
+
+    // Metadata
+    document.getElementById('m-w').textContent=gr.width;
+    document.getElementById('m-h').textContent=gr.height;
+    document.getElementById('m-proj').textContent=gr.projection?`EPSG:${gr.projection}`:'WGS84';
+    document.getElementById('m-nd').textContent=ST.nd!=null?fmt(ST.nd):'Ninguno';
+    document.getElementById('m-dtype').textContent=`${['','UInt','Int','Float'][gr.pixelType]||'?'} ${gr.bitsPerSample||'?'}-bit`;
+    document.getElementById('m-res').textContent=`${fmt(gr.pixelWidth)} × ${fmt(gr.pixelHeight)}`;
+    document.getElementById('m-ext').textContent=`X [${fmt(gr.xmin)}, ${fmt(gr.xmax)}]\nY [${fmt(gr.ymin)}, ${fmt(gr.ymax)}]`;
+    document.getElementById('fn').textContent=file.name;
+    document.getElementById('fm').textContent=`${(file.size/1024/1024).toFixed(2)} MB · ${gr.width}×${gr.height} · ${ST.count.toLocaleString('es')} px válidos`;
+    document.getElementById('finfo').classList.add('on');
+    document.getElementById('s-mn').textContent=fmt(ST.mn);
+    document.getElementById('s-mx').textContent=fmt(ST.mx);
+    document.getElementById('s-mu').textContent=fmt(ST.mu);
+    document.getElementById('s-sg').textContent=fmt(ST.sg);
+    document.getElementById('s-p2').textContent=fmt(ST.p2);
+    document.getElementById('s-p98').textContent=fmt(ST.p98);
+    document.getElementById('s-valid').textContent=`${ST.count.toLocaleString('es')} / ${ST.total.toLocaleString('es')}`;
+    drawHist('ho',ST.flat,'Original','#1A509E');
+
+    showOverlay('load','Reproyectando…',`EPSG:${gr.projection} → WGS84`);
+    mapBounds=getBoundsWGS84(gr);
+    showOverlay('load','Renderizando mapa…','Dibujando píxeles');
+    view='orig';updateToggle();
+    await addOriginalLayer();
+    map.fitBounds(mapBounds,{padding:[20,20]});
+
+    // Habilitar controles
+    document.getElementById('btn-apply').disabled=false;
+    document.getElementById('bnb-apply').disabled=false;
+    document.getElementById('mtbar').classList.add('on');
+    document.getElementById('leg').classList.add('on');
+    updateLegend();hideOverlay();
+    setStatus(`✓ ${file.name} · ${gr.width}×${gr.height} · EPSG:${gr.projection||4326} · ${ST.count.toLocaleString('es')} px`,'ok');
+    toast('Archivo cargado correctamente');
+  }catch(e){
+    console.error(e);
+    showOverlay('err','Error al cargar el archivo',e.message);
+    setStatus('Error: '+e.message,'err');toast(e.message,true);
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   APPLY NORMALIZATION
+══════════════════════════════════════════════════ */
+async function applyNorm(){
+  if(!GR||!ST) return;
+  if(isMobile()) mobilePanelShow(null);
+  setStatus('Normalizando…','load');
+  NF=ST.flat.map(v=>normalize(v,ST,method));
+  let nmn=Infinity,nmx=-Infinity,nsum=0;
+  for(const v of NF){if(v<nmn)nmn=v;if(v>nmx)nmx=v;nsum+=v;}
+  const nmu=nsum/NF.length;
+  let nvi=0;for(const v of NF)nvi+=(v-nmu)**2;
+  const nsg=Math.sqrt(nvi/NF.length);
+  const lbls={minmax:'Min–Max',zscore:'Z-Score',robust:'Robusto (P₂–P₉₈)'};
+  document.getElementById('ns-mn').textContent=fmt(nmn);
+  document.getElementById('ns-mx').textContent=fmt(nmx);
+  document.getElementById('ns-mu').textContent=fmt(nmu);
+  document.getElementById('ns-sg').textContent=fmt(nsg);
+  document.getElementById('nm-lbl').textContent=lbls[method];
+  drawHist('hn',NF,'Normalizado','#F5B300');
+  document.getElementById('ns-sec').style.display='';
+  document.getElementById('hn-sec').style.display='';
+  await addNormalizedLayer();
+  setView('norm');
+  document.getElementById('btn-exp-tif').disabled=false;
+  document.getElementById('btn-exp-csv').disabled=false;
+  updateLegend();
+  setStatus(`✓ ${lbls[method]} aplicado · ${NF.length.toLocaleString('es')} píxeles`,'ok');
+  toast('Normalización aplicada correctamente');
+  // Abrir panel de resultados en móvil
+  if(isMobile()) setTimeout(()=>mobilePanelShow('rp'),400);
+}
+
+/* ══════════════════════════════════════════════════
+   HISTOGRAM
+══════════════════════════════════════════════════ */
+function drawHist(id,values,label,color){
+  const ctx=document.getElementById(id).getContext('2d');
+  const old=Chart.getChart(ctx);if(old)old.destroy();
+  const MAX_H=60000;
+  let sv=values;
+  if(values.length>MAX_H){const st=Math.ceil(values.length/MAX_H);sv=values.filter((_,i)=>i%st===0);}
+  let mn=Infinity,mx=-Infinity;
+  for(const v of sv){if(v<mn)mn=v;if(v>mx)mx=v;}
+  const BINS=40,bw=(mx-mn)/BINS;
+  const counts=new Array(BINS).fill(0);
+  const lbls=[];
+  for(let i=0;i<BINS;i++)lbls.push(fmtS(mn+i*bw));
+  sv.forEach(v=>{let b=bw>0?Math.floor((v-mn)/bw):0;if(b>=BINS)b=BINS-1;counts[b]++;});
+  new Chart(ctx,{
+    type:'bar',
+    data:{labels:lbls,datasets:[{label,data:counts,backgroundColor:color+'66',borderColor:color,borderWidth:0,barPercentage:1,categoryPercentage:1}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>`~${i[0].label}`,label:i=>`${i.raw.toLocaleString('es')} px`}}},
+      scales:{
+        x:{grid:{color:'#CCDDF0'},ticks:{color:'#5A6B80',maxTicksLimit:5,maxRotation:0,font:{size:9,family:'Montserrat'}}},
+        y:{grid:{color:'#CCDDF0'},ticks:{color:'#5A6B80',maxTicksLimit:4,font:{size:9,family:'Montserrat'}}}
+      }
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   LEGEND
+══════════════════════════════════════════════════ */
+function updateLegend(){
+  if(!ST)return;
+  const cv=document.getElementById('leg-bar');
+  cv.width=120;cv.height=12;
+  const cx=cv.getContext('2d');
+  for(let x=0;x<120;x++){cx.fillStyle=`rgb(${rgbArr(x/119).join(',')})`;cx.fillRect(x,0,1,12);}
+  let mn,md,mx,t;
+  if(view==='orig'||!NF){mn=fmt(ST.mn);md=fmt((ST.mn+ST.mx)/2);mx=fmt(ST.mx);t='Valores Originales';}
+  else if(method==='minmax'){mn='0.000';md='0.500';mx='1.000';t='Min–Max [0, 1]';}
+  else if(method==='zscore'){mn='−3σ';md='0';mx='+3σ';t='Z-Score (±3σ)';}
+  else{mn='0.000';md='0.500';mx='1.000';t='Robusto [P₂, P₉₈]';}
+  document.getElementById('leg-t').textContent=t;
+  document.getElementById('leg-mn').textContent=mn;
+  document.getElementById('leg-md').textContent=md;
+  document.getElementById('leg-mx').textContent=mx;
+  const vn={minmax:'Min-Max',zscore:'Z-Score',robust:'Robusto'};
+  document.getElementById('view-lbl').textContent=view==='orig'?'Vista: Original':`Normalizado — ${vn[method]}`;
+}
+
+/* ══════════════════════════════════════════════════
+   VIEW TOGGLE
+══════════════════════════════════════════════════ */
+function setView(v){
+  view=v;
+  if(layOrig){if(v==='orig'){if(!map.hasLayer(layOrig))layOrig.addTo(map);}else map.removeLayer(layOrig);}
+  if(layNorm){if(v==='norm'){if(!map.hasLayer(layNorm))layNorm.addTo(map);}else map.removeLayer(layNorm);}
+  updateToggle();updateLegend();
+}
+function updateToggle(){
+  document.getElementById('btn-orig').classList.toggle('on',view==='orig');
+  document.getElementById('btn-norm').classList.toggle('on',view==='norm');
+}
+function selMethod(m){
+  method=m;
+  document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',c.dataset.m===m));
+}
+
+/* ══════════════════════════════════════════════════
+   OPACITY
+══════════════════════════════════════════════════ */
+document.getElementById('op-slider').addEventListener('input',function(){
+  opacity=this.value/100;
+  document.getElementById('op-val').textContent=this.value+'%';
+  if(layOrig)layOrig.setOpacity(opacity);
+  if(layNorm)layNorm.setOpacity(opacity);
+});
+
+/* ══════════════════════════════════════════════════
+   EXPORT GeoTIFF
+══════════════════════════════════════════════════ */
+async function exportGeoTIFF(){
+  if(!GR||!ST)return;
+  setStatus('Generando GeoTIFF Float32…','load');
+  try{
+    const nd=ST.nd??-9999,hasND=ST.nd!==null&&isFinite(ST.nd);
+    const vals2D=GR.values[0],arr=new Float32Array(GR.width*GR.height).fill(nd);
+    let i=0;
+    for(let r=0;r<vals2D.length;r++){
+      const row=vals2D[r];
+      for(let c=0;c<row.length;c++,i++){
+        const v=Number(row[c]);
+        if(!isFinite(v)||isNaN(v)||(hasND&&Math.abs(v-ST.nd)<0.5))continue;
+        arr[i]=normalize(v,ST,method);
+      }
+    }
+    const lib=window.GeoTIFF;
+    if(!lib||!lib.writeArrayBuffer)throw new Error('geotiff.js no disponible — usa exportación CSV.');
+    const meta={
+      height:GR.height,width:GR.width,SampleFormat:[3],BitsPerSample:[32],
+      ModelPixelScale:[GR.pixelWidth,GR.pixelHeight,0],
+      ModelTiepoint:[0,0,0,GR.xmin,GR.ymax,0],GDAL_NODATA:String(nd),
+    };
+    if(GR.projection)meta.GeographicTypeGeoKey=GR.projection;
+    const ab=await lib.writeArrayBuffer([arr],meta);
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([ab],{type:'image/tiff'}));
+    a.download=`raster_norm_${method}.tif`;a.click();URL.revokeObjectURL(a.href);
+    setStatus(`✓ GeoTIFF exportado: ${GR.width}×${GR.height} Float32`,'ok');
+    toast('GeoTIFF descargado');
+  }catch(e){setStatus('Error: '+e.message,'err');toast('⚠ '+e.message,true);}
+}
+
+/* ══════════════════════════════════════════════════
+   EXPORT CSV
+══════════════════════════════════════════════════ */
+function exportCSV(){
+  if(!GR||!ST)return;
+  const vals2D=GR.values[0],nd=ST.nd,hasND=nd!==null&&isFinite(nd);
+  const mL={minmax:'MinMax',zscore:'ZScore',robust:'Robusto'}[method];
+  const rows=[`fila,columna,valor_original,valor_${mL}`];
+  for(let r=0;r<vals2D.length;r++){
+    for(let c=0;c<vals2D[r].length;c++){
+      const v=Number(vals2D[r][c]);
+      if(!isFinite(v)||isNaN(v)||(hasND&&Math.abs(v-nd)<0.5))continue;
+      rows.push(`${r},${c},${v},${normalize(v,ST,method).toFixed(7)}`);
+    }
+  }
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));
+  a.download=`raster_norm_${mL}.csv`;a.click();URL.revokeObjectURL(a.href);
+  setStatus(`✓ CSV exportado: ${rows.length-1} píxeles`,'ok');toast('CSV descargado');
+}
+
+/* ══════════════════════════════════════════════════
+   UI HELPERS
+══════════════════════════════════════════════════ */
+function setStatus(msg,t){
+  document.getElementById('stxt').textContent=msg;
+  document.getElementById('sdot').style.background=
+    t==='ok'?'#3fb950':t==='err'?'#f85149':t==='load'?'#F5B300':'rgba(255,255,255,.4)';
+}
+function showOverlay(type,title,sub,errMsg){
+  const mo=document.getElementById('mo');mo.classList.remove('gone');
+  if(type==='load'){
+    mo.innerHTML=`<div class="spin"></div><div class="mo-t">${title}</div><div class="mo-s">${sub||''}</div>`;
+  }else if(type==='err'){
+    mo.innerHTML=`<div class="mo-ico">⚠️</div><div class="mo-t" style="color:#f85149">${title}</div>
+      <div class="mo-s">${sub||''}</div>
+      ${errMsg?`<div class="mo-err">${errMsg}</div>`:''}
+      <div class="mo-s" style="margin-top:8px">Intenta con otro archivo o verifica la conexión.</div>`;
+  }else{
+    mo.innerHTML=`<div class="mo-ico">🌍</div><div class="mo-t">${title}</div><div class="mo-s">${sub||''}</div>`;
+  }
+}
+function hideOverlay(){document.getElementById('mo').classList.add('gone');}
+
+let toastTimer;
+function toast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='show'+(isErr?' err':'');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className='',3000);
+}
+function fmt(n){
+  if(n==null)return'—';if(!isFinite(n))return String(n);
+  const a=Math.abs(n);
+  if(a>=10000)return n.toFixed(1);if(a>=100)return n.toFixed(3);
+  if(a>=10)return n.toFixed(4);if(a>=1)return n.toFixed(5);return n.toFixed(6);
+}
+function fmtS(n){if(!isFinite(n))return'?';const a=Math.abs(n);return a>=1000?n.toFixed(0):a>=10?n.toFixed(2):n.toFixed(3);}
+
+/* ══════════════════════════════════════════════════
+   FILE HANDLERS
+══════════════════════════════════════════════════ */
+const dz=document.getElementById('drop-zone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{
+  e.preventDefault();dz.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&(f.name.endsWith('.tif')||f.name.endsWith('.tiff')))loadFile(f);
+  else{setStatus('Selecciona un .tif o .tiff','err');toast('⚠ Formato no válido',true);}
+});
+document.getElementById('fi').addEventListener('change',e=>{
+  if(e.target.files[0])loadFile(e.target.files[0]);
+  e.target.value='';
+});
+
+/* ══════════════════════════════════════════════════
+   DEPENDENCY CHECK
+══════════════════════════════════════════════════ */
+function checkDeps(){
+  const missing=[];
+  if(typeof L==='undefined')missing.push('Leaflet');
+  if(typeof proj4==='undefined')missing.push('proj4.js');
+  if(typeof parseGeoraster==='undefined')missing.push('georaster');
+  if(typeof Chart==='undefined')missing.push('Chart.js');
+  if(missing.length){
+    showOverlay('err','Librerías no cargadas','Verifica tu conexión a Internet y recarga la página.','Faltantes: '+missing.join(', '));
+    setStatus('Error: librerías no disponibles — '+missing.join(', '),'err');
+    return false;
+  }
+  return true;
+}
+
+/* ══════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  initMap();
+  initChips();
+  initSwipeClose();
+  if(!checkDeps())return;
+  setStatus('Listo — carga un GeoTIFF para comenzar','ok');
+});
+</script>
+</body>
+</html>

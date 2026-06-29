@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Satellite Timelapse – Preventive Health</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#004898;--gold:#F0C000;
+  --bg:#EEF3FA;--panel:#fff;--card:#EBF1FA;
+  --border:#C5D5EA;--text:#1A2840;--muted:#5E7A9E;
+  --ok:#15803d;--warn:#b45309;--err:#b91c1c;
+  --ok-bg:#dcfce7;--sel-bg:#dbeafe;
+  --shadow:0 1px 4px rgba(0,60,120,.10);
+}
+body{font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{display:flex;align-items:center;gap:12px;padding:0 18px;background:var(--blue);border-bottom:3px solid var(--gold);height:52px;flex-shrink:0}
+header img{height:32px;width:auto}
+.brand{font-size:14px;font-weight:700;letter-spacing:.04em;color:#fff}
+.brand span{color:var(--gold)}
+.tagline{margin-left:auto;font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+.main{display:flex;flex:1;overflow:hidden}
+.sidebar{width:310px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;padding-bottom:36px}
+.step:last-child{padding-bottom:18px}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.step{border-bottom:1px solid var(--border)}
+.step-hdr{display:flex;align-items:center;gap:9px;padding:11px 13px;cursor:pointer;user-select:none;transition:background .15s}
+.step-hdr:hover{background:var(--card)}
+.snum{width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.snum.done{background:var(--ok)}
+.stitle{font-size:12px;font-weight:600;flex:1}
+.chev{font-size:9px;color:var(--muted);transition:transform .2s;display:inline-block}
+.chev.up{transform:rotate(180deg)}
+.sbody{padding:13px;border-top:1px solid var(--border)}
+.lbl{display:block;font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.inp{width:100%;background:#fff;border:1px solid var(--border);color:var(--text);border-radius:5px;padding:6px 9px;font-size:12px;outline:none;transition:border .15s;font-family:inherit}
+.inp:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,72,152,.1)}
+.inp::placeholder{color:var(--muted)}
+select.inp option{background:#fff;color:var(--text)}
+textarea.inp{resize:vertical;min-height:62px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mb6{margin-bottom:6px}.mb10{margin-bottom:10px}
+.row{display:flex;gap:6px;align-items:center}
+.btn{padding:6px 12px;border-radius:5px;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;white-space:nowrap;font-family:inherit}
+.btn:active{transform:scale(.97)}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#003d82}
+.btn-gold{background:var(--gold);color:#1a2840}.btn-gold:hover{background:#d9ad00}
+.btn-out{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-out:hover{background:var(--card)}
+.btn-green{background:var(--ok);color:#fff}.btn-green:hover{background:#166534}
+.btn-info{background:#EBF1FA;border:1px solid var(--border);color:var(--blue);font-size:11px}.btn-info:hover{background:var(--sel-bg)}
+.btn-sm{padding:4px 10px;font-size:11px}
+.btn-full{width:100%;text-align:center}
+.brow{display:flex;gap:6px;flex-wrap:wrap}
+.brow .btn{flex:1}
+.tabs{display:flex;gap:2px;margin-bottom:10px;background:var(--card);border-radius:6px;padding:2px}
+.tab{flex:1;padding:4px 6px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);background:transparent;transition:all .15s;user-select:none;text-align:center;border:none}
+.tab.on{background:#fff;color:var(--blue);box-shadow:var(--shadow)}
+.drop{border:2px dashed var(--border);border-radius:7px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:#fff}
+.drop:hover,.drop.drag{border-color:var(--blue);background:var(--sel-bg)}
+.drop-ico{font-size:22px;margin-bottom:4px}
+.drop-txt{font-size:12px;font-weight:600}
+.drop-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.drop input{display:none}
+#place-res{border:1px solid var(--border);border-radius:5px;margin-top:5px;overflow:hidden;display:none;background:#fff;box-shadow:var(--shadow)}
+.pi{padding:7px 10px;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
+.pi:last-child{border-bottom:none}.pi:hover{background:var(--sel-bg);color:var(--blue)}
+.sat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.scard{padding:8px;border-radius:7px;border:2px solid var(--border);cursor:pointer;text-align:center;transition:all .15s;user-select:none;background:#fff}
+.scard:hover{border-color:var(--muted)}
+.scard.on{border-color:var(--blue);background:var(--sel-bg)}
+.scard-ico{font-size:16px;margin-bottom:1px}
+.scard-nm{font-size:10px;font-weight:700;margin-bottom:1px}
+.scard-sub{font-size:9px;color:var(--muted)}
+.bdg{display:inline-block;padding:1px 5px;border-radius:7px;font-size:8px;font-weight:700;margin-top:2px;text-transform:uppercase}
+.bfree{background:#dcfce7;color:#15803d}.bgee{background:#dbeafe;color:#1d4ed8}
+.viz-wrap{border:1px solid var(--border);border-radius:5px;max-height:180px;overflow-y:auto;margin-bottom:8px;background:#fff}
+.vcat{padding:3px 9px;font-size:9px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;background:var(--card);position:sticky;top:0;border-bottom:1px solid var(--border)}
+.vrow{padding:6px 9px;font-size:11px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(197,213,234,.4);transition:background .1s}
+.vrow:last-child{border-bottom:none}.vrow:hover{background:var(--card)}
+.vrow.on{background:var(--sel-bg);color:var(--blue);font-weight:600}
+.vt{font-size:8px;color:var(--muted);font-weight:700;text-transform:uppercase;padding:1px 4px;border-radius:3px;border:1px solid var(--border)}
+.vrow.on .vt{border-color:var(--blue);color:var(--blue)}
+.mprow{display:flex;gap:4px;margin-bottom:10px}
+.mp{flex:1;padding:6px 3px;border:1px solid var(--border);border-radius:5px;text-align:center;font-size:10px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s;user-select:none;background:#fff}
+.mp:hover{border-color:var(--muted);color:var(--text)}
+.mp.on{border-color:var(--blue);background:var(--sel-bg);color:var(--blue)}
+.clr-legend{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);margin:6px 0 4px}
+.clr-bar{height:9px;border-radius:3px;flex:1}
+.ast{margin-top:7px;padding:5px 9px;border-radius:4px;font-size:11px;font-weight:500;background:#FEF9C3;color:var(--warn);border:1px solid #FDE68A}
+.ast.ok{background:var(--ok-bg);color:var(--ok);border-color:#86EFAC}
+.ibox{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:8px}
+.ibox-ttl{font-size:11px;font-weight:700;margin-bottom:4px}
+.ibox p{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:5px}
+.gee-badge{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:5px;margin-bottom:8px;font-size:11px;font-weight:600;background:var(--card);border:1px solid var(--border);color:var(--muted)}
+.gee-badge.on{background:#dcfce7;border-color:#86efac;color:var(--ok)}
+.gee-user{font-size:10px;color:var(--ok);margin-top:3px;display:none}
+.sep{height:1px;background:var(--border);margin:10px 0}
+.note{background:#FFFBEB;border:1px solid #FCD34D;border-radius:5px;padding:7px 10px;font-size:10px;color:#92400e;line-height:1.5;margin-top:6px}
+.cloud-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.cloud-row label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.cloud-row input{width:62px;text-align:center}
+.cloud-row span{font-size:10px;color:var(--muted)}
+.map-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#map{flex:1}
+#compare-side-wrap{display:none;flex:1;gap:2px;background:var(--border);overflow:hidden}
+.cmp-side-panel{flex:1;display:flex;flex-direction:column;min-width:0}
+.cmp-side-label{background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:6px 10px;text-align:center;flex-shrink:0}
+.cmp-map{flex:1}
+#compare-toggle-bar{display:none;background:#fff;border-top:2px solid var(--border);padding:11px 16px}
+#tl{background:#fff;border-top:2px solid var(--border);padding:10px 14px;display:none}
+.tl-info{font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px}
+.tl-info strong{color:var(--text);font-size:12px}
+.tl-badge{display:inline-block;background:var(--sel-bg);color:var(--blue);padding:1px 7px;border-radius:9px;font-size:9px;font-weight:700;margin-left:4px;vertical-align:middle}
+.tl-skip{display:inline-block;background:#FEF9C3;color:var(--warn);padding:1px 7px;border-radius:9px;font-size:9px;font-weight:700;margin-left:4px;display:none}
+#tl-slider{width:100%;accent-color:var(--blue);cursor:pointer;height:4px}
+.tl-ctrls{display:flex;align-items:center;gap:6px;margin-top:8px}
+.fps-wrap{margin-left:auto;display:flex;align-items:center;gap:5px}
+.fps-wrap label{font-size:10px;color:var(--muted)}
+.fps-wrap input{width:46px;background:#fff;border:1px solid var(--border);color:var(--text);border-radius:4px;padding:3px 5px;font-size:11px;text-align:center;outline:none}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:7px 18px;border-radius:18px;font-size:12px;font-weight:600;pointer-events:none;opacity:0;transition:opacity .3s;z-index:10000;max-width:90vw;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+#toast.show{opacity:1}
+#toast.ok{background:#166534;color:#fff}#toast.warn{background:#92400e;color:#fff}
+#toast.err{background:#991b1b;color:#fff}#toast.info{background:var(--blue);color:#fff}
+#loader{position:fixed;inset:0;background:rgba(238,243,250,.8);z-index:9999;display:none;align-items:center;justify-content:center}
+#loader.show{display:flex}
+.spin{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:10001;display:none;align-items:center;justify-content:center}
+.mbg.show{display:flex}
+.modal{background:#fff;border:1px solid var(--border);border-radius:10px;width:450px;max-width:92vw;padding:22px;box-shadow:0 8px 32px rgba(0,60,120,.18)}
+.modal h3{font-size:14px;font-weight:700;margin-bottom:7px;color:var(--text)}
+.modal p{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:9px}
+.modal ol{padding-left:16px;font-size:11px;color:var(--muted);line-height:1.85;margin-bottom:11px}
+.modal ol li a{color:var(--blue)}
+.mbtns{display:flex;gap:7px;justify-content:flex-end;margin-top:4px;flex-wrap:wrap}
+.dl-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+
+/* ── MOBILE ── */
+#mob-menu-btn{display:none}
+#mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:999}
+#mob-overlay.show{display:block}
+#mob-close-btn{display:none}
+@media(max-width:768px){
+  header{padding:0 10px;gap:8px;height:48px}
+  header img{height:24px}
+  .brand{font-size:11px}
+  .tagline{display:none}
+  #mob-menu-btn{display:flex;align-items:center;justify-content:center;margin-left:auto;width:36px;height:36px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:6px;color:#fff;font-size:20px;cursor:pointer;flex-shrink:0;line-height:1}
+  #mob-close-btn{display:flex;align-items:center;justify-content:flex-end;padding:8px 12px 0;cursor:pointer;color:var(--muted);font-size:11px;font-weight:700;gap:4px}
+  .sidebar{position:fixed;top:48px;left:-320px;bottom:0;width:310px;z-index:1000;transition:left .25s ease;box-shadow:4px 0 20px rgba(0,60,120,.25)}
+  .sidebar.mob-open{left:0}
+  .main{flex-direction:row}
+  .map-wrap{width:100%}
+  .inp{font-size:16px}
+  .btn{min-height:34px}
+  .step-hdr{padding:13px 13px}
+  .tl-ctrls{flex-wrap:wrap;gap:8px}
+  .fps-wrap{margin-left:0}
+  #tl{padding:8px 10px}
+  #compare-toggle-bar{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="data:image/png;base64,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" alt="Preventive Health">
+  <div class="brand">&amp; Environmental <span>Services</span></div>
+  <div class="tagline">Satellite Timelapse & Indices</div>
+  <button id="mob-menu-btn" onclick="toggleSidebar()" aria-label="Menú">&#9776;</button>
+</header>
+
+<div id="toast"></div>
+<div id="loader"><div class="spin"></div></div>
+
+<!-- MODAL GEE -->
+<div class="mbg" id="m-gee">
+  <div class="modal">
+    <h3>&#127758; Conectar Google Earth Engine</h3>
+    <p>GEE calcula NDVI, EVI, NDWI y más desde bandas satelitales reales. Requiere credenciales OAuth de Google Cloud.</p>
+    <div class="mbtns" style="justify-content:flex-start;margin-bottom:10px">
+      <button class="btn btn-info" id="btn-gee-guide">&#128214; Ver guía paso a paso</button>
+    </div>
+    <label class="lbl">OAuth Client ID</label>
+    <input class="inp mb6" id="gee-cid" placeholder="xxxxxxx.apps.googleusercontent.com">
+    <label class="lbl">Cloud Project ID</label>
+    <input class="inp" id="gee-proj" placeholder="mi-proyecto-gee" style="margin-bottom:12px">
+    <div class="mbtns">
+      <button class="btn btn-out btn-sm" onclick="closeM('gee')">Cancelar</button>
+      <button class="btn btn-green" id="btn-gee-connect-confirm">&#128279; Conectar GEE</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NASA -->
+<div class="mbg" id="m-nasa">
+  <div class="modal">
+    <h3>&#128752; NASA GIBS — Datos gratuitos sin cuenta</h3>
+    <p><strong>No se requiere cuenta.</strong> Los tiles NDVI/EVI de MODIS son productos L3 pre-computados por NASA (MOD13Q1), datos reales de reflectancia de superficie. Son completamente públicos y gratuitos.</p>
+    <p>Para descargar archivos .HDF o GeoTIFF con bandas individuales y calcular índices propios, consulta NASA Earthdata:</p>
+    <div class="mbtns">
+      <button class="btn btn-out btn-sm" onclick="closeM('nasa')">Cerrar</button>
+      <button class="btn btn-blue btn-sm" onclick="window.open('https://urs.earthdata.nasa.gov','_blank')">NASA Earthdata &#8599;</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div id="mob-overlay" onclick="toggleSidebar()"></div>
+<div class="main">
+<div class="sidebar">
+<div id="mob-close-btn" onclick="toggleSidebar()">&#10005; Cerrar</div>
+
+<!-- PASO 1 -->
+<div class="step">
+  <div class="step-hdr" onclick="togStep(1)">
+    <div class="snum" id="sn1">1</div>
+    <div class="stitle">Área de estudio</div>
+    <span class="chev up" id="ch1">&#9660;</span>
+  </div>
+  <div class="sbody" id="sb1">
+    <div class="tabs" id="area-tabs">
+      <div class="tab on" data-panel="file">Archivo</div>
+      <div class="tab" data-panel="search">Lugar</div>
+      <div class="tab" data-panel="coords">Coords</div>
+      <div class="tab" data-panel="draw">Dibujar</div>
+    </div>
+    <div id="pa-file">
+      <div class="drop" id="dropzone">
+        <div class="drop-ico">&#128193;</div>
+        <div class="drop-txt">Arrastra o haz clic</div>
+        <div class="drop-sub">Shapefile .zip &middot; GeoTIFF .tif &middot; GeoJSON .geojson</div>
+        <input type="file" id="file-input" accept=".zip,.tif,.tiff,.geojson,.json">
+      </div>
+    </div>
+    <div id="pa-search" style="display:none">
+      <label class="lbl">Nombre del lugar</label>
+      <div class="row mb6">
+        <input class="inp" id="place-q" placeholder="Ciudad, parque, cuenca...">
+        <button class="btn btn-blue btn-sm" id="btn-search">Buscar</button>
+      </div>
+      <div id="place-res"></div>
+    </div>
+    <div id="pa-coords" style="display:none">
+      <div class="tabs" id="coord-tabs">
+        <div class="tab on" data-cpanel="bbox">BBox</div>
+        <div class="tab" data-cpanel="pt">Punto</div>
+        <div class="tab" data-cpanel="wkt">WKT</div>
+      </div>
+      <div id="cp-bbox">
+        <div class="g2 mb6">
+          <div><label class="lbl">Oeste (W)</label><input class="inp" id="c-w" placeholder="-77.5"></div>
+          <div><label class="lbl">Sur (S)</label><input class="inp" id="c-s" placeholder="-2.5"></div>
+        </div>
+        <div class="g2 mb10">
+          <div><label class="lbl">Este (E)</label><input class="inp" id="c-e" placeholder="-75.0"></div>
+          <div><label class="lbl">Norte (N)</label><input class="inp" id="c-n" placeholder="-0.5"></div>
+        </div>
+      </div>
+      <div id="cp-pt" style="display:none">
+        <div class="g2 mb6">
+          <div><label class="lbl">Latitud</label><input class="inp" id="c-lat" placeholder="-1.5"></div>
+          <div><label class="lbl">Longitud</label><input class="inp" id="c-lon" placeholder="-76.3"></div>
+        </div>
+        <div class="mb10"><label class="lbl">Buffer (km)</label>
+          <input class="inp" type="number" id="c-buf" value="25" min="1" max="500"></div>
+      </div>
+      <div id="cp-wkt" style="display:none">
+        <label class="lbl">WKT Polygon</label>
+        <textarea class="inp mb10" id="c-wkt" placeholder="POLYGON((-77 -2,-75 -2,-75 -0.5,-77 -0.5,-77 -2))"></textarea>
+      </div>
+      <button class="btn btn-blue btn-full" id="btn-loadcoords">Cargar área</button>
+    </div>
+    <div id="pa-draw" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:7px">
+        <button class="btn btn-out btn-sm" data-draw="rect">&#9634; Rect.</button>
+        <button class="btn btn-out btn-sm" data-draw="poly">&#9998; Pol.</button>
+        <button class="btn btn-out btn-sm" data-draw="circ">&#9711; Circ.</button>
+      </div>
+      <p style="font-size:10px;color:var(--muted)">Dibuja en el mapa. Doble clic para finalizar polígono.</p>
+    </div>
+    <div class="ast" id="area-st">Sin área definida</div>
+  </div>
+</div>
+
+<!-- PASO 2 -->
+<div class="step">
+  <div class="step-hdr" onclick="togStep(2)">
+    <div class="snum" id="sn2">2</div>
+    <div class="stitle">Satélite e índice</div>
+    <span class="chev" id="ch2">&#9660;</span>
+  </div>
+  <div class="sbody" id="sb2" style="display:none">
+    <div class="gee-badge" id="gee-badge">&#9675; Modo GIBS gratuito &mdash; sin cuenta requerida</div>
+    <div class="sat-grid" id="sat-cards"></div>
+    <label class="lbl">Capa / Índice</label>
+    <div class="viz-wrap" id="viz-list"></div>
+    <div id="clr-box"></div>
+    <div class="note" id="note-gibs" style="display:none">
+      &#10003; Índice pre-computado NASA: NDVI/EVI son productos MOD13 calculados con las bandas NIR y Red originales — datos satelitales reales.
+    </div>
+    <div class="ibox" id="ibox-gee" style="display:none">
+      <div class="ibox-ttl" style="color:var(--ok)">&#9989; Sentinel-2 / Landsat 8 — datos gratuitos</div>
+      <p>Sentinel-2: tiles pre-procesados via Copernicus Data Space &amp; EOX (10m, sin cuenta propia). Landsat 8: índices calculados en tiempo real desde STAC + Titiler.</p>
+    </div>
+    <div class="ibox" id="ibox-free">
+      <div class="ibox-ttl" style="color:var(--ok)">&#10003; Datos gratuitos — NASA GIBS</div>
+      <p>NDVI/EVI MODIS pre-calculados por NASA. Sin cuenta, sin límite.</p>
+      <button class="btn btn-gold btn-sm btn-full" id="btn-qgis-guide" style="margin-top:5px">&#128640; Aprende a calcularlo tú mismo</button>
+      <button class="btn btn-out btn-sm btn-full" id="btn-nasa-info" style="margin-top:6px">Info GIBS &#8599;</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 3 -->
+<div class="step">
+  <div class="step-hdr" onclick="togStep(3)">
+    <div class="snum" id="sn3">3</div>
+    <div class="stitle">Período de análisis</div>
+    <span class="chev" id="ch3">&#9660;</span>
+  </div>
+  <div class="sbody" id="sb3" style="display:none">
+    <label class="lbl">Modo</label>
+    <div class="mprow">
+      <div class="mp on" data-mode="single">Fecha única</div>
+      <div class="mp" data-mode="range">Timelapse</div>
+      <div class="mp" data-mode="compare">Comparar</div>
+    </div>
+    <div id="dm-single">
+      <label class="lbl">Fecha</label>
+      <input class="inp mb6" type="date" id="d-single" value="2023-10-01">
+    </div>
+    <div id="dm-range" style="display:none">
+      <div class="g2 mb6">
+        <div><label class="lbl">Inicio</label><input class="inp" type="date" id="d-start" value="2020-01-01"></div>
+        <div><label class="lbl">Fin</label><input class="inp" type="date" id="d-end" value="2023-12-01"></div>
+      </div>
+      <label class="lbl">Frecuencia</label>
+      <select class="inp mb6" id="d-freq">
+        <option value="monthly">Mensual</option>
+        <option value="quarterly" selected>Trimestral</option>
+        <option value="yearly">Anual</option>
+        <option value="16day">16 días (NDVI/EVI)</option>
+        <option value="8day">8 días</option>
+      </select>
+      <p style="font-size:10px;color:var(--muted);margin-bottom:6px">&#128161; Se obtiene mejor visualización con frecuencia <strong>anual</strong>.</p>
+    </div>
+    <div id="dm-compare" style="display:none">
+      <div class="g2 mb6">
+        <div><label class="lbl">Fecha A (más antigua)</label><input class="inp" type="date" id="d-ca" value="2018-01-01"></div>
+        <div><label class="lbl">Fecha B (más reciente)</label><input class="inp" type="date" id="d-cb" value="2023-01-01"></div>
+      </div>
+      <label class="lbl">Tipo de visualizador</label>
+      <div class="mprow" id="compare-view-tabs">
+        <div class="mp on" data-cview="toggle">Único (Antes/Después)</div>
+        <div class="mp" data-cview="side">Lado a lado</div>
+      </div>
+    </div>
+    <div class="note" id="date-range-note" style="display:none"></div>
+    <div class="cloud-row">
+      <label>Nubes máx.</label>
+      <input class="inp" type="number" id="d-cloud" value="20" min="0" max="100" style="width:56px;text-align:center">
+      <span>% &nbsp;(aplica para Sentinel-2 y Landsat 8)</span>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 4 -->
+<div class="step">
+  <div class="step-hdr" onclick="togStep(4)">
+    <div class="snum" id="sn4">4</div>
+    <div class="stitle">Visualizar y exportar</div>
+    <span class="chev" id="ch4">&#9660;</span>
+  </div>
+  <div class="sbody" id="sb4" style="display:none">
+    <button class="btn btn-gold btn-full" id="btn-generate" style="padding:10px;font-size:13px">
+      &#9654;&#65039; Generar visualización
+    </button>
+    <div class="dl-wrap">
+      <label class="lbl">Exportar</label>
+      <div class="brow">
+        <button class="btn btn-out btn-sm" id="btn-dl-png">&#128444; PNG</button>
+        <button class="btn btn-out btn-sm" id="btn-dl-tiff">&#128230; GeoTIFF</button>
+        <button class="btn btn-green btn-sm" id="btn-dl-gee" style="display:none">&#127758; GeoTIFF GEE</button>
+      </div>
+      <div class="brow" style="margin-top:6px">
+        <button class="btn btn-blue btn-sm btn-full" id="btn-dl-gif">&#127909; Descargar timelapse (GIF)</button>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div style="font-size:10px;color:var(--muted);line-height:1.9">
+      <strong style="color:var(--text);display:block;margin-bottom:3px">Fuentes de datos:</strong>
+      &#127757; MODIS Terra/Aqua — NDVI/EVI real (L3) <span style="color:var(--ok);font-weight:700">GRATIS</span><br>
+      &#128752; Landsat WELD — mosaico 30m <span style="color:var(--ok);font-weight:700">GRATIS</span><br>
+      &#128301; Sentinel-2 / Landsat 8 GEE — 10-30m <span style="color:#1d4ed8;font-weight:700">VÍA GEE</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sidebar -->
+
+<div class="map-wrap">
+  <div id="map"></div>
+
+  <!-- Comparar: lado a lado (solo modo Comparación) -->
+  <div id="compare-side-wrap">
+    <div class="cmp-side-panel">
+      <div class="cmp-side-label" id="cmp-left-label">Antes</div>
+      <div id="map-left" class="cmp-map"></div>
+    </div>
+    <div class="cmp-side-panel">
+      <div class="cmp-side-label" id="cmp-right-label">Después</div>
+      <div id="map-right" class="cmp-map"></div>
+    </div>
+  </div>
+
+  <div id="tl">
+    <div class="tl-info">
+      Frame <strong id="tl-cur">1</strong>/<strong id="tl-tot">1</strong>
+      &nbsp;&mdash;&nbsp;<strong id="tl-date">&ndash;</strong>
+      <span class="tl-badge" id="tl-src"></span>
+      <span class="tl-skip" id="tl-skip">sin datos → buscando siguiente...</span>
+    </div>
+    <input type="range" id="tl-slider" min="0" max="0" value="0">
+    <div class="tl-ctrls">
+      <button class="btn btn-out btn-sm" id="btn-prev">&#9198;</button>
+      <button class="btn btn-blue" id="btn-play" style="min-width:90px">&#9654; Play</button>
+      <button class="btn btn-out btn-sm" id="btn-next">&#9197;</button>
+      <div class="fps-wrap">
+        <label>FPS</label>
+        <input type="number" id="tl-fps" value="1" min="0.2" max="10" step="0.2">
+      </div>
+      <button class="btn btn-out btn-sm" id="btn-close-tl" style="margin-left:4px">&#10006;</button>
+    </div>
+  </div>
+
+  <!-- Comparar: visualizador único con Antes/Después (solo modo Comparación) -->
+  <div id="compare-toggle-bar">
+    <div class="tl-info">
+      <strong id="cmp-date">&ndash;</strong>
+    </div>
+    <div class="tl-ctrls" style="justify-content:center">
+      <button class="btn btn-blue btn-sm" id="btn-cmp-before">&#9664; Antes</button>
+      <button class="btn btn-blue btn-sm" id="btn-cmp-after">Después &#9654;</button>
+      <button class="btn btn-out btn-sm" id="btn-close-compare" style="margin-left:10px">&#10006;</button>
+    </div>
+  </div>
+</div>
+</div><!-- /main -->
+
+<!-- GUIDE OVERLAY (panel interno, no ventana nueva) -->
+<div id="guide-overlay" style="position:fixed;inset:0;background:#fff;z-index:20000;display:none;flex-direction:column">
+  <div style="background:#004898;padding:9px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #F0C000">
+    <button id="btn-guide-back" class="btn btn-gold btn-sm">&#8592; Volver a la plataforma</button>
+    <span style="color:#fff;font-size:13px;font-weight:600" id="guide-title"></span>
+  </div>
+  <iframe id="guide-frame" style="flex:1;border:none;width:100%;background:#fff"></iframe>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script>
+function toggleSidebar(){
+  var sb=document.querySelector('.sidebar');
+  var ov=document.getElementById('mob-overlay');
+  sb.classList.toggle('mob-open');
+  ov.classList.toggle('show');
+}
+var GUIDE_QGIS_HTML = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Gu\u00eda: Descarga y C\u00e1lculo de \u00cdndices Espectrales \u2013 Preventive Health</title>\n<style>\n*{box-sizing:border-box;margin:0;padding:0}\nbody{font-family:\"Segoe UI\",system-ui,sans-serif;background:#F5F7FA;color:#1A2840;line-height:1.6}\n.hdr{background:#004898;border-bottom:4px solid #F0C000;padding:16px 32px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}\n.hdr img{height:38px}\n.hdr-brand{color:#fff;font-size:17px;font-weight:700}\n.hdr-brand span{color:#F0C000}\n.hdr-sub{color:rgba(255,255,255,.6);font-size:11px;margin-left:auto;text-align:right}\n.hdr-print{background:#F0C000;color:#1A2840;border:none;padding:6px 16px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;margin-left:12px}\n.hdr-print:hover{background:#d9ad00}\n.content{max-width:860px;margin:0 auto;padding:32px 24px}\nh1{font-size:22px;font-weight:800;color:#004898;margin-bottom:6px}\n.subtitle{font-size:14px;color:#5E7A9E;margin-bottom:28px}\n.toc{background:#EBF1FA;border:1px solid #C5D5EA;border-radius:8px;padding:18px 22px;margin-bottom:32px}\n.toc h3{font-size:13px;font-weight:700;color:#004898;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}\n.toc ol{padding-left:18px;font-size:13px;line-height:2.1}\n.toc ol li a{color:#004898;text-decoration:none}\n.toc ol li a:hover{text-decoration:underline}\n.section{margin-bottom:36px}\nh2{font-size:18px;font-weight:700;color:#004898;border-left:4px solid #F0C000;padding-left:12px;margin-bottom:14px;margin-top:28px}\nh3{font-size:14px;font-weight:700;color:#1A2840;margin:14px 0 8px}\np{font-size:13px;margin-bottom:10px;color:#2D3F57}\nul,ol{padding-left:22px;font-size:13px;line-height:2;color:#2D3F57;margin-bottom:10px}\nli{margin-bottom:2px}\n.step{background:#fff;border:1px solid #C5D5EA;border-radius:8px;padding:14px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}\n.step-n{background:#004898;color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}\n.step-body{flex:1}\n.step-body strong{display:block;font-size:13px;margin-bottom:4px}\n.step-body p{margin-bottom:0;font-size:12px}\n.step-body a{color:#004898}\n.table-wrap{overflow-x:auto;margin:12px 0 18px}\ntable{border-collapse:collapse;width:100%;font-size:12px}\nth{background:#004898;color:#fff;padding:8px 12px;text-align:left;white-space:nowrap}\ntd{padding:7px 12px;border-bottom:1px solid #D5E1EF}\ntr:nth-child(even) td{background:#F5F8FD}\ntr:hover td{background:#EBF1FA}\n.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}\n.b10{background:#dcfce7;color:#15803d}\n.b20{background:#dbeafe;color:#1d4ed8}\n.b60{background:#fef9c3;color:#92400e}\n.formula-box{background:#1A2840;color:#7EB8FF;font-family:monospace;font-size:13px;padding:12px 16px;border-radius:6px;margin:10px 0;border-left:4px solid #F0C000}\n.formula-box .comment{color:#6B9E7B}\n.note{background:#FFF8E1;border:1px solid #FCD34D;border-radius:6px;padding:10px 14px;font-size:12px;color:#92400e;margin:10px 0}\n.note strong{color:#78350f}\n.tip{background:#EBF5FF;border:1px solid #93C5FD;border-radius:6px;padding:10px 14px;font-size:12px;color:#1e3a5f;margin:10px 0}\n.idx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:10px 0}\n.idx-card{background:#fff;border:1px solid #C5D5EA;border-radius:8px;padding:14px}\n.idx-card h4{font-size:13px;font-weight:700;color:#004898;margin-bottom:4px}\n.idx-card .formula{font-family:monospace;font-size:12px;background:#F5F7FA;padding:6px 10px;border-radius:4px;margin:6px 0;color:#1A2840;border-left:3px solid #F0C000}\n.idx-card p{font-size:11px;color:#5E7A9E;margin:0}\n.credits{background:#EBF1FA;border-radius:10px;padding:24px;margin-top:36px;text-align:center}\n.credits h2{border-left:none;text-align:center;padding-left:0;margin-bottom:14px}\n.credits p{font-size:13px;margin-bottom:6px}\n.credits strong{color:#004898}\n.credits .logo-wrap{margin-bottom:14px}\n.credits .logo-wrap img{height:42px}\nfooter{background:#004898;color:rgba(255,255,255,.6);text-align:center;padding:14px;font-size:11px;margin-top:40px}\n@media print{.hdr-print{display:none}.hdr{position:static}}\n</style>\n</head>\n<body>\n<div class=\"hdr\">\n  <img src=\"data:image/png;base64,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\" alt=\"Preventive Health\">\n  <div class=\"hdr-brand\">Preventive <span>Health</span></div>\n  <div class=\"hdr-sub\">Gu\u00eda t\u00e9cnica \u00b7 \u00cdndices espectrales<br>Ing. Diego Cunalata &amp; MSc. Nidia Bejarano</div>\n  <button class=\"hdr-print\" onclick=\"window.print()\">&#128438; Imprimir / PDF</button>\n</div>\n<div class=\"content\">\n<h1>Gu\u00eda completa: Descarga de im\u00e1genes satelitales y c\u00e1lculo de \u00edndices espectrales en QGIS</h1>\n<p class=\"subtitle\">Paso a paso para ingenieros ambientales \u2014 desde la descarga de bandas hasta la generaci\u00f3n del \u00edndice en QGIS</p>\n\n<div class=\"toc\">\n  <h3>Contenido</h3>\n  <ol>\n    <li><a href=\"#fuentes\">Fuentes de datos satelitales gratuitas</a></li>\n    <li><a href=\"#landsat\">Descarga Landsat 8/9 \u2014 USGS Earth Explorer</a></li>\n    <li><a href=\"#sentinel\">Descarga Sentinel-2 \u2014 Copernicus Browser</a></li>\n    <li><a href=\"#bandas\">Nomenclatura de bandas espectrales</a></li>\n    <li><a href=\"#qgis\">Instalaci\u00f3n y configuraci\u00f3n de QGIS</a></li>\n    <li><a href=\"#calculo\">C\u00e1lculo de \u00edndices con Calculadora Raster</a></li>\n    <li><a href=\"#formulas\">F\u00f3rmulas de \u00edndices espectrales</a></li>\n    <li><a href=\"#creditos\">Cr\u00e9ditos</a></li>\n  </ol>\n</div>\n\n<div class=\"section\" id=\"fuentes\">\n<h2>1. Fuentes de datos satelitales gratuitas</h2>\n<p>Existen dos fuentes principales de im\u00e1genes satelitales de alta resoluci\u00f3n completamente gratuitas y de acceso p\u00fablico:</p>\n<table class=\"table-wrap\"><table>\n  <tr><th>Sat\u00e9lite</th><th>Proveedor</th><th>Resoluci\u00f3n</th><th>Revisita</th><th>Portal</th></tr>\n  <tr><td><strong>Landsat 8 y 9</strong></td><td>USGS / NASA</td><td>30 m</td><td>~16 d\u00edas</td><td>Earth Explorer</td></tr>\n  <tr><td><strong>Sentinel-2A/B</strong></td><td>ESA / Copernicus</td><td>10\u201320 m</td><td>5 d\u00edas</td><td>Copernicus Browser</td></tr>\n  <tr><td><strong>MODIS Terra/Aqua</strong></td><td>NASA</td><td>250\u2013500 m</td><td>Diario</td><td>NASA GIBS / Earthdata</td></tr>\n</table></table>\n<div class=\"tip\"><strong>Recomendaci\u00f3n:</strong> Para an\u00e1lisis de cambio de cobertura vegetal, <strong>Sentinel-2</strong> ofrece la mejor relaci\u00f3n resoluci\u00f3n/frecuencia. Para estudios hist\u00f3ricos antes de 2017, use <strong>Landsat 8</strong> (desde 2013) o <strong>Landsat 7</strong> (desde 1999).</div>\n</div>\n\n<div class=\"section\" id=\"landsat\">\n<h2>2. Descarga de Landsat 8/9 \u2014 USGS Earth Explorer</h2>\n<h3>2.1 Crear cuenta gratuita</h3>\n<div class=\"step\"><div class=\"step-n\">1</div><div class=\"step-body\"><strong>Ir al portal USGS Earth Explorer</strong><p>Accede a <a href=\"https://earthexplorer.usgs.gov\" target=\"_blank\">earthexplorer.usgs.gov</a> y haz clic en <strong>\"Login\"</strong> en la esquina superior derecha.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">2</div><div class=\"step-body\"><strong>Crear cuenta EROS</strong><p>Haz clic en <strong>\"Create New Account\"</strong>. Completa el formulario con tus datos. La cuenta es gratuita. Recibir\u00e1s un correo de activaci\u00f3n.</p></div></div>\n\n<h3>2.2 Buscar y filtrar im\u00e1genes</h3>\n<div class=\"step\"><div class=\"step-n\">3</div><div class=\"step-body\"><strong>Definir el \u00e1rea de estudio</strong><p>En el mapa interactivo, usa <em>\"Search Criteria\"</em> \u2192 <em>\"Map\"</em> para dibujar un pol\u00edgono o ingresar coordenadas. Tambi\u00e9n puedes escribir el nombre del lugar en <em>\"Address/Place\"</em>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">4</div><div class=\"step-body\"><strong>Definir el rango de fechas</strong><p>En <em>\"Date Range\"</em> ingresa las fechas de inicio y fin. Para ver cambios hist\u00f3ricos, selecciona un rango de 5-10 a\u00f1os.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">5</div><div class=\"step-body\"><strong>Seleccionar la colecci\u00f3n</strong><p>Ve a la pesta\u00f1a <em>\"Data Sets\"</em>. Expande <strong>\"Landsat\"</strong> \u2192 <strong>\"Landsat Collection 2 Level-2\"</strong> \u2192 marca <strong>\"Landsat 8-9 OLI/TIRS C2 L2\"</strong>. Este producto incluye correcci\u00f3n atmosf\u00e9rica (reflectancia superficial).</p></div></div>\n<div class=\"step\"><div class=\"step-n\">6</div><div class=\"step-body\"><strong>Filtrar por cobertura de nubes</strong><p>En <em>\"Additional Criteria\"</em>, establece <strong>\"Cloud Cover\"</strong> en <strong>0\u201320%</strong> para obtener im\u00e1genes con buena visibilidad.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">7</div><div class=\"step-body\"><strong>Ver resultados y descargar</strong><p>En la pesta\u00f1a <em>\"Results\"</em> aparecer\u00e1n las escenas disponibles. Haz clic en el \u00edcono de descarga (flecha abajo) y selecciona <strong>\"Product Options\"</strong> \u2192 descarga el paquete <strong>\"Bundle\"</strong> (contiene todas las bandas).</p></div></div>\n<div class=\"note\"><strong>Nota:</strong> Los archivos Landsat descargados son GeoTIFF individuales por banda. La nomenclatura es: <code>LC08_L2SP_001001_20230101_20230105_02_T1_SR_B4.TIF</code> donde <strong>SR</strong> = reflectancia superficial y <strong>B4</strong> = banda 4 (Rojo).</div>\n</div>\n\n<div class=\"section\" id=\"sentinel\">\n<h2>3. Descarga de Sentinel-2 \u2014 Copernicus Browser</h2>\n<h3>3.1 Crear cuenta Copernicus</h3>\n<div class=\"step\"><div class=\"step-n\">1</div><div class=\"step-body\"><strong>Ir al Copernicus Data Space</strong><p>Accede a <a href=\"https://browser.dataspace.copernicus.eu\" target=\"_blank\">browser.dataspace.copernicus.eu</a>. Haz clic en <strong>\"Login\"</strong> y luego en <strong>\"Register\"</strong>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">2</div><div class=\"step-body\"><strong>Registrarse</strong><p>Completa el formulario de registro gratuito. Confirma tu correo electr\u00f3nico.</p></div></div>\n<h3>3.2 Buscar im\u00e1genes</h3>\n<div class=\"step\"><div class=\"step-n\">3</div><div class=\"step-body\"><strong>Navegar al \u00e1rea de inter\u00e9s</strong><p>En el mapa, navega hasta tu zona de estudio. Usa la barra de b\u00fasqueda para escribir el nombre del lugar.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">4</div><div class=\"step-body\"><strong>Buscar productos Sentinel-2</strong><p>Haz clic en <strong>\"Search\"</strong> (\u00edcono de lupa). Configura: <br>\n- <strong>Data source:</strong> Sentinel-2 MSI<br>\n- <strong>Product type:</strong> S2MSI2A (Level-2A, ya con correcci\u00f3n atmosf\u00e9rica)<br>\n- <strong>Date range:</strong> el per\u00edodo que quieras analizar<br>\n- <strong>Cloud coverage:</strong> 0\u201320%</p></div></div>\n<div class=\"step\"><div class=\"step-n\">5</div><div class=\"step-body\"><strong>Descargar</strong><p>En los resultados, busca la imagen con menos nubes. Haz clic en <strong>\"Download\"</strong>. El archivo descargado es un .zip que contiene carpetas con las bandas individuales en formato .JP2 (JPEG2000).</p></div></div>\n<div class=\"note\"><strong>Organizaci\u00f3n de archivos Sentinel-2:</strong> Dentro del .zip, las bandas est\u00e1n en la carpeta <code>GRANULE/\u2026/IMG_DATA/R10m/</code> (bandas a 10m), <code>R20m/</code> (20m) y <code>R60m/</code> (60m). Los archivos se llaman <code>T18NUL_20230601T150719_B04_10m.jp2</code> donde <strong>B04</strong> es la banda 4 (Rojo).</div>\n</div>\n\n<div class=\"section\" id=\"bandas\">\n<h2>4. Nomenclatura de bandas espectrales</h2>\n<h3>4.1 Landsat 8 y 9 OLI/TIRS \u2014 Reflectancia superficial (C2 Level-2)</h3>\n<div class=\"table-wrap\"><table>\n  <tr><th>Archivo</th><th>Nombre</th><th>Rango espectral (\u00b5m)</th><th>Resoluci\u00f3n</th><th>Uso en \u00edndices</th></tr>\n  <tr><td>SR_B1</td><td>Coastal/Aerosol</td><td>0.435 \u2013 0.451</td><td><span class=\"badge b20\">30m</span></td><td>Estudios costeros</td></tr>\n  <tr><td><strong>SR_B2</strong></td><td><strong>Azul (BLUE)</strong></td><td>0.452 \u2013 0.512</td><td><span class=\"badge b20\">30m</span></td><td>EVI (BLUE)</td></tr>\n  <tr><td><strong>SR_B3</strong></td><td><strong>Verde (GREEN)</strong></td><td>0.533 \u2013 0.590</td><td><span class=\"badge b20\">30m</span></td><td>NDWI, NDSI</td></tr>\n  <tr><td><strong>SR_B4</strong></td><td><strong>Rojo (RED)</strong></td><td>0.636 \u2013 0.673</td><td><span class=\"badge b20\">30m</span></td><td>NDVI, EVI, NDBI</td></tr>\n  <tr><td><strong>SR_B5</strong></td><td><strong>NIR cercano (NIR)</strong></td><td>0.851 \u2013 0.879</td><td><span class=\"badge b20\">30m</span></td><td>NDVI, EVI, NDWI, NDBI, NBR</td></tr>\n  <tr><td><strong>SR_B6</strong></td><td><strong>SWIR-1</strong></td><td>1.566 \u2013 1.651</td><td><span class=\"badge b20\">30m</span></td><td>NDSI, NDBI, NBR</td></tr>\n  <tr><td><strong>SR_B7</strong></td><td><strong>SWIR-2</strong></td><td>2.107 \u2013 2.294</td><td><span class=\"badge b20\">30m</span></td><td>NBR</td></tr>\n  <tr><td>ST_B10</td><td>Infrarrojo termal</td><td>10.6 \u2013 11.19</td><td><span class=\"badge b60\">100m\u219230m</span></td><td>Temperatura superficial</td></tr>\n</table></div>\n<div class=\"tip\"><strong>Conversi\u00f3n a reflectancia:</strong> Los valores de los archivos SR_Bx deben multiplicarse por <strong>0.0000275</strong> y sumarse <strong>-0.2</strong> para obtener valores de reflectancia superficial real (0.0 a 1.0). En QGIS Raster Calculator: <code>\"SR_B5@1\" * 0.0000275 + (-0.2)</code></div>\n\n<h3>4.2 Sentinel-2 MSI \u2014 Level-2A (reflectancia superficial)</h3>\n<div class=\"table-wrap\"><table>\n  <tr><th>Archivo</th><th>Nombre</th><th>Rango espectral (\u00b5m)</th><th>Resoluci\u00f3n</th><th>Uso en \u00edndices</th></tr>\n  <tr><td>B01</td><td>Coastal/Aerosol</td><td>0.443</td><td><span class=\"badge b60\">60m</span></td><td>\u2013</td></tr>\n  <tr><td><strong>B02</strong></td><td><strong>Azul (BLUE)</strong></td><td>0.490</td><td><span class=\"badge b10\">10m</span></td><td>EVI (BLUE)</td></tr>\n  <tr><td><strong>B03</strong></td><td><strong>Verde (GREEN)</strong></td><td>0.560</td><td><span class=\"badge b10\">10m</span></td><td>NDWI, NDSI</td></tr>\n  <tr><td><strong>B04</strong></td><td><strong>Rojo (RED)</strong></td><td>0.665</td><td><span class=\"badge b10\">10m</span></td><td>NDVI, EVI, NDBI</td></tr>\n  <tr><td>B05</td><td>Vegetation Red Edge 1</td><td>0.705</td><td><span class=\"badge b20\">20m</span></td><td>Red Edge NDVI</td></tr>\n  <tr><td>B06</td><td>Vegetation Red Edge 2</td><td>0.740</td><td><span class=\"badge b20\">20m</span></td><td>\u2013</td></tr>\n  <tr><td>B07</td><td>Vegetation Red Edge 3</td><td>0.783</td><td><span class=\"badge b20\">20m</span></td><td>\u2013</td></tr>\n  <tr><td><strong>B08</strong></td><td><strong>NIR (NIR)</strong></td><td>0.842</td><td><span class=\"badge b10\">10m</span></td><td>NDVI, EVI, NDWI, NBR</td></tr>\n  <tr><td>B8A</td><td>Vegetation Red Edge / NIR estrecho</td><td>0.865</td><td><span class=\"badge b20\">20m</span></td><td>Alternativa a B08</td></tr>\n  <tr><td>B09</td><td>Vapor de agua</td><td>0.945</td><td><span class=\"badge b60\">60m</span></td><td>\u2013</td></tr>\n  <tr><td><strong>B11</strong></td><td><strong>SWIR-1</strong></td><td>1.610</td><td><span class=\"badge b20\">20m</span></td><td>NDSI, NDBI</td></tr>\n  <tr><td><strong>B12</strong></td><td><strong>SWIR-2</strong></td><td>2.190</td><td><span class=\"badge b20\">20m</span></td><td>NBR</td></tr>\n</table></div>\n<div class=\"tip\"><strong>Conversi\u00f3n a reflectancia Sentinel-2 L2A:</strong> Los valores JP2 deben dividirse entre <strong>10000</strong> para obtener reflectancia real (0.0 a 1.0). En QGIS: <code>\"B04@1\" / 10000</code></div>\n</div>\n\n<div class=\"section\" id=\"qgis\">\n<h2>5. Instalaci\u00f3n y configuraci\u00f3n de QGIS</h2>\n<div class=\"step\"><div class=\"step-n\">1</div><div class=\"step-body\"><strong>Descargar QGIS</strong><p>Ve a <a href=\"https://qgis.org/es/site/forusers/download.html\" target=\"_blank\">qgis.org</a> y descarga la versi\u00f3n <strong>LTR (Long Term Release)</strong> para tu sistema operativo. Es completamente gratuito y de c\u00f3digo abierto.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">2</div><div class=\"step-body\"><strong>Instalar plugin Semi-Automatic Classification (opcional)</strong><p>En QGIS: <em>Plugins \u2192 Administrar e instalar complementos</em> \u2192 busca <strong>\"Semi-Automatic Classification Plugin\"</strong> \u2192 instalar. Este plugin facilita la descarga y an\u00e1lisis de im\u00e1genes satelitales.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">3</div><div class=\"step-body\"><strong>Cargar las bandas descargadas</strong><p>Arrastra los archivos .TIF (Landsat) o .JP2 (Sentinel-2) directamente al panel de capas de QGIS, o usa <em>Capa \u2192 Agregar capa \u2192 Agregar capa r\u00e1ster</em>.</p></div></div>\n</div>\n\n<div class=\"section\" id=\"calculo\">\n<h2>6. C\u00e1lculo de \u00edndices con la Calculadora Raster de QGIS</h2>\n<div class=\"step\"><div class=\"step-n\">1</div><div class=\"step-body\"><strong>Abrir la Calculadora Raster</strong><p>En QGIS: <em>R\u00e1ster \u2192 Calculadora r\u00e1ster</em>. Tambi\u00e9n disponible en la barra de herramientas de procesamiento.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">2</div><div class=\"step-body\"><strong>Definir la extensi\u00f3n y resoluci\u00f3n de salida</strong><p>En la secci\u00f3n <em>\"Capa de referencia\"</em> selecciona cualquiera de las bandas que ya tienes cargadas. Esto define el sistema de coordenadas, extensi\u00f3n y resoluci\u00f3n del archivo de salida.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">3</div><div class=\"step-body\"><strong>Escribir la f\u00f3rmula</strong><p>En el campo de expresi\u00f3n escribe la f\u00f3rmula del \u00edndice (ver secci\u00f3n 7). Haz doble clic en las capas de la lista para insertarlas en la f\u00f3rmula.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">4</div><div class=\"step-body\"><strong>Aplicar la correcci\u00f3n de escala ANTES del c\u00e1lculo</strong><p><strong>Para Landsat:</strong> usa <code>(\"SR_B5@1\" * 0.0000275 - 0.2)</code> en lugar de solo <code>\"SR_B5@1\"</code><br>\n<strong>Para Sentinel-2:</strong> usa <code>(\"B08@1\" / 10000)</code> en lugar de solo <code>\"B08@1\"</code></p></div></div>\n<div class=\"step\"><div class=\"step-n\">5</div><div class=\"step-body\"><strong>Guardar y ejecutar</strong><p>Define la ruta de salida (.tif). Haz clic en <strong>OK</strong>. El \u00edndice calculado aparecer\u00e1 como nueva capa r\u00e1ster con valores entre -1 y 1.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">6</div><div class=\"step-body\"><strong>Aplicar simbolog\u00eda</strong><p>Haz doble clic en la capa \u2192 <em>Simbolog\u00eda</em> \u2192 selecciona <strong>\"Banda \u00fanica en pseudocolor\"</strong> \u2192 escoge la paleta de colores apropiada (ej. RdYlGn para NDVI). Establece m\u00edn=-1, m\u00e1x=1.</p></div></div>\n\n<h3>Ejemplo completo: NDVI con Landsat 8</h3>\n<div class=\"formula-box\">\n<span class=\"comment\">// F\u00f3rmula NDVI completa con correcci\u00f3n de escala Landsat 8/9</span><br>\n( (\"SR_B5@1\" * 0.0000275 - 0.2) - (\"SR_B4@1\" * 0.0000275 - 0.2) ) /<br>\n( (\"SR_B5@1\" * 0.0000275 - 0.2) + (\"SR_B4@1\" * 0.0000275 - 0.2) )\n</div>\n<h3>Ejemplo completo: NDVI con Sentinel-2</h3>\n<div class=\"formula-box\">\n<span class=\"comment\">// F\u00f3rmula NDVI con Sentinel-2 L2A</span><br>\n( (\"B08@1\" / 10000) - (\"B04@1\" / 10000) ) /<br>\n( (\"B08@1\" / 10000) + (\"B04@1\" / 10000) )\n</div>\n</div>\n\n<div class=\"section\" id=\"formulas\">\n<h2>7. F\u00f3rmulas de \u00edndices espectrales</h2>\n<div class=\"idx-grid\">\n  <div class=\"idx-card\">\n    <h4>NDVI \u2014 \u00cdndice de vegetaci\u00f3n de diferencia normalizada</h4>\n    <div class=\"formula\">NDVI = (NIR \u2212 RED) / (NIR + RED)</div>\n    <p><strong>Landsat 8:</strong> (SR_B5 \u2212 SR_B4) / (SR_B5 + SR_B4)<br>\n    <strong>Sentinel-2:</strong> (B08 \u2212 B04) / (B08 + B04)<br>\n    <strong>Rango:</strong> \u22121 a 1 &nbsp;|&nbsp; <strong>Valores altos (>0.5):</strong> vegetaci\u00f3n densa</p>\n  </div>\n  <div class=\"idx-card\">\n    <h4>EVI \u2014 \u00cdndice de vegetaci\u00f3n mejorado</h4>\n    <div class=\"formula\">EVI = 2.5 \u00d7 (NIR\u2212RED) / (NIR + 6\u00d7RED \u2212 7.5\u00d7BLUE + 1)</div>\n    <p><strong>Landsat 8:</strong> B5, B4, B2 &nbsp;|&nbsp; <strong>Sentinel-2:</strong> B08, B04, B02<br>\n    Menos sensible a la atm\u00f3sfera y al suelo que NDVI. Mejor en zonas de vegetaci\u00f3n muy densa.</p>\n  </div>\n  <div class=\"idx-card\">\n    <h4>NDWI \u2014 \u00cdndice de agua de diferencia normalizada</h4>\n    <div class=\"formula\">NDWI = (GREEN \u2212 NIR) / (GREEN + NIR)</div>\n    <p><strong>Landsat 8:</strong> (SR_B3 \u2212 SR_B5) / (SR_B3 + SR_B5)<br>\n    <strong>Sentinel-2:</strong> (B03 \u2212 B08) / (B03 + B08)<br>\n    Detecta cuerpos de agua. Valores &gt;0 indican presencia de agua.</p>\n  </div>\n  <div class=\"idx-card\">\n    <h4>NDSI \u2014 \u00cdndice de nieve de diferencia normalizada</h4>\n    <div class=\"formula\">NDSI = (GREEN \u2212 SWIR1) / (GREEN + SWIR1)</div>\n    <p><strong>Landsat 8:</strong> (SR_B3 \u2212 SR_B6) / (SR_B3 + SR_B6)<br>\n    <strong>Sentinel-2:</strong> (B03 \u2212 B11) / (B03 + B11)<br>\n    Identifica cobertura de nieve y glaciares. Valores &gt;0.4 = nieve.</p>\n  </div>\n  <div class=\"idx-card\">\n    <h4>NDBI \u2014 \u00cdndice de \u00e1rea urbana</h4>\n    <div class=\"formula\">NDBI = (SWIR1 \u2212 NIR) / (SWIR1 + NIR)</div>\n    <p><strong>Landsat 8:</strong> (SR_B6 \u2212 SR_B5) / (SR_B6 + SR_B5)<br>\n    <strong>Sentinel-2:</strong> (B11 \u2212 B08) / (B11 + B08)<br>\n    Detecta zonas construidas. Valores positivos = superficies artificiales.</p>\n  </div>\n  <div class=\"idx-card\">\n    <h4>NBR \u2014 \u00cdndice de \u00e1rea quemada normalizada</h4>\n    <div class=\"formula\">NBR = (NIR \u2212 SWIR2) / (NIR + SWIR2)</div>\n    <p><strong>Landsat 8:</strong> (SR_B5 \u2212 SR_B7) / (SR_B5 + SR_B7)<br>\n    <strong>Sentinel-2:</strong> (B08 \u2212 B12) / (B08 + B12)<br>\n    Identifica \u00e1reas quemadas. dNBR (pre\u2212post incendio) cuantifica la severidad.</p>\n  </div>\n</div>\n</div>\n\n<div class=\"credits\" id=\"creditos\">\n<div class=\"logo-wrap\"><img src=\"data:image/png;base64,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\" alt=\"Preventive Health\"></div>\n<h2>Cr\u00e9ditos y reconocimientos</h2>\n<p><strong>Plataforma desarrollada por:</strong> Preventive Health Environmental Services</p>\n<p><strong>Creaci\u00f3n y desarrollo principal:</strong> Ing. Diego Cunalata</p>\n<p><strong>Revisi\u00f3n y edici\u00f3n de contenido:</strong> MSc. Nidia Bejarano</p>\n<p style=\"margin-top:12px;font-size:12px;color:#5E7A9E\">Esta gu\u00eda y la plataforma Satellite Timelapse Tool son herramientas de apoyo t\u00e9cnico para ingenieros ambientales y profesionales del \u00e1rea. El uso de los datos satelitales est\u00e1 sujeto a los t\u00e9rminos de servicio de cada proveedor (NASA/USGS, ESA/Copernicus).</p>\n<p style=\"margin-top:8px;font-size:11px;color:#8BA0BA\">\u00a9 2024 Preventive Health Environmental Services. Todos los derechos reservados.</p>\n</div>\n</div>\n<footer>Preventive Health \u00b7 Satellite Timelapse Tool \u00b7 Gu\u00eda t\u00e9cnica v1.0</footer>\n</body></html>";
+var GUIDE_GEE_HTML = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Gu\u00eda: Configurar Google Earth Engine \u2013 Preventive Health</title>\n<style>\n*{box-sizing:border-box;margin:0;padding:0}\nbody{font-family:\"Segoe UI\",system-ui,sans-serif;background:#F5F7FA;color:#1A2840;line-height:1.6}\n.hdr{background:#004898;border-bottom:4px solid #F0C000;padding:16px 32px;display:flex;align-items:center;gap:14px}\n.hdr img{height:36px}\n.hdr-brand{color:#fff;font-size:16px;font-weight:700}\n.hdr-brand span{color:#F0C000}\n.hdr-sub{color:rgba(255,255,255,.6);font-size:11px;margin-left:auto;text-align:right}\n.hdr-print{background:#F0C000;color:#1A2840;border:none;padding:6px 14px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;margin-left:12px}\n.content{max-width:820px;margin:0 auto;padding:32px 24px}\nh1{font-size:21px;font-weight:800;color:#004898;margin-bottom:6px}\n.subtitle{font-size:13px;color:#5E7A9E;margin-bottom:24px}\nh2{font-size:17px;font-weight:700;color:#004898;border-left:4px solid #F0C000;padding-left:11px;margin:24px 0 12px}\np{font-size:13px;margin-bottom:8px;color:#2D3F57}\n.step{background:#fff;border:1px solid #C5D5EA;border-radius:8px;padding:14px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 1px 4px rgba(0,60,120,.06)}\n.step-n{background:#004898;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}\n.step-body{flex:1}\n.step-body h3{font-size:13px;font-weight:700;margin-bottom:5px;color:#1A2840}\n.step-body p{margin:0;font-size:12px;color:#2D3F57}\n.step-body p+p{margin-top:5px}\n.step-body a{color:#004898;font-weight:600}\n.step-body code{background:#F5F7FA;border:1px solid #D5E1EF;padding:1px 5px;border-radius:3px;font-size:11px;font-family:monospace;color:#1A2840}\n.note{background:#FFF8E1;border:1px solid #FCD34D;border-radius:6px;padding:10px 14px;font-size:12px;color:#92400e;margin:10px 0}\n.tip{background:#EBF5FF;border:1px solid #93C5FD;border-radius:6px;padding:10px 14px;font-size:12px;color:#1e3a5f;margin:10px 0}\n.success{background:#DCFCE7;border:1px solid #86EFAC;border-radius:6px;padding:10px 14px;font-size:12px;color:#14532d;margin:10px 0}\n.key-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}\n.ki-box{background:#fff;border:2px solid #C5D5EA;border-radius:8px;padding:14px;text-align:center}\n.ki-box h4{font-size:12px;font-weight:700;color:#5E7A9E;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}\n.ki-box .val{font-size:13px;font-weight:600;color:#004898;font-family:monospace}\n.ki-box p{font-size:11px;color:#8BA0BA;margin:4px 0 0}\n.credits{background:#EBF1FA;border-radius:10px;padding:20px;margin-top:32px;text-align:center}\n.credits img{height:38px;margin-bottom:10px}\n.credits p{font-size:12px;margin-bottom:4px}\nfooter{background:#004898;color:rgba(255,255,255,.6);text-align:center;padding:12px;font-size:11px;margin-top:36px}\n</style>\n</head>\n<body>\n<div class=\"hdr\">\n  <img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOQAAABgCAYAAAANdt5DAAAACXBIWXMAAAsSAAALEgHS3X78AAAVlklEQVR4nO2dy28b233HP3zOjESKlH2d5gWQyaq5fUiBIaAFglzePyC1UgRouzIDNEXQRaO76KKLIrxtlgWii+6CpKYXRVq0heUmBbpqRklbFHYcSGkBN5teqr71jWzZJiVblPWY08WZ0QxH5DzIoUQq5wMMRHHOOXPOcL5zfud3XikhBIqhqQPLwA3f95tA0z7a55ojxVSTUoIciiqwBiyEhNtCCnZj3BlSXA6UIOOzCJhAKWL4DlBDiVIRASXI+GwQXjP66SBrVWW+KgJJX3QGpowV4osRZG26mnBeFJcQVUPGowVUhozbAcrJZUVxGVE1ZHSqDC9GkLVkLZGcKC4tSpDRqSaQxmICaSguMUqQ54syWRWBKEGeL6rrQxGIcurEY9Sb9SmkY0ih6IuqIeNxe4S4mygxKkJQNWQ8qsD7Q8b9InK4nUIxEFVDxqMFvDNEvNsoMSoioAQZn1Xg3RjhbyNnhSgUoSiTdXhqyOlVgwYLbCGH2qmaUREZJcjRWUSK09vHaNqHQhELJUiFYoLIXnQGzpOTk5MqUBX2mFLPy6glhGjlcznzYnIm2d17WUPWuP4RPS2gNVcsmOecJcU5c+lrSMuyFpFtuZoQogJu77637KefBetAE8RaPp8f6/zF3b2XZeSKAnXgrYjR7gJrc8VCc0zZUlwgl1aQlhA1oIEQpw+6U9YQQTrfdIRgFVjVtGSFaQtxxT6irjzgZwtoKGFeLi6dIIUQZaApnIWn+oguoiCdqB0BdV3LJ+Ittc3SJqNN5fKyCdTnigU1TvYScKn6IYVsf21wdhW4USgBdw5evx55xv/ey1cN4AckJ0aQKxiYu3sv6wmmqbggLlMNuSjARIgSeCu6kWtIPLFu65pWHyZzey9fNYGbY77fX1Ym7HRzKbysx8fHi9ls1mT49lhUbnYPXmPo8UTpiHHYi+52Omy932K33ebRo0douoZhzDBj6BTmSrzxkWsUCgUKhcKtXUCJcnqZekF2u91yLpdbY/xidLjZPTjA0PV6lMCjiPE/Nzb5yYP77Dx/cfpdPpejMDPD4eEhJ8cFhBAI64SD4hwH3S7FYvE71slJt1wu/e0w11RcLFMvSJJ1kETlZrd7gGEEi/Llq/0mQ4hxe/sJ//z9f+wRIkAmnUbTNDRNQ9d1dMP5a6AZOrquo2laWsvnbgFKkFPIVAuy0+nU8vl8kg6cOASKclgx/pu5zn/cv9f3XD6fR3fEqOkYuoFuyMMwDHRdQzd09JkZ4/DwyMznc7W411dcLFMtSKAxZLwOvctpVBmulr253+0yYxh175fDiPHg4IC1v/t7/u/nH3Lt6tU2wH63W3i1v58FKUZD09A1HV2X4tN0HcOYccWoG2iahhCCVDr9+W73oGIY+tYQ5VJcEFMryJ2nO7VcPhd1dIvDFtDIZjJN/4nDo6MqUuBxa7Wb+/tdZmakKF/txxfj9vYT/v2H69tXrl659Qd/+NU/8Z773p27n9vd2/vGs2c7n8/n8ylN19D0PIZhYBgz6DOGrDF1A93QyWazWJYARAr4U+D3Y5ZHcYFMbbfHztOdZi6fu5nP58nlcmSzWdkx4eva8HR73E6n0/WwdA8Pj2rAGohSn24POzlxegHhfr5th7jpvaX+++v//2cP/3v/8QePvnPjt7/4R0H5Mn9gVtrPnm0cHR2Xi8UChWKR2WKRYrEoPazFAoVCAcuyOLEshGVxcmJ1DUOfCSuzYnKYZkG2c/lcKaIgI4nR4fDwaBGEKQSePs1QQZ6GiyHIztb7rS/82q//6o+i5u1H5g8/PD4++mhxbo5CsUihMGv/LZDOZLAsyz1OLE5OThaKxcJPo6avuFimcqTO48ePF4nezbEVR4wA+XxuAzkjpBMvZ7HoALU4YgS4+pFrvzFbKAjpyNHt9qNOJpNBWKLnsIRAwO+NKf+KMTCVgiTeKuKNYS6Qz+fHKcoOUBtm/Ombb35m641r1/7KMAw0XUfTZXeHEAJLWAhhYdmHXRv/ZuK5V4yNaRVk1CX5O+l0ujnsRTRtLKIcWowOmq79+WlfpK5jCbs2tDx/LeEI8pOJ5VwxdqZVkFEZeQZEwqIcWYwAn/jEJ7ZmZoy2a6pa0kz1itJtq14dOdeKc0MJMgJ6MqJMRIwOebuGFHbtaFlnTFXFFHLZBVlNKiFd00YRZQeoFQuzic1ZzOfzPaaq4IypqphClCBjMKQoExcjQCaT0RxT1epvqjpsJnldxXiZVkGaEcMtWJZVTfLChh5LlGMR4+Hh4edSqZThmKoi2FR90e9LxWQyrYKM84DXk764oetRRDkWMQKQSn0jhqn6T4lfXzE2UkKIOsM9tCbQRorDTCxHEdl5urORy+cWIo7U+Ww6nU5cGN3uwaJAmPhG9AghxViYnUn8mq9fH/5OJpv5rrBE6nSInD0ypw9irliY1peuQ4PexcAu9YrwWWQ7K+4gbXxxOsg9L1aRIj0PmsA3I4Y1LcuqJS1Kw9A39rvdGvKF5Dww4xRjJZNJ3xJCpE5NVSvQq/o/SefhnFkFvub7rgLc4ZLuJpYSQjSAryeUXgf59momlN5Adp7uVHP53PsxBpd3hBC1TCaTuFD297uLgGlfuTY7k7wYuwcHlXwu91CAYZ14BpAHC/J354qFi5yo3Ag53yR4z8wgd/Em0QeITA1JC9LhXYafqxiZTqfTzOfzNyMKEiFEBxibKAUwO2OMI+2KpuUfAoY0T0WYqQrQnisW5pPOS0zC+l/eJri5ExY/FSs3U8C42hdf53y2YFshXhdECTCPT04Sf7POzBgb4xDj3stXFV3XHjpeVWGLMcRUBfhq0nmZMNYvOgPjYJwN/lUS7gf0UyqV2khRxorGmESZNJ3ObkXXtId4xOj0NQ7oc3RYv2BTNSmC9uEceZ3cSWScgixxDmarYRhN5KaocSgB5tHx8cSKsv2iXdG0/MNsNmM4NaIlBISLsT1XLNTOMavjpIEUpXcZkk0uqUMHoi3h4V9/BqJ7ZZfjZWc4stlsHbljVJwFrxxR1nLZ7EQtw//8+YuKpuUf6rpuOELsNVUHthu7XD5HR4NzeLFPClEE6XSC+1lGesmCJgqX7Lim/X+VYDO2Ra/XzdkdyhunSX/PXN2+zoLzRQog5Wn3p1LSySMn7jr5CxTl/fsPqnYenJdLG2guLV2P+oauIc1qZ4u5DaS51a8M7OzsVPK5/EPDMKSZKiCVSpHJZkiL9OmsDsuyOD458daUXeAzc8XCoEWt6gTf+6YnT3Xc++7cz3X7fJPBjpga/Z+VQdT7hG/4/vc/AxucrR39cfw0CfbmOlQJ930EXWsRmdcavQunrSOfGxOZ98F5EUI0RDCmsE2kPsdiSFxhp++ED7uWP2y7T5haQH4qlmV1I+RJWJYljo+PxeHRkTg8Omq/Pjxc9Kd3796P6/fu/bh9796PRZ+jHpCPsPK2hRBn4m9vb1eePXu+//rgdZQiCCGEODw6Eq9e7R90dvcqIXkxQ5Kq2UcrwmVNIX/7qOWNg//56vcMbAghyp5wzZA0V/vkNc7v5bA2IN6yiHbfHJpCiGq/tEZtQ24wnsHLTaSnNs5q5MvAeiqV0qMETqVSZDIZMpkM9nXMw6Mjr7lXnp+f/1ZAHm7dv/8gyCSvMbg7qdTpdL51//6D041ZP/zw55V0KvVwdnbGyGv5KEUAIJfNMjNjaHPFwjuc3eg1DstE3wjoLeTbftzm8aAV6Rfodeo0Q9KpR7xeWDj/dcrIPN4h3jKiN5HaOXO9JJw6SY/MqRN/KcZV4t8UANKpFFmvKA9PRbk8P1/KhUSvB5wL9P6+aHdyTvzHjx9X0qnUw1KpbGiaFinfffgaUiTDitI/IiaMEvJhHOUlEEbQ71nzfDbpdfz4KRHuz1gOud4WvaZy2b7usAt1l4Bb+J6hSRznGNed3ST+w9RDKpUil81CryhXyuXQZ+2Gt5bzEOpgeiG3CVj54IMPKsISD+fny0YuH6b/UBY4X+9jhfjdTkle20sjJHw95HyYYP3PpYnHXzECt7zXHlWQZZI1W+rEM1PrjLCrlJeUp6ZMpVP/CixkMhmuXLkSFrXfDxn447bbbY6PjwEqBweHPyvPl4388DWjn7c4X5FclCD9rBE8SOQGg51aZcKfo6bnc4NkxOhNuwyjCdKpssMEFKdLIY7JWSbhzuF0Oi3blun0rPPd1auho8/iC7Kze/pZCEubnZ0NCD0UDcZrSnpxPOkXTZtw62DQ7xJWO97GbZpViT7UdJ1oPpYS9ostiiCruH1BzmEiJ75GeUuYEcIMQ4Pwl8E68GXkmMm3gfeAvaAImUyadNq9LeVymWw2sHfIb7YGmqsnJyc8ffL09P+rVyINNz0th2VZX0CWI4gSww9dfJfe+xWFmv23gextco4w3vaFH3VsaiPk/KDaPKyW97746yFhO8jfKoW8L4vAPMGjjk7TjdIPWWH4wed3Gc3pc5ez/TZOjVsPiftlznrFTNx+tL5i9orRoTw/z87Tp31Cn+L0yTqfB9Jpu7cjm81y5WrgonBnZs/Y+fs+IeWw48W1IPyDvU3k/b4VM52LooV8eQ0auFKht18cpGCCKpZNeq28oN+3Y6fvtwrbyJdFm8FTBivA4rg32xnWpNxCFnyQuVsjuHZ8h7NirOJ2XLdD4vcwX54LE2SdiIJ80XbN1bm5ubBLNwguRxAVO2wr7CI2d+lvzTSR4g56aCdpdFCT4JFkdXrLWQ9Jz/sMlwm+D6Ydpjbg/AZStIOevbEK8j2GM1c7yB84qGYNegCcydLOCI+afQy9qWu5XEbTNF6/fj0oyFv37z+oLi1dbxNirj5//vz0/5kZI+iyW7gD9GsMV44a0eemBrX11wh+EM+rvRqFJvJFNug+LSPz6zxf9YC0OvTev7AXzw2G7wYBqI5LkLcZ3vu2QriZG/YAbJCsF4z5K2V+/uF2UJAwxwDPnz0PC+KlzOjliFNzmSNcZ9JoEjAoA7eJsUywpdRMMlNRGEc/5HsM71DYYvSbUCJhMQLMl+cfhASpE1LuZy9ehKXhJYlyTJIpeZ40Q847lUU9JFyiXvwoJCnIdaRTYJR+KTOZrCRPoTD7JQJGg2iatkCwgLb2dvfOY/PUTeRL8Yuc02ybCaRF8JS8BaQ5H2Re3iV6+zsxRhHkOjLT7wCf4qz3ahhaCYcLYgv5o/1lhLDv4s506MuV8O6LtaWl6xuEu7/jsoUrwHlkrbiCbPclPaxxmmiGnA/rswyLPxaitCHXmYyOXy9xBhs4bCFfGM7RQj68YfszbuL2bzUZ0Da5cjV0RM8qwNLS9YY9KH1hd2+Pj33so2Hx/PQrB8iyrBKtDf6LgIm8V4OcO0FtR/+4VW+aQTgOxWExx93tMS7C3MfY503P4RfxMvDXQNCW3x08Zt/S0vXW/fsPNvGZppqmMWMEekw36a3V64C529mN0vXilGONXgF6qSMfBMdh0dN3OcGsIH+Xcb1AGgzXhxokqrsMNnVLyLKEidLpGjkj+kkcXB6VKIOom8ib4xVjFfgX5OyQIDGCfNBbfdLsIYK52hPHNl1XQI5rDcKyLGNvb+9v6D/Jdhkp0lu4LydnFoHJmNc0ikDYQlQ3kGUy7UOQrDUWNr51EM2QNIP4JrIsTveKlxru5PQ7jGn61UXRCDlfQha6hbxBP0EO93sf6XwK4x363/wz30UwV8/EWVq63gTe3X4SOOCAdDqdLxaL3z06OuoeHR39F25NKZDlG9QJ/haT19ToRwmZ12EW6w4jyvhWP95xq/1oEjzVC2RZ7iCfN+E5foCcmeS8PKdi+lVUWkRb3KqCvEGfJXoH9m0GmB1LS9dbSLMFiGSuOktf9EursdvZvb239zI0Q7lcTs/lcr+CrFWiPLybXLzZGlcM46ARM3yUNmA9fjYGkuj0q4tmhWS3Gwf4HuE3/PRBi2uu+llaul5/9OiDfzg5OYmSt6h0OJ91ccOYBEG2iL6Gq3/c6iBMkvWWn3YVTrsg2yS33ThID+pvRQjnCnIIc9XPm2/+8pe2/vfRXyQkykEDnC+CFtFnjMQlztIxzYjh4nhIGyQjyk0uUQ0J7qp4YXZ9EIfAV4A/ixLYHrN6N4K5Gnm2y6c/Vf3j7e3tr1gBewNEYJPJEaPDCvHXzXUIihdHPE3Cnw//uNUoNJD9v8M+e+/hTnYALocgQT6Ai8R/GwukOfNLwLdjxm1eu/ZGWJhYJtvHP/7xbz958uTTL1++irtw2BZyutkikyVGhzoyf2Hleo/e/A8S87vEF09Y+GH7D9eQ9z1K+UAK/zZyMM2ZPuOUEKJGsDeuRXLOgbBrmYw+2qeKu45qP+eH07G+xohtnOfPn3+gG0bf6f7pVOqVruufHCH5KsHlcNo7/m6dQSwS7NQK6g+sEtyF0o6YB29aTn5auJ7wIGr237BwgygTPLY3qf7QKu66rH5MQvKfEsEbtlwWJrXmiMtlKYdiAL8oglQopoLL0oZUKC4F0zqWVTEdVHH7Q1sE+yJquO3EsLDnQR23Hdgk+gyjKtHLfAZlsirGSQ05XAzCZw01cGfSTMIMIxPXmRa207OXGtHLfAZVQyoU8fHWYoluq67akArFBKEEqVBMEEqQimmijjtJW9ifVwmf91nDXXDbH28Rt8M+bLTOKmfbkmFxy7ir/QtcR0+tX2DVhlRMA4tIQfmX43DmUX6N/ivVl+3v/DP8nXh1O92oczEX+4QNiltGDuTw5ruC3NjnZr88K0EqJp0qZ7dMcKZTLdI72Rd6H/AmZ8W4hRRKyT7i7J7mjJLyinDdd86Ld6mXfuv7OCs7tJwvlCAV54VjGg6iOuB7Z60gcKcqtTznV3D3y1jFXW2vTq8Y79phnbg1O3yctW+deYteL2stJI4/z978Yuez4fyjBKk4L5ylOuJQxRWVM8/TPwB8FSn2m5xdldzhLmfXqDVxp6oNvc1EBGr05tmbX+f8KUqQiknGOzvDZPBsjQ3cB9wJ460dV+hPm+FXpovCOv1nkKwxwFRWglScF3FG6jh4BRh1I5t+om0FhA86Ny4GTvNS3R6KX3SSmAOZGKqGVEwyXs/lXaLN6m/1+S5oHmnQpOVzRwlSMcl4RVRDeiSj1mjeFcYb9N94yOm0nxiUyaqYZFq4a+qUcD2jXhxRbdC7RIm3Nr2BdKRUPd/V7PRG9bA6Qk+kplWCVEw6K7irui0gpza1cIesvUA6gxboFaFJ7wJZN5Cr1ntXER92/03vKnN37PSGXSSrByVIxaTjrL3rXdHNWY3e26/pdPx7qRO8lGQHuWVEXJpDxImEakMqxkkLdzHhVkhY0xfPn84i7ip8Vc+5Ddz9TvpRRwqo7otnImu1Mq6p671u05OmPz8N+7tlO66Ju4Jhi/AyDwzz/6tynkeA5kr3AAAAAElFTkSuQmCC\" alt=\"Preventive Health\">\n  <div class=\"hdr-brand\">Preventive <span>Health</span></div>\n  <div class=\"hdr-sub\">Google Earth Engine \u00b7 Gu\u00eda de configuraci\u00f3n<br>Ing. Diego Cunalata</div>\n  <button class=\"hdr-print\" onclick=\"window.print()\">&#128438; Imprimir / PDF</button>\n</div>\n<div class=\"content\">\n<h1>Gu\u00eda de configuraci\u00f3n: Google Earth Engine</h1>\n<p class=\"subtitle\">Paso a paso para conectar GEE a la plataforma y calcular \u00edndices espectrales desde bandas reales de Sentinel-2 y Landsat 8</p>\n\n<div class=\"tip\"><strong>\u00bfPor qu\u00e9 Google Earth Engine?</strong> GEE es la plataforma de an\u00e1lisis geoespacial m\u00e1s potente disponible gratuitamente. Permite calcular NDVI, EVI, NDWI y otros \u00edndices directamente desde las bandas satelitales originales, sin descargar archivos. Los resultados son valores flotantes reales (no im\u00e1genes pre-renderizadas).</div>\n\n<h2>Paso 1 \u2014 Crear una cuenta Google y registrarse en GEE</h2>\n<div class=\"step\"><div class=\"step-n\">1</div><div class=\"step-body\"><h3>Tener una cuenta Google</h3><p>Necesitas una cuenta Gmail. Si no tienes, crea una en <a href=\"https://accounts.google.com/signup\" target=\"_blank\">accounts.google.com/signup</a>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">2</div><div class=\"step-body\"><h3>Solicitar acceso a GEE</h3><p>Ve a <a href=\"https://earthengine.google.com/noncommercial\" target=\"_blank\">earthengine.google.com/noncommercial</a> y haz clic en <strong>\"Register a Noncommercial or Commercial Cloud project\"</strong>. Selecciona <strong>\"Unpaid usage\"</strong> \u2192 <strong>\"Academia and Research\"</strong>.</p></div></div>\n\n<h2>Paso 2 \u2014 Crear un proyecto en Google Cloud</h2>\n<div class=\"step\"><div class=\"step-n\">3</div><div class=\"step-body\"><h3>Ir a Google Cloud Console</h3><p>Ve a <a href=\"https://console.cloud.google.com\" target=\"_blank\">console.cloud.google.com</a> e inicia sesi\u00f3n con tu cuenta Google.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">4</div><div class=\"step-body\"><h3>Crear un nuevo proyecto</h3><p>En la parte superior de la pantalla, haz clic en el selector de proyectos (junto al logo de Google Cloud) \u2192 <strong>\"Nuevo proyecto\"</strong>.<br>\nAsigna un nombre descriptivo, por ejemplo: <code>preventive-health-gee</code><br>\nHaz clic en <strong>\"Crear\"</strong>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">5</div><div class=\"step-body\"><h3>Encontrar el Project ID</h3><p>Una vez creado el proyecto, ve a <em>Inicio (Home)</em> \u2192 panel de informaci\u00f3n del proyecto. El <strong>Project ID</strong> aparece debajo del nombre del proyecto.<br>\nFormato t\u00edpico: <code>preventive-health-gee</code> o <code>preventive-health-gee-123456</code></p>\n<p><strong>Guarda este valor</strong> \u2014 lo necesitar\u00e1s al conectar GEE en la plataforma.</p></div></div>\n\n<h2>Paso 3 \u2014 Activar la API de Earth Engine</h2>\n<div class=\"step\"><div class=\"step-n\">6</div><div class=\"step-body\"><h3>Ir a la biblioteca de APIs</h3><p>En el men\u00fa lateral: <em>APIs y servicios \u2192 Biblioteca</em>. O busca directamente: <a href=\"https://console.cloud.google.com/apis/library/earthengine.googleapis.com\" target=\"_blank\">API Earth Engine</a>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">7</div><div class=\"step-body\"><h3>Activar la API</h3><p>Busca <strong>\"Earth Engine API\"</strong> y haz clic en <strong>\"Habilitar\"</strong>. Esto puede tardar unos segundos.</p></div></div>\n\n<h2>Paso 4 \u2014 Crear credenciales OAuth 2.0</h2>\n<div class=\"step\"><div class=\"step-n\">8</div><div class=\"step-body\"><h3>Ir a Credenciales</h3><p>En el men\u00fa lateral: <em>APIs y servicios \u2192 Credenciales</em>. Haz clic en <strong>\"+ Crear credenciales\"</strong> \u2192 <strong>\"ID de cliente de OAuth 2.0\"</strong>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">9</div><div class=\"step-body\"><h3>Configurar pantalla de consentimiento (si es requerido)</h3><p>Si se te pide, configura la <em>pantalla de consentimiento OAuth</em>: selecciona <strong>\"Externo\"</strong>, completa el nombre de la aplicaci\u00f3n (ej. \"Preventive Health GEE Tool\") y tu correo. Haz clic en <strong>Guardar y continuar</strong> en cada secci\u00f3n.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">10</div><div class=\"step-body\"><h3>Crear el ID de cliente</h3><p>Tipo de aplicaci\u00f3n: selecciona <strong>\"Aplicaci\u00f3n web\"</strong>.<br>\nNombre: escribe <code>Satellite Timelapse Tool</code>.<br>\nEn <strong>\"Or\u00edgenes de JavaScript autorizados\"</strong> haz clic en <strong>\"Agregar URI\"</strong> y agrega:<br>\n- Si usas localmente: <code>http://localhost</code> y <code>http://127.0.0.1</code><br>\n- Si lo publicas en GitHub Pages: <code>https://TU-USUARIO.github.io</code><br>\nHaz clic en <strong>\"Crear\"</strong>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">11</div><div class=\"step-body\"><h3>Copiar el Client ID</h3><p>Aparecer\u00e1 una ventana con el <strong>ID de cliente</strong>. C\u00f3pialo. Tiene el formato:<br>\n<code>123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com</code></p></div></div>\n\n<div class=\"key-info\">\n  <div class=\"ki-box\">\n    <h4>Project ID</h4>\n    <div class=\"val\">mi-proyecto-gee-123456</div>\n    <p>En Google Cloud Console \u2192 Home \u2192 Project Info</p>\n  </div>\n  <div class=\"ki-box\">\n    <h4>Client ID (OAuth)</h4>\n    <div class=\"val\">123...xyz.apps.googleusercontent.com</div>\n    <p>APIs y Servicios \u2192 Credenciales \u2192 OAuth 2.0</p>\n  </div>\n</div>\n\n<h2>Paso 5 \u2014 Conectar en la plataforma Preventive Health</h2>\n<div class=\"step\"><div class=\"step-n\">12</div><div class=\"step-body\"><h3>Volver a la plataforma</h3><p>En la plataforma Satellite Timelapse Tool, ve al <strong>Paso 2 \u2014 Sat\u00e9lite e \u00edndice</strong>. Selecciona <strong>Sentinel-2</strong> o <strong>Landsat 8 (GEE)</strong>. Aparecer\u00e1 el bot\u00f3n <em>\"Conectar Google Earth Engine\"</em>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">13</div><div class=\"step-body\"><h3>Ingresar las credenciales</h3><p>Pega el <strong>Client ID</strong> y el <strong>Project ID</strong> en los campos correspondientes. Haz clic en <strong>\"Conectar GEE\"</strong>.</p></div></div>\n<div class=\"step\"><div class=\"step-n\">14</div><div class=\"step-body\"><h3>Autorizar en la ventana de Google</h3><p>Se abrir\u00e1 una ventana de Google pidiendo autorizaci\u00f3n. Acepta los permisos de <em>\"Google Earth Engine\"</em>. Vuelve a la plataforma \u2014 deber\u00edas ver el mensaje <strong>\"GEE conectado\"</strong>.</p></div></div>\n\n<div class=\"success\"><strong>\u00a1Listo!</strong> Una vez conectado, puedes calcular NDVI, EVI, NDWI, NDSI, NDBI y NBR desde bandas satelitales reales de Sentinel-2 (10m) y Landsat 8 (30m), y descargar GeoTIFF anal\u00edticos con valores flotantes.</div>\n<div class=\"note\"><strong>Nota:</strong> La conexi\u00f3n GEE se mantiene por sesi\u00f3n. Al cerrar el navegador necesitar\u00e1s reconectarte. Tu cuenta Google y las credenciales OAuth no cambian \u2014 el proceso es m\u00e1s r\u00e1pido la segunda vez.</div>\n\n<div class=\"credits\">\n  <img src=\"data:image/png;base64,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\" alt=\"Preventive Health\">\n  <p><strong>Desarrollado por:</strong> Preventive Health Environmental Services</p>\n  <p><strong>Creaci\u00f3n principal:</strong> Ing. Diego Cunalata</p>\n  <p><strong>Revisi\u00f3n de contenido:</strong> MSc. Nidia Bejarano</p>\n</div>\n</div>\n<footer>Preventive Health \u00b7 Satellite Timelapse Tool \u00b7 Gu\u00eda GEE v1.0</footer>\n</body></html>";
+
+// ============================================================
+// GUÍAS EMBEBIDAS — mostradas en panel interno (iframe), no ventana nueva
+// ============================================================
+function openGuide(html, title) {
+  document.getElementById('guide-title').textContent = title || '';
+  document.getElementById('guide-frame').srcdoc = html;
+  document.getElementById('guide-overlay').style.display = 'flex';
+}
+function closeGuide() {
+  document.getElementById('guide-overlay').style.display = 'none';
+  document.getElementById('guide-frame').srcdoc = '';
+}
+
+// ============================================================
+// TMS — TileMatrixSet verificados en GIBS Capabilities
+// ============================================================
+var TMS = {
+  'MODIS_Terra_CorrectedReflectance_TrueColor':      { tms:'GoogleMapsCompatible_Level9',  ext:'jpg', maxZ:9  },
+  'MODIS_Terra_CorrectedReflectance_Bands721':       { tms:'GoogleMapsCompatible_Level9',  ext:'jpg', maxZ:9  },
+  'MODIS_Terra_CorrectedReflectance_Bands367':       { tms:'GoogleMapsCompatible_Level9',  ext:'jpg', maxZ:9  },
+  'MODIS_Terra_L3_NDVI_16Day':                       { tms:'GoogleMapsCompatible_Level9',  ext:'png', maxZ:9,  snap:'16day' },
+  'MODIS_Terra_L3_EVI_16Day':                        { tms:'GoogleMapsCompatible_Level9',  ext:'png', maxZ:9,  snap:'16day' },
+  'MODIS_Terra_NDSI_Snow_Cover':                     { tms:'GoogleMapsCompatible_Level8',  ext:'png', maxZ:8  },
+  'MODIS_Aqua_CorrectedReflectance_TrueColor':       { tms:'GoogleMapsCompatible_Level9',  ext:'jpg', maxZ:9  },
+  'MODIS_Aqua_L3_NDVI_16Day':                        { tms:'GoogleMapsCompatible_Level9',  ext:'png', maxZ:9,  snap:'16day' },
+  'MODIS_Aqua_L3_EVI_16Day':                         { tms:'GoogleMapsCompatible_Level9',  ext:'png', maxZ:9,  snap:'16day' },
+  'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Monthly': { tms:'GoogleMapsCompatible_Level12', ext:'jpeg', maxZ:12, snap:'monthly' },
+  'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual':  { tms:'GoogleMapsCompatible_Level12', ext:'jpeg', maxZ:12, snap:'annual'  },
+  'Landsat_WELD_NDVI_Global_Monthly':                { tms:'GoogleMapsCompatible_Level12', ext:'jpeg', maxZ:12, snap:'monthly' },
+  'Landsat_WELD_NDVI_Global_Annual':                 { tms:'GoogleMapsCompatible_Level12', ext:'jpeg', maxZ:12, snap:'annual'  }
+};
+
+// Rango de fechas REAL con datos disponibles, por capa (evita ofrecer combinaciones imposibles)
+var DATE_RANGE = {
+  'MODIS_Terra_CorrectedReflectance_TrueColor':      { min:'2000-02-24' },
+  'MODIS_Terra_CorrectedReflectance_Bands721':       { min:'2000-02-24' },
+  'MODIS_Terra_CorrectedReflectance_Bands367':       { min:'2000-02-24' },
+  'MODIS_Terra_L3_NDVI_16Day':                       { min:'2000-02-18' },
+  'MODIS_Terra_L3_EVI_16Day':                        { min:'2000-02-18' },
+  'MODIS_Terra_NDSI_Snow_Cover':                     { min:'2000-02-24' },
+  'MODIS_Aqua_CorrectedReflectance_TrueColor':       { min:'2002-07-04' },
+  'MODIS_Aqua_L3_NDVI_16Day':                        { min:'2002-07-04' },
+  'MODIS_Aqua_L3_EVI_16Day':                         { min:'2002-07-04' },
+  'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Monthly': { min:'1984-01-01', max:'2000-12-31' },
+  'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual':  { min:'1983-12-01', max:'2000-12-01' },
+  'Landsat_WELD_NDVI_Global_Monthly':                { min:'1984-01-01', max:'2000-12-31' },
+  'Landsat_WELD_NDVI_Global_Annual':                 { min:'1983-12-01', max:'2000-12-01' }
+};
+
+var PAL = {
+  ndvi: { pal:['#8B4513','#F5DEB3','#FFFF00','#90EE90','#228B22','#006400'], rng:[-0.2,0.8] },
+  evi:  { pal:['#8B4513','#F5DEB3','#FFFF00','#90EE90','#228B22','#006400'], rng:[-0.2,0.8] },
+  ndwi: { pal:['#8B4513','#F5DEB3','#87CEEB','#1E90FF','#00008B'], rng:[-0.5,0.6] },
+  ndsi: { pal:['#3B1F00','#87CEEB','#E0F0FF','#FFFFFF'], rng:[0,1] },
+  ndbi: { pal:['#006400','#FFFF00','#FF8C00','#DC143C'], rng:[-0.5,0.4] },
+  nbr:  { pal:['#8B0000','#FF8C00','#FFFF00','#006400','#004000'], rng:[-0.5,0.6] }
+};
+
+var SATS = {
+  mod:   { name:'MODIS Terra',      sub:'250-500m · Diario/16d',          ico:'&#127757;', free:true  },
+  moda:  { name:'MODIS Aqua',       sub:'250-500m · Diario/16d',          ico:'&#127758;', free:true  },
+  l8:    { name:'Landsat WELD',     sub:'30m · Mensual/Anual 1983-2000',  ico:'&#128752;', free:true  },
+  s2:    { name:'Sentinel-2',       sub:'10m · diario 2017–hoy',          ico:'&#128301;', free:true  },
+  s2eox: { name:'S2 Sin Nubes',     sub:'10m · mosaico anual 2019-2024',  ico:'&#9729;',   free:true  },
+  l8gee: { name:'Landsat 8',        sub:'30m · libre (STAC/Titiler)',      ico:'&#128225;', free:true  }
+};
+
+var CAT = {
+  mod: [
+    { cat:'Índices reales pre-computados NASA (GIBS)' },
+    { id:'ndvi',  name:'NDVI — Vegetación (16d)', gibs:'MODIS_Terra_L3_NDVI_16Day', palKey:'ndvi', note:'gibs' },
+    { id:'evi',   name:'EVI — Vegetación (16d)',  gibs:'MODIS_Terra_L3_EVI_16Day',  palKey:'evi',  note:'gibs' },
+    { cat:'RGB pre-renderizado (GIBS)' },
+    { id:'tc',    name:'Color verdadero',         gibs:'MODIS_Terra_CorrectedReflectance_TrueColor' },
+    { id:'fc721', name:'Falso color B7-2-1',      gibs:'MODIS_Terra_CorrectedReflectance_Bands721' },
+    { id:'fc367', name:'Falso color B3-6-7',      gibs:'MODIS_Terra_CorrectedReflectance_Bands367' },
+    { cat:'Nieve (GIBS)' },
+    { id:'ndsi',  name:'NDSI — Cobertura nieve',  gibs:'MODIS_Terra_NDSI_Snow_Cover', palKey:'ndsi' }
+  ],
+  moda: [
+    { cat:'Índices reales (GIBS)' },
+    { id:'ndvi', name:'NDVI 16 días',   gibs:'MODIS_Aqua_L3_NDVI_16Day', palKey:'ndvi', note:'gibs' },
+    { id:'evi',  name:'EVI 16 días',    gibs:'MODIS_Aqua_L3_EVI_16Day',  palKey:'evi',  note:'gibs' },
+    { cat:'MODIS Aqua — RGB (GIBS)' },
+    { id:'tc',   name:'Color verdadero', gibs:'MODIS_Aqua_CorrectedReflectance_TrueColor' }
+  ],
+  l8: [
+    { cat:'Índices pre-computados (GIBS) — solo 1983–2000' },
+    { id:'ndvi-mon', name:'NDVI mensual (pre-computado)', gibs:'Landsat_WELD_NDVI_Global_Monthly', palKey:'ndvi', note:'gibs' },
+    { id:'ndvi-ann', name:'NDVI anual (pre-computado)',   gibs:'Landsat_WELD_NDVI_Global_Annual',  palKey:'ndvi', note:'gibs' },
+    { cat:'Landsat WELD — Mosaicos globales (GIBS) — solo 1983–2000' },
+    { id:'tc-mon',   name:'Color verdadero mensual',    gibs:'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Monthly' },
+    { id:'tc-ann',   name:'Color verdadero anual',      gibs:'Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual' }
+  ],
+  s2: [
+    { cat:'Índices espectrales · Sentinel-2 L2A · 10m (STAC + Titiler)' },
+    { id:'ndvi', name:'NDVI — Vegetación',              stac:true, palKey:'ndvi' },
+    { id:'evi',  name:'EVI — Vegetación mejorado',      stac:true, palKey:'evi'  },
+    { id:'ndwi', name:'NDWI — Agua / Humedad',          stac:true, palKey:'ndwi' },
+    { id:'ndsi', name:'NDSI — Nieve',                   stac:true, palKey:'ndsi' },
+    { id:'ndbi', name:'NDBI — Área construida',         stac:true, palKey:'ndbi' },
+    { id:'nbr',  name:'NBR — Área quemada',             stac:true, palKey:'nbr'  },
+    { cat:'Visualizaciones RGB · Sentinel-2 L2A · 10m (STAC + Titiler)' },
+    { id:'tc',   name:'Color verdadero',                stac:true },
+    { id:'fc',   name:'Falso color NIR',                stac:true }
+  ],
+  s2eox: [
+    { cat:'Sentinel-2 Cloudless · EOX · 10m · sin nubes garantizadas' },
+    { id:'mosaic', name:'Mosaico sin nubes anual', eox:true }
+  ],
+  l8gee: [
+    { cat:'Índices desde bandas SR (STAC · sin cuenta)' },
+    { id:'ndvi', name:'NDVI = (B5−B4)/(B5+B4)',             stac:true, palKey:'ndvi' },
+    { id:'evi',  name:'EVI = 2.5(B5−B4)/(B5+6B4−7.5B2+1)', stac:true, palKey:'evi'  },
+    { id:'ndwi', name:'NDWI = (B3−B5)/(B3+B5)',             stac:true, palKey:'ndwi' },
+    { id:'ndsi', name:'NDSI = (B3−B6)/(B3+B6)',             stac:true, palKey:'ndsi' },
+    { id:'ndbi', name:'NDBI = (B6−B5)/(B6+B5)',             stac:true, palKey:'ndbi' },
+    { id:'nbr',  name:'NBR = (B5−B7)/(B5+B7)',              stac:true, palKey:'nbr'  },
+    { cat:'Landsat 8 — RGB (STAC · sin cuenta)' },
+    { id:'tc',   name:'Color verdadero', stac:true }
+  ]
+};
+
+// Fecha de inicio real de cada misión GEE (lanzamiento del satélite)
+var GEE_START = { s2:'2015-06-23', l8gee:'2013-04-11' };
+
+var GEE_BANDS = {
+  s2:    { red:'B4', nir:'B8', green:'B3', blue:'B2', swir1:'B11', swir2:'B12', scale:0.0001,   offset:0    },
+  l8gee: { red:'SR_B4', nir:'SR_B5', green:'SR_B3', blue:'SR_B2', swir1:'SR_B6', swir2:'SR_B7', scale:0.0000275, offset:-0.2 }
+};
+
+// ============================================================
+// STAC — Sentinel-2 vía Element84 · Landsat 8 vía Planetary Computer
+// ============================================================
+var STAC_CFG = {
+  s2: {
+    searchUrl: 'https://earth-search.aws.element84.com/v1/search',
+    collection: 'sentinel-2-l2a',
+    tilesBase:  'https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}',
+    expr: {
+      ndvi: { assets:['nir','red'],              formula:'(b1-b2)/(b1+b2)',                              rescale:'-0.2,0.8',  cmap:'rdylgn'   },
+      evi:  { assets:['nir','red','blue'],        formula:'2.5*(b1-b2)/(b1+6.0*b2-7.5*b3+10000)',        rescale:'-0.2,0.8',  cmap:'rdylgn'   },
+      ndwi: { assets:['green','nir'],             formula:'(b1-b2)/(b1+b2)',                              rescale:'-0.5,0.6',  cmap:'blues_r'  },
+      ndsi: { assets:['green','swir16'],          formula:'(b1-b2)/(b1+b2)',                              rescale:'0,1',       cmap:'greys'    },
+      ndbi: { assets:['swir16','nir'],            formula:'(b1-b2)/(b1+b2)',                              rescale:'-0.5,0.4',  cmap:'rdylgn_r' },
+      nbr:  { assets:['nir','swir22'],            formula:'(b1-b2)/(b1+b2)',                              rescale:'-0.5,0.6',  cmap:'rdylgn'   },
+      tc:   { assets:['red','green','blue'],      rgb:true, rescale:'0,2000' },
+      fc:   { assets:['nir','red','green'],       rgb:true, rescale:'0,2000' }
+    }
+  },
+  l8gee: {
+    searchUrl: 'https://planetarycomputer.microsoft.com/api/stac/v1/search',
+    collection: 'landsat-c2-l2',
+    tilesBase:  'https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x',
+    assetAsBand: true,
+    expr: {
+      ndvi: { assets:['nir08','red'],              formula:'(nir08-red)/(nir08+red-14545)',                                        rescale:'-0.2,0.8',  cmap:'rdylgn'   },
+      evi:  { assets:['nir08','red','blue'],        formula:'2.5*(nir08-red)/(nir08+6.0*red-7.5*blue+40000)',                      rescale:'-0.2,0.8',  cmap:'rdylgn'   },
+      ndwi: { assets:['green','nir08'],            formula:'(green-nir08)/(green+nir08-14545)',                                    rescale:'-0.5,0.6',  cmap:'blues_r'  },
+      ndsi: { assets:['green','swir16'],           formula:'(green-swir16)/(green+swir16-14545)',                                  rescale:'0,1',       cmap:'greys'    },
+      ndbi: { assets:['swir16','nir08'],           formula:'(swir16-nir08)/(swir16+nir08-14545)',                                  rescale:'-0.5,0.4',  cmap:'rdylgn_r' },
+      nbr:  { assets:['nir08','swir22'],           formula:'(nir08-swir22)/(nir08+swir22-14545)',                                  rescale:'-0.5,0.6',  cmap:'rdylgn'   },
+      tc:   { assets:['red','green','blue'],        rgb:true, rescale:'5000,20000' }
+    }
+  }
+};
+
+// ============================================================
+// COPERNICUS DATA SPACE WMTS — pre-cached, ~1s/tile, 10m resolución
+// ============================================================
+var COPERNICUS_INSTANCE = '300aa737-2859-4bcc-a734-0e199a29b646';
+
+function copernikusTileUrl(layerId, date) {
+  // 30-day window ending at target date — picks best available image in range
+  var d = new Date(date + 'T00:00:00');
+  var dStart = new Date(d.getTime());
+  dStart.setDate(dStart.getDate() - 29);
+  var timeRange = dStart.toISOString().substring(0,10) + '/' + date;
+  var fmt = (layerId === 'TRUE_COLOR') ? 'image/jpeg' : 'image/png';
+  return 'https://sh.dataspace.copernicus.eu/ogc/wmts/' + COPERNICUS_INSTANCE
+    + '?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0'
+    + '&LAYER=' + layerId
+    + '&TILEMATRIXSET=PopularWebMercator256'
+    + '&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}'
+    + '&TIME=' + timeRange
+    + '&FORMAT=' + fmt;
+}
+
+// EOX S2 Cloudless — annual mosaics 2019–2024, TMS tile ordering
+function eoxTileUrl(year) {
+  var validYear = Math.max(2019, Math.min(2024, parseInt(year)));
+  return 'https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-' + validYear
+    + '_3857/default/g/{z}/{y}/{x}.jpg';
+}
+
+function searchSTAC(sid, bbox, dateA, dateB, cloudMax, cb) {
+  var cfg = STAC_CFG[sid];
+  if (!cfg) { cb(null, null, 'Config STAC no encontrada'); return; }
+  fetch(cfg.searchUrl, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      collections: [cfg.collection],
+      bbox: bbox,
+      datetime: dateA + 'T00:00:00Z/' + dateB + 'T23:59:59Z',
+      'filter-lang': 'cql2-json',
+      filter: {op:'lt', args:[{property:'eo:cloud_cover'}, parseInt(cloudMax)||20]},
+      sortby: [{field:'properties.datetime', direction:'desc'}],
+      limit: 5
+    })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+  .then(function(data){
+    if (!data.features || !data.features.length) {
+      cb(null, null, 'Sin imágenes con nubosidad <'+cloudMax+'% en este período. Amplía el rango de fechas o sube el umbral de nubosidad.'); return;
+    }
+    var item = data.features[0];
+    var selfLink = item.links && item.links.find(function(l){return l.rel==='self';});
+    var href = selfLink ? selfLink.href : (cfg.searchUrl.replace('/search','') + '/collections/' + cfg.collection + '/items/' + item.id);
+    cb(item.id, href, null);
+  })
+  .catch(function(e){ cb(null, null, 'Error buscando escena STAC: '+e.message); });
+}
+
+function buildStacTileUrl(sid, vid, itemId, stacHref) {
+  var cfg = STAC_CFG[sid]; if (!cfg) return null;
+  var ex = cfg.expr[vid]; if (!ex) return null;
+  var base, assetStr = ex.assets.map(function(a){return 'assets='+a;}).join('&');
+  if (sid === 'l8gee') {
+    base = cfg.tilesBase + '?collection=' + cfg.collection + '&item=' + encodeURIComponent(itemId) + '&' + assetStr;
+    if (cfg.assetAsBand) base += '&asset_as_band=True';
+  } else {
+    base = cfg.tilesBase + '?url=' + encodeURIComponent(stacHref) + '&' + assetStr;
+  }
+  if (ex.rgb) {
+    base += '&rescale=' + ex.rescale;
+  } else {
+    base += '&expression=' + encodeURIComponent(ex.formula) + '&rescale=' + ex.rescale + '&colormap_name=' + ex.cmap;
+  }
+  return base;
+}
+
+// ============================================================
+// ESTADO
+// ============================================================
+var map, drawLayer, drawTools;
+var satLayer=null, visibleLayer=null, areaLayer=null;
+var satId='mod', vizId='ndvi';
+var dateMode='single', coordMode='bbox';
+var frames=[], curFrame=0;
+var playing=false, playTimer=null;
+var placeData=[], geeReady=false, geeCurImg=null;
+var curDisplayedDate=null;
+var frameGen=0;
+var compareView='toggle'; // 'toggle' (único Antes/Después) | 'side' (lado a lado) — solo modo Comparar
+var mapLeft=null, mapRight=null;
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  initMap(); buildSatCards(); buildVizList(); setupEvents(); applyDateRangeForCurrentLayer();
+  var gifBtn=document.getElementById('btn-dl-gif');
+  if(gifBtn) gifBtn.innerHTML = (typeof supportsVideoExport==='function' && supportsVideoExport())
+    ? '&#127909; Descargar timelapse (video)'
+    : '&#127909; Descargar timelapse (GIF)';
+});
+
+function initMap() {
+  map = L.map('map', { center:[2,-74], zoom:5 });
+  var sat  = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution:'Esri', maxZoom:20 });
+  var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'OSM', subdomains:'abc', maxZoom:19 });
+  var dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution:'CartoDB', subdomains:'abcd', maxZoom:20 });
+  sat.addTo(map);
+  L.control.layers({ 'Satélite':sat, 'OpenStreetMap':osm, 'Oscuro':dark }, {}, { position:'topright' }).addTo(map);
+  drawLayer = new L.FeatureGroup().addTo(map);
+  drawTools = {
+    rect: new L.Draw.Rectangle(map, { shapeOptions:{ color:'#004898', weight:2, fillOpacity:.1 } }),
+    poly: new L.Draw.Polygon(map,   { shapeOptions:{ color:'#004898', weight:2, fillOpacity:.1 } }),
+    circ: new L.Draw.Circle(map,    { shapeOptions:{ color:'#004898', weight:2, fillOpacity:.1 } })
+  };
+  map.on(L.Draw.Event.CREATED, function(e) {
+    drawLayer.clearLayers(); drawLayer.addLayer(e.layer);
+    setArea(e.layer, 'Área dibujada');
+  });
+}
+
+// ============================================================
+// EVENTOS
+// ============================================================
+function setupEvents() {
+  document.getElementById('area-tabs').addEventListener('click', function(e) {
+    var t=e.target.closest('.tab[data-panel]'); if(!t) return;
+    var p=t.dataset.panel;
+    document.querySelectorAll('#area-tabs .tab').forEach(function(x){x.classList.remove('on');});
+    t.classList.add('on');
+    ['file','search','coords','draw'].forEach(function(n){
+      document.getElementById('pa-'+n).style.display=n===p?'block':'none';
+    });
+  });
+  document.getElementById('coord-tabs').addEventListener('click', function(e) {
+    var t=e.target.closest('.tab[data-cpanel]'); if(!t) return;
+    var p=t.dataset.cpanel; coordMode=p;
+    document.querySelectorAll('#coord-tabs .tab').forEach(function(x){x.classList.remove('on');});
+    t.classList.add('on');
+    ['bbox','pt','wkt'].forEach(function(n){
+      document.getElementById('cp-'+n).style.display=n===p?'block':'none';
+    });
+  });
+  document.querySelector('.mprow').addEventListener('click', function(e) {
+    var t=e.target.closest('.mp[data-mode]'); if(!t) return;
+    var m=t.dataset.mode; dateMode=m;
+    e.currentTarget.querySelectorAll('.mp').forEach(function(x){x.classList.remove('on');});
+    t.classList.add('on');
+    ['single','range','compare'].forEach(function(n){
+      document.getElementById('dm-'+n).style.display=n===m?'block':'none';
+    });
+    if(m!=='compare') resetCompareUI();
+  });
+  // Sub-toggle de tipo de visualizador — solo aplica al modo Comparar
+  document.getElementById('compare-view-tabs').addEventListener('click', function(e) {
+    var t=e.target.closest('.mp[data-cview]'); if(!t) return;
+    compareView=t.dataset.cview;
+    e.currentTarget.querySelectorAll('.mp').forEach(function(x){x.classList.remove('on');});
+    t.classList.add('on');
+  });
+  document.getElementById('pa-draw').addEventListener('click', function(e) {
+    var b=e.target.closest('[data-draw]'); if(!b) return;
+    drawTools[b.dataset.draw].enable();
+    toast('Dibuja en el mapa. Doble clic para finalizar.','info',5000);
+  });
+  var dz=document.getElementById('dropzone');
+  dz.addEventListener('click',function(){document.getElementById('file-input').click();});
+  dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('drag');});
+  dz.addEventListener('dragleave',function(){dz.classList.remove('drag');});
+  dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files);});
+  document.getElementById('file-input').addEventListener('change',function(){handleFiles(this.files);});
+  document.getElementById('btn-search').addEventListener('click',searchPlace);
+  document.getElementById('place-q').addEventListener('keydown',function(e){if(e.key==='Enter')searchPlace();});
+  document.getElementById('btn-loadcoords').addEventListener('click',loadCoords);
+  document.getElementById('sat-cards').addEventListener('click', function(e) {
+    var c=e.target.closest('.scard[data-sat]'); if(!c) return;
+    satId=c.dataset.sat;
+    document.querySelectorAll('.scard').forEach(function(x){x.classList.remove('on');});
+    c.classList.add('on');
+    var items=CAT[satId].filter(function(i){return i.id;});
+    var preferred=items.find(function(i){return i.id==='ndvi'||i.id==='ndvi-mon';});
+    vizId=preferred?preferred.id:(items.length?items[0].id:'');
+    buildVizList(); updateInfoBoxes(); applyDateRangeForCurrentLayer();
+    if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+    if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
+  });
+  document.getElementById('viz-list').addEventListener('click', function(e) {
+    var r=e.target.closest('.vrow[data-viz]'); if(!r) return;
+    vizId=r.dataset.viz;
+    document.querySelectorAll('.vrow').forEach(function(x){x.classList.remove('on');});
+    r.classList.add('on');
+    updateLegend(); updateInfoBoxes(); applyDateRangeForCurrentLayer();
+    if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+    if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
+  });
+  document.getElementById('btn-gee-guide').addEventListener('click',function(){openGuide(GUIDE_GEE_HTML,'Guía: Configurar Google Earth Engine');});
+  document.getElementById('btn-qgis-guide').addEventListener('click',function(){openGuide(GUIDE_QGIS_HTML,'Guía: Descarga y Cálculo de Índices');});
+  document.getElementById('btn-guide-back').addEventListener('click',closeGuide);
+  document.getElementById('btn-nasa-info').addEventListener('click',function(){showM('nasa');});
+  document.getElementById('btn-gee-connect-confirm').addEventListener('click',connectGEE);
+  document.getElementById('btn-generate').addEventListener('click',generate);
+  document.getElementById('btn-dl-png').addEventListener('click',dlPNG);
+  document.getElementById('btn-dl-tiff').addEventListener('click',dlGeoTIFF);
+  document.getElementById('btn-dl-gee').addEventListener('click',dlGEEGeoTIFF);
+  document.getElementById('btn-dl-gif').addEventListener('click',dlTimelapse);
+  document.getElementById('tl-slider').addEventListener('input',function(){seekFrame(parseInt(this.value));});
+  document.getElementById('btn-play').addEventListener('click',togglePlay);
+  document.getElementById('btn-prev').addEventListener('click',function(){seekFrame(curFrame-1);});
+  document.getElementById('btn-next').addEventListener('click',function(){seekFrame(curFrame+1);});
+  document.getElementById('tl-fps').addEventListener('change',function(){if(playing){stopPlay();startPlay();}});
+  document.getElementById('btn-close-tl').addEventListener('click',closeTL);
+  document.getElementById('btn-cmp-before').addEventListener('click', function(){ seekFrame(0); updateCompareToggleLabel(); setTimeout(updateCompareToggleLabel,700); });
+  document.getElementById('btn-cmp-after').addEventListener('click', function(){ seekFrame(1); updateCompareToggleLabel(); setTimeout(updateCompareToggleLabel,700); });
+  document.getElementById('btn-close-compare').addEventListener('click', closeCompare);
+}
+
+// ============================================================
+// UI
+// ============================================================
+var _tt;
+function toast(msg,type,dur){
+  type=type||'info'; dur=dur||3000;
+  var el=document.getElementById('toast'); el.textContent=msg; el.className='show '+type;
+  if(_tt)clearTimeout(_tt); _tt=setTimeout(function(){el.className='';},dur);
+}
+function loader(on){document.getElementById('loader').classList.toggle('show',on);}
+function showM(id){document.getElementById('m-'+id).classList.add('show');}
+function closeM(id){document.getElementById('m-'+id).classList.remove('show');}
+function togStep(n){
+  var b=document.getElementById('sb'+n),c=document.getElementById('ch'+n);
+  var open=b.style.display==='block';
+  b.style.display=open?'none':'block';
+  if(c)c.classList.toggle('up',!open);
+}
+
+function buildSatCards(){
+  var el=document.getElementById('sat-cards'); el.innerHTML='';
+  Object.keys(SATS).forEach(function(id){
+    var s=SATS[id], d=document.createElement('div');
+    d.className='scard'+(id===satId?' on':''); d.dataset.sat=id;
+    var badgeCls = s.stac ? 'bfree' : (s.free ? 'bfree' : 'bgee');
+    var badgeTxt = s.stac ? 'STAC LIBRE' : (s.free ? 'GIBS LIBRE' : 'VÍA GEE');
+    d.innerHTML='<div class="scard-ico">'+s.ico+'</div><div class="scard-nm">'+s.name+'</div>' +
+      '<div class="scard-sub">'+s.sub+'</div>' +
+      '<span class="bdg '+badgeCls+'">'+badgeTxt+'</span>';
+    el.appendChild(d);
+  });
+}
+
+function buildVizList(){
+  var el=document.getElementById('viz-list'); el.innerHTML='';
+  (CAT[satId]||[]).forEach(function(item){
+    if(item.cat){var d=document.createElement('div');d.className='vcat';d.textContent=item.cat;el.appendChild(d);return;}
+    var r=document.createElement('div');
+    r.className='vrow'+(item.id===vizId?' on':''); r.dataset.viz=item.id;
+    r.innerHTML='<span>'+item.name+'</span><span class="vt">'+(item.stac?'STAC':item.gee?'GEE':'GIBS')+'</span>';
+    el.appendChild(r);
+  });
+  updateLegend(); updateInfoBoxes();
+}
+
+function getVizItem(){
+  var items=CAT[satId]||[];
+  for(var i=0;i<items.length;i++) if(items[i].id===vizId) return items[i];
+  return null;
+}
+
+function updateLegend(){
+  var item=getVizItem(),box=document.getElementById('clr-box');
+  if(!item||!item.palKey){box.innerHTML='';return;}
+  var p=PAL[item.palKey]; if(!p){box.innerHTML='';return;}
+  box.innerHTML='<div class="clr-legend"><span>'+p.rng[0]+'</span>' +
+    '<div class="clr-bar" style="background:linear-gradient(to right,'+p.pal.join(',')+')" ></div>' +
+    '<span>'+p.rng[1]+'</span></div>';
+}
+
+function updateInfoBoxes(){
+  var item=getVizItem();
+  var needGEE  = item && item.gee;
+  var needSTAC = item && item.stac;
+  var needWMTS = item && item.wmts;
+  var needEOX  = item && item.eox;
+  document.getElementById('ibox-gee').style.display  = (needGEE||needSTAC||needWMTS||needEOX) ? 'block' : 'none';
+  document.getElementById('ibox-free').style.display = (!needGEE&&!needSTAC&&!needWMTS&&!needEOX) ? 'block' : 'none';
+  document.getElementById('note-gibs').style.display = (!needGEE&&!needSTAC&&!needWMTS&&!needEOX&&item&&item.note==='gibs') ? 'block' : 'none';
+  // Copernicus/EOX gestionan nubes internamente — ocultar filtro
+  var cloudRow = document.querySelector('.cloud-row');
+  if(cloudRow) cloudRow.style.display = (needSTAC||needGEE) ? 'flex' : 'none';
+}
+
+// ============================================================
+// RANGO DE FECHAS VÁLIDO POR CAPA — evita ofrecer combinaciones imposibles
+// (aplica tanto a capas GIBS como a colecciones GEE)
+// ============================================================
+function todayStr(){ return new Date().toISOString().substring(0,10); }
+function getLayerRange(layerName){
+  var r=DATE_RANGE[layerName]||{};
+  return { min:r.min||'2000-01-01', max:r.max||todayStr() };
+}
+var STAC_START = { s2:'2017-03-28', l8gee:'2013-04-11' };
+var SAT_LABEL  = { mod:'MODIS Terra', moda:'MODIS Aqua', l8:'Landsat WELD', s2:'Sentinel-2', s2eox:'S2 Sin Nubes (EOX)', l8gee:'Landsat 8' };
+
+function applyDateRangeForCurrentLayer(){
+  var item=getVizItem();
+  var noteEl=document.getElementById('date-range-note');
+  var r;
+  if(item&&item.gibs){
+    r=getLayerRange(item.gibs);
+  } else if(item&&item.wmts){
+    r={ min:'2017-03-28', max: todayStr() };
+  } else if(item&&item.eox){
+    r={ min:'2019-01-01', max:'2024-12-31' };
+  } else if(item&&(item.gee||item.stac)){
+    r={ min: STAC_START[satId]||GEE_START[satId]||'2013-01-01', max: todayStr() };
+  } else {
+    noteEl.style.display='none'; return;
+  }
+  var label = SAT_LABEL[satId] || satId;
+  var maxLabel = r.max === todayStr() ? 'hoy' : r.max;
+  noteEl.innerHTML='&#128197; <strong>'+label+'</strong>: datos disponibles desde <strong>'+r.min+'</strong> hasta <strong>'+maxLabel+'</strong>';
+  noteEl.style.display='block';
+  ['d-single','d-start','d-end','d-ca','d-cb'].forEach(function(id){
+    var el=document.getElementById(id); if(!el) return;
+    el.min=r.min; el.max=r.max;
+    if(el.value && el.value<r.min) el.value=r.min;
+    if(el.value && el.value>r.max) el.value=r.max;
+  });
+}
+
+// ============================================================
+// DATE SNAPPING — ajusta fechas según el tipo de composición
+// ============================================================
+function snapDate(dateStr, layerName){
+  var meta=TMS[layerName]; if(!meta||!meta.snap) return dateStr;
+  if(meta.snap==='16day'){
+    var d=new Date(dateStr+'T00:00:00'), yr=d.getFullYear();
+    var jan1=new Date(yr+'-01-01T00:00:00');
+    var doy=Math.round((d-jan1)/86400000);
+    var per=Math.floor(doy/16)*16;
+    var snp=new Date(jan1.getTime()+per*86400000);
+    if(snp.getFullYear()>yr) snp=new Date(yr+'-12-17T00:00:00');
+    return snp.toISOString().substring(0,10);
+  }
+  if(meta.snap==='monthly') return dateStr.substring(0,7)+'-01';
+  if(meta.snap==='annual')  return dateStr.substring(0,4)+'-12-01';
+  return dateStr;
+}
+
+// ============================================================
+// GIBS URL
+// ============================================================
+function gibsUrl(layerName, date){
+  var meta=TMS[layerName]; if(!meta) return null;
+  return 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/' +
+    layerName+'/default/'+date+'/'+meta.tms+'/{z}/{y}/{x}.'+meta.ext;
+}
+
+// ============================================================
+// MATH MERCATOR (usado por el probe de tiles y el export GeoTIFF)
+// ============================================================
+function lon2m(l){return l*20037508.34/180;}
+function lat2m(l){return Math.log(Math.tan((90+l)*Math.PI/360))/Math.PI*20037508.34;}
+function m2tx(m,z){return Math.floor((m+20037508.34)/(2*20037508.34)*Math.pow(2,z));}
+function m2ty(m,z){return Math.floor((20037508.34-m)/(2*20037508.34)*Math.pow(2,z));}
+function tx2m(t,z){return t/Math.pow(2,z)*2*20037508.34-20037508.34;}
+function ty2m(t,z){return 20037508.34-t/Math.pow(2,z)*2*20037508.34;}
+
+// ============================================================
+// PROBE REAL DE TILE — usa naturalWidth, NO el evento tileerror
+// (un tile bloqueado por ORB "carga" con éxito pero naturalWidth=0)
+// ============================================================
+function probeTileUrl(url){
+  return new Promise(function(resolve){
+    var img=new Image();
+    var done=false;
+    var timer=setTimeout(function(){ if(!done){done=true;resolve(false);} }, 4500);
+    img.onload=function(){ if(done)return; done=true; clearTimeout(timer); resolve(img.naturalWidth>0); };
+    img.onerror=function(){ if(done)return; done=true; clearTimeout(timer); resolve(false); };
+    img.src=url;
+  });
+}
+
+function getProbeTileXYZ(maxZ){
+  var center=map.getCenter();
+  var z=Math.min(map.getZoom(), maxZ);
+  return { z:z, x:m2tx(lon2m(center.lng),z), y:m2ty(lat2m(center.lat),z) };
+}
+
+function probeDate(layerName, date){
+  var meta=TMS[layerName];
+  var xyz=getProbeTileXYZ(meta.maxZ);
+  var url='https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'+layerName+'/default/'+date+'/'+meta.tms+'/'+xyz.z+'/'+xyz.y+'/'+xyz.x+'.'+meta.ext;
+  return probeTileUrl(url);
+}
+
+// Busca la fecha real más cercana con datos válidos — recopila la mayor
+// cantidad de datos posible en vez de rendirse en el primer fallo.
+function findValidDate(layerName, targetDate){
+  var meta=TMS[layerName];
+  var range=getLayerRange(layerName);
+  var stepDays = meta.snap==='16day'?16 : meta.snap==='monthly'?31 : meta.snap==='annual'?366 : 1;
+  var maxTries = meta.snap ? 10 : 12;
+  var offsets=[0];
+  for(var i=1;i<=maxTries;i++){ offsets.push(i*stepDays); offsets.push(-i*stepDays); }
+
+  return new Promise(function(resolve){
+    var idx=0;
+    function attempt(){
+      if(idx>=offsets.length){ resolve(null); return; }
+      var d=new Date(targetDate+'T00:00:00');
+      d.setDate(d.getDate()+offsets[idx]);
+      var candidate=d.toISOString().substring(0,10);
+      idx++;
+      if(candidate<range.min||candidate>range.max){ attempt(); return; }
+      var snapped = meta.snap ? snapDate(candidate, layerName) : candidate;
+      probeDate(layerName, snapped).then(function(ok){
+        if(ok) resolve(snapped); else attempt();
+      });
+    }
+    attempt();
+  });
+}
+
+// ============================================================
+// MOSTRAR FRAME — valida con probe real antes de mostrar, busca
+// la fecha más cercana con datos si la exacta no existe.
+// ============================================================
+function swapLayerWithFade(newLayer){
+  var oldLayer = satLayer;
+  var targetOpacity = (newLayer.options && typeof newLayer.options.opacity === 'number')
+                      ? newLayer.options.opacity : 0.9;
+  satLayer = newLayer;
+
+  // Iniciar capa nueva en opacity 0 usando la API de Leaflet
+  // (NO CSS directo — Leaflet's _updateOpacity loop lo sobreescribiría)
+  newLayer.setOpacity(0);
+  newLayer.addTo(map);
+
+  // oldVisible = lo que el usuario VE ahora (puede ser distinto de oldLayer si el
+  // frame anterior aún no había terminado de cargar cuando llegó este)
+  var oldVisible = visibleLayer;
+
+  // Cancelar capa en vuelo que no llegó a revelarse (si existe y no es la visible)
+  if(oldLayer && oldLayer !== oldVisible && map.hasLayer(oldLayer)){
+    map.removeLayer(oldLayer);
+  }
+
+  var revealed = false;
+  function reveal(){
+    if(revealed) return;
+    revealed = true;
+    newLayer.off('tileload', onTile);
+    newLayer.setOpacity(targetOpacity);
+    visibleLayer = newLayer; // ahora esta ES la capa visible
+  }
+
+  function removeOldVisible(){
+    if(oldVisible && oldVisible !== newLayer && map.hasLayer(oldVisible)){
+      map.removeLayer(oldVisible);
+    }
+  }
+
+  // La capa vieja visible se elimina SOLO cuando la nueva termina de cargar
+  // — mientras tanto sus tiles cubren los huecos de la nueva (sin flash)
+  newLayer.once('load', function(){ reveal(); removeOldVisible(); });
+
+  // Al 4to tile revelamos la nueva (el usuario ve progreso inmediato)
+  // pero oldVisible sigue debajo tapando huecos hasta que 'load' la quite
+  var tilesLoaded = 0;
+  function onTile(){
+    tilesLoaded++;
+    if(tilesLoaded >= 4){ newLayer.off('tileload', onTile); reveal(); }
+  }
+  newLayer.on('tileload', onTile);
+
+  // Red de seguridad a 20s
+  setTimeout(function(){
+    newLayer.off('tileload', onTile);
+    reveal();
+    removeOldVisible();
+  }, 20000);
+}
+
+function showFrame(idx){
+  if(idx<0||idx>=frames.length) return;
+  curFrame=idx;
+  frameGen++;
+  var myGen=frameGen;
+  var date=frames[idx];
+  var item=getVizItem(); if(!item) return;
+  document.getElementById('tl-cur').textContent=idx+1;
+  document.getElementById('tl-tot').textContent=frames.length;
+  document.getElementById('tl-date').textContent=date;
+  document.getElementById('tl-slider').value=idx;
+  document.getElementById('tl-skip').style.display='none';
+
+  if(item.gibs){
+    document.getElementById('tl-src').textContent='Buscando...';
+    document.getElementById('tl-skip').textContent='buscando fecha con datos disponibles...';
+    document.getElementById('tl-skip').style.display='inline-block';
+    findValidDate(item.gibs, date).then(function(validDate){
+      if(myGen!==frameGen) return;
+      document.getElementById('tl-skip').style.display='none';
+      if(!validDate){
+        document.getElementById('tl-src').textContent='Sin datos';
+        toast('No se encontraron imágenes cerca de '+date+' para esta capa. Ajusta el rango de fechas.','warn',6000);
+        if(playing && frames.length>1){
+          setTimeout(function(){ if(myGen===frameGen) seekFrame((curFrame+1)%frames.length); }, 500);
+        }
+        return;
+      }
+      curDisplayedDate=validDate;
+      var url=gibsUrl(item.gibs, validDate);
+      var meta=TMS[item.gibs];
+      swapLayerWithFade(L.tileLayer(url,{
+        attribution:'NASA GIBS', opacity:0.9, maxZoom:20, maxNativeZoom:meta.maxZ||9
+      }));
+      document.getElementById('tl-src').textContent='NASA GIBS';
+      if(validDate!==date){
+        document.getElementById('tl-date').textContent=date+' → '+validDate+' (ajustada)';
+      }
+    });
+
+  } else if(item.gee){
+    if(!geeReady){toast('Esta capa requiere GEE. Conéctalo en Paso 2.','warn',5000);return;}
+    var dt=new Date(date+'T00:00:00'), dtEnd=new Date(dt);
+    dtEnd.setDate(dtEnd.getDate()+32);
+    var endDate=dtEnd.toISOString().substring(0,10);
+    document.getElementById('tl-src').textContent='GEE calculando...';
+    var result=computeGEE(satId,vizId,date,endDate); if(!result) return;
+    geeCurImg=result;
+    curDisplayedDate=date;
+    result.image.getMapId(result.vis,function(obj,err){
+      if(myGen!==frameGen) return;
+      if(err){toast('Error GEE: '+err,'err');document.getElementById('tl-src').textContent='GEE error';return;}
+      var tUrl=obj.urlFormat||(obj.tile_fetcher&&obj.tile_fetcher.url_format);
+      if(!tUrl){toast('GEE no devolvió URL de tiles','err');return;}
+      swapLayerWithFade(L.tileLayer(tUrl,{attribution:'Google Earth Engine',opacity:0.9,maxZoom:20}));
+      document.getElementById('tl-src').textContent='GEE · '+vizId.toUpperCase();
+    });
+
+  } else if(item.wmts){
+    var tUrl=copernikusTileUrl(item.wmts, date);
+    curDisplayedDate=date;
+    swapLayerWithFade(L.tileLayer(tUrl,{
+      attribution:'Sentinel-2 · Copernicus Data Space',
+      opacity:0.9, maxZoom:18, tileSize:256
+    }));
+    document.getElementById('tl-src').textContent='Copernicus · '+item.wmts;
+
+  } else if(item.eox){
+    var year=date.substring(0,4);
+    curDisplayedDate=date;
+    swapLayerWithFade(L.tileLayer(eoxTileUrl(year),{
+      attribution:'Sentinel-2 cloudless &copy; EOX IT Services GmbH',
+      opacity:0.9, maxZoom:15, tileSize:256
+    }));
+    document.getElementById('tl-src').textContent='S2 Cloudless '+year+' (EOX)';
+
+  } else if(item.stac){
+    var dtEnd2=new Date(date+'T00:00:00');
+    dtEnd2.setDate(dtEnd2.getDate()+32);
+    var endDate2=dtEnd2.toISOString().substring(0,10);
+    var cloudMax=parseInt(document.getElementById('d-cloud').value)||20;
+    var b=areaLayer.getBounds();
+    var bbox=[b.getWest(),b.getSouth(),b.getEast(),b.getNorth()];
+    var srcLabel=satId==='s2'?'Sentinel-2':'Landsat 8';
+    document.getElementById('tl-src').textContent=srcLabel+' buscando escena...';
+    curDisplayedDate=date;
+    loader(true);
+    searchSTAC(satId,bbox,date,endDate2,cloudMax,function(itemId,stacHref,err){
+      loader(false);
+      if(myGen!==frameGen) return;
+      if(err){toast(err,'warn',7000);document.getElementById('tl-src').textContent='Sin datos';return;}
+      var tUrl=buildStacTileUrl(satId,vizId,itemId,stacHref);
+      if(!tUrl){toast('Expresión no disponible para esta combinación','err');return;}
+      swapLayerWithFade(L.tileLayer(tUrl,{attribution:srcLabel+' · STAC/Titiler',opacity:0.9,maxZoom:18,tileSize:256}));
+      document.getElementById('tl-src').textContent=srcLabel+' · '+vizId.toUpperCase()+' (STAC)';
+    });
+  }
+}
+
+// ============================================================
+// GENERAR TIMELAPSE
+// ============================================================
+function buildDates(a,b,freq){
+  var dates=[],s=new Date(a+'T00:00:00'),e=new Date(b+'T00:00:00'),cur=new Date(s);
+  while(cur<=e&&dates.length<500){
+    dates.push(cur.toISOString().substring(0,10));
+    switch(freq){
+      case 'daily':    cur.setDate(cur.getDate()+1);break;
+      case 'weekly':   cur.setDate(cur.getDate()+7);break;
+      case '8day':     cur.setDate(cur.getDate()+8);break;
+      case '16day':    cur.setDate(cur.getDate()+16);break;
+      case 'monthly':  cur.setMonth(cur.getMonth()+1);break;
+      case 'quarterly':cur.setMonth(cur.getMonth()+3);break;
+      case 'yearly':   cur.setFullYear(cur.getFullYear()+1);break;
+      default:         cur.setMonth(cur.getMonth()+1);
+    }
+  }
+  return dates;
+}
+
+function snapFrames(arr, layerName){
+  var seen={}, out=[];
+  arr.forEach(function(d){ var s=snapDate(d,layerName); if(!seen[s]){seen[s]=1;out.push(s);} });
+  return out;
+}
+
+function generate(){
+  resetCompareUI();
+  if(dateMode==='compare'){ generateCompare(); return; }
+
+  if(!areaLayer){toast('Define el área de estudio (Paso 1)','warn');return;}
+  var item=getVizItem(); if(!item){toast('Selecciona una capa (Paso 2)','warn');return;}
+  if(item.gee&&!geeReady){toast('Esta capa requiere GEE. Conéctalo en Paso 2.','warn',5000);return;}
+  if(item.stac&&!areaLayer){toast('Define el área de estudio primero (Paso 1)','warn');return;}
+
+  var rawFrames=[];
+  if(dateMode==='single'){
+    var d=document.getElementById('d-single').value;
+    if(!d){toast('Selecciona una fecha','warn');return;}
+    rawFrames=[d];
+  } else if(dateMode==='range'){
+    var a=document.getElementById('d-start').value, b=document.getElementById('d-end').value,
+        f=document.getElementById('d-freq').value;
+    if(!a||!b){toast('Define fechas inicio y fin','warn');return;}
+    if(a>b){toast('Inicio debe ser anterior al fin','warn');return;}
+    rawFrames=buildDates(a,b,f);
+  } else {
+    var ca=document.getElementById('d-ca').value, cb=document.getElementById('d-cb').value;
+    if(!ca||!cb){toast('Define ambas fechas','warn');return;}
+    rawFrames=[ca,cb];
+  }
+
+  if(item.gibs){
+    var range=getLayerRange(item.gibs);
+    var inRange=rawFrames.filter(function(d){return d>=range.min&&d<=range.max;});
+    if(!inRange.length){
+      toast('Ninguna fecha cae dentro del rango con datos ('+range.min+' a '+range.max+'). Ajustando automáticamente...','warn',6000);
+      inRange=[range.max];
+    }
+    frames=snapFrames(inRange, item.gibs);
+  } else {
+    frames=rawFrames;
+  }
+  if(!frames.length){toast('Sin fechas válidas para esta configuración','err');return;}
+
+  try{map.fitBounds(areaLayer.getBounds(),{padding:[28,28]});}catch(e){}
+  var sl=document.getElementById('tl-slider');
+  sl.min=0; sl.max=frames.length-1; sl.value=0;
+  document.getElementById('tl').style.display='block';
+  curFrame=0; showFrame(0);
+  var msg=frames.length===1?'Imagen: '+frames[0]:
+    frames.length+' frames ('+frames[0]+' → '+frames[frames.length-1]+')';
+  toast(msg+(frames.length<rawFrames.length?' — fechas ajustadas a períodos disponibles':''),'ok',5000);
+  document.getElementById('sn4').classList.add('done');
+}
+
+// ============================================================
+// PLAYBACK
+// ============================================================
+function seekFrame(i){i=Math.max(0,Math.min(frames.length-1,i));showFrame(i);}
+function togglePlay(){if(playing)stopPlay();else startPlay();}
+function startPlay(){
+  if(!frames.length)return;
+  playing=true; document.getElementById('btn-play').innerHTML='&#9646;&#9646; Pausa';
+  var fps=parseFloat(document.getElementById('tl-fps').value)||1;
+  playTimer=setInterval(function(){seekFrame((curFrame+1)%frames.length);},1000/fps);
+}
+function stopPlay(){
+  playing=false; if(playTimer){clearInterval(playTimer);playTimer=null;}
+  document.getElementById('btn-play').innerHTML='&#9654; Play';
+}
+function closeTL(){
+  stopPlay();
+  if(satLayer){map.removeLayer(satLayer);satLayer=null;}
+  if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
+  document.getElementById('tl').style.display='none';
+  frames=[]; curFrame=0; document.getElementById('sn4').classList.remove('done');
+}
+
+// ============================================================
+// MODO COMPARAR — dos visualizadores nuevos y aislados, sin alterar
+// la lógica de fecha única / timelapse existente.
+// ============================================================
+function resetCompareUI(){
+  document.getElementById('compare-side-wrap').style.display='none';
+  document.getElementById('compare-toggle-bar').style.display='none';
+  document.getElementById('map').style.display='block';
+}
+
+function closeCompare(){
+  stopPlay();
+  resetCompareUI();
+  if(satLayer){ map.removeLayer(satLayer); satLayer=null; }
+  if(visibleLayer){if(map.hasLayer(visibleLayer))map.removeLayer(visibleLayer);visibleLayer=null;}
+  frames=[]; curFrame=0;
+  document.getElementById('sn4').classList.remove('done');
+}
+
+function updateCompareToggleLabel(){
+  if(!frames.length) return;
+  var lbl = curFrame===0 ? 'Antes' : 'Después';
+  document.getElementById('cmp-date').textContent = lbl+' — '+(curDisplayedDate||frames[curFrame]);
+  document.getElementById('btn-cmp-before').classList.toggle('btn-out', curFrame!==0);
+  document.getElementById('btn-cmp-before').classList.toggle('btn-blue', curFrame===0);
+  document.getElementById('btn-cmp-after').classList.toggle('btn-out', curFrame!==1);
+  document.getElementById('btn-cmp-after').classList.toggle('btn-blue', curFrame===1);
+}
+
+// Carga una capa (GIBS o GEE, reutilizando las funciones existentes
+// findValidDate/gibsUrl/computeGEE) dentro de un mapa Leaflet arbitrario,
+// sin tocar el satLayer/map global usados por el resto de la plataforma.
+function loadLayerIntoMap(targetMap, item, date, onDone){
+  if(item.gibs){
+    findValidDate(item.gibs, date).then(function(validDate){
+      if(!validDate){ onDone(null); return; }
+      var url=gibsUrl(item.gibs, validDate);
+      var meta=TMS[item.gibs];
+      L.tileLayer(url, { attribution:'NASA GIBS', opacity:0.95, maxZoom:20, maxNativeZoom:meta.maxZ||9 }).addTo(targetMap);
+      onDone(validDate);
+    });
+  } else if(item.gee){
+    if(!geeReady){ onDone(null); return; }
+    var dt=new Date(date+'T00:00:00'), dtEnd=new Date(dt);
+    dtEnd.setDate(dtEnd.getDate()+32);
+    var endDate=dtEnd.toISOString().substring(0,10);
+    var result=computeGEE(satId,vizId,date,endDate);
+    if(!result){ onDone(null); return; }
+    result.image.getMapId(result.vis, function(obj,err){
+      if(err||!obj){ onDone(null); return; }
+      var tUrl=obj.urlFormat||(obj.tile_fetcher&&obj.tile_fetcher.url_format);
+      if(!tUrl){ onDone(null); return; }
+      L.tileLayer(tUrl, { attribution:'Google Earth Engine', opacity:0.95, maxZoom:20 }).addTo(targetMap);
+      onDone(date);
+    });
+  } else if(item.wmts){
+    var tUrl=copernikusTileUrl(item.wmts, date);
+    L.tileLayer(tUrl, { attribution:'Copernicus Data Space', opacity:0.95, maxZoom:18, tileSize:256 }).addTo(targetMap);
+    onDone(date);
+
+  } else if(item.eox){
+    var year=date.substring(0,4);
+    L.tileLayer(eoxTileUrl(year), { attribution:'Sentinel-2 cloudless &copy; EOX', opacity:0.95, maxZoom:15, tileSize:256 }).addTo(targetMap);
+    onDone(date);
+
+  } else if(item.stac){
+    var dtE=new Date(date+'T00:00:00'); dtE.setDate(dtE.getDate()+32);
+    var endD=dtE.toISOString().substring(0,10);
+    var cloudMax=parseInt(document.getElementById('d-cloud').value)||20;
+    var b=areaLayer ? areaLayer.getBounds() : targetMap.getBounds();
+    var bbox=[b.getWest(),b.getSouth(),b.getEast(),b.getNorth()];
+    searchSTAC(satId,bbox,date,endD,cloudMax,function(itemId,stacHref,err){
+      if(err||!itemId){ onDone(null); return; }
+      var tUrl=buildStacTileUrl(satId,vizId,itemId,stacHref);
+      if(!tUrl){ onDone(null); return; }
+      L.tileLayer(tUrl, { attribution:'STAC/Titiler', opacity:0.95, maxZoom:18, tileSize:256 }).addTo(targetMap);
+      onDone(date);
+    });
+  } else {
+    onDone(null);
+  }
+}
+
+function ensureSideMaps(){
+  if(mapLeft){ mapLeft.remove(); mapLeft=null; }
+  if(mapRight){ mapRight.remove(); mapRight=null; }
+  mapLeft = L.map('map-left', { center:map.getCenter(), zoom:map.getZoom(), zoomControl:false });
+  mapRight = L.map('map-right', { center:map.getCenter(), zoom:map.getZoom(), zoomControl:false });
+  var esriUrl='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  L.tileLayer(esriUrl, { attribution:'Esri', maxZoom:20 }).addTo(mapLeft);
+  L.tileLayer(esriUrl, { attribution:'Esri', maxZoom:20 }).addTo(mapRight);
+  if(areaLayer){
+    try{
+      L.geoJSON(areaLayer.toGeoJSON(), { style:{ color:'#004898', weight:2, fillOpacity:.05 } }).addTo(mapLeft);
+      L.geoJSON(areaLayer.toGeoJSON(), { style:{ color:'#004898', weight:2, fillOpacity:.05 } }).addTo(mapRight);
+      mapLeft.fitBounds(areaLayer.getBounds(), { padding:[10,10] });
+      mapRight.fitBounds(areaLayer.getBounds(), { padding:[10,10] });
+    }catch(e){}
+  }
+  setTimeout(function(){
+    if(mapLeft) mapLeft.invalidateSize();
+    if(mapRight) mapRight.invalidateSize();
+  }, 150);
+}
+
+function generateCompare(){
+  if(!areaLayer){toast('Define el área de estudio (Paso 1)','warn');return;}
+  var item=getVizItem(); if(!item){toast('Selecciona una capa (Paso 2)','warn');return;}
+  if(item.gee&&!geeReady){toast('Esta capa requiere GEE. Conéctalo en Paso 2.','warn',5000);return;}
+  var ca=document.getElementById('d-ca').value, cb=document.getElementById('d-cb').value;
+  if(!ca||!cb){toast('Define ambas fechas (Antes y Después)','warn');return;}
+  if(!ca||!cb){toast('Define ambas fechas (Antes y Después)','warn');return;}
+
+  frames=[ca,cb]; curFrame=0;
+  document.getElementById('sn4').classList.add('done');
+  document.getElementById('tl').style.display='none'; // evita solapar con la barra de timelapse normal
+
+  if(compareView==='side'){
+    document.getElementById('map').style.display='none';
+    document.getElementById('compare-side-wrap').style.display='flex';
+    ensureSideMaps();
+    document.getElementById('cmp-left-label').textContent='Antes — '+ca;
+    document.getElementById('cmp-right-label').textContent='Después — '+cb;
+    loader(true);
+    var doneCount=0;
+    function checkDone(){ doneCount++; if(doneCount>=2) loader(false); }
+    loadLayerIntoMap(mapLeft, item, ca, function(validDate){
+      document.getElementById('cmp-left-label').textContent = validDate
+        ? 'Antes — '+validDate+(validDate!==ca?' (ajustada)':'')
+        : 'Antes — sin datos disponibles';
+      checkDone();
+    });
+    loadLayerIntoMap(mapRight, item, cb, function(validDate){
+      document.getElementById('cmp-right-label').textContent = validDate
+        ? 'Después — '+validDate+(validDate!==cb?' (ajustada)':'')
+        : 'Después — sin datos disponibles';
+      checkDone();
+    });
+    toast('Comparación lado a lado generada','ok');
+
+  } else {
+    document.getElementById('compare-toggle-bar').style.display='block';
+    try{ map.fitBounds(areaLayer.getBounds(), { padding:[28,28] }); }catch(e){}
+    showFrame(0); // reutiliza la función existente, sin modificarla
+    updateCompareToggleLabel();
+    setTimeout(updateCompareToggleLabel, 700);
+    toast('Comparación Antes/Después generada — usa los botones para alternar','ok');
+  }
+}
+
+// ============================================================
+// ARCHIVOS
+// ============================================================
+function handleFiles(files){
+  if(!files||!files.length)return;
+  var f=files[0],nm=f.name.toLowerCase();
+  if(nm.endsWith('.zip'))loadShp(f);
+  else if(nm.endsWith('.tif')||nm.endsWith('.tiff'))loadTIF(f);
+  else if(nm.endsWith('.geojson')||nm.endsWith('.json'))loadGeoJSONFile(f);
+  else toast('Formato no soportado. Usa .zip, .tif o .geojson','err');
+}
+function loadScript(src,cb){
+  if(document.querySelector('script[src="'+src+'"]')){if(cb)cb();return;}
+  var s=document.createElement('script'); s.src=src;
+  s.onload=cb||function(){}; s.onerror=function(){toast('Error cargando: '+src,'err');};
+  document.head.appendChild(s);
+}
+function loadShp(file){
+  loader(true);
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',function(){
+    loadScript('https://unpkg.com/shapefile@0.6.6/dist/shapefile.js',function(){
+      JSZip.loadAsync(file).then(function(zip){
+        var shpE=null,dbfE=null;
+        Object.keys(zip.files).forEach(function(n){
+          if(n.toLowerCase().endsWith('.shp'))shpE=zip.files[n];
+          if(n.toLowerCase().endsWith('.dbf'))dbfE=zip.files[n];
+        });
+        if(!shpE){loader(false);toast('No se encontró .shp en el ZIP','err');return;}
+        Promise.all([shpE.async('arraybuffer'),dbfE?dbfE.async('arraybuffer'):Promise.resolve(null)]).then(function(bufs){
+          shapefile.open(bufs[0],bufs[1]).then(function(src){
+            var feats=[];
+            function rd(){src.read().then(function(r){
+              if(r.done){loadGJData({type:'FeatureCollection',features:feats},file.name.replace('.zip',''));loader(false);}
+              else{feats.push(r.value);rd();}
+            });}
+            rd();
+          });
+        });
+      }).catch(function(e){loader(false);toast('Error ZIP: '+e.message,'err');});
+    });
+  });
+}
+function loadTIF(file){
+  loader(true);
+  loadScript('https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js',function(){
+    var rd=new FileReader(); rd.onload=function(e){
+      GeoTIFF.fromArrayBuffer(e.target.result).then(function(t){return t.getImage();}).then(function(img){
+        var bb=img.getBoundingBox();
+        loadGJData({type:'Feature',geometry:{type:'Polygon',coordinates:[[[bb[0],bb[1]],[bb[2],bb[1]],[bb[2],bb[3]],[bb[0],bb[3]],[bb[0],bb[1]]]]},properties:{}},file.name);
+        loader(false);
+      }).catch(function(e){loader(false);toast('Error GeoTIFF: '+e.message,'err');});
+    };
+    rd.readAsArrayBuffer(file);
+  });
+}
+function loadGeoJSONFile(file){
+  var rd=new FileReader(); rd.onload=function(e){
+    try{loadGJData(JSON.parse(e.target.result),file.name);}catch(err){toast('JSON inválido','err');}
+  };
+  rd.readAsText(file);
+}
+function loadGJData(gj,name){
+  if(areaLayer)map.removeLayer(areaLayer);
+  areaLayer=L.geoJSON(gj,{style:{color:'#004898',weight:2,fillOpacity:.1,fillColor:'#004898'}}).addTo(map);
+  try{map.fitBounds(areaLayer.getBounds(),{padding:[22,22]});}catch(e){}
+  setArea(areaLayer,name);
+}
+
+// ============================================================
+// BÚSQUEDA
+// ============================================================
+function searchPlace(){
+  var q=document.getElementById('place-q').value.trim(); if(!q)return;
+  loader(true);
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(q)+'&format=json&limit=5&polygon_geojson=1',
+    {headers:{'Accept-Language':'es,en'}})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    loader(false); placeData=data;
+    var el=document.getElementById('place-res');
+    if(!data.length){el.style.display='none';toast('Sin resultados: '+q,'warn');return;}
+    el.innerHTML='';
+    data.forEach(function(d,i){
+      var div=document.createElement('div'); div.className='pi';
+      div.textContent=d.display_name.split(',').slice(0,3).join(', ');
+      div.addEventListener('click',function(){selPlace(i);});
+      el.appendChild(div);
+    });
+    el.style.display='block';
+  }).catch(function(e){loader(false);toast('Error: '+e.message,'err');});
+}
+function selPlace(i){
+  var d=placeData[i]; document.getElementById('place-res').style.display='none';
+  var nm=d.display_name.split(',')[0];
+  if(d.geojson) loadGJData({type:'Feature',geometry:d.geojson,properties:{}},nm);
+  else{
+    var lat=parseFloat(d.lat),lon=parseFloat(d.lon),dx=0.1;
+    loadGJData({type:'Feature',geometry:{type:'Polygon',coordinates:[[[lon-dx,lat-dx],[lon+dx,lat-dx],[lon+dx,lat+dx],[lon-dx,lat+dx],[lon-dx,lat-dx]]]},properties:{}},nm);
+  }
+}
+
+// ============================================================
+// COORDENADAS
+// ============================================================
+function loadCoords(){
+  if(coordMode==='bbox'){
+    var w=+document.getElementById('c-w').value,s=+document.getElementById('c-s').value,
+        ee=+document.getElementById('c-e').value,n=+document.getElementById('c-n').value;
+    if([w,s,ee,n].some(isNaN)){toast('Coordenadas inválidas','err');return;}
+    loadGJData({type:'Feature',geometry:{type:'Polygon',coordinates:[[[w,s],[ee,s],[ee,n],[w,n],[w,s]]]},properties:{}},'BBox');
+  } else if(coordMode==='pt'){
+    var lat=+document.getElementById('c-lat').value,lon=+document.getElementById('c-lon').value,
+        buf=(+document.getElementById('c-buf').value||25)/111.32;
+    if(isNaN(lat)||isNaN(lon)){toast('Lat/Lon inválidos','err');return;}
+    loadGJData({type:'Feature',geometry:{type:'Polygon',coordinates:[[[lon-buf,lat-buf],[lon+buf,lat-buf],[lon+buf,lat+buf],[lon-buf,lat+buf],[lon-buf,lat-buf]]]},properties:{}},'Punto+buffer');
+  } else {
+    var wkt=document.getElementById('c-wkt').value.trim(); if(!wkt){toast('Ingresa WKT','err');return;}
+    try{
+      var m=wkt.match(/POLYGON\s*\((.+)\)/is); if(!m)throw new Error('Solo POLYGON');
+      var rings=m[1].match(/\(([^)]+)\)/g).map(function(r){
+        return r.slice(1,-1).trim().split(',').map(function(p){var xy=p.trim().split(/\s+/);return[+xy[0],+xy[1]];});
+      });
+      loadGJData({type:'Feature',geometry:{type:'Polygon',coordinates:rings},properties:{}},'WKT');
+    }catch(e){toast('WKT inválido: '+e.message,'err');}
+  }
+}
+function setArea(layer,name){
+  areaLayer=layer;
+  var el=document.getElementById('area-st');
+  el.textContent='✓ '+name; el.className='ast ok';
+  document.getElementById('sn1').classList.add('done');
+  toast('Área: '+name,'ok');
+}
+
+// ============================================================
+// GEE
+// ============================================================
+function connectGEE(){
+  var cid=document.getElementById('gee-cid').value.trim();
+  var proj=document.getElementById('gee-proj').value.trim();
+  if(!cid){toast('Ingresa tu OAuth Client ID','warn');return;}
+  loader(true);
+  loadScript('https://cdn.jsdelivr.net/npm/@google/earthengine@1.7.31/build/ee_api_js.js',function(){
+    if(typeof ee==='undefined'){loader(false);toast('Error cargando GEE JS API','err');return;}
+    ee.data.authenticateViaOauth(cid,
+      function(){
+        ee.initialize(null,null,
+          function(){
+            geeReady=true; loader(false); closeM('gee');
+            var b=document.getElementById('gee-badge');
+            b.className='gee-badge on'; b.innerHTML='&#11044; GEE conectado';
+            document.getElementById('btn-dl-gee').style.display='inline-block';
+            toast('GEE conectado. Índices calculados desde bandas reales.','ok',5000);
+          },
+          function(err){loader(false);toast('Error GEE init: '+err,'err');},
+          proj||undefined);
+      },
+      function(err){loader(false);toast('Error autenticación GEE: '+err,'err');}
+    );
+  });
+}
+
+// ============================================================
+// CÓMPUTO GEE
+// ============================================================
+function computeGEE(sid,vid,dateA,dateB){
+  var bands=GEE_BANDS[sid], item=getVizItem();
+  if(!item||!item.gee||!bands) return null;
+  var cloudProp=sid==='s2'?'CLOUDY_PIXEL_PERCENTAGE':'CLOUD_COVER';
+  var cloudMax=parseInt(document.getElementById('d-cloud').value)||20;
+  var col=ee.ImageCollection(item.col).filterDate(dateA,dateB)
+    .filter(ee.Filter.lt(cloudProp,cloudMax));
+  var img=col.median();
+  if(sid==='l8gee') img=img.multiply(bands.scale).add(bands.offset);
+  else if(sid==='s2') img=img.multiply(bands.scale);
+  var outImg,vis;
+  var exprs={
+    ndvi:'(NIR-RED)/(NIR+RED)',
+    evi:'2.5*(NIR-RED)/(NIR+6.0*RED-7.5*BLUE+1.0)',
+    ndwi:'(GREEN-NIR)/(GREEN+NIR)',
+    ndsi:'(GREEN-SWIR1)/(GREEN+SWIR1)',
+    ndbi:'(SWIR1-NIR)/(SWIR1+NIR)',
+    nbr:'(NIR-SWIR2)/(NIR+SWIR2)'
+  };
+  if(exprs[vid]){
+    outImg=img.expression(exprs[vid],{
+      NIR:img.select(bands.nir),RED:img.select(bands.red),
+      GREEN:img.select(bands.green),BLUE:img.select(bands.blue),
+      SWIR1:img.select(bands.swir1),SWIR2:img.select(bands.swir2)
+    }).rename(vid.toUpperCase());
+    var p=PAL[vid]||{rng:[-1,1],pal:['#000','#fff']};
+    vis={min:p.rng[0],max:p.rng[1],palette:p.pal};
+  } else if(vid==='tc'){
+    outImg=img.select([bands.red,bands.green,bands.blue]); vis={min:0,max:0.3,gamma:1.4};
+  } else if(vid==='fc'){
+    outImg=img.select([bands.nir,bands.red,bands.green]); vis={min:0,max:0.4};
+  } else {
+    outImg=img; vis={min:0,max:0.3};
+  }
+  return {image:outImg,vis:vis};
+}
+
+// ============================================================
+// DESCARGAS — usan curDisplayedDate (la fecha REALMENTE mostrada,
+// que puede diferir de frames[curFrame] si hubo ajuste automático)
+// ============================================================
+function dlPNG(){ if(!satLayer){toast('Genera primero una visualización','warn');return;}
+  toast('Ctrl+Shift+S (Firefox) o menú: Archivo → Guardar como → PDF para capturar el mapa','info',7000);
+}
+function dlGeoTIFF(){
+  if(!satLayer||!frames.length){toast('Genera una visualización primero','warn');return;}
+  var item=getVizItem();
+  if(!item||!item.gibs){toast('GeoTIFF visual solo disponible con capas GIBS. Para índices analíticos usa GEE.','warn',5000);return;}
+  if(!areaLayer){toast('Define el área primero','warn');return;}
+  if(!curDisplayedDate){toast('Espera a que la imagen termine de cargar','warn');return;}
+  var bounds=areaLayer.getBounds();
+  var W=512,H=512,date=curDisplayedDate;
+  var west=bounds.getWest(),east=bounds.getEast(),south=bounds.getSouth(),north=bounds.getNorth();
+  var zoom=Math.min(map.getZoom(),8);
+  var meta=TMS[item.gibs]; if(!meta){toast('Capa sin TMS','err');return;}
+  toast('Generando GeoTIFF visual...','info',25000); loader(true);
+  var canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+  var ctx=canvas.getContext('2d'); ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  var mx0=lon2m(west),mx1=lon2m(east),my0=lat2m(north),my1=lat2m(south);
+  var mW=mx1-mx0,mH=my1-my0;
+  var tx0=m2tx(mx0,zoom),tx1=m2tx(mx1,zoom),ty0=m2ty(my0,zoom),ty1=m2ty(my1,zoom);
+  var url=gibsUrl(item.gibs,date), proms=[];
+  for(var tx=tx0;tx<=tx1;tx++) for(var ty=ty0;ty<=ty1;ty++){
+    (function(tx,ty){
+      proms.push(new Promise(function(res){
+        var img=new Image(); img.crossOrigin='anonymous';
+        img.onload=function(){
+          var tmx0=tx2m(tx,zoom),tmx1=tx2m(tx+1,zoom),tmy0=ty2m(ty,zoom),tmy1=ty2m(ty+1,zoom);
+          var px=((tmx0-mx0)/mW)*W,py=((tmy0-my0)/mH)*H,pw=((tmx1-tmx0)/mW)*W,ph=((tmy1-tmy0)/mH)*H;
+          try{ctx.drawImage(img,px,py,pw,ph);}catch(e){}
+          res();
+        };
+        img.onerror=function(){res();};
+        img.src=url.replace('{z}',zoom).replace('{y}',ty).replace('{x}',tx);
+      }));
+    })(tx,ty);
+  }
+  Promise.all(proms).then(function(){
+    var id=ctx.getImageData(0,0,W,H);
+    var tiff=buildGeoTIFF(W,H,id.data,west,north,east,south);
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([tiff],{type:'image/tiff'}));
+    a.download=vizId+'_'+date+'_visual.tif'; a.click();
+    toast('GeoTIFF visual descargado','ok'); loader(false);
+  }).catch(function(e){loader(false);toast('Error: '+e.message,'err');});
+}
+function dlGEEGeoTIFF(){
+  if(!geeReady){toast('Conecta GEE primero','warn');return;}
+  if(!geeCurImg){toast('Genera primero con GEE','warn');return;}
+  if(!areaLayer){toast('Define el área primero','warn');return;}
+  var b=areaLayer.getBounds();
+  var region=ee.Geometry.Rectangle([b.getWest(),b.getSouth(),b.getEast(),b.getNorth()]);
+  var date=curDisplayedDate||(frames.length?frames[curFrame]:document.getElementById('d-single').value);
+  var scale=satId==='s2'?10:30;
+  loader(true); toast('Generando descarga GEE (hasta 60s)...','info',60000);
+  geeCurImg.image.getDownloadURL({
+    name:vizId+'_'+date,region:region,scale:scale,crs:'EPSG:4326',format:'GEO_TIFF'
+  },function(url,err){
+    loader(false);
+    if(err){toast('Error descarga GEE: '+err,'err');return;}
+    window.open(url,'_blank');
+    toast('GeoTIFF analítico descargado (float32 — valores reales del índice)','ok',5000);
+  });
+}
+
+// ============================================================
+// DESCARGA DE TIMELAPSE COMO GIF ANIMADO
+// Captura un mosaico de tiles por cada frame válido (misma técnica
+// verificada del export GeoTIFF) y los ensambla con gif.js.
+// ============================================================
+function buildGifFrameCanvas(urlTemplate, west, north, east, south, W, H, zoom){
+  return new Promise(function(resolve){
+    var canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+    var ctx=canvas.getContext('2d'); ctx.fillStyle='#0b1b33'; ctx.fillRect(0,0,W,H);
+    var mx0=lon2m(west),mx1=lon2m(east),my0=lat2m(north),my1=lat2m(south);
+    var mW=mx1-mx0,mH=my1-my0;
+    var tx0=m2tx(mx0,zoom),tx1=m2tx(mx1,zoom),ty0=m2ty(my0,zoom),ty1=m2ty(my1,zoom);
+    var proms=[];
+    for(var tx=tx0;tx<=tx1;tx++) for(var ty=ty0;ty<=ty1;ty++){
+      (function(tx,ty){
+        proms.push(new Promise(function(res){
+          var img=new Image(); img.crossOrigin='anonymous';
+          var done=false;
+          var timer=setTimeout(function(){ if(!done){done=true;res();} },5000);
+          img.onload=function(){
+            if(done)return; done=true; clearTimeout(timer);
+            if(img.naturalWidth>0){
+              var tmx0=tx2m(tx,zoom),tmx1=tx2m(tx+1,zoom),tmy0=ty2m(ty,zoom),tmy1=ty2m(ty+1,zoom);
+              var px=((tmx0-mx0)/mW)*W,py=((tmy0-my0)/mH)*H,pw=((tmx1-tmx0)/mW)*W,ph=((tmy1-tmy0)/mH)*H;
+              try{ctx.drawImage(img,px,py,pw,ph);}catch(e){}
+            }
+            res();
+          };
+          img.onerror=function(){ if(done)return; done=true; clearTimeout(timer); res(); };
+          img.src=urlTemplate.replace('{z}',zoom).replace('{y}',ty).replace('{x}',tx);
+        }));
+      })(tx,ty);
+    }
+    Promise.all(proms).then(function(){resolve(canvas);});
+  });
+}
+
+var _gifWorkerBlobUrl=null;
+function getGifWorkerBlobUrl(){
+  // El navegador bloquea Workers cuyo script venga de otro origen (CDN).
+  // Solución: descargar el texto del worker y envolverlo en un blob:
+  // URL, que el navegador SÍ trata como mismo origen.
+  if(_gifWorkerBlobUrl) return Promise.resolve(_gifWorkerBlobUrl);
+  return fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js')
+    .then(function(r){ return r.text(); })
+    .then(function(text){
+      var blob=new Blob([text], {type:'application/javascript'});
+      _gifWorkerBlobUrl=URL.createObjectURL(blob);
+      return _gifWorkerBlobUrl;
+    });
+}
+
+// ============================================================
+// EXPORTACIÓN EN VIDEO (preferida) — MediaRecorder + canvas.captureStream.
+// API nativa del navegador, sin librerías externas. Si no está disponible
+// (navegador antiguo / sin soporte), se usa el GIF como respaldo.
+// ============================================================
+function supportsVideoExport(){
+  return typeof MediaRecorder!=='undefined' &&
+    typeof HTMLCanvasElement.prototype.captureStream==='function' &&
+    typeof MediaRecorder.isTypeSupported==='function' &&
+    (MediaRecorder.isTypeSupported('video/webm;codecs=vp9') || MediaRecorder.isTypeSupported('video/webm'));
+}
+
+function dlTimelapseVideo(){
+  if(!frames.length){toast('Genera un timelapse primero (Paso 3 y 4)','warn');return;}
+  if(!areaLayer){toast('Define el área primero','warn');return;}
+  var item=getVizItem(); if(!item){toast('Selecciona una capa','warn');return;}
+  if(item.gee&&!geeReady){toast('Esta capa requiere GEE conectado','warn');return;}
+
+  loader(true);
+  var bounds=areaLayer.getBounds();
+  var west=bounds.getWest(),east=bounds.getEast(),south=bounds.getSouth(),north=bounds.getNorth();
+  var zoom=Math.min(map.getZoom(),8);
+  var fps=parseFloat(document.getElementById('tl-fps').value)||1;
+  var holdMs=Math.max(300,Math.round(1000/fps));
+  var W=480,H=480;
+
+  var canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle='#0b1b33'; ctx.fillRect(0,0,W,H);
+
+  var mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
+  var stream;
+  try{ stream=canvas.captureStream(10); }
+  catch(e){ loader(false); toast('El navegador no permitió capturar el canvas. Usando GIF.','warn',5000); dlTimelapseGIF(); return; }
+
+  var recorder;
+  try{ recorder=new MediaRecorder(stream, {mimeType:mimeType}); }
+  catch(e){ loader(false); toast('No se pudo iniciar la grabación. Usando GIF.','warn',5000); dlTimelapseGIF(); return; }
+
+  var chunks=[], addedFrames=0, idx=0;
+  recorder.ondataavailable=function(e){ if(e.data && e.data.size) chunks.push(e.data); };
+  recorder.onstop=function(){
+    loader(false);
+    if(!addedFrames || !chunks.length){
+      toast('No se generó ningún frame válido para el video','err',6000);
+      return;
+    }
+    var blob=new Blob(chunks, {type:mimeType});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='timelapse_'+vizId+'_'+frames[0]+'_'+frames[frames.length-1]+'.webm';
+    a.click();
+    toast('Timelapse en video descargado','ok');
+  };
+
+  recorder.start();
+
+  function drawAndHold(frameCanvas){
+    ctx.clearRect(0,0,W,H);
+    ctx.drawImage(frameCanvas,0,0,W,H);
+    var track=stream.getVideoTracks()[0];
+    if(track && typeof track.requestFrame==='function') track.requestFrame();
+    addedFrames++; idx++;
+    setTimeout(nextFrame, holdMs);
+  }
+
+  function nextFrame(){
+    if(idx>=frames.length){
+      setTimeout(function(){ recorder.stop(); }, 250);
+      return;
+    }
+    toast('Generando frame '+(idx+1)+'/'+frames.length+'...','info',4000);
+    var date=frames[idx];
+
+    if(item.gibs){
+      findValidDate(item.gibs, date).then(function(validDate){
+        if(!validDate){ idx++; nextFrame(); return; }
+        var url=gibsUrl(item.gibs, validDate);
+        buildGifFrameCanvas(url, west, north, east, south, W, H, zoom).then(drawAndHold);
+      });
+    } else if(item.gee){
+      var dt=new Date(date+'T00:00:00'), dtEnd=new Date(dt);
+      dtEnd.setDate(dtEnd.getDate()+32);
+      var endDate=dtEnd.toISOString().substring(0,10);
+      var result=computeGEE(satId,vizId,date,endDate);
+      if(!result){ idx++; nextFrame(); return; }
+      result.image.getMapId(result.vis, function(obj,err){
+        if(err||!obj){ idx++; nextFrame(); return; }
+        var tUrl=obj.urlFormat||(obj.tile_fetcher&&obj.tile_fetcher.url_format);
+        if(!tUrl){ idx++; nextFrame(); return; }
+        buildGifFrameCanvas(tUrl, west, north, east, south, W, H, zoom).then(drawAndHold);
+      });
+    } else {
+      idx++; nextFrame();
+    }
+  }
+  nextFrame();
+}
+
+function dlTimelapse(){
+  if(supportsVideoExport()) dlTimelapseVideo();
+  else dlTimelapseGIF();
+}
+
+function dlTimelapseGIF(){
+  if(!frames.length){toast('Genera un timelapse primero (Paso 3 y 4)','warn');return;}
+  if(!areaLayer){toast('Define el área primero','warn');return;}
+  var item=getVizItem(); if(!item){toast('Selecciona una capa','warn');return;}
+  if(item.gee&&!geeReady){toast('Esta capa requiere GEE conectado','warn');return;}
+
+  loader(true);
+  toast('Cargando codificador de GIF...','info',6000);
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js', function(){
+    if(typeof GIF==='undefined'){loader(false);toast('No se pudo cargar el codificador de GIF','err');return;}
+    getGifWorkerBlobUrl().then(function(workerUrl){
+    var bounds=areaLayer.getBounds();
+    var west=bounds.getWest(),east=bounds.getEast(),south=bounds.getSouth(),north=bounds.getNorth();
+    var zoom=Math.min(map.getZoom(),8);
+    var fps=parseFloat(document.getElementById('tl-fps').value)||1;
+    var delay=Math.max(150,Math.round(1000/fps));
+    var W=480,H=480;
+    var gif=new GIF({ workers:2, quality:10, width:W, height:H, workerScript:workerUrl });
+    var addedFrames=0;
+    var idx=0;
+
+    function finish(){
+      if(addedFrames===0){
+        loader(false);
+        toast('No se pudo generar ningún frame válido para el GIF','err',6000);
+        return;
+      }
+      toast('Ensamblando GIF ('+addedFrames+' frames)...','info',15000);
+      gif.on('finished', function(blob){
+        loader(false);
+        var a=document.createElement('a');
+        a.href=URL.createObjectURL(blob);
+        a.download='timelapse_'+vizId+'_'+frames[0]+'_'+frames[frames.length-1]+'.gif';
+        a.click();
+        toast('Timelapse GIF descargado','ok');
+      });
+      gif.render();
+    }
+
+    function nextFrame(){
+      if(idx>=frames.length){ finish(); return; }
+      toast('Generando frame '+(idx+1)+'/'+frames.length+'...','info',4000);
+      var date=frames[idx];
+
+      if(item.gibs){
+        findValidDate(item.gibs, date).then(function(validDate){
+          if(!validDate){ idx++; nextFrame(); return; }
+          var url=gibsUrl(item.gibs, validDate);
+          buildGifFrameCanvas(url, west, north, east, south, W, H, zoom).then(function(canvas){
+            gif.addFrame(canvas, {delay:delay, copy:true});
+            addedFrames++; idx++; nextFrame();
+          });
+        });
+      } else if(item.gee){
+        var dt=new Date(date+'T00:00:00'), dtEnd=new Date(dt);
+        dtEnd.setDate(dtEnd.getDate()+32);
+        var endDate=dtEnd.toISOString().substring(0,10);
+        var result=computeGEE(satId,vizId,date,endDate);
+        if(!result){ idx++; nextFrame(); return; }
+        result.image.getMapId(result.vis, function(obj,err){
+          if(err||!obj){ idx++; nextFrame(); return; }
+          var tUrl=obj.urlFormat||(obj.tile_fetcher&&obj.tile_fetcher.url_format);
+          if(!tUrl){ idx++; nextFrame(); return; }
+          buildGifFrameCanvas(tUrl, west, north, east, south, W, H, zoom).then(function(canvas){
+            gif.addFrame(canvas, {delay:delay, copy:true});
+            addedFrames++; idx++; nextFrame();
+          });
+        });
+      } else {
+        idx++; nextFrame();
+      }
+    }
+    nextFrame();
+    }).catch(function(e){
+      loader(false);
+      toast('No se pudo preparar el codificador de GIF: '+e.message,'err',6000);
+    });
+  });
+}
+
+// ============================================================
+// GEOTIFF WRITER RGB Visual (WGS84)
+// ============================================================
+function buildGeoTIFF(W,H,rgba,west,north,east,south){
+  var pW=(east-west)/W,pH=(north-south)/H;
+  var img=new Uint8Array(H*W*3);
+  for(var y=0;y<H;y++) for(var x=0;x<W;x++){
+    var s4=(y*W+x)*4,d3=(y*W+x)*3;
+    img[d3]=rgba[s4]; img[d3+1]=rgba[s4+1]; img[d3+2]=rgba[s4+2];
+  }
+  var nT=14,iOff=8,iSz=2+nT*12+4,dS=iOff+iSz;
+  var oBPS=dS,oPSCL=dS+8,oTP=dS+32,oGKD=dS+80;
+  var iS=Math.ceil((dS+100)/256)*256;
+  var buf=new ArrayBuffer(iS+img.length),dv=new DataView(buf);
+  dv.setUint8(0,0x49);dv.setUint8(1,0x49);dv.setUint16(2,42,true);dv.setUint32(4,iOff,true);
+  var p=iOff; dv.setUint16(p,nT,true); p+=2;
+  function tag(id,type,cnt,val){
+    dv.setUint16(p,id,true);dv.setUint16(p+2,type,true);dv.setUint32(p+4,cnt,true);
+    if(type===3&&cnt===1){dv.setUint16(p+8,val,true);dv.setUint16(p+10,0,true);}
+    else dv.setUint32(p+8,val,true);
+    p+=12;
+  }
+  tag(256,4,1,W);tag(257,4,1,H);tag(258,3,3,oBPS);tag(259,3,1,1);tag(262,3,1,2);
+  tag(273,4,1,iS);tag(277,3,1,3);tag(278,4,1,H);tag(279,4,1,img.length);tag(284,3,1,1);
+  tag(33550,12,3,oPSCL);tag(33922,12,6,oTP);tag(34735,3,10,oGKD);tag(34736,12,1,oPSCL);
+  dv.setUint32(p,0,true);
+  dv.setUint16(oBPS,8,true);dv.setUint16(oBPS+2,8,true);dv.setUint16(oBPS+4,8,true);
+  dv.setFloat64(oPSCL,pW,true);dv.setFloat64(oPSCL+8,pH,true);dv.setFloat64(oPSCL+16,0,true);
+  dv.setFloat64(oTP,0,true);dv.setFloat64(oTP+8,0,true);dv.setFloat64(oTP+16,0,true);
+  dv.setFloat64(oTP+24,west,true);dv.setFloat64(oTP+32,north,true);dv.setFloat64(oTP+40,0,true);
+  dv.setUint16(oGKD,1,true);dv.setUint16(oGKD+2,1,true);dv.setUint16(oGKD+4,0,true);dv.setUint16(oGKD+6,3,true);
+  dv.setUint16(oGKD+8,1024,true);dv.setUint16(oGKD+10,0,true);dv.setUint16(oGKD+12,1,true);dv.setUint16(oGKD+14,2,true);
+  dv.setUint16(oGKD+16,1025,true);dv.setUint16(oGKD+18,0,true);dv.setUint16(oGKD+20,1,true);dv.setUint16(oGKD+22,1,true);
+  dv.setUint16(oGKD+24,2048,true);dv.setUint16(oGKD+26,0,true);dv.setUint16(oGKD+28,1,true);dv.setUint16(oGKD+30,4326,true);
+  new Uint8Array(buf).set(img,iS);
+  return buf;
+}
+
+</script>
+</body>
+</html>
