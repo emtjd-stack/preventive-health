@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Acceso · Preventive Health</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.panel-brand{background:linear-gradient(160deg,#1D51A3 0%,#0a2a6e 100%);display:flex;flex-direction:column;justify-content:center;padding:60px 48px;border-right:4px solid #F0C319;position:relative;overflow:hidden}
+.panel-brand::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.04);top:-100px;right:-100px}
+.panel-brand::after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(240,195,25,.06);bottom:-80px;left:-80px}
+.brand-logo{width:180px;margin-bottom:40px}
+.brand-tagline{color:#F0C319;font-size:.85rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.brand-title{color:#fff;font-size:2rem;font-weight:700;line-height:1.25;margin-bottom:20px}
+.brand-desc{color:rgba(255,255,255,.75);font-size:.95rem;line-height:1.7;max-width:360px}
+.brand-pillars{display:flex;flex-direction:column;gap:12px;margin-top:36px}
+.pillar{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:.88rem}
+.pillar-icon{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.panel-form{background:#f8fafc;display:flex;align-items:center;justify-content:center;padding:40px 48px}
+.form-card{width:100%;max-width:420px}
+.form-card h2{font-size:1.5rem;font-weight:700;color:#0f172a;margin-bottom:6px}
+.form-card p{color:#64748b;font-size:.9rem;margin-bottom:32px}
+label{display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:6px;margin-top:18px}
+input[type=email],input[type=password]{width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.95rem;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff}
+input:focus{border-color:#1D51A3;box-shadow:0 0 0 3px rgba(29,81,163,.1)}
+.btn-login{margin-top:24px;width:100%;padding:13px;background:#1D51A3;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s}
+.btn-login:hover{background:#163d82}
+.btn-login:disabled{background:#94a3b8;cursor:not-allowed}
+.msg{margin-top:14px;padding:10px 14px;border-radius:8px;font-size:.88rem;display:none}
+.msg.error{background:#fee2e2;color:#991b1b;display:block}
+.msg.info{background:#dbeafe;color:#1e40af;display:block}
+.forgot{text-align:right;margin-top:8px}
+.forgot a{color:#1D51A3;font-size:.82rem;text-decoration:none}
+.forgot a:hover{text-decoration:underline}
+.form-footer{margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;font-size:.82rem;color:#94a3b8}
+.form-footer a{color:#1D51A3;text-decoration:none}
+@media(max-width:768px){
+  body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .panel-brand{padding:32px 28px;min-height:auto}
+  .brand-title{font-size:1.4rem}
+  .brand-desc,.brand-pillars{display:none}
+  .panel-form{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+<div class="panel-brand">
+  <img src="data:image/png;base64,data:image/png;base64,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" alt="Preventive Health" class="brand-logo">
+  <div class="brand-tagline">Plataforma de Capacitaciones</div>
+  <h1 class="brand-title">Formación que<br>salva vidas y<br>protege el entorno</h1>
+  <p class="brand-desc">Accede a tus cursos certificados de brigadas de seguridad y pilotaje de drones ambientales. Contenido actualizado con normativa vigente 2024–2025.</p>
+  <div class="brand-pillars">
+    <div class="pillar"><div class="pillar-icon">🩺</div><span>Brigadas de Primeros Auxilios · AHA 2020</span></div>
+    <div class="pillar"><div class="pillar-icon">🧯</div><span>Brigadas Contra Incendios · NFPA</span></div>
+    <div class="pillar"><div class="pillar-icon">⚠️</div><span>Brigadas de Emergencia · MDT Ecuador 2024</span></div>
+    <div class="pillar"><div class="pillar-icon">🛸</div><span>Pilotaje Profesional de Drones · DGAC 2024</span></div>
+  </div>
+</div>
+<div class="panel-form">
+  <div class="form-card">
+    <h2>Bienvenido de vuelta</h2>
+    <p>Ingresa tus credenciales para acceder a tus cursos</p>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" placeholder="tu@correo.com" required autocomplete="email">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+      <div class="forgot"><a href="#" onclick="handleForgot(event)">¿Olvidaste tu contraseña?</a></div>
+      <button type="submit" class="btn-login" id="btnLogin">Ingresar →</button>
+    </form>
+    <div class="msg" id="msg"></div>
+    <div class="form-footer">
+      ¿Problemas para acceder? <a href="mailto:info.preventiveh@gmail.com">Contacta al administrador</a>
+    </div>
+  </div>
+</div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// ⚠️ Reemplaza con tus credenciales Supabase
+const SUPABASE_URL  = 'SUPABASE_URL_AQUI';
+const SUPABASE_ANON = 'SUPABASE_ANON_KEY_AQUI';
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Si ya hay sesión activa → redirigir directo
+const { data: { session } } = await sb.auth.getSession();
+if (session) {
+  const r = new URLSearchParams(window.location.search).get('r');
+  window.location.replace(r || '../cursos/');
+}
+
+window.handleLogin = async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('btnLogin');
+  const msg = document.getElementById('msg');
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
+  msg.className = 'msg';
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) {
+    msg.className = 'msg error';
+    msg.textContent = error.message.includes('Invalid login')
+      ? 'Correo o contraseña incorrectos. Verifica tus datos.'
+      : 'Error: ' + error.message;
+    btn.disabled = false;
+    btn.textContent = 'Ingresar →';
+  } else {
+    msg.className = 'msg info';
+    msg.textContent = '✅ Acceso correcto. Redirigiendo...';
+    const r = new URLSearchParams(window.location.search).get('r');
+    window.location.replace(r || '../cursos/');
+  }
+};
+
+window.handleForgot = async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  if (!email) { alert('Ingresa tu correo primero.'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email);
+  const msg = document.getElementById('msg');
+  msg.className = 'msg info';
+  msg.textContent = error
+    ? 'Error: ' + error.message
+    : '📧 Revisa tu correo para restablecer la contraseña.';
+};
+</script>
+</body>
+</html>
