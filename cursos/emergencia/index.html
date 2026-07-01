@@ -1,975 +1,707 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="visibility:hidden">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <script>document.documentElement.style.visibility='hidden'</script>
 <script type="module" src="../../js/auth.js"></script>
-<title>Brigadas de Emergencia | Preventive Health</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Manejo de Emergencias | Preventive Health</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --blue:#1D51A3;--blue-dark:#163d7a;--blue-light:#e8eef8;
-  --gold:#F0C319;--gold-dark:#c9a210;
-  --text:#1a2840;--muted:#5a6e8c;--bg:#f5f7fb;
-  --white:#fff;--border:#dde4ef;--radius:10px;
-  --shadow:0 2px 12px rgba(29,81,163,.10);
-  --shadow-lg:0 6px 32px rgba(29,81,163,.14);
-}
+:root{--blue:#1D51A3;--blue-dark:#163d7a;--blue-light:#e8eef8;--gold:#F0C319;--text:#1a2840;--muted:#5a6e8c;--bg:#f5f7fb;--white:#fff;--border:#dde4ef;--radius:10px;--shadow:0 2px 12px rgba(29,81,163,.10)}
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;font-size:16px}
-h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;line-height:1.2}
+h1,h2,h3,h4{font-weight:700;line-height:1.2}
 a{color:var(--blue);text-decoration:none}
-
-/* NAV */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.anim-fadein{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
+.anim-fadein.visible{opacity:1;transform:none}
 nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px solid var(--gold);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px}
-.nav-logo img{height:30px}
-.nav-back{color:rgba(255,255,255,.8);font-size:13px;display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;transition:.15s}
+.nav-logo{color:#fff;font-weight:700;font-size:18px}
+.nav-back{color:rgba(255,255,255,.8);font-size:13px;padding:5px 10px;border-radius:6px;transition:.15s}
 .nav-back:hover{color:#fff;background:rgba(255,255,255,.12)}
-
-/* PROGRESS BAR */
-.top-progress{height:4px;background:rgba(255,255,255,.2);position:relative}
-.top-progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
-
-/* LAYOUT */
-.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px)}
-
-/* SIDEBAR */
-.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.top-progress{height:4px;background:rgba(255,255,255,.2)}
+.top-progress-fill{height:100%;background:var(--gold);transition:width .4s;width:0%}
+.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px)}
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
 .sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 18px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
 .sidebar-progress{padding:12px 18px;margin-bottom:4px}
 .prog-bar-bg{height:5px;background:var(--border);border-radius:3px;margin-top:4px}
-.prog-bar-fill{height:5px;background:var(--gold);border-radius:3px;transition:width .4s}
+.prog-bar-fill{height:5px;background:var(--blue);border-radius:3px;transition:width .4s}
 .prog-pct{font-size:11px;color:var(--muted);margin-top:3px}
 .mod-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;border-left:3px solid transparent;transition:.18s;user-select:none}
 .mod-item:hover{background:var(--bg)}
 .mod-item.active{background:var(--blue-light);border-left-color:var(--blue)}
-.mod-item.done .mod-num{background:var(--blue);color:#fff}
-.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted)}
-.mod-item.active .mod-num{background:var(--blue);color:#fff}
+.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);transition:.2s}
+.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue);color:#fff}
 .mod-label{font-size:13px;font-weight:500;line-height:1.3}
-.mod-check{margin-left:auto;font-size:14px;opacity:0}
+.mod-check{margin-left:auto;font-size:14px;opacity:0;transition:.2s}
 .mod-item.done .mod-check{opacity:1}
-
-/* MAIN CONTENT */
-.main{padding:36px 40px;max-width:800px}
+.main{padding:36px 40px;max-width:820px}
+.module-panel{display:none;animation:fadeIn .3s ease}
+.module-panel.active{display:block}
 .module-header{margin-bottom:28px}
-.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--blue-light);padding:3px 12px;border-radius:20px;margin-bottom:10px}
-.module-title{font-size:clamp(1.6rem,3vw,2.2rem);color:var(--text);margin-bottom:8px}
-.module-desc{font-size:1rem;color:var(--muted);font-weight:400}
-
-/* CONTENT BLOCKS */
+.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:rgba(29,81,163,.1);padding:3px 12px;border-radius:20px;margin-bottom:10px}
+.module-title{font-size:clamp(1.5rem,3vw,2rem);color:var(--blue);margin-bottom:8px}
+.module-desc{font-size:1rem;color:var(--muted)}
 .content-section{margin-bottom:28px}
-.content-section h3{font-size:1.15rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
-.content-section p{font-size:.97rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
-.content-section ul,
-.content-section ol{padding-left:20px;color:var(--muted);font-size:.95rem;line-height:2}
-
-/* INFO CARDS */
+.content-section h3{font-size:1.1rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
+.content-section p{font-size:.95rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
+.content-section ul,.content-section ol{padding-left:22px;color:var(--muted);font-size:.93rem;line-height:2}
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
-.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue)}
-.info-card.gold{border-left-color:var(--gold)}
-.info-card.danger{border-left-color:#dc2626}
-.info-card.green{border-left-color:#16a34a}
-.info-card h4{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text)}
-.info-card p{font-size:13px;color:var(--muted);line-height:1.5}
-
-/* ALERT BOXES */
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue);transition:transform .2s}
+.info-card:hover{transform:translateY(-2px)}
+.info-card.gold{border-left-color:var(--gold)}.info-card.danger{border-left-color:#dc2626}.info-card.green{border-left-color:#16a34a}
+.info-card h4{font-size:13px;font-weight:700;margin-bottom:6px}.info-card p{font-size:13px;color:var(--muted);line-height:1.5}
 .alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);margin:16px 0;font-size:.92rem}
-.alert-icon{font-size:20px;flex-shrink:0}
-.alert.important{background:#fef3c7;border:1px solid #f59e0b}
-.alert.danger{background:#fee2e2;border:1px solid #dc2626}
-.alert.info{background:var(--blue-light);border:1px solid var(--blue)}
-.alert.success{background:#dcfce7;border:1px solid #16a34a}
+.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.alert.important{background:#fef3c7;border:1px solid #f59e0b}.alert.danger{background:#fee2e2;border:1px solid #dc2626}
+.alert.info{background:var(--blue-light);border:1px solid var(--blue)}.alert.success{background:#dcfce7;border:1px solid #16a34a}
 .alert p{margin:0;color:var(--text);line-height:1.55}
-.alert strong{color:var(--text)}
-
-/* STEP LIST */
-.steps{display:flex;flex-direction:column;gap:12px;margin:16px 0}
-.step{display:flex;gap:14px;align-items:flex-start}
-.step-num{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.step-body p{font-size:13px;color:var(--muted);line-height:1.6}
-
-/* TABLE */
+.steps{display:flex;flex-direction:column;gap:12px;margin:18px 0}
+.step{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:transform .2s}
+.step:hover{transform:translateX(4px)}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}.step-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
+.concept-card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--blue);transition:transform .2s}
+.concept-card:hover{transform:translateY(-4px)}.concept-card .cc-icon{font-size:28px;margin-bottom:8px}
+.concept-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}.concept-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
+.abp-case{background:linear-gradient(135deg,#eef3ff,#e0eaff);border-radius:12px;padding:24px;margin:24px 0;border:2px solid rgba(29,81,163,.2)}
+.abp-label{background:var(--blue);color:#fff;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px}
+.abp-case h4{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px}
+.abp-case p{font-size:.92rem;color:#334;line-height:1.7;margin-bottom:10px}
+.abp-questions{background:rgba(255,255,255,.6);border-radius:8px;padding:14px;margin-top:12px}
+.abp-questions p{font-size:.88rem;margin:6px 0;color:var(--blue);font-weight:600}
+.norm-ref{background:var(--white);border-left:3px solid var(--gold);padding:12px 16px;margin:12px 0;font-size:.84rem;color:var(--muted);border-radius:0 8px 8px 0;border:1px solid var(--border);border-left:3px solid var(--gold)}
+.norm-ref strong{color:var(--text)}
 .data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
 .data-table th{background:var(--blue);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
 .data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
 .data-table tr:nth-child(even) td{background:var(--bg)}
-
-/* QUIZ */
+.svg-container{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.svg-container figcaption{font-size:.82rem;color:var(--muted);margin-top:10px}
+.triage-box{display:inline-flex;flex-direction:column;align-items:center;padding:14px 18px;border-radius:10px;margin:6px;min-width:120px}
 .quiz-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
-.quiz-title{font-size:1.1rem;font-weight:700;margin-bottom:6px;color:var(--text)}
-.quiz-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
-.quiz-question{margin-bottom:22px}
-.quiz-q{font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:10px}
+.quiz-title{font-size:1.05rem;font-weight:700;margin-bottom:6px}.quiz-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.quiz-question{margin-bottom:22px}.quiz-q{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:10px}
 .quiz-options{display:flex;flex-direction:column;gap:8px}
 .quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-size:.9rem;user-select:none}
 .quiz-opt:hover{border-color:var(--blue);background:var(--blue-light)}
-.quiz-opt.correct{border-color:#16a34a;background:#dcfce7;color:#15803d}
-.quiz-opt.wrong{border-color:#dc2626;background:#fee2e2;color:#b91c1c}
-.quiz-opt.selected{border-color:var(--blue);background:var(--blue-light)}
+.quiz-opt.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d}
+.quiz-opt.wrong{border-color:#dc2626!important;background:#fee2e2!important;color:#b91c1c}
 .quiz-opt input[type=radio]{accent-color:var(--blue)}
-.quiz-feedback{font-size:13px;padding:10px 14px;border-radius:8px;margin-top:8px;display:none}
-.quiz-submit{margin-top:4px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
+.quiz-submit{margin-top:8px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
 .quiz-submit:hover{background:var(--blue-dark)}
 .quiz-result{margin-top:16px;padding:16px;border-radius:var(--radius);display:none;text-align:center}
 .quiz-result.pass{background:#dcfce7;border:1px solid #16a34a;color:#15803d}
 .quiz-result.fail{background:#fee2e2;border:1px solid #dc2626;color:#b91c1c}
-
-/* MODULE NAV BUTTONS */
 .module-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border)}
 .btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:.18s}
-.btn-prev{background:var(--white);border:1.5px solid var(--border);color:var(--muted)}
-.btn-prev:hover{border-color:var(--blue);color:var(--blue)}
-.btn-next{background:var(--blue);color:#fff}
-.btn-next:hover{background:var(--blue-dark)}
-.btn-next:disabled{background:var(--border);cursor:not-allowed}
-
-/* COMPLETION CARD */
-.completion-card{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);border-radius:var(--radius);padding:36px;text-align:center;color:#fff;margin-top:32px;display:none}
-.completion-card h2{font-size:1.8rem;margin-bottom:12px}
-.completion-card p{color:rgba(255,255,255,.8);margin-bottom:24px}
+.btn-prev{background:var(--white);border:1.5px solid var(--border);color:var(--muted)}.btn-prev:hover{border-color:var(--blue);color:var(--blue)}
+.btn-next{background:var(--blue);color:#fff}.btn-next:hover{background:var(--blue-dark)}
+.completion-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:var(--radius);padding:40px;text-align:center;color:#fff;margin-top:32px;display:none;animation:fadeInUp .5s ease}
+.completion-card h2{font-size:1.8rem;margin-bottom:12px}.completion-card p{color:rgba(255,255,255,.85);margin-bottom:16px}
 .cert-icon{font-size:64px;margin-bottom:16px}
-.btn-cert{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--gold);color:var(--text);border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit}
-
-/* MOBILE */
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0 env(safe-area-inset-bottom)}
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0}
 .mob-nav-inner{display:flex;overflow-x:auto;gap:4px;padding:0 12px;scrollbar-width:none}
-.mob-nav-inner::-webkit-scrollbar{display:none}
-.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:64px;transition:.15s;user-select:none}
-.mob-tab.active{background:var(--blue-light)}
-.mob-tab-icon{font-size:18px}
-.mob-tab-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}
-.mob-tab.active .mob-tab-label{color:var(--blue)}
-
-@media(max-width:768px){
-  .course-layout{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .main{padding:20px 16px 100px}
-  .mob-nav{display:block}
-  .info-grid{grid-template-columns:1fr}
-}
-@media(max-width:480px){
-  .module-title{font-size:1.4rem}
-  .quiz-opt{font-size:.85rem;padding:8px 10px}
-}
-
-.module-title{color:var(--blue)}
-.module-tag{color:var(--blue);background:rgba(29,81,163,.13)}
-nav{background:var(--blue)}
-.top-progress-fill{background:var(--gold)}
-.mod-item.active{background:rgba(29,81,163,.07);border-left-color:var(--blue)}
-.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue)}
-.btn-next{background:var(--blue)}.btn-next:hover{background:var(--blue-dark)}
-.completion-card{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue) 100%)}
-.content-section h3{border-bottom-color:var(--gold)}
-.course-hero{position:relative;width:100%;max-height:220px;overflow:hidden;border-radius:12px;margin-bottom:28px}
-.course-hero img{width:100%;height:220px;object-fit:cover;display:block}
-.course-hero-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));padding:20px 24px}
-.course-hero-overlay h2{color:#fff;margin:0;font-size:1.4rem}
-.prog-bar-fill{background:var(--blue)}
+.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:60px;transition:.15s;user-select:none}
+.mob-tab.active{background:var(--blue-light)}.mob-tab-icon{font-size:18px}
+.mob-tab-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}.mob-tab.active .mob-tab-label{color:var(--blue)}
+@media(max-width:768px){.course-layout{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px 16px 100px}.mob-nav{display:block}.info-grid,.concept-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <nav>
-  <a class="nav-logo" href="../../index.html"><span style="color:#fff;font-weight:700;font-size:18px">Preventive Health</span></a>
-  <a class="nav-back" href="../../cursos/">← Catálogo</a>
+  <a class="nav-logo" href="../../index.html">Preventive Health</a>
+  <a class="nav-back" href="../index.html">← Catálogo</a>
 </nav>
-<div class="top-progress"><div class="top-progress-fill" id="topProg" style="width:0%"></div></div>
+<div class="top-progress"><div class="top-progress-fill" id="topProg"></div></div>
 <div class="course-layout">
+<aside class="sidebar">
+  <div class="sidebar-title">Manejo de Emergencias</div>
+  <div class="sidebar-progress">
+    <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:600">Progreso</span><span class="prog-pct" id="progPct">0%</span></div>
+    <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
+  </div>
+  <div class="mod-item active" data-mod="1" onclick="showModule(1)"><div class="mod-num">1</div><div class="mod-label">Sistema de Comando de Incidentes (SCI)</div><div class="mod-check">✓</div></div>
+  <div class="mod-item" data-mod="2" onclick="showModule(2)"><div class="mod-num">2</div><div class="mod-label">Triage START — Clasificación de Víctimas</div><div class="mod-check">✓</div></div>
+  <div class="mod-item" data-mod="3" onclick="showModule(3)"><div class="mod-num">3</div><div class="mod-label">Emergencias Médicas Laborales</div><div class="mod-check">✓</div></div>
+  <div class="mod-item" data-mod="4" onclick="showModule(4)"><div class="mod-num">4</div><div class="mod-label">Materiales Peligrosos (MATPEL)</div><div class="mod-check">✓</div></div>
+  <div class="mod-item" data-mod="5" onclick="showModule(5)"><div class="mod-num">5</div><div class="mod-label">Plan de Continuidad Operacional (PCO)</div><div class="mod-check">✓</div></div>
+  <div class="mod-item" data-mod="6" onclick="showModule(6)"><div class="mod-num">6</div><div class="mod-label">Psicología de la Emergencia</div><div class="mod-check">✓</div></div>
+</aside>
+<main class="main" id="mainContent">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-title">Brigadas de Emergencia</div>
-    <div class="sidebar-progress">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:12px;font-weight:600;color:var(--text)">Progreso del curso</span>
-        <span class="prog-pct" id="progPct">0%</span>
-      </div>
-      <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
+<!-- ===== MÓDULO 1 ===== -->
+<div class="module-panel active" id="mod-1">
+  <div class="module-header">
+    <span class="module-tag">Módulo 1 de 6</span>
+    <h1 class="module-title">Sistema de Comando de Incidentes (SCI)</h1>
+    <p class="module-desc">Estructura estandarizada para gestionar cualquier emergencia con cadena de mando clara, eficiencia en recursos y comunicación interinstitucional.</p>
+  </div>
+  <div class="norm-ref"><strong>Base normativa:</strong> NIMS (National Incident Management System) · ICS-100/200 FEMA · Decreto Ejecutivo 486 Ecuador (SGR) · Acuerdo MDT-2020-077</div>
+  <div class="content-section">
+    <h3>¿Qué es el SCI y por qué es el estándar mundial?</h3>
+    <p>El <strong>Sistema de Comando de Incidentes (SCI/ICS)</strong> fue desarrollado tras el análisis de los fallos de coordinación durante los incendios forestales de California en 1970. Hoy es el estándar adoptado por FEMA, Cruz Roja, OPS/OMS y la Secretaría de Gestión de Riesgos (SGR) de Ecuador para toda emergencia: desde un derrame de 10 litros hasta una catástrofe nacional.</p>
+    <div class="alert info"><div class="alert-icon">🔑</div><p><strong>Principio fundamental:</strong> Una sola persona puede supervisar efectivamente entre 3 y 7 individuos (span of control óptimo: 5). El SCI garantiza que nadie reciba órdenes de más de un superior simultáneamente.</p></div>
+  </div>
+  <div class="content-section">
+    <h3>Estructura del SCI — 5 Secciones</h3>
+    <div class="svg-container anim-fadein">
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+        <!-- Comandante -->
+        <rect x="240" y="10" width="160" height="45" rx="8" fill="#1D51A3"/>
+        <text x="320" y="30" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">COMANDANTE</text>
+        <text x="320" y="46" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.8)">DEL INCIDENTE</text>
+        <!-- Staff comandante -->
+        <rect x="430" y="15" width="100" height="35" rx="6" fill="#163d7a"/>
+        <text x="480" y="30" text-anchor="middle" font-size="10" fill="#fff">Seguridad</text>
+        <text x="480" y="42" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Información · Enlace</text>
+        <line x1="400" y1="32" x2="430" y2="32" stroke="#F0C319" stroke-width="2"/>
+        <!-- Línea central -->
+        <line x1="320" y1="55" x2="320" y2="90" stroke="#F0C319" stroke-width="2"/>
+        <line x1="60" y1="90" x2="580" y2="90" stroke="#F0C319" stroke-width="2"/>
+        <!-- 5 secciones -->
+        <line x1="60" y1="90" x2="60" y2="115" stroke="#F0C319" stroke-width="2"/>
+        <rect x="10" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
+        <text x="60" y="140" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">OPERACIONES</text>
+        <text x="60" y="156" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Atención</text>
+        <text x="60" y="168" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">directa del</text>
+        <text x="60" y="180" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">incidente</text>
+        <line x1="190" y1="90" x2="190" y2="115" stroke="#F0C319" stroke-width="2"/>
+        <rect x="140" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
+        <text x="190" y="140" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">PLANIFICACIÓN</text>
+        <text x="190" y="156" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Información</text>
+        <text x="190" y="168" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">situacional</text>
+        <text x="190" y="180" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">y pronóstico</text>
+        <line x1="320" y1="90" x2="320" y2="115" stroke="#F0C319" stroke-width="2"/>
+        <rect x="270" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
+        <text x="320" y="140" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">LOGÍSTICA</text>
+        <text x="320" y="156" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Recursos</text>
+        <text x="320" y="168" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">materiales</text>
+        <text x="320" y="180" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">y personal</text>
+        <line x1="450" y1="90" x2="450" y2="115" stroke="#F0C319" stroke-width="2"/>
+        <rect x="400" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
+        <text x="450" y="136" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">FINANZAS/</text>
+        <text x="450" y="150" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">ADMINIST.</text>
+        <text x="450" y="166" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Costos y</text>
+        <text x="450" y="178" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">contratos</text>
+        <line x1="580" y1="90" x2="580" y2="115" stroke="#F0C319" stroke-width="2"/>
+        <rect x="530" y="115" width="100" height="70" rx="8" fill="#dc2626"/>
+        <text x="580" y="136" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">INTELIGENCIA/</text>
+        <text x="580" y="150" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">INVESTIGACIÓN</text>
+        <text x="580" y="166" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Evidencias</text>
+        <text x="580" y="178" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">forenses</text>
+        <!-- Nota span of control -->
+        <text x="320" y="220" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">Span of control óptimo: 1 supervisor → 3-7 subordinados</text>
+      </svg>
+      <figcaption>Estructura del Sistema de Comando de Incidentes — 5 secciones funcionales bajo el Comandante del Incidente</figcaption>
     </div>
-    <div class="mod-item active" data-mod="1" onclick="showModule(1)">
-      <div class="mod-num">1</div>
-      <div class="mod-label">Marco Legal de Gestión de Riesgos</div>
-      <div class="mod-check">✓</div>
+  </div>
+  <div class="content-section">
+    <h3>Fases de Activación del SCI</h3>
+    <div class="steps anim-fadein">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Notificación y activación</h4><p>El primer respondedor asume automáticamente el rol de Comandante del Incidente hasta que llegue alguien de mayor jerarquía. Reportar: qué, dónde, cuántos afectados, recursos necesarios.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Establecimiento del Puesto de Mando (PM)</h4><p>Lugar fijo, visible, seguro y fuera de la zona caliente. Todos los comandantes de sección reportan aquí. Identificar con chaleco o bandera.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Transferencia de mando</h4><p>Cuando llega una autoridad superior, el briefing debe cubrir: situación actual, acciones tomadas, recursos disponibles y comprometidos, pronóstico inmediato.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Desmobilización y documentación</h4><p>Al controlar el incidente: liberar recursos en orden inverso, documentar en formulario ICS-214, generar informe post-incidente en 72h.</p></div></div>
     </div>
-    <div class="mod-item" data-mod="2" onclick="showModule(2)">
-      <div class="mod-num">2</div>
-      <div class="mod-label">Análisis y Evaluación de Riesgos</div>
-      <div class="mod-check">✓</div>
+  </div>
+  <div class="content-section">
+    <h3>Zonas de Intervención</h3>
+    <div class="info-grid anim-fadein">
+      <div class="info-card danger"><h4>Zona Caliente (Roja)</h4><p>Área de máximo peligro. Solo personal con EPP completo y entrenamiento específico. Operaciones de rescate inmediato.</p></div>
+      <div class="info-card gold"><h4>Zona Tibia (Amarilla)</h4><p>Área de descontaminación y estabilización. Reducción del riesgo. Personal de apoyo técnico.</p></div>
+      <div class="info-card green"><h4>Zona Fría (Verde)</h4><p>Área segura. Puesto de mando, triage, atención médica avanzada, medios de comunicación controlados.</p></div>
     </div>
-    <div class="mod-item" data-mod="3" onclick="showModule(3)">
-      <div class="mod-num">3</div>
-      <div class="mod-label">Plan de Emergencia Institucional</div>
-      <div class="mod-check">✓</div>
+  </div>
+  <div class="abp-case anim-fadein">
+    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+    <h4>Escenario: Explosión en planta industrial — 12 heridos</h4>
+    <p>A las 14h30 ocurre una explosión en el área de calderas de una planta industrial. Hay 12 heridos visibles, 3 atrapados, humo denso y riesgo de segunda explosión. Llegan simultáneamente: el jefe de seguridad de la empresa, el equipo de brigadas, una ambulancia del ECU-911 y el camión de bomberos. Cada uno quiere "tomar el mando".</p>
+    <div class="abp-questions">
+      <p>❓ ¿Quién debe ser el Comandante del Incidente y bajo qué criterio se determina?</p>
+      <p>❓ Establece las zonas caliente/tibia/fría para este escenario. ¿Dónde ubicas el puesto de mando?</p>
+      <p>❓ Asigna las 5 secciones del SCI a los actores disponibles en el escenario.</p>
+      <p>❓ ¿Qué información debe contener el briefing de transferencia de mando cuando llegue el Comandante del Cuerpo de Bomberos?</p>
     </div>
-    <div class="mod-item" data-mod="4" onclick="showModule(4)">
-      <div class="mod-num">4</div>
-      <div class="mod-label">Tipos de Brigadas y sus Roles</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="5" onclick="showModule(5)">
-      <div class="mod-num">5</div>
-      <div class="mod-label">Procedimientos de Evacuación</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="6" onclick="showModule(6)">
-      <div class="mod-num">6</div>
-      <div class="mod-label">Comunicación y Coordinación</div>
-      <div class="mod-check">✓</div>
-    </div>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="main" id="mainContent">
-
-    <!-- ====== MODULE 1 ====== -->
-    <div class="module-panel" id="mod-1">
-      <div class="module-header">
-        <span class="module-tag">Módulo 1 de 6</span>
-        <h1 class="module-title">Marco Legal de Gestión de Riesgos en Ecuador</h1>
-        <p class="module-desc">Normativa nacional vigente que regula la gestión de riesgos y las obligaciones de los empleadores ante emergencias en el ámbito laboral ecuatoriano.</p>
-      </div>
-
-      <div class="content-section">
-        <p>Ecuador cuenta con un robusto marco normativo en materia de gestión de riesgos que involucra a múltiples organismos del Estado y obliga a las instituciones públicas y privadas a prepararse ante emergencias. Comprender esta normativa permite a los integrantes de brigadas actuar con respaldo legal, coordinar eficazmente con las autoridades competentes y cumplir con los requisitos que exige el Ministerio del Trabajo (MDT) y el Instituto Ecuatoriano de Seguridad Social (IESS).</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Ley de Seguridad Pública y del Estado — SNGRE</h3>
-        <p>La <strong>Ley de Seguridad Pública y del Estado</strong> (publicada en el Registro Oficial Suplemento 35, de 28 de septiembre de 2009) constituye el instrumento rector de la protección de la ciudadanía ante riesgos y emergencias. En su articulado se crea el <strong>Sistema Nacional Descentralizado de Gestión de Riesgos</strong>, que articula a todos los niveles de gobierno para prevenir, mitigar, preparar, responder y recuperarse ante eventos adversos.</p>
-        <p>La <strong>Secretaría Nacional de Gestión de Riesgos y Emergencias (SNGRE)</strong> es el organismo rector del sistema. Entre sus funciones destacan: emitir lineamientos técnicos para la elaboración de Planes de Emergencia Institucional, coordinar la respuesta a desastres a nivel nacional, certificar a las brigadas de emergencia y supervisar la realización de simulacros obligatorios al menos dos veces al año en todas las instituciones.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>SNGRE</h4>
-            <p>Secretaría Nacional de Gestión de Riesgos y Emergencias. Ente rector de la gestión de riesgos en Ecuador. Emite guías técnicas y certifica planes de emergencia.</p>
-          </div>
-          <div class="info-card green">
-            <h4>COE Nacional</h4>
-            <p>Comité de Operaciones de Emergencia Nacional. Se activa ante emergencias de alcance nacional y coordina la respuesta interinstitucional del Estado ecuatoriano.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Incumplimiento</h4>
-            <p>La falta de Plan de Emergencia y brigadas activas puede generar multas del MDT y observaciones del IESS durante inspecciones de seguridad ocupacional.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Acuerdo Ministerial MDT-2017-0082 y Resolución CD 390 IESS</h3>
-        <p>El <strong>Acuerdo Ministerial MDT-2017-0082</strong> del Ministerio del Trabajo obliga a todos los empleadores con 10 o más trabajadores a conformar brigadas de emergencia, elaborar un Plan de Emergencia Institucional y ejecutar simulacros periódicos. Establece que las brigadas deben contar con al menos un integrante entrenado por cada 25 trabajadores.</p>
-        <p>La <strong>Resolución CD 390 del IESS</strong> —Reglamento del Seguro General de Riesgos del Trabajo— determina los estándares mínimos de seguridad laboral, incluyendo la gestión de emergencias. Establece que el empleador debe reportar al IESS cualquier accidente de trabajo o enfermedad profesional en un plazo máximo de 10 días laborables, y que las condiciones de riesgo no controladas pueden derivar en responsabilidad patronal.</p>
-        <p>Adicionalmente, el <strong>Decreto Ejecutivo 2393</strong> (Reglamento de Seguridad y Salud de los Trabajadores) obliga a mantener equipos de extinción de incendios, vías de evacuación señalizadas y personal capacitado para emergencias en toda instalación laboral.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Obligaciones del Empleador en Gestión de Riesgos</h3>
-        <ul>
-          <li>Elaborar y mantener actualizado el Plan de Emergencia Institucional conforme guías SNGRE</li>
-          <li>Conformar brigadas de emergencia con personal voluntario capacitado</li>
-          <li>Realizar al menos dos simulacros al año y documentarlos</li>
-          <li>Proporcionar equipos de protección personal y equipamiento de emergencia</li>
-          <li>Señalizar rutas de evacuación y puntos de encuentro según NTE INEN 3864-1</li>
-          <li>Reportar incidentes y accidentes al IESS en los plazos establecidos</li>
-          <li>Registrar y archivar las actas de simulacros y evaluaciones para fiscalización</li>
-        </ul>
-      </div>
-
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/1Uv6n2oYOUc" title="Marco Legal de Gestión de Riesgos en Ecuador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 1 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 1</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta y presione "Verificar respuestas".</div>
-
-        <div class="quiz-question" id="q1-1">
-          <div class="quiz-q">1. ¿Qué organismo es el ente rector del Sistema Nacional de Gestión de Riesgos en Ecuador?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q1-1" value="a"> El Ministerio del Trabajo (MDT)</label>
-            <label class="quiz-opt"><input type="radio" name="q1-1" value="b"> La Secretaría Nacional de Gestión de Riesgos y Emergencias (SNGRE)</label>
-            <label class="quiz-opt"><input type="radio" name="q1-1" value="c"> El Instituto Ecuatoriano de Seguridad Social (IESS)</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q1-2">
-          <div class="quiz-q">2. ¿Qué instrumento legal obliga a empleadores con 10 o más trabajadores a conformar brigadas de emergencia?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q1-2" value="a"> Resolución CD 390 del IESS</label>
-            <label class="quiz-opt"><input type="radio" name="q1-2" value="b"> Acuerdo Ministerial MDT-2017-0082</label>
-            <label class="quiz-opt"><input type="radio" name="q1-2" value="c"> Decreto Ejecutivo 2393</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q1-3">
-          <div class="quiz-q">3. Según la normativa vigente, ¿cuántos simulacros mínimos debe realizar una institución al año?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q1-3" value="a"> Uno al año como mínimo</label>
-            <label class="quiz-opt"><input type="radio" name="q1-3" value="b"> Dos al año como mínimo</label>
-            <label class="quiz-opt"><input type="radio" name="q1-3" value="c"> Cuatro al año como mínimo</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(1)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-1"></div>
-      </div>
-
-      <div class="module-nav">
-        <span></span>
-        <button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente módulo →</button>
-      </div>
-    </div>
-
-    <!-- ====== MODULE 2 ====== -->
-    <div class="module-panel" id="mod-2" style="display:none">
-      <div class="module-header">
-        <span class="module-tag">Módulo 2 de 6</span>
-        <h1 class="module-title">Análisis y Evaluación de Riesgos</h1>
-        <p class="module-desc">Metodologías para identificar, valorar y priorizar amenazas naturales y antrópicas en el entorno institucional ecuatoriano.</p>
-      </div>
-
-      <div class="content-section">
-        <p>El análisis de riesgos es el pilar técnico sobre el que se construye todo plan de emergencia. Permite conocer con precisión cuáles son las amenazas a las que está expuesta una institución, cuál es su vulnerabilidad frente a ellas y qué nivel de riesgo representan para las personas, los bienes y las operaciones. En Ecuador, la alta sismicidad, la presencia de volcanes activos y la variabilidad climática hacen que este análisis sea especialmente relevante y dinámico.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Amenazas Naturales en Ecuador</h3>
-        <p>Ecuador es uno de los países con mayor diversidad de amenazas naturales en América Latina, dada su posición geográfica en el Cinturón de Fuego del Pacífico y la influencia de los fenómenos hidrometeorológicos:</p>
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>Sismos</h4>
-            <p>Ecuador está atravesado por la zona de subducción de la placa de Nazca. Eventos históricos como el terremoto de Pedernales 2016 (Mw 7.8) evidencian el alto riesgo sísmico en costa y sierra.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Erupciones Volcánicas</h4>
-            <p>Volcanes activos como el Cotopaxi, Tungurahua, Reventador y Sangay exigen protocolos específicos de evacuación y manejo de flujos piroclásticos y lahares.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Inundaciones y Deslizamientos</h4>
-            <p>El Fenómeno del Niño y la deforestación intensifican las inundaciones en la Costa y los movimientos en masa en la Sierra. Representan la mayor frecuencia de emergencias registradas.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Amenazas Antrópicas</h3>
-        <p>Las amenazas de origen humano son igualmente críticas en el contexto laboral:</p>
-        <ul>
-          <li><strong>Incendios:</strong> cortocircuitos, inflamables mal almacenados, fallas en equipos de calor. Principal causa de siniestros en industria y comercio.</li>
-          <li><strong>Derrames de sustancias peligrosas:</strong> manipulación de químicos, combustibles o reactivos sin protocolos adecuados.</li>
-          <li><strong>Explosiones:</strong> acumulación de gases inflamables, presión excesiva en recipientes o errores en procesos industriales.</li>
-          <li><strong>Sabotaje y amenazas de bomba:</strong> situaciones que requieren evacuación preventiva y coordinación con la Policía Nacional.</li>
-          <li><strong>Fallas tecnológicas críticas:</strong> cortes de energía prolongados, fallos en sistemas de control industrial.</li>
-        </ul>
-      </div>
-
-      <div class="content-section">
-        <h3>Matriz de Riesgos y Método William Fine</h3>
-        <p>La <strong>Matriz de Riesgos</strong> es la herramienta estándar para valorar el nivel de riesgo combinando la probabilidad de ocurrencia con la severidad de las consecuencias. El resultado orienta la priorización de acciones preventivas y correctivas.</p>
-        <p>El <strong>Método William Fine</strong> amplía este análisis incorporando el factor de exposición. La fórmula es: <strong>Grado de Peligro (GP) = Consecuencia × Exposición × Probabilidad</strong>. Los valores obtenidos permiten clasificar el riesgo en: muy alto (&gt;400), alto (200-400), notable (70-200), posible (20-70), aceptable (&lt;20). Esta metodología está reconocida por el IESS para la evaluación de riesgos laborales en Ecuador.</p>
-        <p>El <strong>Mapa de Riesgos Institucional</strong> es la representación gráfica de las amenazas identificadas, los recursos disponibles (extintores, botiquines, salidas de emergencia) y las rutas de evacuación. Debe actualizarse cada vez que se produzcan cambios en la infraestructura o los procesos.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>Probabilidad</h4>
-            <p>Escala 1-5: 1 = Raro (una vez en 5 años o más), 3 = Posible (una vez al año), 5 = Casi cierto (ocurre regularmente).</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Consecuencia</h4>
-            <p>Escala 1-5: 1 = Insignificante (sin lesiones), 3 = Moderada (lesiones tratables), 5 = Catastrófica (muertes o pérdida total).</p>
-          </div>
-          <div class="info-card green">
-            <h4>Nivel de Riesgo</h4>
-            <p>Probabilidad × Consecuencia: 1-4 Bajo, 5-12 Moderado, 13-24 Alto, 25 Crítico. Los riesgos altos y críticos requieren acción inmediata.</p>
-          </div>
-        </div>
-      </div>
-
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/ZGNlLKiGBJE" title="Análisis y Evaluación de Riesgos en Ecuador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 2 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 2</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
-        <div class="quiz-question" id="q2-1">
-          <div class="quiz-q">1. ¿Cuál es la fórmula del Grado de Peligro según el Método William Fine?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q2-1" value="a"> Consecuencia + Exposición + Probabilidad</label>
-            <label class="quiz-opt"><input type="radio" name="q2-1" value="b"> Consecuencia × Exposición × Probabilidad</label>
-            <label class="quiz-opt"><input type="radio" name="q2-1" value="c"> Probabilidad ÷ Consecuencia × 100</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q2-2">
-          <div class="quiz-q">2. ¿Cuál de las siguientes es una amenaza de origen antrópico?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q2-2" value="a"> Erupción del volcán Cotopaxi</label>
-            <label class="quiz-opt"><input type="radio" name="q2-2" value="b"> Incendio por cortocircuito en instalaciones eléctricas</label>
-            <label class="quiz-opt"><input type="radio" name="q2-2" value="c"> Inundación por desbordamiento de un río</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q2-3">
-          <div class="quiz-q">3. ¿Para qué sirve el Mapa de Riesgos Institucional?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q2-3" value="a"> Indicar la ubicación de los baños y áreas de descanso</label>
-            <label class="quiz-opt"><input type="radio" name="q2-3" value="b"> Representar gráficamente amenazas, recursos de emergencia y rutas de evacuación</label>
-            <label class="quiz-opt"><input type="radio" name="q2-3" value="c"> Establecer el organigrama del departamento de seguridad</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(2)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-2"></div>
-      </div>
-
-      <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente módulo →</button>
-      </div>
-    </div>
-
-    <!-- ====== MODULE 3 ====== -->
-    <div class="module-panel" id="mod-3" style="display:none">
-      <div class="module-header">
-        <span class="module-tag">Módulo 3 de 6</span>
-        <h1 class="module-title">Plan de Emergencia Institucional</h1>
-        <p class="module-desc">Estructura, componentes y procedimientos del Plan de Emergencia según los lineamientos de la SNGRE para instituciones ecuatorianas.</p>
-      </div>
-
-      <div class="content-section">
-        <p>El Plan de Emergencia Institucional (PEI) es el documento técnico-operativo que establece las acciones preventivas, de respuesta y de recuperación que debe seguir una institución ante una emergencia. La SNGRE ha desarrollado una guía metodológica estandarizada que toda organización pública o privada con más de 10 trabajadores está obligada a implementar. Un plan bien estructurado reduce significativamente las pérdidas humanas y materiales durante un evento adverso.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Componentes del Plan de Emergencia (según SNGRE)</h3>
-        <p>La guía técnica de la SNGRE establece que todo PEI debe contener los siguientes componentes:</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Descripción de la Institución</h4><p>Datos generales, ubicación geográfica, tipo de actividad, número de trabajadores, horarios y características de la infraestructura.</p></div></div>
-          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Identificación de Amenazas y Vulnerabilidades</h4><p>Análisis de riesgos institucional con matriz de probabilidad-consecuencia y mapa de riesgos actualizado.</p></div></div>
-          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Estructura Organizativa de Emergencias</h4><p>Conformación del Comité de Operaciones de Emergencia (COE) institucional, brigadas y responsabilidades de cada integrante.</p></div></div>
-          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Procedimientos Operativos Normalizados (PON)</h4><p>Protocolos paso a paso para cada tipo de emergencia: incendio, sismo, erupción volcánica, derrame químico, evacuación.</p></div></div>
-          <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Directorio de Emergencias y Recursos</h4><p>Contactos del ECU 911, Bomberos, Cruz Roja, Policía, hospitales cercanos y lista de equipamiento de emergencia disponible.</p></div></div>
-          <div class="step"><div class="step-num">6</div><div class="step-body"><h4>Programa de Simulacros y Capacitación</h4><p>Cronograma anual de simulacros, temas de capacitación por brigada y registro de actividades realizadas.</p></div></div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Procedimientos Operativos Normalizados (PON)</h3>
-        <p>Los PON son instrucciones claras, concisas y secuenciales que indican a cada integrante de la organización qué hacer, cómo hacerlo y en qué orden durante una emergencia específica. Su redacción debe ser comprensible para todos los trabajadores, independientemente de su nivel educativo. Cada PON incluye: objetivo, alcance, activadores del protocolo, secuencia de acciones, responsables y registros a completar.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>PON de Incendio</h4>
-            <p>Activación de alarma, confinamiento del fuego, evacuación, control por brigada contraincendios, notificación al Cuerpo de Bomberos y gestión del punto de encuentro.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>PON de Sismo</h4>
-            <p>Protegerse, cubrirse, sujetarse (PCS). Al cesar el movimiento: evacuación ordenada por rutas establecidas, verificación de daños y corte de servicios básicos.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Revisión y Actualización</h4>
-            <p>El PEI debe revisarse anualmente o cada vez que cambien la infraestructura, el personal o los procesos. La SNGRE puede solicitar el plan en cualquier momento de fiscalización.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>PEI: documento técnico-operativo obligatorio para instituciones con 10 o más trabajadores</li>
-          <li>SNGRE emite la guía metodológica estandarizada para elaborar el PEI</li>
-          <li>El COE institucional activa y coordina la respuesta durante la emergencia</li>
-          <li>Los PON deben ser claros, secuenciales y conocidos por todos los trabajadores</li>
-          <li>El directorio de emergencias debe incluir ECU 911, Bomberos, Cruz Roja y Policía</li>
-          <li>Actualización obligatoria: mínimo una vez al año o ante cambios relevantes</li>
-          <li>Los registros y actas de simulacros son documentos exigibles por la SNGRE y el MDT</li>
-        </ul>
-      </div>
-
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/Xv-4nWH5GQI" title="Plan de Emergencia Institucional - SNGRE Ecuador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 3 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 3</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
-        <div class="quiz-question" id="q3-1">
-          <div class="quiz-q">1. ¿Con qué frecuencia mínima debe revisarse el Plan de Emergencia Institucional?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q3-1" value="a"> Cada cinco años</label>
-            <label class="quiz-opt"><input type="radio" name="q3-1" value="b"> Anualmente o ante cambios relevantes en la institución</label>
-            <label class="quiz-opt"><input type="radio" name="q3-1" value="c"> Solo cuando la SNGRE lo solicite explícitamente</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q3-2">
-          <div class="quiz-q">2. ¿Qué son los Procedimientos Operativos Normalizados (PON)?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q3-2" value="a"> Manuales técnicos exclusivos para el jefe de seguridad</label>
-            <label class="quiz-opt"><input type="radio" name="q3-2" value="b"> Instrucciones claras y secuenciales sobre qué hacer durante una emergencia específica</label>
-            <label class="quiz-opt"><input type="radio" name="q3-2" value="c"> Formularios de reporte de accidentes al IESS</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q3-3">
-          <div class="quiz-q">3. ¿Cuántos trabajadores mínimos debe tener una empresa para estar obligada a contar con un Plan de Emergencia?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q3-3" value="a"> 25 trabajadores</label>
-            <label class="quiz-opt"><input type="radio" name="q3-3" value="b"> 10 trabajadores</label>
-            <label class="quiz-opt"><input type="radio" name="q3-3" value="c"> 50 trabajadores</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(3)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-3"></div>
-      </div>
-
-      <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente módulo →</button>
-      </div>
-    </div>
-
-    <!-- ====== MODULE 4 ====== -->
-    <div class="module-panel" id="mod-4" style="display:none">
-      <div class="module-header">
-        <span class="module-tag">Módulo 4 de 6</span>
-        <h1 class="module-title">Tipos de Brigadas y sus Roles</h1>
-        <p class="module-desc">Estructura, funciones y coordinación de las brigadas de emergencia y activación del COE institucional en el contexto ecuatoriano.</p>
-      </div>
-
-      <div class="content-section">
-        <p>Las brigadas de emergencia son grupos de trabajadores voluntarios, organizados y capacitados para responder con eficacia ante situaciones que pongan en riesgo la integridad de las personas o los bienes de la institución. La normativa ecuatoriana —específicamente el Acuerdo Ministerial MDT-2017-0082— establece que las brigadas deben operar de forma coordinada bajo la estructura del Comité de Operaciones de Emergencia (COE) institucional. Cada brigada tiene un rol específico, un jefe de brigada y procedimientos definidos.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Brigadas Fundamentales</h3>
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>Brigada de Primeros Auxilios</h4>
-            <p>Brinda atención inmediata a lesionados. Estabiliza a las víctimas hasta la llegada del ECU 911. Debe contar con botiquín completo y formación certificada en primeros auxilios básicos.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Brigada Contraincendios</h4>
-            <p>Controla y extingue conatos de incendio usando el método RACE (Rescatar, Alarmar, Confinar, Extinguir). Opera extintores y sistemas fijos. Coordina con el Cuerpo de Bomberos.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Brigada de Evacuación</h4>
-            <p>Dirige el desalojo ordenado y seguro del personal. Controla las rutas de evacuación, asiste a personas con movilidad reducida y realiza el conteo en el punto de encuentro.</p>
-          </div>
-        </div>
-        <div class="info-grid">
-          <div class="info-card" style="border-left-color:#7c3aed">
-            <h4>Brigada de Comunicación</h4>
-            <p>Gestiona la comunicación interna (sistemas de alerta y altavoces) y externa (con ECU 911, medios de comunicación, familia de afectados). Controla la información en redes sociales.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Brigada de Búsqueda y Rescate</h4>
-            <p>En instalaciones con riesgos específicos (industria, altura, espacios confinados), localiza y rescata a personas atrapadas hasta la llegada del Cuerpo de Bomberos.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Coordinación entre Brigadas y COE Institucional</h3>
-        <p>El <strong>Comité de Operaciones de Emergencia (COE) Institucional</strong> es el órgano de toma de decisiones durante la emergencia. Está conformado por el representante legal o su delegado, el responsable de seguridad y salud ocupacional, los jefes de cada brigada y, cuando aplica, el responsable de comunicaciones.</p>
-        <p>La activación del COE sigue un protocolo definido: (1) Se recibe la alarma o aviso de emergencia; (2) El jefe de brigada correspondiente evalúa la situación; (3) Si supera la capacidad de respuesta interna, se activa el COE; (4) El COE decide si se solicita apoyo externo (ECU 911, Bomberos, Cruz Roja); (5) Se establece el puesto de mando en el punto de encuentro principal; (6) Se documentan todas las acciones.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>Jefe de Brigada</h4>
-            <p>Coordina a su equipo durante la emergencia, informa al COE del estado de la situación y decide el uso de los recursos disponibles en su área de responsabilidad.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Perfil del Brigadista</h4>
-            <p>Voluntario, con autocontrol emocional, capacitado formalmente (certificado), disponible durante el horario laboral y con actualización anual obligatoria de sus competencias.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Relevo de Brigadas</h4>
-            <p>En emergencias de larga duración, debe planificarse el relevo de brigadistas para evitar la fatiga operativa. El COE gestiona los turnos y el apoyo logístico.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>Cuatro brigadas fundamentales: primeros auxilios, contraincendios, evacuación y comunicación</li>
-          <li>Método RACE para incendios: Rescatar, Alarmar, Confinar, Extinguir</li>
-          <li>El COE institucional toma decisiones estratégicas durante la emergencia</li>
-          <li>Cada brigada tiene un jefe responsable de coordinar al equipo</li>
-          <li>La brigada de evacuación realiza el conteo de personal en el punto de encuentro</li>
-          <li>La brigada de comunicación gestiona también la información en redes sociales</li>
-          <li>Ratio mínimo: un brigadista capacitado por cada 25 trabajadores (MDT-2017-0082)</li>
-        </ul>
-      </div>
-
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/ZqGEIBpZQEs" title="Tipos de Brigadas de Emergencia y sus Roles" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 4 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 4</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
-        <div class="quiz-question" id="q4-1">
-          <div class="quiz-q">1. ¿Qué brigada es responsable de dirigir el desalojo ordenado del personal y verificar el conteo en el punto de encuentro?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q4-1" value="a"> Brigada de primeros auxilios</label>
-            <label class="quiz-opt"><input type="radio" name="q4-1" value="b"> Brigada de evacuación</label>
-            <label class="quiz-opt"><input type="radio" name="q4-1" value="c"> Brigada contraincendios</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q4-2">
-          <div class="quiz-q">2. ¿Qué significa el acrónimo RACE en el contexto de la brigada contraincendios?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q4-2" value="a"> Rescatar, Avisar, Coordinar, Evacuar</label>
-            <label class="quiz-opt"><input type="radio" name="q4-2" value="b"> Rescatar, Alarmar, Confinar, Extinguir</label>
-            <label class="quiz-opt"><input type="radio" name="q4-2" value="c"> Responder, Apagar, Controlar, Evaluar</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q4-3">
-          <div class="quiz-q">3. ¿Cuál es la función principal del COE Institucional durante una emergencia?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q4-3" value="a"> Atender directamente a los lesionados en el lugar del accidente</label>
-            <label class="quiz-opt"><input type="radio" name="q4-3" value="b"> Tomar decisiones estratégicas y coordinar la respuesta institucional ante la emergencia</label>
-            <label class="quiz-opt"><input type="radio" name="q4-3" value="c"> Redactar el informe de accidente para el IESS</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(4)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-4"></div>
-      </div>
-
-      <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente módulo →</button>
-      </div>
-    </div>
-
-    <!-- ====== MODULE 5 ====== -->
-    <div class="module-panel" id="mod-5" style="display:none">
-      <div class="module-header">
-        <span class="module-tag">Módulo 5 de 6</span>
-        <h1 class="module-title">Procedimientos de Evacuación</h1>
-        <p class="module-desc">Protocolos para el desalojo seguro de instalaciones, señalización según NTE INEN 3864-1 y atención a personas con movilidad reducida.</p>
-      </div>
-
-      <div class="content-section">
-        <p>La evacuación es el procedimiento mediante el cual se desplaza a las personas desde una zona de peligro hacia una zona segura de forma ordenada, rápida y segura. Una evacuación bien ejecutada puede salvar vidas; una mal planificada puede causar lesiones adicionales por pánico, aglomeración o desorientación. La brigada de evacuación tiene la responsabilidad central en este proceso, apoyada por la señalización establecida en la <strong>NTE INEN 3864-1</strong> (señales de seguridad).</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Señal de Alarma: Reconocimiento y Respuesta</h3>
-        <p>El sistema de alarma es el primer activador del procedimiento de evacuación. Toda institución debe contar con una señal de alarma audible en todas las áreas de trabajo. Los trabajadores deben conocer y distinguir:</p>
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>Alarma de Evacuación</h4>
-            <p>Señal continua o intermitente según el protocolo institucional. Indica abandono inmediato del área. Ningún objeto o documento justifica demorar la evacuación.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Alarma de Conato</h4>
-            <p>En algunos sistemas, una señal diferenciada indica alerta por conato de incendio controlable. Solo el personal de brigada responde; el resto permanece en alerta sin evacuar aún.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Señal de Todo Claro</h4>
-            <p>Indica que la emergencia ha sido controlada y que es seguro regresar. Solo el jefe de brigada o el COE institucional puede emitir esta señal. Nunca regrese sin autorización.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Rutas de Evacuación, Puntos de Encuentro y Conteo</h3>
-        <p>Las <strong>rutas de evacuación</strong> son los caminos previamente identificados y señalizados que conducen desde cualquier área de la instalación hacia las salidas de emergencia y el punto de encuentro. Deben cumplir con los siguientes criterios: anchura mínima de 1,20 metros, libre de obstáculos permanentes, señalizadas con la flecha verde según NTE INEN 3864-1, iluminación de emergencia operativa y puertas antipánico en sentido de apertura hacia la salida.</p>
-        <p>El <strong>punto de encuentro</strong> es el lugar exterior predefinido, alejado de la edificación y accesible para vehículos de emergencia, donde el personal se reúne tras la evacuación. Debe estar señalizado y ser conocido por todos los trabajadores. En él, el jefe de la brigada de evacuación realiza el <strong>conteo de personal</strong> verificando la lista de trabajadores presentes y reportando cualquier persona no localizada al COE.</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Activación de la alarma</h4><p>Al escuchar la señal, suspenda toda actividad, guarde equipos peligrosos si puede hacerlo en segundos, tome sus objetos personales esenciales (no bagaje) y diríjase a la salida más cercana.</p></div></div>
-          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Desplazamiento por la ruta de evacuación</h4><p>Camine rápido pero sin correr. No use ascensores. Cierre puertas a su paso sin llegar a trabarlas. Siga las indicaciones de los brigadistas y la señalización.</p></div></div>
-          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Llegada al punto de encuentro</h4><p>Reporte su presencia al jefe de brigada. Permanezca en el punto de encuentro hasta recibir instrucciones. No regrese al edificio sin autorización expresa del COE.</p></div></div>
-          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Conteo y reporte</h4><p>El brigadista verifica la lista de personal. Si falta alguien, reporta al COE indicando nombre, área de trabajo y última ubicación conocida. No intente búsquedas sin entrenamiento.</p></div></div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Personas con Movilidad Reducida y Regreso Seguro</h3>
-        <p>La brigada de evacuación debe tener identificado con antelación a todo el personal con movilidad reducida, discapacidad visual, auditiva u otras condiciones que requieran asistencia durante la evacuación. Se deben designar compañeros de asistencia para cada persona en situación de vulnerabilidad. En edificios de varios pisos, se establece una <strong>área de refugio</strong> en cada piso (generalmente en cajas de escaleras presurizadas) donde la persona espera asistencia especializada del Cuerpo de Bomberos si no puede descender.</p>
-        <p>El <strong>regreso seguro</strong> al área de trabajo solo se autoriza cuando: (1) el COE o el jefe de brigada emite la señal de todo claro; (2) se ha verificado que no existen daños estructurales o riesgos activos; (3) se han restablecido las condiciones seguras de trabajo. En caso de sismos, debe esperarse la evaluación de la estructura por un profesional antes del reingreso.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>NTE INEN 3864-1</h4>
-            <p>Norma técnica ecuatoriana para señales de seguridad. Define colores, formas y símbolos para salidas de emergencia, rutas de evacuación, equipos de seguridad y prohibiciones.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Errores Frecuentes</h4>
-            <p>Usar ascensores, devolverse por objetos, bloquear rutas, no respetar el punto de encuentro designado o regresar al edificio sin autorización del COE.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Tiempo de Evacuación</h4>
-            <p>El objetivo es evacuar la totalidad del personal en menos de 3 minutos para edificios de hasta 4 pisos. Los simulacros permiten identificar cuellos de botella y mejorar los tiempos.</p>
-          </div>
-        </div>
-      </div>
-
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/VUf7tDLcGSQ" title="Procedimientos de Evacuación de Emergencia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 5 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 5</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
-        <div class="quiz-question" id="q5-1">
-          <div class="quiz-q">1. ¿Qué norma técnica ecuatoriana regula la señalización de seguridad en las vías de evacuación?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q5-1" value="a"> NTE INEN 440 (Colores de Identificación)</label>
-            <label class="quiz-opt"><input type="radio" name="q5-1" value="b"> NTE INEN 3864-1 (Señales de Seguridad)</label>
-            <label class="quiz-opt"><input type="radio" name="q5-1" value="c"> ISO 45001 (Sistemas de Gestión de SSO)</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q5-2">
-          <div class="quiz-q">2. ¿Quién está autorizado a emitir la señal de "todo claro" para el regreso al área de trabajo?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q5-2" value="a"> Cualquier trabajador que verifique visualmente que no hay humo</label>
-            <label class="quiz-opt"><input type="radio" name="q5-2" value="b"> El jefe de brigada o el COE institucional, tras verificar que es seguro</label>
-            <label class="quiz-opt"><input type="radio" name="q5-2" value="c"> El trabajador de mayor antigüedad en la empresa</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q5-3">
-          <div class="quiz-q">3. ¿Qué se debe hacer en edificios de varios pisos con una persona con movilidad reducida que no puede descender por las escaleras?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q5-3" value="a"> Llevarla en brazos inmediatamente por las escaleras</label>
-            <label class="quiz-opt"><input type="radio" name="q5-3" value="b"> Ubicarla en el área de refugio del piso y notificar al COE para asistencia especializada</label>
-            <label class="quiz-opt"><input type="radio" name="q5-3" value="c"> Dejarla en su puesto de trabajo hasta que lleguen los bomberos</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(5)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-5"></div>
-      </div>
-
-      <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente módulo →</button>
-      </div>
-    </div>
-
-    <!-- ====== MODULE 6 ====== -->
-    <div class="module-panel" id="mod-6" style="display:none">
-      <div class="module-header">
-        <span class="module-tag">Módulo 6 de 6</span>
-        <h1 class="module-title">Comunicación y Coordinación en Emergencias</h1>
-        <p class="module-desc">Activación del ECU 911, coordinación con organismos de socorro, manejo de información y realización de simulacros conforme a lineamientos SNGRE.</p>
-      </div>
-
-      <div class="content-section">
-        <p>Una emergencia mal comunicada puede convertirse en un caos que multiplica las víctimas y dificulta la respuesta de los organismos de socorro. La brigada de comunicación y el COE institucional tienen la responsabilidad de garantizar que la información correcta llegue a las personas correctas en el momento oportuno, tanto hacia adentro de la organización como hacia los servicios de emergencia externos. En Ecuador, el <strong>ECU 911</strong> es el sistema integrado de respuesta que articula a todos los organismos de socorro del país.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>ECU 911: Cuándo y Cómo Activarlo</h3>
-        <p>El <strong>ECU 911</strong> es el Sistema Integrado de Seguridad que coordina la respuesta de Policía Nacional, Fuerzas Armadas, Cuerpo de Bomberos, Cruz Roja Ecuatoriana, servicios de salud (hospitales y ambulancias del MSP e IESS) y Secretaría de Gestión de Riesgos ante una emergencia. Se activa marcando el número <strong>911</strong> desde cualquier teléfono fijo o celular en Ecuador, de forma gratuita, las 24 horas del día, los 365 días del año.</p>
-        <p>Al llamar al 911, comunique con claridad: (1) Tipo de emergencia (incendio, accidente, derrame, etc.); (2) Dirección exacta con referencias claras; (3) Número de víctimas y estado aparente; (4) Su nombre y número de contacto; (5) Si hay riesgo para los respondientes (explosivos, gases, material peligroso). No cuelgue hasta que el operador lo indique.</p>
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>Cuándo Activar el 911</h4>
-            <p>Incendio que supera la capacidad de la brigada, accidente con lesionados, derrame de sustancias peligrosas, amenaza de bomba, evento sísmico con daños estructurales o víctimas.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Información Esencial</h4>
-            <p>Tipo de emergencia — Dirección exacta — Número de afectados — Estado de las víctimas — Riesgos adicionales para los respondientes.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Llamadas Falsas</h4>
-            <p>Las llamadas falsas al 911 son un delito tipificado en el Código Orgánico Integral Penal (COIP). Distraen recursos vitales de emergencias reales y pueden costar vidas.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Relación con Organismos de Socorro y Manejo de Medios</h3>
-        <p>Al llegar los organismos de socorro (Bomberos, Cruz Roja, Policía), el jefe de brigada o el responsable del COE institucional debe: (1) Presentarse como el coordinador institucional; (2) Brindar información sobre el tipo de emergencia, número de personas involucradas y plano del edificio; (3) Ceder el mando táctico al organismo de socorro competente; (4) Mantener el control de su personal de brigada para apoyar cuando se les solicite.</p>
-        <p>En cuanto al <strong>manejo de medios de comunicación y redes sociales</strong>, solo el vocero designado por el COE puede dar declaraciones oficiales. Difundir información no verificada o especulativa puede causar pánico, obstaculizar la respuesta y generar responsabilidades legales para la institución. Durante la emergencia, es fundamental: no publicar imágenes de víctimas, no revelar datos de personas no localizadas antes de confirmar con sus familias, y centralizar toda la comunicación externa en el vocero oficial.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>Cuerpo de Bomberos</h4>
-            <p>Responde ante incendios, rescates en altura, espacios confinados y materiales peligrosos. Al llegar asumen el mando táctico del control del siniestro.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Cruz Roja Ecuatoriana</h4>
-            <p>Brinda atención prehospitalaria, traslado de heridos y apoyo psicosocial en eventos con múltiples víctimas. Coordina con el MSP y el IESS.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Policía Nacional</h4>
-            <p>Controla el perímetro de seguridad, gestiona el tránsito para el ingreso de ambulancias y bomberos, e investiga las causas del evento si hay indicios de delito.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section">
-        <h3>Informe Post-Emergencia y Simulacros SNGRE</h3>
-        <p>Toda emergencia real o simulacro debe culminar con la elaboración del <strong>Informe Post-Emergencia</strong>. Este documento recoge: descripción cronológica del evento, recursos utilizados, número de personas evacuadas o afectadas, actuación de cada brigada, fallas detectadas en el procedimiento, lesiones o daños materiales y recomendaciones de mejora. Este informe alimenta la actualización del Plan de Emergencia Institucional.</p>
-        <p>Los <strong>simulacros</strong> son ejercicios prácticos programados que permiten verificar la eficacia del Plan de Emergencia y entrenar a las brigadas en condiciones controladas. La SNGRE distingue tres tipos: (1) <strong>Simulacro de escritorio</strong>: análisis de escenarios sin movilización física; (2) <strong>Simulacro parcial</strong>: involucra a un área o brigada específica; (3) <strong>Simulacro general</strong>: moviliza a toda la institución, incluyendo evacuación completa y coordinación con servicios externos. La planificación incluye: definición del escenario, rol de los actores, observadores externos y lista de verificación para la evaluación.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>ECU 911: número gratuito de emergencias, disponible 24/7 en todo Ecuador</li>
-          <li>Al llamar: tipo de emergencia, dirección, víctimas, riesgos adicionales y nombre del reportante</li>
-          <li>Las llamadas falsas al 911 son un delito tipificado en el COIP</li>
-          <li>Al llegar los bomberos, el COE cede el mando táctico del siniestro</li>
-          <li>Solo el vocero designado por el COE puede declarar a los medios</li>
-          <li>El Informe Post-Emergencia es obligatorio tras cualquier evento real o simulacro</li>
-          <li>Tipos de simulacro SNGRE: escritorio, parcial y general</li>
-        </ul>
-      </div>
-
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/g8wRjxk6U-E" title="Comunicación y Coordinación en Emergencias - Ecuador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 6 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 6</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
-        <div class="quiz-question" id="q6-1">
-          <div class="quiz-q">1. ¿Cuál es el número de emergencias del Sistema Integrado ECU 911 en Ecuador?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q6-1" value="a"> 110</label>
-            <label class="quiz-opt"><input type="radio" name="q6-1" value="b"> 911</label>
-            <label class="quiz-opt"><input type="radio" name="q6-1" value="c"> 102</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q6-2">
-          <div class="quiz-q">2. Al llegar el Cuerpo de Bomberos a una emergencia, ¿qué debe hacer el jefe de brigada institucional?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q6-2" value="a"> Continuar dirigiendo la respuesta de forma independiente</label>
-            <label class="quiz-opt"><input type="radio" name="q6-2" value="b"> Ceder el mando táctico a los bomberos y brindar la información que necesiten</label>
-            <label class="quiz-opt"><input type="radio" name="q6-2" value="c"> Retirar a todo el personal de brigada del área para no interferir</label>
-          </div>
-        </div>
-        <div class="quiz-question" id="q6-3">
-          <div class="quiz-q">3. ¿Qué tipo de simulacro moviliza a toda la institución incluyendo evacuación completa y coordinación con servicios externos?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q6-3" value="a"> Simulacro de escritorio</label>
-            <label class="quiz-opt"><input type="radio" name="q6-3" value="b"> Simulacro general</label>
-            <label class="quiz-opt"><input type="radio" name="q6-3" value="c"> Simulacro parcial</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(6)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-6"></div>
-      </div>
-
-      <!-- COMPLETION CARD -->
-      <div class="completion-card" id="completionCard">
-        <div class="cert-icon">🎓</div>
-        <h2>¡Curso Completado!</h2>
-        <p>Ha finalizado todos los módulos del curso <strong>Brigadas de Emergencia</strong>. Su capacitación contribuye a un entorno laboral más seguro y resiliente para todos en Ecuador. Recuerde: la preparación es la mejor respuesta ante cualquier emergencia.</p>
-        <button class="btn-cert" onclick="alert('Su certificado de finalización está siendo generado. Recibirá una notificación por correo electrónico.')">Obtener Certificado Oficial</button>
-      </div>
-
-      <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(6)" id="finishBtn">Finalizar curso ✓</button>
-      </div>
-    </div>
-
-  </main>
+  </div>
+  <div class="content-section">
+    <h3>Video de Referencia</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/YUDGceSIuik" title="Sistema de Comando de Incidentes SCI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  </div>
+  <div class="quiz-section">
+    <div class="quiz-title">Verificación — Módulo 1</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
+    <div class="quiz-question"><div class="quiz-q">1. ¿Cuál es el span of control óptimo en el SCI?</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 1 supervisor por 10 subordinados</label><label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 1 supervisor por 3 a 7 subordinados</label><label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 2 supervisores por 20 subordinados</label><label class="quiz-opt"><input type="radio" name="q1a" value="d"> d) No hay límite establecido</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">2. La Zona Caliente en el SCI corresponde a:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) El área del puesto de mando</label><label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) El área de triage y atención médica avanzada</label><label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) El área de máximo peligro donde solo entra personal con EPP completo</label><label class="quiz-opt"><input type="radio" name="q1b" value="d"> d) La zona de descontaminación</label></div></div>
+    <button class="quiz-submit" onclick="checkMiniQuiz('mod1',{'q1a':'b','q1b':'c'})">Verificar</button>
+    <div class="quiz-result" id="mod1-result"></div>
+  </div>
+  <div class="module-nav"><span></span><button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente: Triage START →</button></div>
 </div>
 
-<!-- MOBILE NAV -->
-<nav class="mob-nav">
-  <div class="mob-nav-inner">
-    <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><span class="mob-tab-icon">📋</span><span class="mob-tab-label">M1 Legal</span></div>
-    <div class="mob-tab" data-mod="2" onclick="showModule(2)"><span class="mob-tab-icon">⚠️</span><span class="mob-tab-label">M2 Riesgos</span></div>
-    <div class="mob-tab" data-mod="3" onclick="showModule(3)"><span class="mob-tab-icon">📄</span><span class="mob-tab-label">M3 Plan</span></div>
-    <div class="mob-tab" data-mod="4" onclick="showModule(4)"><span class="mob-tab-icon">🚒</span><span class="mob-tab-label">M4 Brigadas</span></div>
-    <div class="mob-tab" data-mod="5" onclick="showModule(5)"><span class="mob-tab-icon">🚪</span><span class="mob-tab-label">M5 Evacuación</span></div>
-    <div class="mob-tab" data-mod="6" onclick="showModule(6)"><span class="mob-tab-icon">📡</span><span class="mob-tab-label">M6 Comunicación</span></div>
+<!-- ===== MÓDULO 2 ===== -->
+<div class="module-panel" id="mod-2">
+  <div class="module-header">
+    <span class="module-tag">Módulo 2 de 6</span>
+    <h1 class="module-title">Triage START — Clasificación de Víctimas en Masa</h1>
+    <p class="module-desc">El método START (Simple Triage And Rapid Treatment) permite clasificar múltiples víctimas en 30-60 segundos por víctima para optimizar el uso de recursos médicos limitados.</p>
   </div>
-</nav>
+  <div class="norm-ref"><strong>Base normativa:</strong> OPS/OMS — Clasificación de Víctimas · AHA 2020 (RCP) · ATLS (Advanced Trauma Life Support) · Protocolo ECU-911</div>
+  <div class="content-section">
+    <h3>Sistema de Colores START</h3>
+    <div class="svg-container anim-fadein">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+        <!-- Rojo -->
+        <rect x="10" y="20" width="130" height="160" rx="10" fill="#dc2626"/>
+        <text x="75" y="50" text-anchor="middle" font-size="28" fill="#fff">🔴</text>
+        <text x="75" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">ROJO</text>
+        <text x="75" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">INMEDIATA</text>
+        <text x="75" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Riesgo vital</text>
+        <text x="75" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">tratable.</text>
+        <text x="75" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Atención en</text>
+        <text x="75" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">&lt; 1 hora</text>
+        <!-- Amarillo -->
+        <rect x="152" y="20" width="130" height="160" rx="10" fill="#d97706"/>
+        <text x="217" y="50" text-anchor="middle" font-size="28" fill="#fff">🟡</text>
+        <text x="217" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">AMARILLO</text>
+        <text x="217" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">DIFERIDA</text>
+        <text x="217" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Puede esperar</text>
+        <text x="217" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">sin riesgo</text>
+        <text x="217" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">inmediato.</text>
+        <text x="217" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">4-6 horas</text>
+        <!-- Verde -->
+        <rect x="294" y="20" width="130" height="160" rx="10" fill="#16a34a"/>
+        <text x="359" y="50" text-anchor="middle" font-size="28" fill="#fff">🟢</text>
+        <text x="359" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">VERDE</text>
+        <text x="359" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">MÍNIMA</text>
+        <text x="359" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Lesiones leves,</text>
+        <text x="359" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">deambula.</text>
+        <text x="359" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">"Víctimas que</text>
+        <text x="359" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">caminan"</text>
+        <!-- Negro -->
+        <rect x="436" y="20" width="130" height="160" rx="10" fill="#1f2937"/>
+        <text x="501" y="50" text-anchor="middle" font-size="28" fill="#fff">⚫</text>
+        <text x="501" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">NEGRO</text>
+        <text x="501" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">EXPECTANTE</text>
+        <text x="501" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Sin signos de</text>
+        <text x="501" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">vida o lesiones</text>
+        <text x="501" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">incompatibles</text>
+        <text x="501" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">con la vida</text>
+      </svg>
+      <figcaption>Sistema de colores START — Clasificación de víctimas en masa</figcaption>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Algoritmo START — 30-60 Segundos por Víctima</h3>
+    <div class="steps anim-fadein">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>¿Puede caminar?</h4><p>Si responde y camina → TAG VERDE. Se auto-asisten. Continúe con el siguiente paso para los que no caminan.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>¿Respira? (máx. 10 seg)</h4><p>No respira → reposicione la vía aérea. Si sigue sin respirar → TAG NEGRO. Si respira → TAG ROJO inmediato.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Frecuencia respiratoria</h4><p>&gt; 30 resp/min → TAG ROJO. ≤ 30 resp/min → evalúe perfusión.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Perfusión — Tiempo de llenado capilar (TLC)</h4><p>TLC &gt; 2 seg o pulso radial ausente → TAG ROJO (controlar hemorragia con torniquete si aplica). TLC ≤ 2 seg → evalúe estado de consciencia.</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Estado de consciencia</h4><p>No obedece órdenes simples → TAG ROJO. Obedece órdenes simples → TAG AMARILLO.</p></div></div>
+    </div>
+    <div class="alert important"><div class="alert-icon">⏱️</div><p><strong>Regla de oro del triage:</strong> NO se inicia tratamiento durante el triage (excepto abrir vía aérea y torniquete). El objetivo es clasificar rápido. Tratar después, en el área de atención por color.</p></div>
+  </div>
+  <div class="abp-case anim-fadein">
+    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+    <h4>Escenario: Accidente vehicular múltiple — 8 víctimas</h4>
+    <p>Un autobús de trabajadores colisiona en vía rural. 8 víctimas: (A) inconsciente, no respira tras abrir vía aérea; (B) respira 38 rpm, TLC 4 seg; (C) camina aunque con dolor en brazo; (D) respira 22 rpm, TLC 1 seg, obedece órdenes; (E) respira 18 rpm, TLC 1 seg, confuso pero mueve extremidades; (F) respira, TLC &gt; 2 seg; (G) no respira — al abrir vía aérea reinicia respiración; (H) grita de dolor, herida superficial en cabeza.</p>
+    <div class="abp-questions">
+      <p>❓ Aplica el algoritmo START a cada víctima. Asigna el TAG correspondiente (negro/rojo/amarillo/verde).</p>
+      <p>❓ ¿En qué orden se deben trasladar las víctimas si solo hay 2 ambulancias disponibles?</p>
+      <p>❓ La víctima G inicia respiración al abrir la vía aérea. ¿Qué TAG recibe? ¿Por qué cambia respecto a la víctima A?</p>
+      <p>❓ ¿Qué error cometen los socorristas si dedican 10 minutos a reanimar a la víctima A antes de clasificar el resto?</p>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Video de Referencia</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/hNkpnlbRtaY" title="Triage START clasificación de víctimas" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  </div>
+  <div class="quiz-section">
+    <div class="quiz-title">Verificación — Módulo 2</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
+    <div class="quiz-question"><div class="quiz-q">3. Una víctima que camina hacia el punto de reunión recibe en START el TAG:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Rojo</label><label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Amarillo</label><label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Verde</label><label class="quiz-opt"><input type="radio" name="q2a" value="d"> d) Negro</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">4. En el algoritmo START, si una víctima no respira y tras abrir la vía aérea tampoco lo hace, se asigna:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) TAG Rojo — atención inmediata</label><label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) TAG Amarillo — puede esperar</label><label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) TAG Negro — expectante</label><label class="quiz-opt"><input type="radio" name="q2b" value="d"> d) Se inicia RCP inmediatamente</label></div></div>
+    <button class="quiz-submit" onclick="checkMiniQuiz('mod2',{'q2a':'c','q2b':'c'})">Verificar</button>
+    <div class="quiz-result" id="mod2-result"></div>
+  </div>
+  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo 1</button><button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente: Emergencias Médicas →</button></div>
+</div>
 
+<!-- ===== MÓDULO 3 ===== -->
+<div class="module-panel" id="mod-3">
+  <div class="module-header">
+    <span class="module-tag">Módulo 3 de 6</span>
+    <h1 class="module-title">Emergencias Médicas en el Entorno Laboral</h1>
+    <p class="module-desc">Reconocimiento y respuesta inmediata ante las emergencias médicas más frecuentes en el trabajo: IAM, ACV, crisis hipertensiva, hipoglucemia y anafilaxia.</p>
+  </div>
+  <div class="norm-ref"><strong>Base normativa:</strong> AHA 2020 (Cardiac Emergency) · Decreto 2393 Art. 46 · MDT — Protocolos de Atención de Emergencias Laborales</div>
+  <div class="content-section">
+    <h3>Infarto Agudo de Miocardio (IAM) — Cada Minuto Cuenta</h3>
+    <p>El IAM es la principal causa de muerte súbita en el entorno laboral. Por cada minuto sin reperfusión, el paciente pierde aproximadamente el <strong>10% de probabilidad de supervivencia</strong>. El tiempo objetivo "puerta-balón" (llegada-cateterismo) es &lt;90 minutos.</p>
+    <div class="concept-grid anim-fadein">
+      <div class="concept-card"><div class="cc-icon">💔</div><h4>Signos clásicos</h4><p>Dolor opresivo en el pecho irradiado a brazo izquierdo, cuello o mandíbula. Sudoración fría, náuseas, disnea.</p></div>
+      <div class="concept-card"><div class="cc-icon">⚠️</div><h4>Presentaciones atípicas</h4><p>Más comunes en mujeres y diabéticos: solo fatiga extrema, dolor epigástrico o indigestión. No subestimar.</p></div>
+      <div class="concept-card"><div class="cc-icon">🚨</div><h4>Respuesta inmediata</h4><p>1. Sentar al paciente. 2. Llamar ECU-911. 3. Aspirina 325mg masticada (si no hay alergia). 4. AED si pierde consciencia.</p></div>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Reconocimiento Rápido de Emergencias Críticas</h3>
+    <table class="data-table">
+      <thead><tr><th>Emergencia</th><th>Señales de alerta</th><th>Acción inmediata</th><th>Errores críticos a evitar</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ACV/Stroke</strong></td><td>FAST: Face (asimetría), Arms (debilidad), Speech (disartria), Time</td><td>ECU-911 inmediato. No dar agua/comida. Posición semisentado.</td><td>Dar aspirina (no en ACV hemorrágico). Dejar que "pase solo".</td></tr>
+        <tr><td><strong>Crisis hipertensiva</strong></td><td>PA &gt;180/120, cefalea severa, alteración visual, epistaxis</td><td>Sentar, calmar, ECU-911. Medicación solo si tiene prescripción.</td><td>Dar antihipertensivo no prescrito. Bajar presión muy rápido.</td></tr>
+        <tr><td><strong>Hipoglucemia severa</strong></td><td>Glucosa &lt;70 mg/dL, temblor, sudor frío, confusión, inconsciencia</td><td>Si consciente: 15-20g glucosa oral (3 sobres azúcar). Si inconsciente: ECU-911, NO dar nada oral.</td><td>Dar líquidos a persona inconsciente (aspiración).</td></tr>
+        <tr><td><strong>Anafilaxia</strong></td><td>Urticaria + edema + broncoespasmo + hipotensión en minutos</td><td>Epinefrina 0.3mg IM lateral del muslo (si disponible). ECU-911. Posición supina piernas elevadas.</td><td>Sentar al paciente (agrava hipotensión). No usar epi si no está entrenado.</td></tr>
+        <tr><td><strong>Convulsión</strong></td><td>Movimientos tónicos-clónicos, pérdida de consciencia, mordedura de lengua</td><td>Proteger la cabeza, retirar objetos, cronometrar. Al recuperar: posición lateral de seguridad.</td><td>Sujetar al paciente. Introducir objetos en la boca.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="abp-case anim-fadein">
+    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+    <h4>Escenario: Colega colapsa en reunión de trabajo</h4>
+    <p>Durante una reunión, Carlos (52 años, diabético, con historial de HTA) se queja de "indigestión fuerte" y sudoración fría. A los 3 minutos pierde el conocimiento. Un compañero recuerda que Carlos tomó insulina esta mañana pero no almorzó. Otro compañero cree que es un ataque cardíaco y quiere darle aspirina.</p>
+    <div class="abp-questions">
+      <p>❓ Lista los dos diagnósticos diferenciales más probables y sus señales distintivas.</p>
+      <p>❓ ¿Es correcto dar aspirina en este momento? ¿Por qué sí o por qué no?</p>
+      <p>❓ Describe los primeros 3 minutos de respuesta paso a paso, incluyendo qué verificar y qué no hacer.</p>
+      <p>❓ ¿Cuándo estaría justificado usar el DEA disponible en la sala de reuniones?</p>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Video de Referencia</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/F9EiMXtPsYI" title="Emergencias médicas en el trabajo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  </div>
+  <div class="quiz-section">
+    <div class="quiz-title">Verificación — Módulo 3</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
+    <div class="quiz-question"><div class="quiz-q">5. El acrónimo FAST para reconocer un ACV evalúa:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Fiebre, Agitación, Sudoración, Temperatura</label><label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Face, Arms, Speech, Time</label><label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Frecuencia, Amplitud, Simetría, Tono</label><label class="quiz-opt"><input type="radio" name="q3a" value="d"> d) Fatiga, Ansiedad, Soplo, Taquicardia</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">6. En una hipoglucemia severa con pérdida de consciencia, se debe:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) Dar azúcar oral inmediatamente</label><label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) Dar jugo de naranja con cuchara</label><label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Llamar ECU-911 y NO dar nada oral (riesgo de aspiración)</label><label class="quiz-opt"><input type="radio" name="q3b" value="d"> d) Aplicar insulina para estabilizar</label></div></div>
+    <button class="quiz-submit" onclick="checkMiniQuiz('mod3',{'q3a':'b','q3b':'c'})">Verificar</button>
+    <div class="quiz-result" id="mod3-result"></div>
+  </div>
+  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo 2</button><button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente: MATPEL →</button></div>
+</div>
+
+<!-- ===== MÓDULO 4 ===== -->
+<div class="module-panel" id="mod-4">
+  <div class="module-header">
+    <span class="module-tag">Módulo 4 de 6</span>
+    <h1 class="module-title">Materiales Peligrosos (MATPEL) — NFPA 704 y ERG</h1>
+    <p class="module-desc">Identificación de materiales peligrosos, diamante NFPA 704, clasificación DOT/ONU y uso de la Guía de Respuesta a Emergencias (ERG) para la primera respuesta.</p>
+  </div>
+  <div class="norm-ref"><strong>Base normativa:</strong> NFPA 704 · NFPA 472 (competencias HAZMAT) · DOT/ONU Sistema GHS · ERG 2020 (Transport Canada/DOT/SCT) · Decreto 2393 Art. 136</div>
+  <div class="content-section">
+    <h3>Diamante NFPA 704 — Lectura e Interpretación</h3>
+    <div class="svg-container anim-fadein">
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+        <!-- Diamante NFPA 704 -->
+        <!-- Salud (azul - izquierda) -->
+        <polygon points="100,170 170,100 170,240" fill="#1D51A3"/>
+        <text x="125" y="165" text-anchor="middle" font-size="28" fill="#fff" font-weight="bold">3</text>
+        <text x="125" y="185" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.9)">SALUD</text>
+        <!-- Inflamabilidad (rojo - arriba) -->
+        <polygon points="170,100 240,100 205,30" fill="#dc2626"/>
+        <text x="205" y="72" text-anchor="middle" font-size="22" fill="#fff" font-weight="bold">2</text>
+        <text x="205" y="88" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">INFLAMAB.</text>
+        <!-- Reactividad (amarillo - derecha) -->
+        <polygon points="240,100 310,170 240,240" fill="#d97706"/>
+        <text x="280" y="165" text-anchor="middle" font-size="28" fill="#fff" font-weight="bold">1</text>
+        <text x="280" y="185" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.9)">REACTIV.</text>
+        <!-- Especial (blanco - abajo) -->
+        <polygon points="170,240 240,240 205,310" fill="#f3f4f6" stroke="#ccc" stroke-width="1"/>
+        <text x="205" y="278" text-anchor="middle" font-size="14" fill="#1a2840" font-weight="bold">W</text>
+        <text x="205" y="295" text-anchor="middle" font-size="9" fill="#5a6e8c">ESPECIAL</text>
+        <!-- Escala -->
+        <text x="330" y="40" font-size="11" fill="#1a2840" font-weight="bold">Escala 0-4:</text>
+        <text x="330" y="58" font-size="10" fill="#dc2626">4 = Máximo riesgo</text>
+        <text x="330" y="74" font-size="10" fill="#d97706">3 = Riesgo grave</text>
+        <text x="330" y="90" font-size="10" fill="#1D51A3">2 = Riesgo moderado</text>
+        <text x="330" y="106" font-size="10" fill="#16a34a">1 = Riesgo leve</text>
+        <text x="330" y="122" font-size="10" fill="#6b7280">0 = Sin riesgo</text>
+        <text x="330" y="155" font-size="11" fill="#1a2840" font-weight="bold">Símbolos especiales:</text>
+        <text x="330" y="173" font-size="10" fill="#5a6e8c">W = No usar agua</text>
+        <text x="330" y="189" font-size="10" fill="#5a6e8c">OX = Oxidante</text>
+        <text x="330" y="205" font-size="10" fill="#5a6e8c">SA = Asfixiante simple</text>
+        <text x="330" y="221" font-size="10" fill="#5a6e8c">COR = Corrosivo</text>
+        <text x="330" y="237" font-size="10" fill="#5a6e8c">BIO = Biológico</text>
+        <text x="330" y="253" font-size="10" fill="#5a6e8c">RAD = Radioactivo</text>
+      </svg>
+      <figcaption>Diamante NFPA 704 — ejemplo: producto con salud 3, inflamabilidad 2, reactividad 1, con restricción de agua (W)</figcaption>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Clasificación ONU/DOT — 9 Clases de Materiales Peligrosos</h3>
+    <table class="data-table">
+      <thead><tr><th>Clase</th><th>Tipo de peligro</th><th>Ejemplo</th><th>Símbolo</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Explosivos</td><td>Dinamita, TNT, fuegos artificiales</td><td>💥</td></tr>
+        <tr><td>2</td><td>Gases (inflamables, tóxicos, inertes)</td><td>GLP, acetileno, cloro, nitrógeno</td><td>🔴/💀/⬜</td></tr>
+        <tr><td>3</td><td>Líquidos inflamables</td><td>Gasolina, alcohol, acetona</td><td>🔥</td></tr>
+        <tr><td>4</td><td>Sólidos inflamables / espontáneos / húmedos peligrosos</td><td>Magnesio, fósforo blanco, sodio</td><td>🔥⚡</td></tr>
+        <tr><td>5</td><td>Comburentes / peróxidos orgánicos</td><td>Peróxido de hidrógeno, nitrato amónico</td><td>🔴🔥</td></tr>
+        <tr><td>6</td><td>Materias tóxicas e infecciosas</td><td>Cianuro, muestras biológicas</td><td>💀☣️</td></tr>
+        <tr><td>7</td><td>Materias radiactivas</td><td>Uranio, cobalto-60</td><td>☢️</td></tr>
+        <tr><td>8</td><td>Materias corrosivas</td><td>Ácido sulfúrico, hidróxido de sodio</td><td>🧪</td></tr>
+        <tr><td>9</td><td>Materias peligrosas diversas</td><td>Asbestos, baterías de litio, hielo seco</td><td>⚫</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="content-section">
+    <h3>ERG 2020 — Guía de Respuesta a Emergencias</h3>
+    <div class="steps anim-fadein">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Identificar el material</h4><p>Por número UN (4 dígitos en placa naranja), nombre del producto en la hoja de datos o diamante NFPA. También por símbolo de peligro si no hay número.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Consultar la tabla de índice</h4><p>Buscar el número UN en la sección amarilla o el nombre en la sección azul del ERG. Obtener el número de GUÍA (ej. Guía 128).</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Consultar la Guía naranja</h4><p>La página naranja da: peligros potenciales, protección personal mínima, respuesta de emergencia y primeros auxilios específicos para ese producto.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Verificar tabla de aislamiento inicial</h4><p>La sección verde del ERG indica distancias de aislamiento inicial (pequeño/gran derrame, de día/de noche) para materiales tóxicos.</p></div></div>
+    </div>
+    <div class="alert danger"><div class="alert-icon">🚫</div><p><strong>Nivel de intervención según NFPA 472:</strong> Solo personal con certificación Nivel Operaciones o Técnico puede aproximarse a la zona caliente de un incidente MATPEL. Los Primeros Respondedores — Nivel Consciencia solo identifican, aislan y notifican. NO intervienen.</p></div>
+  </div>
+  <div class="abp-case anim-fadein">
+    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+    <h4>Escenario: Derrame de ácido sulfúrico en fábrica de baterías</h4>
+    <p>Un operario rompe accidentalmente un contenedor de 200 litros de H₂SO₄ (ácido sulfúrico concentrado, UN 1830). Hay vapores visibles, el operario tiene quemaduras en manos y cara, y el ácido fluye hacia el drenaje que conecta con el río cercano. Llegan 3 guardias de seguridad sin EPP específico para MATPEL.</p>
+    <div class="abp-questions">
+      <p>❓ Según NFPA 472, ¿en qué nivel de intervención están los guardias? ¿Qué pueden y qué NO pueden hacer?</p>
+      <p>❓ Con el ERG y el número UN 1830, ¿a qué guía se consulta? Describe las acciones de respuesta indicadas.</p>
+      <p>❓ ¿Qué EPP mínimo se requiere para asistir al operario lesionado en la zona tibia?</p>
+      <p>❓ ¿Qué implicaciones legales tiene el derrame al drenaje que conecta al río? (Referencia: Código Orgánico Ambiental Ecuador)</p>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Video de Referencia</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/d0EEPuTt1QA" title="MATPEL Materiales Peligrosos NFPA 704" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  </div>
+  <div class="quiz-section">
+    <div class="quiz-title">Verificación — Módulo 4</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
+    <div class="quiz-question"><div class="quiz-q">7. En el diamante NFPA 704, el cuadrante azul (izquierda) indica:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) Riesgo de inflamabilidad</label><label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) Riesgo para la salud</label><label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) Riesgo de reactividad</label><label class="quiz-opt"><input type="radio" name="q4a" value="d"> d) Peligros especiales</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">8. El símbolo "W" en el cuadrante blanco del NFPA 704 significa:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) Peligro para el agua subterránea</label><label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) No usar agua para combatir el incendio</label><label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) Soluble en agua</label><label class="quiz-opt"><input type="radio" name="q4b" value="d"> d) Requiere agua en el EPP</label></div></div>
+    <button class="quiz-submit" onclick="checkMiniQuiz('mod4',{'q4a':'b','q4b':'b'})">Verificar</button>
+    <div class="quiz-result" id="mod4-result"></div>
+  </div>
+  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo 3</button><button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente: PCO →</button></div>
+</div>
+
+<!-- ===== MÓDULO 5 ===== -->
+<div class="module-panel" id="mod-5">
+  <div class="module-header">
+    <span class="module-tag">Módulo 5 de 6</span>
+    <h1 class="module-title">Plan de Continuidad Operacional (PCO)</h1>
+    <p class="module-desc">Metodología para garantizar que las funciones críticas de la organización continúen o se restablezcan rápidamente ante cualquier disrupción grave.</p>
+  </div>
+  <div class="norm-ref"><strong>Base normativa:</strong> ISO 22301 (Continuidad del Negocio) · NFPA 1600 · Decreto Ejecutivo 486 SGR Ecuador · COBIT (Continuidad TI)</div>
+  <div class="content-section">
+    <h3>Análisis de Impacto en el Negocio (BIA)</h3>
+    <p>El <strong>Business Impact Analysis (BIA)</strong> es el fundamento del PCO. Identifica qué funciones son críticas, cuánto tiempo puede la organización operar sin ellas, y cuál es el costo por hora de interrupción.</p>
+    <div class="concept-grid anim-fadein">
+      <div class="concept-card"><div class="cc-icon">⏱️</div><h4>RTO — Recovery Time Objective</h4><p>Tiempo máximo tolerable de interrupción. Ejemplo: el sistema de facturación no puede estar caído más de 4 horas.</p></div>
+      <div class="concept-card"><div class="cc-icon">💾</div><h4>RPO — Recovery Point Objective</h4><p>Punto en el tiempo hasta el cual se acepta la pérdida de datos. Ejemplo: copias de seguridad cada 2 horas → pérdida máxima 2h de datos.</p></div>
+      <div class="concept-card"><div class="cc-icon">🏭</div><h4>MTPD — Maximum Tolerable Period of Disruption</h4><p>Tiempo máximo que la organización puede sobrevivir sin la función crítica antes del impacto irreversible (clientes, reguladores, finanzas).</p></div>
+    </div>
+    <div class="alert info"><div class="alert-icon">📊</div><p><strong>Ejemplo de priorización:</strong> En un hospital, el MTPD para el sistema de registros clínicos podría ser 1 hora, para la cafetería 48 horas. El PCO asigna recursos inversamente proporcionales al MTPD.</p></div>
+  </div>
+  <div class="content-section">
+    <h3>Estructura del PCO — 6 Componentes ISO 22301</h3>
+    <div class="steps anim-fadein">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Política y alcance</h4><p>Compromiso de la alta dirección. Definición de las funciones críticas incluidas y los escenarios de amenaza contemplados (sismos, inundaciones, ciberataques, pandemias).</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Análisis de Riesgo y BIA</h4><p>Identificar amenazas, vulnerabilidades, probabilidad e impacto. Calcular RTO/RPO/MTPD para cada función crítica.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Estrategias de continuidad</h4><p>Sitios alternos de trabajo, proveedores de respaldo, redundancia de sistemas TI, acuerdos de reciprocidad con otras organizaciones.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Planes de respuesta</h4><p>Procedimientos paso a paso: quién hace qué, con qué, cuándo. Árbol de llamadas. Protocolos de comunicación con stakeholders.</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Ejercicios y pruebas</h4><p>Ejercicios de escritorio (tabletop), pruebas funcionales y simulacros completos. ISO 22301 exige ejercicios anuales como mínimo.</p></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><h4>Revisión y mejora continua</h4><p>Actualización tras cada ejercicio, cambio organizacional o nueva amenaza. Revisión mínima anual y tras cualquier incidente real.</p></div></div>
+    </div>
+  </div>
+  <div class="abp-case anim-fadein">
+    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+    <h4>Escenario: Empresa exportadora afectada por sismo 6.5 en Ecuador</h4>
+    <p>Una empresa exportadora de flores (150 empleados, contratos con Europa) sufre un sismo de magnitud 6.5. La planta frigorífica queda inhabilitada, el 30% de los empleados clave no puede llegar por daños viales, el sistema ERP está caído por daño al servidor local, y tienen 48 horas para entregar un contenedor de rosas para San Valentín (contrato por $280,000).</p>
+    <div class="abp-questions">
+      <p>❓ Identifica las 3 funciones más críticas y calcula un RTO razonable para cada una.</p>
+      <p>❓ La empresa no tenía PCO. Diseña las estrategias de continuidad que habrían evitado el impacto de cada función crítica.</p>
+      <p>❓ ¿Qué protocolo de comunicación se debe activar con el cliente europeo? ¿Cuándo y cómo comunicar la situación?</p>
+      <p>❓ ¿Qué impacto tendría una certificación ISO 22301 en la relación comercial con los clientes europeos?</p>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Video de Referencia</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/7Ei2kXpbcSQ" title="Plan de Continuidad de Negocio ISO 22301" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  </div>
+  <div class="quiz-section">
+    <div class="quiz-title">Verificación — Módulo 5</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
+    <div class="quiz-question"><div class="quiz-q">9. El RTO (Recovery Time Objective) en un PCO se refiere a:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) El tiempo que tarda en implementarse el plan de continuidad</label><label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) El tiempo máximo tolerable de interrupción de una función crítica</label><label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) El tiempo de respuesta del equipo de emergencias</label><label class="quiz-opt"><input type="radio" name="q5a" value="d"> d) El intervalo entre copias de seguridad</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">10. La norma internacional que rige los Sistemas de Gestión de Continuidad del Negocio es:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) ISO 9001</label><label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) ISO 45001</label><label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) ISO 22301</label><label class="quiz-opt"><input type="radio" name="q5b" value="d"> d) NFPA 1600</label></div></div>
+    <button class="quiz-submit" onclick="checkMiniQuiz('mod5',{'q5a':'b','q5b':'c'})">Verificar</button>
+    <div class="quiz-result" id="mod5-result"></div>
+  </div>
+  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo 4</button><button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente: Psicología →</button></div>
+</div>
+
+<!-- ===== MÓDULO 6 ===== -->
+<div class="module-panel" id="mod-6">
+  <div class="module-header">
+    <span class="module-tag">Módulo 6 de 6</span>
+    <h1 class="module-title">Psicología de la Emergencia y Primeros Auxilios Psicológicos</h1>
+    <p class="module-desc">Respuesta humana ante el trauma, primeros auxilios psicológicos (PAP), manejo del estrés en respondedores y prevención del burnout en brigadas.</p>
+  </div>
+  <div class="norm-ref"><strong>Base normativa:</strong> OPS/OMS — Guía PAP (2012) · DSM-5 (PTSD) · Decreto 2393 Art. 11 · ISO 45003 (Bienestar psicológico en el trabajo)</div>
+  <div class="content-section">
+    <h3>Respuesta Humana al Trauma — Fases</h3>
+    <div class="concept-grid anim-fadein">
+      <div class="concept-card"><div class="cc-icon">⚡</div><h4>Fase de Impacto (0-72h)</h4><p>Respuesta aguda al estrés: parálisis, agitación, llanto, confusión, disociación. Normal y transitoria en la mayoría de personas.</p></div>
+      <div class="concept-card"><div class="cc-icon">🔄</div><h4>Fase de Reacción (3-30 días)</h4><p>Procesamiento emocional: pesadillas, hipervigilancia, evitación. Si dura más de 30 días con impacto funcional → PTSD.</p></div>
+      <div class="concept-card"><div class="cc-icon">🌱</div><h4>Fase de Adaptación (&gt;1 mes)</h4><p>Integración del trauma. Con apoyo adecuado: crecimiento postraumático. Sin apoyo: trastorno de estrés postraumático (PTSD) o duelo complicado.</p></div>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Primeros Auxilios Psicológicos (PAP) — 5 Elementos OMS</h3>
+    <div class="steps anim-fadein">
+      <div class="step"><div class="step-num">👁️</div><div class="step-body"><h4>Observar — Mirar, Escuchar, Conectar</h4><p>Evaluar el entorno (¿es seguro?), identificar personas con angustia aguda, distinguir quién necesita apoyo prioritario.</p></div></div>
+      <div class="step"><div class="step-num">🤝</div><div class="step-body"><h4>Acercarse con respeto</h4><p>Presentarse, preguntar si puede ayudar. No imponer la conversación. No decir "sé cómo te sientes" — normalizar su reacción: "lo que sientes es normal ante algo así".</p></div></div>
+      <div class="step"><div class="step-num">🔒</div><div class="step-body"><h4>Cubrir necesidades básicas y seguridad</h4><p>Agua, cobija, lugar seguro, comunicación con familiares. La seguridad física debe preceder a la intervención psicológica.</p></div></div>
+      <div class="step"><div class="step-num">👂</div><div class="step-body"><h4>Escucha activa sin presionar</h4><p>Si la persona quiere hablar, escuche sin interrumpir ni juzgar. Si no quiere hablar, acompañe en silencio. Nunca pida que relate los detalles traumáticos.</p></div></div>
+      <div class="step"><div class="step-num">🔗</div><div class="step-body"><h4>Conectar con redes de apoyo y servicios</h4><p>Referir a servicios de salud mental, líneas de crisis, grupos comunitarios. Dar información sobre recursos disponibles de forma clara y sin jerga técnica.</p></div></div>
+    </div>
+    <div class="alert important"><div class="alert-icon">🚫</div><p><strong>Lo que NO son los PAP:</strong> No es debriefing (no se pide que relaten el trauma secuencialmente), no es psicoterapia, no es diagnóstico psiquiátrico. Los PAP los puede aplicar cualquier persona capacitada — no requieren ser psicólogos.</p></div>
+  </div>
+  <div class="content-section">
+    <h3>Estrés en Respondedores — Prevención del Burnout</h3>
+    <div class="info-grid anim-fadein">
+      <div class="info-card danger"><h4>Señales de alerta</h4><p>Insomnio persistente, irritabilidad, desapego emocional ("ya no me afecta nada"), errores frecuentes, ausentismo, consumo de alcohol.</p></div>
+      <div class="info-card gold"><h4>Defusing (desahogo)</h4><p>Sesión informal de 20-45 min con el equipo inmediatamente tras el incidente. Objetivo: procesar emociones, no analizar errores técnicos.</p></div>
+      <div class="info-card green"><h4>Autocuidado activo</h4><p>Sueño regular, actividad física, rotación de turnos en incidentes de alto impacto, límite de exposición a imágenes traumáticas.</p></div>
+    </div>
+  </div>
+  <div class="abp-case anim-fadein">
+    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+    <h4>Escenario: Equipo de brigada después de un fallecimiento en servicio</h4>
+    <p>La brigada de emergencias de una empresa minera respondió a un accidente fatal donde falleció un compañero de 34 años. Tres semanas después: el jefe de brigada no duerme, revive el accidente en sueños, evita entrar al área donde ocurrió y dice "estoy bien, no necesito ayuda". Dos brigadistas renunciaron. El departamento de RRHH pregunta al área de SST cómo proceder.</p>
+    <div class="abp-questions">
+      <p>❓ Identifica los síntomas del jefe de brigada y clasifícalos según las fases de respuesta al trauma.</p>
+      <p>❓ ¿Se deben activar los PAP con el jefe de brigada? ¿Quién debe hacerlo y cuándo?</p>
+      <p>❓ ¿Qué protocolo de defusing debió implementarse en las primeras 24 horas post-incidente?</p>
+      <p>❓ ¿Cuál es la responsabilidad legal de la empresa en este caso según el Decreto 2393 e ISO 45003?</p>
+    </div>
+  </div>
+  <div class="content-section">
+    <h3>Video de Referencia</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/FWKl2UKB0f8" title="Primeros Auxilios Psicológicos PAP emergencias" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  </div>
+
+  <!-- QUIZ FINAL -->
+  <div class="quiz-section" id="finalQuizSection">
+    <div class="quiz-title">✅ Evaluación Final — Manejo de Emergencias</div>
+    <div class="quiz-sub">Responda todas las preguntas. Mínimo 6/8 correctas para aprobar.</div>
+    <div class="quiz-question"><div class="quiz-q">1. El span of control óptimo en el SCI es:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq1" value="a"> a) 1 supervisor por 10 subordinados</label><label class="quiz-opt"><input type="radio" name="fq1" value="b"> b) 1 supervisor por 3 a 7 subordinados</label><label class="quiz-opt"><input type="radio" name="fq1" value="c"> c) Sin límite establecido</label><label class="quiz-opt"><input type="radio" name="fq1" value="d"> d) 2 supervisores por cada sección</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">2. En el triage START, una víctima que respira 38 veces por minuto con llenado capilar de 4 segundos recibe TAG:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq2" value="a"> a) Verde</label><label class="quiz-opt"><input type="radio" name="fq2" value="b"> b) Amarillo</label><label class="quiz-opt"><input type="radio" name="fq2" value="c"> c) Rojo</label><label class="quiz-opt"><input type="radio" name="fq2" value="d"> d) Negro</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">3. La principal acción ante sospecha de ACV/Stroke es:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq3" value="a"> a) Dar aspirina de inmediato</label><label class="quiz-opt"><input type="radio" name="fq3" value="b"> b) Dar agua para que el paciente no se deshidrate</label><label class="quiz-opt"><input type="radio" name="fq3" value="c"> c) Llamar ECU-911 inmediato, no dar nada oral, posición semisentado</label><label class="quiz-opt"><input type="radio" name="fq3" value="d"> d) Esperar 30 minutos para ver si mejora</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">4. El cuadrante rojo (arriba) del diamante NFPA 704 indica:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq4" value="a"> a) Riesgo para la salud</label><label class="quiz-opt"><input type="radio" name="fq4" value="b"> b) Riesgo de inflamabilidad</label><label class="quiz-opt"><input type="radio" name="fq4" value="c"> c) Riesgo de reactividad</label><label class="quiz-opt"><input type="radio" name="fq4" value="d"> d) Peligros especiales</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">5. El RPO (Recovery Point Objective) en un PCO se refiere a:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq5" value="a"> a) El tiempo de recuperación de los sistemas</label><label class="quiz-opt"><input type="radio" name="fq5" value="b"> b) El punto en el tiempo hasta el cual se acepta la pérdida de datos</label><label class="quiz-opt"><input type="radio" name="fq5" value="c"> c) El tiempo máximo de interrupción tolerable</label><label class="quiz-opt"><input type="radio" name="fq5" value="d"> d) La periodicidad de los simulacros</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">6. Los Primeros Auxilios Psicológicos (PAP) de la OMS NO incluyen:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq6" value="a"> a) Escucha activa sin presionar a la persona</label><label class="quiz-opt"><input type="radio" name="fq6" value="b"> b) Cubrir necesidades básicas de seguridad</label><label class="quiz-opt"><input type="radio" name="fq6" value="c"> c) Pedir que relate detalladamente los momentos traumáticos</label><label class="quiz-opt"><input type="radio" name="fq6" value="d"> d) Conectar con redes de apoyo y servicios</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">7. El nivel de intervención MATPEL de un "Primer Respondedor — Nivel Consciencia" según NFPA 472 implica:</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq7" value="a"> a) Puede ingresar a la zona caliente con EPP básico</label><label class="quiz-opt"><input type="radio" name="fq7" value="b"> b) Solo identifica, aísla y notifica — NO interviene</label><label class="quiz-opt"><input type="radio" name="fq7" value="c"> c) Puede contener derrames menores de clase B</label><label class="quiz-opt"><input type="radio" name="fq7" value="d"> d) Aplica antídotos y descontamina víctimas</label></div></div>
+    <div class="quiz-question"><div class="quiz-q">8. En el SCI, ¿cuántas secciones funcionales existen bajo el Comandante del Incidente?</div>
+    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq8" value="a"> a) 3</label><label class="quiz-opt"><input type="radio" name="fq8" value="b"> b) 4</label><label class="quiz-opt"><input type="radio" name="fq8" value="c"> c) 5</label><label class="quiz-opt"><input type="radio" name="fq8" value="d"> d) 7</label></div></div>
+    <button class="quiz-submit" onclick="submitFinalQuiz()" style="margin-top:16px;font-size:15px;padding:13px 32px">Enviar evaluación final</button>
+    <div class="quiz-result" id="finalResult"></div>
+  </div>
+  <div class="completion-card" id="completionCard">
+    <div class="cert-icon">🏅</div>
+    <h2>¡Manejo de Emergencias Aprobado!</h2>
+    <p>Has completado con éxito el curso de <strong>Manejo de Emergencias</strong> de Preventive Health.</p>
+    <p style="font-size:.9rem;opacity:.8">Certificado conforme al Decreto 2393, ISO 22301, Protocolo PAP OMS y NFPA 472/704. Comuníquese con Preventive Health para el certificado firmado por instructor.</p>
+  </div>
+  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo 5</button><span></span></div>
+</div>
+
+</main>
+</div>
+<div class="mob-nav"><div class="mob-nav-inner">
+  <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><div class="mob-tab-icon">🎯</div><div class="mob-tab-label">SCI</div></div>
+  <div class="mob-tab" data-mod="2" onclick="showModule(2)"><div class="mob-tab-icon">🏷️</div><div class="mob-tab-label">Triage</div></div>
+  <div class="mob-tab" data-mod="3" onclick="showModule(3)"><div class="mob-tab-icon">🏥</div><div class="mob-tab-label">Médicas</div></div>
+  <div class="mob-tab" data-mod="4" onclick="showModule(4)"><div class="mob-tab-icon">☣️</div><div class="mob-tab-label">MATPEL</div></div>
+  <div class="mob-tab" data-mod="5" onclick="showModule(5)"><div class="mob-tab-icon">🔄</div><div class="mob-tab-label">PCO</div></div>
+  <div class="mob-tab" data-mod="6" onclick="showModule(6)"><div class="mob-tab-icon">🧠</div><div class="mob-tab-label">Psicología</div></div>
+</div></div>
 <script>
-  const TOTAL = 6;
-  const correctAnswers = {
-    1: ['b','b','b'],
-    2: ['b','b','b'],
-    3: ['b','b','b'],
-    4: ['b','b','b'],
-    5: ['b','b','b'],
-    6: ['b','b','b']
-  };
-
-  let doneModules = new Set(JSON.parse(localStorage.getItem('emergencia_done') || '[]'));
-  let currentMod = 1;
-
-  function saveDone() {
-    localStorage.setItem('emergencia_done', JSON.stringify([...doneModules]));
-  }
-
-  function updateProgress() {
-    const pct = Math.round((doneModules.size / TOTAL) * 100);
-    document.getElementById('progBar').style.width = pct + '%';
-    document.getElementById('progPct').textContent = pct + '%';
-    document.getElementById('topProg').style.width = pct + '%';
-    document.querySelectorAll('.mod-item').forEach(el => {
-      const m = parseInt(el.dataset.mod);
-      el.classList.toggle('done', doneModules.has(m));
-      el.classList.toggle('active', m === currentMod);
+const STORAGE_KEY='emergencia_done';
+let done=new Set(JSON.parse(localStorage.getItem('emergencia_progress')||'[]'));
+function saveDone(){localStorage.setItem('emergencia_progress',JSON.stringify([...done]))}
+function updateProgress(){
+  const pct=Math.round(done.size/6*100);
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('topProg').style.width=pct+'%';
+  document.querySelectorAll('.mod-item').forEach(el=>el.classList.toggle('done',done.has(+el.dataset.mod)));
+}
+function showModule(n){
+  document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('mod-'+n).classList.add('active');
+  document.querySelectorAll('.mod-item,.mob-tab').forEach(el=>el.classList.toggle('active',+el.dataset.mod===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>{document.querySelectorAll('#mod-'+n+' .anim-fadein').forEach((el,i)=>setTimeout(()=>el.classList.add('visible'),i*120))},50);
+}
+function nextModule(c){done.add(c);saveDone();updateProgress();showModule(c+1)}
+function checkMiniQuiz(id,answers){
+  const r=document.getElementById(id+'-result');
+  let ok=0;
+  Object.entries(answers).forEach(([n,a])=>{
+    const s=document.querySelector(`input[name="${n}"]:checked`);
+    if(!s)return;
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
+      const l=i.closest('.quiz-opt');
+      if(i.value===a)l.classList.add('correct');
+      else if(i===s&&i.value!==a)l.classList.add('wrong');
+      i.disabled=true;
     });
-    document.querySelectorAll('.mob-tab').forEach(el => {
-      el.classList.toggle('active', parseInt(el.dataset.mod) === currentMod);
+    if(s.value===a)ok++;
+  });
+  r.style.display='block';r.className='quiz-result '+(ok===Object.keys(answers).length?'pass':'fail');
+  r.textContent=ok===Object.keys(answers).length?'✅ ¡Correcto!':'⚠️ '+ok+'/'+Object.keys(answers).length+' correctas. Revisa el módulo.';
+}
+function submitFinalQuiz(){
+  const answers={fq1:'b',fq2:'c',fq3:'c',fq4:'b',fq5:'b',fq6:'c',fq7:'b',fq8:'c'};
+  let ok=0,all=true;
+  Object.entries(answers).forEach(([n,a])=>{
+    const s=document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){all=false;return;}
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
+      const l=i.closest('.quiz-opt');
+      if(i.value===a)l.classList.add('correct');
+      else if(i===s&&i.value!==a)l.classList.add('wrong');
+      i.disabled=true;
     });
-    if (doneModules.size === TOTAL) {
-      document.getElementById('completionCard').style.display = 'block';
-    }
-  }
-
-  function showModule(n) {
-    document.querySelectorAll('.module-panel').forEach(p => p.style.display = 'none');
-    document.getElementById('mod-' + n).style.display = 'block';
-    currentMod = n;
-    updateProgress();
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
-
-  function nextModule(n) {
-    doneModules.add(n);
-    saveDone();
-    if (n < TOTAL) {
-      showModule(n + 1);
-    } else {
-      updateProgress();
-      document.getElementById('completionCard').style.display = 'block';
-      document.getElementById('completionCard').scrollIntoView({behavior: 'smooth'});
-    }
-  }
-
-  function checkQuiz(modNum) {
-    const answers = correctAnswers[modNum];
-    let score = 0;
-    const total = answers.length;
-    const panel = document.getElementById('mod-' + modNum);
-
-    answers.forEach((correct, i) => {
-      const qNum = i + 1;
-      const selected = panel.querySelector('input[name="q' + modNum + '-' + qNum + '"]:checked');
-      const opts = panel.querySelectorAll('input[name="q' + modNum + '-' + qNum + '"]');
-      opts.forEach(opt => {
-        const label = opt.closest('.quiz-opt');
-        label.classList.remove('correct', 'wrong', 'selected');
-        if (opt.value === correct) {
-          label.classList.add('correct');
-        }
-        if (selected && opt.value === selected.value && opt.value !== correct) {
-          label.classList.add('wrong');
-        }
-      });
-      if (selected && selected.value === correct) score++;
-    });
-
-    const resultEl = document.getElementById('quiz-result-' + modNum);
-    resultEl.style.display = 'block';
-    if (score === total) {
-      resultEl.className = 'quiz-result pass';
-      resultEl.innerHTML = '&#10003; ¡Excelente! Respondió correctamente las ' + total + ' preguntas. Puede continuar al siguiente módulo.';
-      doneModules.add(modNum);
-      saveDone();
-      updateProgress();
-    } else {
-      resultEl.className = 'quiz-result fail';
-      resultEl.innerHTML = '&#10007; Obtuvo ' + score + ' de ' + total + ' respuestas correctas. Revise el contenido del módulo e inténtelo nuevamente.';
-    }
-  }
-
-  updateProgress();
-  showModule(1);
+    if(s.value===a)ok++;
+  });
+  if(!all){alert('Por favor responda todas las preguntas.');return;}
+  const r=document.getElementById('finalResult');
+  r.style.display='block';
+  const passed=ok>=6;
+  r.className='quiz-result '+(passed?'pass':'fail');
+  r.innerHTML=passed?`<strong>🎉 Aprobado! ${ok}/8 correctas.</strong><br>Puede solicitar su certificado a Preventive Health.`:`<strong>❌ ${ok}/8 correctas. Se requieren mínimo 6.</strong><br>Revise los módulos y vuelva a intentarlo.`;
+  if(passed){localStorage.setItem(STORAGE_KEY,'true');done.add(6);saveDone();updateProgress();setTimeout(()=>{document.getElementById('completionCard').style.display='block'},400);document.querySelector('#finalQuizSection .quiz-submit').disabled=true;}
+}
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.anim-fadein').forEach(el=>io.observe(el));
+updateProgress();showModule(1);
 </script>
 </body>
 </html>

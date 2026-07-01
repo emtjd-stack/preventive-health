@@ -1,18 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="visibility:hidden">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <script>document.documentElement.style.visibility='hidden'</script>
 <script type="module" src="../../js/auth.js"></script>
 <title>Brigadas de Primeros Auxilios | Preventive Health</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@font-face {
-  font-family:'VisbyCF';
-  src:url('data:font/woff2;base64,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') format('woff2');
-  font-weight:700; font-style:normal; font-display:swap;
-}
+@font-face{font-family:'VisbyCF';src:url('../../assets/VisbyCF-Bold.woff2') format('woff2'),local('Arial Black');font-weight:700;font-style:normal;font-display:swap}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --blue:#1D51A3;--blue-dark:#163d7a;--blue-light:#e8eef8;
@@ -20,61 +16,66 @@
   --text:#1a2840;--muted:#5a6e8c;--bg:#f5f7fb;
   --white:#fff;--border:#dde4ef;--radius:10px;
   --shadow:0 2px 12px rgba(29,81,163,.10);
-  --shadow-lg:0 6px 32px rgba(29,81,163,.14);
 }
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;font-size:16px}
 h1,h2,h3,h4{font-family:'VisbyCF','Plus Jakarta Sans',sans-serif;font-weight:700;line-height:1.2}
 a{color:var(--blue);text-decoration:none}
 
+/* ANIMATIONS */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(29,81,163,.3)}50%{box-shadow:0 0 0 8px rgba(29,81,163,0)}}
+.anim-fadein{opacity:0;transition:opacity .5s,transform .5s}
+.anim-fadein.visible{opacity:1;transform:none}
+
 /* NAV */
 nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px solid var(--gold);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo{display:flex;align-items:center;gap:10px;color:#fff;font-family:'VisbyCF',sans-serif;font-weight:700;font-size:18px}
 .nav-logo img{height:30px}
 .nav-back{color:rgba(255,255,255,.8);font-size:13px;display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;transition:.15s}
 .nav-back:hover{color:#fff;background:rgba(255,255,255,.12)}
 
-/* PROGRESS BAR */
-.top-progress{height:4px;background:rgba(255,255,255,.2);position:relative}
-.top-progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+/* PROGRESS */
+.top-progress{height:4px;background:rgba(255,255,255,.2)}
+.top-progress-fill{height:100%;background:var(--gold);transition:width .4s ease;width:0%}
 
 /* LAYOUT */
-.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px)}
-
-/* SIDEBAR */
-.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px)}
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
 .sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 18px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
 .sidebar-progress{padding:12px 18px;margin-bottom:4px}
 .prog-bar-bg{height:5px;background:var(--border);border-radius:3px;margin-top:4px}
-.prog-bar-fill{height:5px;background:var(--gold);border-radius:3px;transition:width .4s}
+.prog-bar-fill{height:5px;background:var(--blue);border-radius:3px;transition:width .4s}
 .prog-pct{font-size:11px;color:var(--muted);margin-top:3px}
 .mod-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;border-left:3px solid transparent;transition:.18s;user-select:none}
 .mod-item:hover{background:var(--bg)}
 .mod-item.active{background:var(--blue-light);border-left-color:var(--blue)}
-.mod-item.done .mod-num{background:var(--blue);color:#fff}
-.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted)}
-.mod-item.active .mod-num{background:var(--blue);color:#fff}
+.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);transition:.2s}
+.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue);color:#fff}
 .mod-label{font-size:13px;font-weight:500;line-height:1.3}
-.mod-check{margin-left:auto;font-size:14px;opacity:0}
+.mod-check{margin-left:auto;font-size:14px;opacity:0;transition:.2s}
 .mod-item.done .mod-check{opacity:1}
 
-/* MAIN CONTENT */
-.main{padding:36px 40px;max-width:800px}
+/* MAIN */
+.main{padding:36px 40px;max-width:820px}
+.module-panel{display:none;animation:fadeIn .3s ease}
+.module-panel.active{display:block}
 .module-header{margin-bottom:28px}
-.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--blue-light);padding:3px 12px;border-radius:20px;margin-bottom:10px}
-.module-title{font-size:clamp(1.6rem,3vw,2.2rem);color:var(--text);margin-bottom:8px}
-.module-desc{font-size:1rem;color:var(--muted);font-weight:400}
+.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:rgba(29,81,163,.1);padding:3px 12px;border-radius:20px;margin-bottom:10px}
+.module-title{font-size:clamp(1.5rem,3vw,2rem);color:var(--blue);margin-bottom:8px}
+.module-desc{font-size:1rem;color:var(--muted)}
 
-/* CONTENT BLOCKS */
+/* CONTENT */
 .content-section{margin-bottom:28px}
-.content-section h3{font-size:1.15rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
-.content-section p{font-size:.97rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
-.content-section ul,
-.content-section ol{padding-left:20px;color:var(--muted);font-size:.95rem;line-height:2}
+.content-section h3{font-size:1.1rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
+.content-section p{font-size:.95rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
+.content-section ul,.content-section ol{padding-left:22px;color:var(--muted);font-size:.93rem;line-height:2}
 
 /* INFO CARDS */
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
-.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue)}
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue);transition:transform .2s}
+.info-card:hover{transform:translateY(-2px)}
 .info-card.gold{border-left-color:var(--gold)}
 .info-card.danger{border-left-color:#dc2626}
 .info-card.green{border-left-color:#16a34a}
@@ -83,20 +84,40 @@ nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px s
 
 /* ALERT BOXES */
 .alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);margin:16px 0;font-size:.92rem}
-.alert-icon{font-size:20px;flex-shrink:0}
+.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
 .alert.important{background:#fef3c7;border:1px solid #f59e0b}
 .alert.danger{background:#fee2e2;border:1px solid #dc2626}
 .alert.info{background:var(--blue-light);border:1px solid var(--blue)}
 .alert.success{background:#dcfce7;border:1px solid #16a34a}
 .alert p{margin:0;color:var(--text);line-height:1.55}
-.alert strong{color:var(--text)}
 
-/* STEP LIST */
-.steps{display:flex;flex-direction:column;gap:12px;margin:16px 0}
-.step{display:flex;gap:14px;align-items:flex-start}
-.step-num{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.step-body p{font-size:13px;color:var(--muted);line-height:1.6}
+/* STEP CARDS */
+.steps{display:flex;flex-direction:column;gap:12px;margin:18px 0}
+.step{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:transform .2s}
+.step:hover{transform:translateX(4px)}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.step-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+
+/* CONCEPT GRID */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
+.concept-card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--blue);transition:transform .2s}
+.concept-card:hover{transform:translateY(-4px)}
+.concept-card .cc-icon{font-size:28px;margin-bottom:8px}
+.concept-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+.concept-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
+
+/* ABP CASE */
+.abp-case{background:linear-gradient(135deg,#eef3ff,#e0eaff);border-radius:12px;padding:24px;margin:24px 0;border:2px solid rgba(29,81,163,.2)}
+.abp-label{background:var(--blue);color:#fff;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px;letter-spacing:.05em}
+.abp-case h4{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px}
+.abp-case p{font-size:.92rem;color:#334;line-height:1.7;margin-bottom:10px}
+.abp-questions{background:rgba(255,255,255,.6);border-radius:8px;padding:14px;margin-top:12px}
+.abp-questions p{font-size:.88rem;margin:6px 0;color:var(--blue);font-weight:600}
+
+/* NORM REF */
+.norm-ref{background:var(--white);border-left:3px solid var(--gold);padding:12px 16px;margin:12px 0;font-size:.84rem;color:var(--muted);border-radius:0 8px 8px 0;border:1px solid var(--border);border-left:3px solid var(--gold)}
+.norm-ref strong{color:var(--text)}
 
 /* TABLE */
 .data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
@@ -106,45 +127,46 @@ nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px s
 
 /* QUIZ */
 .quiz-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
-.quiz-title{font-size:1.1rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.quiz-title{font-size:1.05rem;font-weight:700;margin-bottom:6px;color:var(--text)}
 .quiz-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
 .quiz-question{margin-bottom:22px}
-.quiz-q{font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:10px}
+.quiz-q{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:10px}
 .quiz-options{display:flex;flex-direction:column;gap:8px}
 .quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-size:.9rem;user-select:none}
 .quiz-opt:hover{border-color:var(--blue);background:var(--blue-light)}
-.quiz-opt.correct{border-color:#16a34a;background:#dcfce7;color:#15803d}
-.quiz-opt.wrong{border-color:#dc2626;background:#fee2e2;color:#b91c1c}
-.quiz-opt.selected{border-color:var(--blue);background:var(--blue-light)}
+.quiz-opt.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d}
+.quiz-opt.wrong{border-color:#dc2626!important;background:#fee2e2!important;color:#b91c1c}
 .quiz-opt input[type=radio]{accent-color:var(--blue)}
-.quiz-feedback{font-size:13px;padding:10px 14px;border-radius:8px;margin-top:8px;display:none}
-.quiz-submit{margin-top:4px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
+.quiz-submit{margin-top:8px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
 .quiz-submit:hover{background:var(--blue-dark)}
 .quiz-result{margin-top:16px;padding:16px;border-radius:var(--radius);display:none;text-align:center}
 .quiz-result.pass{background:#dcfce7;border:1px solid #16a34a;color:#15803d}
 .quiz-result.fail{background:#fee2e2;border:1px solid #dc2626;color:#b91c1c}
 
-/* MODULE NAV BUTTONS */
+/* MODULE NAV */
 .module-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border)}
 .btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:.18s}
 .btn-prev{background:var(--white);border:1.5px solid var(--border);color:var(--muted)}
 .btn-prev:hover{border-color:var(--blue);color:var(--blue)}
 .btn-next{background:var(--blue);color:#fff}
 .btn-next:hover{background:var(--blue-dark)}
-.btn-next:disabled{background:var(--border);cursor:not-allowed}
 
-/* COMPLETION CARD */
-.completion-card{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);border-radius:var(--radius);padding:36px;text-align:center;color:#fff;margin-top:32px;display:none}
+/* COMPLETION */
+.completion-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:var(--radius);padding:40px;text-align:center;color:#fff;margin-top:32px;display:none;animation:fadeInUp .5s ease}
 .completion-card h2{font-size:1.8rem;margin-bottom:12px}
-.completion-card p{color:rgba(255,255,255,.8);margin-bottom:24px}
+.completion-card p{color:rgba(255,255,255,.85);margin-bottom:16px}
 .cert-icon{font-size:64px;margin-bottom:16px}
-.btn-cert{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--gold);color:var(--text);border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit}
+.btn-cert{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--gold);color:var(--text);border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;margin-top:8px}
+
+/* SVG SECTION */
+.svg-container{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.svg-container figcaption{font-size:.82rem;color:var(--muted);margin-top:10px}
 
 /* MOBILE */
 .mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0 env(safe-area-inset-bottom)}
 .mob-nav-inner{display:flex;overflow-x:auto;gap:4px;padding:0 12px;scrollbar-width:none}
 .mob-nav-inner::-webkit-scrollbar{display:none}
-.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:64px;transition:.15s;user-select:none}
+.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:60px;transition:.15s;user-select:none}
 .mob-tab.active{background:var(--blue-light)}
 .mob-tab-icon{font-size:18px}
 .mob-tab-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}
@@ -155,807 +177,988 @@ nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px s
   .sidebar{display:none}
   .main{padding:20px 16px 100px}
   .mob-nav{display:block}
-  .info-grid{grid-template-columns:1fr}
+  .info-grid,.concept-grid{grid-template-columns:1fr}
 }
-@media(max-width:480px){
-  .module-title{font-size:1.4rem}
-  .quiz-opt{font-size:.85rem;padding:8px 10px}
-}
-
-.module-title{color:var(--blue)}
-.module-tag{color:var(--blue);background:rgba(29,81,163,.13)}
-nav{background:var(--blue)}
-.top-progress-fill{background:var(--gold)}
-.mod-item.active{background:rgba(29,81,163,.07);border-left-color:var(--blue)}
-.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue)}
-.btn-next{background:var(--blue)}.btn-next:hover{background:var(--blue-dark)}
-.completion-card{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue) 100%)}
-.content-section h3{border-bottom-color:var(--gold)}
-.course-hero{position:relative;width:100%;max-height:220px;overflow:hidden;border-radius:12px;margin-bottom:28px}
-.course-hero img{width:100%;height:220px;object-fit:cover;display:block}
-.course-hero-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));padding:20px 24px}
-.course-hero-overlay h2{color:#fff;margin:0;font-size:1.4rem}
-.prog-bar-fill{background:#1D4ED8}
 </style>
 </head>
 <body>
 <nav>
-  <a class="nav-logo" href="../../index.html"><img src="data:image/png;base64,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" alt="Preventive Health"></a>
-  <a class="nav-back" href="../index.html">← Catálogo</a>
+  <a class="nav-logo" href="../../index.html">Preventive Health</a>
+  <a class="nav-back" href="../index.html">← Catálogo de cursos</a>
 </nav>
-<div class="top-progress"><div class="top-progress-fill" id="topProg" style="width:0%"></div></div>
-<div class="course-layout">
+<div class="top-progress"><div class="top-progress-fill" id="topProg"></div></div>
 
-  <!-- SIDEBAR -->
+<div class="course-layout">
   <aside class="sidebar">
     <div class="sidebar-title">Brigadas de Primeros Auxilios</div>
     <div class="sidebar-progress">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:12px;font-weight:600;color:var(--text)">Progreso del curso</span>
+      <div style="display:flex;justify-content:space-between">
+        <span style="font-size:12px;font-weight:600">Progreso</span>
         <span class="prog-pct" id="progPct">0%</span>
       </div>
       <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
     </div>
-    <div class="mod-item active" data-mod="1" onclick="showModule(1)">
-      <div class="mod-num">1</div>
-      <div class="mod-label">Marco Legal y Conceptos Básicos</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="2" onclick="showModule(2)">
-      <div class="mod-num">2</div>
-      <div class="mod-label">Evaluación Primaria y Bioseguridad</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="3" onclick="showModule(3)">
-      <div class="mod-num">3</div>
-      <div class="mod-label">Heridas y Hemorragias</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="4" onclick="showModule(4)">
-      <div class="mod-num">4</div>
-      <div class="mod-label">Quemaduras</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="5" onclick="showModule(5)">
-      <div class="mod-num">5</div>
-      <div class="mod-label">Trauma Osteoarticular</div>
-      <div class="mod-check">✓</div>
-    </div>
-    <div class="mod-item" data-mod="6" onclick="showModule(6)">
-      <div class="mod-num">6</div>
-      <div class="mod-label">Soporte Vital Básico</div>
-      <div class="mod-check">✓</div>
-    </div>
+    <div class="mod-item active" data-mod="1" onclick="showModule(1)"><div class="mod-num">1</div><div class="mod-label">Marco Legal y Ética del Socorrista</div><div class="mod-check">✓</div></div>
+    <div class="mod-item" data-mod="2" onclick="showModule(2)"><div class="mod-num">2</div><div class="mod-label">Evaluación Primaria — Protocolo ABCDE</div><div class="mod-check">✓</div></div>
+    <div class="mod-item" data-mod="3" onclick="showModule(3)"><div class="mod-num">3</div><div class="mod-label">Heridas y Control de Hemorragias</div><div class="mod-check">✓</div></div>
+    <div class="mod-item" data-mod="4" onclick="showModule(4)"><div class="mod-num">4</div><div class="mod-label">Quemaduras y Lesiones Térmicas</div><div class="mod-check">✓</div></div>
+    <div class="mod-item" data-mod="5" onclick="showModule(5)"><div class="mod-num">5</div><div class="mod-label">Trauma Osteoarticular e Inmovilización</div><div class="mod-check">✓</div></div>
+    <div class="mod-item" data-mod="6" onclick="showModule(6)"><div class="mod-num">6</div><div class="mod-label">Soporte Vital Básico — RCP y DEA</div><div class="mod-check">✓</div></div>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <main class="main" id="mainContent">
 
-    <!-- ====== MODULE 1 ====== -->
-    <div class="module-panel" id="mod-1">
+    <!-- ======== MÓDULO 1 ======== -->
+    <div class="module-panel active" id="mod-1">
       <div class="module-header">
         <span class="module-tag">Módulo 1 de 6</span>
-        <h1 class="module-title">Marco Legal y Conceptos Básicos</h1>
-        <p class="module-desc">Fundamentos normativos y estructura organizacional de las brigadas de primeros auxilios en Ecuador.</p>
+        <h1 class="module-title">Marco Legal y Ética del Socorrista</h1>
+        <p class="module-desc">Fundamentos normativos, derechos, deberes y principios éticos que rigen la actuación de una brigada de primeros auxilios en Ecuador.</p>
       </div>
 
-      <div class="content-section">
-        <p>El sistema de brigadas de primeros auxilios en Ecuador está respaldado por un marco normativo sólido que establece las obligaciones del empleador y los derechos de los trabajadores en materia de salud y seguridad ocupacional. Conocer este marco es el primer paso para actuar con eficacia y responsabilidad. El brigadista que comprende sus fundamentos legales actúa con mayor confianza y puede justificar sus acciones ante cualquier situación de emergencia.</p>
-      </div>
+      <div class="norm-ref"><strong>Base normativa:</strong> Decreto Ejecutivo 2393 (Arts. 11, 136, 175) · Acuerdo Ministerial MDT-2020-077 · Código del Trabajo Ecuador Arts. 410 y 432 · IESS Resolución CD.513 · Convenio OIT N.° 155</div>
 
       <div class="content-section">
-        <h3>Normativa Ecuatoriana Aplicable</h3>
-        <p>El <strong>Decreto Ejecutivo 2393</strong> (Reglamento de Seguridad y Salud de los Trabajadores) es el instrumento rector de la SSO en Ecuador. Obliga a toda empresa con más de 25 trabajadores a contar con un servicio médico y brigadas de emergencia debidamente organizadas y capacitadas. Complementariamente, el <strong>Acuerdo Ministerial MDT-2017-0135</strong> detalla los requisitos específicos para la conformación y operación de brigadas de primeros auxilios, incluyendo el número mínimo de integrantes según el tamaño de la empresa.</p>
-        <p>La <strong>Ley Orgánica de Prevención Integral del Fenómeno Socioeconómico de las Drogas</strong> también es relevante para el brigadista, ya que pueden presentarse situaciones relacionadas con intoxicaciones o alteraciones del estado de conciencia en el lugar de trabajo.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>¿Qué es una Brigada de Primeros Auxilios?</h3>
-        <p>Una brigada de primeros auxilios (BPA) es un grupo de trabajadores voluntarios, debidamente capacitados, que están preparados para brindar atención inmediata a una víctima de accidente o enfermedad súbita dentro de la empresa, antes de la llegada de servicios médicos especializados. Su objetivo principal es estabilizar al paciente, evitar el agravamiento de la lesión y preparar el traslado seguro.</p>
-        <div class="info-grid">
-          <div class="info-card gold">
-            <h4>Perfil del Brigadista</h4>
-            <p>Trabajador voluntario, responsable, con capacidad de mantener la calma bajo presión, entrenado en primeros auxilios y con actualización mínima anual.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Responsabilidades Clave</h4>
-            <p>Activar el sistema de emergencia, aplicar primeros auxilios dentro de su competencia, coordinar con servicios externos y registrar el incidente.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Límites Legales</h4>
-            <p>El brigadista NO reemplaza al médico. Actuar fuera de su ámbito de formación puede implicar responsabilidad civil o penal. Siempre derive a la autoridad sanitaria competente.</p>
-          </div>
+        <h3>Obligaciones del Empleador en Seguridad y Salud</h3>
+        <p>El <strong>Decreto Ejecutivo 2393</strong> (Reglamento de Seguridad y Salud de los Trabajadores) es el instrumento rector de la SST en Ecuador. Su Art. 11 enumera las obligaciones generales del empleador, entre ellas adoptar medidas de prevención de riesgos, conformar brigadas de emergencia y garantizar la capacitación continua de sus integrantes.</p>
+        <p>Las empresas con <strong>más de 25 trabajadores</strong> están obligadas a conformar brigadas de primeros auxilios, contraincendios y evacuación. Las empresas con más de 100 trabajadores adicionalmente deben contar con médico ocupacional a tiempo completo o parcial, según lo establece el <strong>Art. 12 del Acuerdo MDT-2020-077</strong>.</p>
+        <div class="steps anim-fadein">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Conformar brigadas</h4><p>Designar y entrenar al personal voluntario. Mínimo: 1 brigadista por cada 25 trabajadores en cada turno operativo.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Registrar ante el MDT</h4><p>Presentar el Plan de Autoprotección Institucional ante el Ministerio del Trabajo. Renovación anual obligatoria.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Capacitar y recertificar</h4><p>Garantizar entrenamiento mínimo anual. Las brigadas deben realizar al menos un simulacro por año con informe al MDT.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Dotar de equipos</h4><p>Botiquín tipo A (Decreto 2393, Art. 175), DEA (en establecimientos >50 personas), camilla rígida, kit de bioseguridad.</p></div></div>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>Decreto Ejecutivo 2393: reglamento rector de la SSO en Ecuador</li>
-          <li>Acuerdo Ministerial MDT-2017-0135: requisitos para brigadas de emergencia</li>
-          <li>Brigada de primeros auxilios: grupo capacitado para atención inmediata</li>
-          <li>El brigadista actúa dentro de los límites de su formación certificada</li>
-          <li>Registro obligatorio de cada intervención realizada</li>
-          <li>Actualización mínima anual requerida por normativa</li>
-          <li>Coordinación con el Sistema Nacional de Gestión de Riesgos (SNGR)</li>
-        </ul>
+        <h3>Principios Éticos del Socorrista</h3>
+        <div class="concept-grid anim-fadein">
+          <div class="concept-card"><div class="cc-icon">🤝</div><h4>Consentimiento</h4><p>El socorrista debe obtener consentimiento del paciente consciente antes de actuar. En inconscientes, se presume consentimiento.</p></div>
+          <div class="concept-card"><div class="cc-icon">🔒</div><h4>Confidencialidad</h4><p>Los datos del paciente son reservados. Solo se comparten con el personal médico de relevo o autoridades competentes.</p></div>
+          <div class="concept-card"><div class="cc-icon">⚖️</div><h4>No abandono</h4><p>Una vez iniciada la atención, el brigadista no puede abandonar al paciente hasta entregar la responsabilidad al siguiente nivel de atención.</p></div>
+          <div class="concept-card"><div class="cc-icon">🛡️</div><h4>No maleficencia</h4><p>Actuar únicamente dentro de los límites de la formación recibida. Nunca intentar procedimientos sin entrenamiento certificado.</p></div>
+        </div>
       </div>
 
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/c_j5pFPSnS4" title="Introducción a Primeros Auxilios - Cruz Roja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
+      <div class="content-section">
+        <h3>La Cadena de Supervivencia de la OMS</h3>
+        <p>La cadena de supervivencia es el modelo que conecta la atención prehospitalaria con la hospitalaria. Cada eslabón es crítico: romper uno reduce drásticamente la posibilidad de supervivencia del paciente.</p>
+        <div class="svg-container anim-fadein">
+          <svg viewBox="0 0 720 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+            <!-- Eslabón 1 -->
+            <ellipse cx="90" cy="70" rx="82" ry="52" fill="none" stroke="#1D51A3" stroke-width="6"/>
+            <ellipse cx="90" cy="70" rx="68" ry="38" fill="#e8eef8" stroke="#1D51A3" stroke-width="3"/>
+            <text x="90" y="62" text-anchor="middle" font-size="22" fill="#1D51A3">📞</text>
+            <text x="90" y="82" text-anchor="middle" font-size="10" fill="#163d7a" font-weight="bold">Llamar</text>
+            <text x="90" y="96" text-anchor="middle" font-size="9" fill="#5a6e8c">ECU-911</text>
+            <!-- Conector -->
+            <path d="M172 70 L195 70" stroke="#F0C319" stroke-width="5" stroke-linecap="round"/>
+            <polygon points="192,63 204,70 192,77" fill="#F0C319"/>
+            <!-- Eslabón 2 -->
+            <ellipse cx="270" cy="70" rx="82" ry="52" fill="none" stroke="#1D51A3" stroke-width="6"/>
+            <ellipse cx="270" cy="70" rx="68" ry="38" fill="#e8eef8" stroke="#1D51A3" stroke-width="3"/>
+            <text x="270" y="62" text-anchor="middle" font-size="22" fill="#1D51A3">🤲</text>
+            <text x="270" y="82" text-anchor="middle" font-size="10" fill="#163d7a" font-weight="bold">RCP</text>
+            <text x="270" y="96" text-anchor="middle" font-size="9" fill="#5a6e8c">Inmediata</text>
+            <!-- Conector -->
+            <path d="M352 70 L375 70" stroke="#F0C319" stroke-width="5" stroke-linecap="round"/>
+            <polygon points="372,63 384,70 372,77" fill="#F0C319"/>
+            <!-- Eslabón 3 -->
+            <ellipse cx="450" cy="70" rx="82" ry="52" fill="none" stroke="#1D51A3" stroke-width="6"/>
+            <ellipse cx="450" cy="70" rx="68" ry="38" fill="#e8eef8" stroke="#1D51A3" stroke-width="3"/>
+            <text x="450" y="62" text-anchor="middle" font-size="22" fill="#1D51A3">⚡</text>
+            <text x="450" y="82" text-anchor="middle" font-size="10" fill="#163d7a" font-weight="bold">Desfibrilación</text>
+            <text x="450" y="96" text-anchor="middle" font-size="9" fill="#5a6e8c">DEA / AED</text>
+            <!-- Conector -->
+            <path d="M532 70 L555 70" stroke="#F0C319" stroke-width="5" stroke-linecap="round"/>
+            <polygon points="552,63 564,70 552,77" fill="#F0C319"/>
+            <!-- Eslabón 4 -->
+            <ellipse cx="630" cy="70" rx="82" ry="52" fill="none" stroke="#163d7a" stroke-width="6"/>
+            <ellipse cx="630" cy="70" rx="68" ry="38" fill="#dde4ef" stroke="#163d7a" stroke-width="3"/>
+            <text x="630" y="62" text-anchor="middle" font-size="22" fill="#163d7a">🏥</text>
+            <text x="630" y="82" text-anchor="middle" font-size="10" fill="#163d7a" font-weight="bold">Cuidados</text>
+            <text x="630" y="96" text-anchor="middle" font-size="9" fill="#5a6e8c">Avanzados</text>
+          </svg>
+          <figcaption>Cadena de Supervivencia OMS/AHA 2020 — Cada eslabón depende del anterior</figcaption>
+        </div>
+      </div>
 
-      <!-- QUIZ 1 -->
+      <div class="content-section">
+        <h3>Sistema ECU-911 — Cómo Reportar una Emergencia</h3>
+        <p>El sistema integrado de emergencias Ecuador <strong>ECU-911</strong> coordina la respuesta de Bomberos, Policía, ambulancias y rescate. Al llamar, proporciona siempre:</p>
+        <div class="alert info"><div class="alert-icon">📋</div><p><strong>Protocolo de llamada:</strong> (1) Qué ocurrió — tipo de emergencia; (2) Dónde — dirección exacta, referencias; (3) Cuántos — número de víctimas; (4) Estado — consciente/inconsciente, respira/no respira; (5) Qué se está haciendo — RCP, control de hemorragia.</p></div>
+        <div class="alert danger"><div class="alert-icon">⚠️</div><p><strong>No cuelgue</strong> hasta que el operador lo autorice. El ECU-911 puede guiarle en procedimientos básicos de reanimación en tiempo real.</p></div>
+      </div>
+
+      <div class="abp-case anim-fadein">
+        <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+        <h4>Escenario: Colapso en planta industrial</h4>
+        <p>En una planta de manufactura metalmecánica de Quito con 85 trabajadores, un operario de 48 años colapsa durante su turno de la tarde (15h30). Hay 3 compañeros presentes: uno quiere moverlo inmediatamente hacia la puerta, otro llama directamente al 911 sin dar la dirección, y el tercero corre a buscar el botiquín en la oficina del supervisor. No hay brigadistas identificados en ese turno.</p>
+        <div class="abp-questions">
+          <p>❓ ¿Qué obligaciones legales incumplió la empresa según el Decreto 2393?</p>
+          <p>❓ ¿Qué acciones correctas e incorrectas realizaron los 3 compañeros?</p>
+          <p>❓ ¿Cómo debe activarse la cadena de supervivencia en este caso específico?</p>
+          <p>❓ ¿Qué sanciones puede recibir la empresa del IESS y del MDT?</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Video de Referencia — Cruz Roja Internacional</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/OaoJuikmWvY" title="Primeros Auxilios y RCP — Cruz Roja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+      </div>
+
       <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 1</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta y presione "Verificar respuestas".</div>
-
-        <div class="quiz-question" id="q1-1">
-          <div class="quiz-q">1. ¿Cuál es el decreto que regula la Seguridad y Salud Ocupacional en Ecuador?</div>
+        <div class="quiz-title">Verificación de Aprendizaje — Módulo 1</div>
+        <div class="quiz-sub">Seleccione la respuesta correcta en cada pregunta.</div>
+        <div class="quiz-question">
+          <div class="quiz-q">1. ¿Cuántos trabajadores mínimos debe tener una empresa para estar obligada a conformar brigadas de emergencia según el Decreto 2393?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q1-1" value="a"> Decreto Ejecutivo 1040</label>
-            <label class="quiz-opt"><input type="radio" name="q1-1" value="b"> Decreto Ejecutivo 2393</label>
-            <label class="quiz-opt"><input type="radio" name="q1-1" value="c"> Resolución IESS CD.513</label>
+            <label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 10 trabajadores</label>
+            <label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 25 trabajadores</label>
+            <label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 50 trabajadores</label>
+            <label class="quiz-opt"><input type="radio" name="q1a" value="d"> d) 100 trabajadores</label>
           </div>
         </div>
-        <div class="quiz-question" id="q1-2">
-          <div class="quiz-q">2. ¿Qué instrumento legal define los requisitos específicos para brigadas de primeros auxilios?</div>
+        <div class="quiz-question">
+          <div class="quiz-q">2. El principio ético que prohíbe al brigadista actuar fuera de su formación es:</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q1-2" value="a"> Acuerdo Ministerial MDT-2017-0135</label>
-            <label class="quiz-opt"><input type="radio" name="q1-2" value="b"> Constitución de la República del Ecuador</label>
-            <label class="quiz-opt"><input type="radio" name="q1-2" value="c"> Código del Trabajo, Art. 42</label>
+            <label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) Consentimiento</label>
+            <label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) Confidencialidad</label>
+            <label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) No maleficencia</label>
+            <label class="quiz-opt"><input type="radio" name="q1b" value="d"> d) Justicia</label>
           </div>
         </div>
-        <div class="quiz-question" id="q1-3">
-          <div class="quiz-q">3. ¿Cuál es el límite de actuación de un brigadista de primeros auxilios?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q1-3" value="a"> Puede realizar cualquier procedimiento médico de emergencia</label>
-            <label class="quiz-opt"><input type="radio" name="q1-3" value="b"> Actúa dentro de los límites de su formación certificada y deriva al personal médico</label>
-            <label class="quiz-opt"><input type="radio" name="q1-3" value="c"> Solo puede llamar al 911 y esperar</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(1)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-1"></div>
+        <button class="quiz-submit" onclick="checkMiniQuiz('mod1',{'q1a':'b','q1b':'c'})">Verificar respuestas</button>
+        <div class="quiz-result" id="mod1-result"></div>
       </div>
 
       <div class="module-nav">
         <span></span>
-        <button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente módulo →</button>
+        <button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente: Evaluación ABCDE →</button>
       </div>
     </div>
 
-    <!-- ====== MODULE 2 ====== -->
-    <div class="module-panel" id="mod-2" style="display:none">
+    <!-- ======== MÓDULO 2 ======== -->
+    <div class="module-panel" id="mod-2">
       <div class="module-header">
         <span class="module-tag">Módulo 2 de 6</span>
-        <h1 class="module-title">Evaluación Primaria y Bioseguridad</h1>
-        <p class="module-desc">Técnicas sistemáticas para evaluar a una víctima y proteger al brigadista durante la atención.</p>
+        <h1 class="module-title">Evaluación Primaria — Protocolo ABCDE</h1>
+        <p class="module-desc">Metodología sistemática de evaluación de la víctima para identificar y tratar las amenazas vitales inmediatas en orden de prioridad.</p>
+      </div>
+
+      <div class="norm-ref"><strong>Base normativa:</strong> Guías PHTLS 9ª edición · Protocolo ATLS (Advanced Trauma Life Support) · Guías AHA 2020 · NTE INEN-ISO 7010 (señalización)</div>
+
+      <div class="content-section">
+        <h3>¿Por qué el Protocolo ABCDE?</h3>
+        <p>El protocolo ABCDE es el estándar internacional para la evaluación primaria de víctimas en situaciones de emergencia. Fue desarrollado por el <strong>American College of Surgeons</strong> y adoptado globalmente. Su lógica es tratar primero lo que mata más rápido: sin vía aérea, la muerte ocurre en 4-6 minutos; sin circulación, en 3-5 minutos.</p>
+        <div class="alert info"><div class="alert-icon">ℹ️</div><p>La evaluación ABCDE debe completarse en <strong>menos de 2 minutos</strong>. Si en cualquier letra encuentras una amenaza vital, debes resolverla ANTES de continuar con la siguiente.</p></div>
       </div>
 
       <div class="content-section">
-        <p>Antes de actuar sobre una víctima, el brigadista debe evaluar el entorno y aplicar medidas de bioseguridad que protejan tanto al paciente como a sí mismo. La secuencia PAS —Proteger, Avisar, Socorrer— es el primer protocolo que debe activarse ante cualquier emergencia. Aplicar un enfoque sistemático evita errores por precipitación y garantiza que no se pasen por alto lesiones críticas.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Secuencia PAS: Proteger, Avisar, Socorrer</h3>
-        <p><strong>Proteger:</strong> Evalúe la escena. ¿Existe riesgo de electrocución, tráfico, sustancias peligrosas o derrumbes? No intervenga si la escena no es segura. Solo mueva a la víctima si existe peligro inminente y usted puede hacerlo sin comprometer su integridad.</p>
-        <p><strong>Avisar:</strong> Active el Sistema de Emergencias Médicas (SEM). En Ecuador marque el <strong>911</strong>. Comunique: ubicación exacta, número de víctimas, estado aparente y tipo de accidente. No cuelgue hasta recibir instrucciones.</p>
-        <p><strong>Socorrer:</strong> Una vez asegurada la escena, inicie la evaluación primaria y aplique los primeros auxilios dentro de su competencia. Actúe con calma y eficiencia.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Evaluación Primaria ABCDE</h3>
-        <p>La evaluación primaria es una revisión sistemática y rápida (menos de 60 segundos) diseñada para identificar lesiones que amenazan la vida de forma inmediata:</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">A</div><div class="step-body"><h4>Airway — Vía Aérea</h4><p>¿Habla el paciente? Si no responde, abra la vía aérea con la maniobra frente-mentón. Retire cuerpos extraños visibles.</p></div></div>
-          <div class="step"><div class="step-num">B</div><div class="step-body"><h4>Breathing — Respiración</h4><p>¿Respira? Observe el movimiento torácico, escuche y sienta el flujo de aire durante 10 segundos. Frecuencia normal adulto: 12-20 rpm.</p></div></div>
-          <div class="step"><div class="step-num">C</div><div class="step-body"><h4>Circulation — Circulación</h4><p>Evalúe pulso carotídeo (adultos) o braquial (lactantes). Controle hemorragias externas visibles. Piel: color, temperatura, humedad.</p></div></div>
-          <div class="step"><div class="step-num">D</div><div class="step-body"><h4>Disability — Estado Neurológico</h4><p>Nivel de consciencia con escala AVDI: Alerta, Voz, Dolor, Inconsciencia. Evalúe pupilas: tamaño, simetría, reactividad.</p></div></div>
-          <div class="step"><div class="step-num">E</div><div class="step-body"><h4>Exposure — Exposición</h4><p>Retire ropa para identificar lesiones ocultas. Proteja la intimidad del paciente. Prevenga hipotermia.</p></div></div>
+        <h3>Las 5 Letras — Secuencia de Evaluación</h3>
+        <div class="svg-container anim-fadein">
+          <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+            <!-- Figura humana esquemática -->
+            <!-- Cabeza -->
+            <circle cx="290" cy="42" r="28" fill="#e8eef8" stroke="#1D51A3" stroke-width="2"/>
+            <text x="290" y="47" text-anchor="middle" font-size="12" fill="#1D51A3" font-weight="bold">A</text>
+            <!-- Cuello/tórax -->
+            <rect x="265" y="70" width="50" height="80" rx="6" fill="#e8eef8" stroke="#1D51A3" stroke-width="2"/>
+            <text x="290" y="112" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">B / C</text>
+            <!-- Abdomen -->
+            <rect x="265" y="155" width="50" height="50" rx="6" fill="#dde4ef" stroke="#1D51A3" stroke-width="2"/>
+            <!-- Brazo izq -->
+            <rect x="220" y="72" width="40" height="70" rx="8" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+            <!-- Brazo der -->
+            <rect x="320" y="72" width="40" height="70" rx="8" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+            <!-- Pierna izq -->
+            <rect x="255" y="210" width="30" height="75" rx="8" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+            <!-- Pierna der -->
+            <rect x="295" y="210" width="30" height="75" rx="8" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+            <!-- Labels ABCDE -->
+            <!-- A - vía aérea -->
+            <line x1="318" y1="42" x2="380" y2="28" stroke="#F0C319" stroke-width="2"/>
+            <rect x="382" y="8" width="160" height="42" rx="6" fill="#fff" stroke="#F0C319" stroke-width="1.5"/>
+            <text x="462" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#163d7a">A — Airway</text>
+            <text x="462" y="40" text-anchor="middle" font-size="10" fill="#5a6e8c">Vía aérea + control cervical</text>
+            <!-- B - Breathing -->
+            <line x1="315" y1="90" x2="380" y2="88" stroke="#F0C319" stroke-width="2"/>
+            <rect x="382" y="72" width="160" height="42" rx="6" fill="#fff" stroke="#F0C319" stroke-width="1.5"/>
+            <text x="462" y="89" text-anchor="middle" font-size="11" font-weight="bold" fill="#163d7a">B — Breathing</text>
+            <text x="462" y="104" text-anchor="middle" font-size="10" fill="#5a6e8c">Ventilación y oxigenación</text>
+            <!-- C - Circulation -->
+            <line x1="315" y1="118" x2="380" y2="130" stroke="#F0C319" stroke-width="2"/>
+            <rect x="382" y="114" width="160" height="42" rx="6" fill="#fff" stroke="#F0C319" stroke-width="1.5"/>
+            <text x="462" y="131" text-anchor="middle" font-size="11" font-weight="bold" fill="#163d7a">C — Circulation</text>
+            <text x="462" y="146" text-anchor="middle" font-size="10" fill="#5a6e8c">Hemorragias y perfusión</text>
+            <!-- D - Disability -->
+            <line x1="290" y1="155" x2="290" y2="175" stroke="none"/>
+            <line x1="265" y1="175" x2="200" y2="195" stroke="#F0C319" stroke-width="2"/>
+            <rect x="28" y="178" width="168" height="42" rx="6" fill="#fff" stroke="#F0C319" stroke-width="1.5"/>
+            <text x="112" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="#163d7a">D — Disability</text>
+            <text x="112" y="210" text-anchor="middle" font-size="10" fill="#5a6e8c">Estado neurológico / Glasgow</text>
+            <!-- E - Exposure -->
+            <line x1="265" y1="230" x2="200" y2="248" stroke="#F0C319" stroke-width="2"/>
+            <rect x="28" y="232" width="168" height="42" rx="6" fill="#fff" stroke="#F0C319" stroke-width="1.5"/>
+            <text x="112" y="249" text-anchor="middle" font-size="11" font-weight="bold" fill="#163d7a">E — Exposure</text>
+            <text x="112" y="264" text-anchor="middle" font-size="10" fill="#5a6e8c">Exposición + control ambiental</text>
+          </svg>
+          <figcaption>Protocolo ABCDE — Secuencia de evaluación primaria según PHTLS/ATLS</figcaption>
         </div>
+      </div>
 
-        <div class="info-grid">
-          <div class="info-card green">
-            <h4>Signos Vitales Normales (Adulto)</h4>
-            <p>Pulso: 60-100 lpm · Resp.: 12-20 rpm · Temp.: 36-37.5°C · PA: 120/80 mmHg</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Posición Lateral de Seguridad</h4>
-            <p>Indicada en víctimas inconscientes que respiran. Evita la broncoaspiración. Coloque el brazo inferior extendido y doble la rodilla superior.</p>
-          </div>
-          <div class="info-card danger">
-            <h4>Bioseguridad Obligatoria</h4>
-            <p>Use siempre guantes de látex o nitrilo. Evite el contacto con fluidos corporales. Lávese las manos antes y después de la atención.</p>
-          </div>
+      <div class="content-section">
+        <h3>Detalle de Cada Letra</h3>
+        <div class="steps anim-fadein">
+          <div class="step"><div class="step-num">A</div><div class="step-body"><h4>Airway — Vía Aérea</h4><p>¿Responde al hablarle? ¿Hay ruidos (ronquidos, estridor)? Maniobra frente-mentón (sin trauma) o tracción mandibular (con trauma cervical). Retire cuerpos extraños visibles. Si no respira: posición lateral de seguridad si está inconsciente y respira.</p></div></div>
+          <div class="step"><div class="step-num">B</div><div class="step-body"><h4>Breathing — Respiración</h4><p>Ver-oír-sentir durante máximo 10 segundos. Frecuencia normal: 12-20 rpm adulto. Observe simetría torácica. Si <8 rpm: ventilación asistida. Tórax abierto (succionante): cubrir con parche oclusivo en 3 puntos.</p></div></div>
+          <div class="step"><div class="step-num">C</div><div class="step-body"><h4>Circulation — Circulación</h4><p>¿Hemorragias externas visibles? → Control inmediato por presión directa o torniquete. Pulso radial: presente = TAS >80mmHg. Piel: pálida, fría, sudorosa = shock. Relleno capilar normal: <2 segundos.</p></div></div>
+          <div class="step"><div class="step-num">D</div><div class="step-body"><h4>Disability — Estado Neurológico</h4><p>Escala AVPU: A=Alerta, V=responde a Voz, P=responde a Dolor, U=sin respuesta. Glasgow completo: Ocular (1-4) + Verbal (1-5) + Motor (1-6). Pupilas: tamaño, simetría, reactividad a la luz.</p></div></div>
+          <div class="step"><div class="step-num">E</div><div class="step-body"><h4>Exposure / Environment</h4><p>Descubra la víctima para buscar lesiones ocultas en tronco y extremidades. Controle hipotermia: cubra con manta térmica. Temperatura ambiental <20°C acelera el shock. Registre hora de evaluación.</p></div></div>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>PAS: Proteger - Avisar - Socorrer (orden obligatorio)</li>
-          <li>Número de emergencias en Ecuador: 911</li>
-          <li>ABCDE: evaluación primaria sistematizada</li>
-          <li>Escala AVDI para nivel de consciencia</li>
-          <li>Pupilas: normales son isocóricas y reactivas a la luz</li>
-          <li>EPP mínimo: guantes, mascarilla facial</li>
-          <li>PLS indicada en inconsciente que respira</li>
-        </ul>
+        <h3>Posición Lateral de Seguridad (PLS)</h3>
+        <p>Indicada cuando el paciente está <strong>inconsciente pero respira con normalidad</strong> y no se sospecha lesión cervical. Protege la vía aérea de aspiración de vómito.</p>
+        <div class="alert important"><div class="alert-icon">⚠️</div><p><strong>Contraindicaciones de la PLS:</strong> trauma cervical conocido o sospechado, fracturas de columna, embarazo avanzado (recuéstela sobre el lado izquierdo). En estos casos, mantenga en posición supina con control manual de la cabeza.</p></div>
       </div>
 
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/hnWaMqJvioI" title="Evaluación Primaria en Primeros Auxilios" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
+      <div class="abp-case anim-fadein">
+        <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+        <h4>Escenario: Accidente de tránsito laboral</h4>
+        <p>María, conductora de ruta de 32 años, sufre un accidente vehicular. Al llegar los brigadistas la encuentran inconsciente dentro del vehículo, con ruido gurguritante al respirar (sangre en boca), hemorragia en muslo derecho (sangre roja que pulsa), temperatura exterior de 6°C (zona andina). El airbag se disparó y el volante está deformado.</p>
+        <div class="abp-questions">
+          <p>❓ Aplica el ABCDE en orden. ¿Cuál es la primera amenaza a resolver?</p>
+          <p>❓ ¿Cómo manejas la vía aérea con sospecha de trauma cervical?</p>
+          <p>❓ ¿Qué tipo de hemorragia presenta y cuál es el control de elección?</p>
+          <p>❓ ¿Cómo controlas el factor ambiental (hipotermia) sin mover a la víctima?</p>
+        </div>
+      </div>
 
-      <!-- QUIZ 2 -->
+      <div class="content-section">
+        <h3>Video de Referencia — Protocolo ABCDE en Emergencias</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/zqTBPQSKqbg" title="Primeros Auxilios Completo 2024" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+      </div>
+
       <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 2</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
-        <div class="quiz-question" id="q2-1">
-          <div class="quiz-q">1. ¿Cuál es el orden correcto de la secuencia PAS?</div>
+        <div class="quiz-title">Verificación de Aprendizaje — Módulo 2</div>
+        <div class="quiz-sub">Seleccione la respuesta correcta.</div>
+        <div class="quiz-question">
+          <div class="quiz-q">3. En el protocolo ABCDE, ¿cuánto tiempo máximo se dedica a evaluar la respiración (B)?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q2-1" value="a"> Socorrer, Proteger, Avisar</label>
-            <label class="quiz-opt"><input type="radio" name="q2-1" value="b"> Proteger, Avisar, Socorrer</label>
-            <label class="quiz-opt"><input type="radio" name="q2-1" value="c"> Avisar, Socorrer, Proteger</label>
+            <label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) 5 segundos</label>
+            <label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) 10 segundos</label>
+            <label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) 20 segundos</label>
+            <label class="quiz-opt"><input type="radio" name="q2a" value="d"> d) 30 segundos</label>
           </div>
         </div>
-        <div class="quiz-question" id="q2-2">
-          <div class="quiz-q">2. ¿Qué significa la "D" en la evaluación primaria ABCDE?</div>
+        <div class="quiz-question">
+          <div class="quiz-q">4. La escala AVPU evalúa:</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q2-2" value="a"> Diagnóstico médico</label>
-            <label class="quiz-opt"><input type="radio" name="q2-2" value="b"> Disability (estado neurológico)</label>
-            <label class="quiz-opt"><input type="radio" name="q2-2" value="c"> Desfibrilación</label>
+            <label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) La presión arterial sistólica</label>
+            <label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) La frecuencia respiratoria</label>
+            <label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) El nivel de conciencia</label>
+            <label class="quiz-opt"><input type="radio" name="q2b" value="d"> d) La perfusión periférica</label>
           </div>
         </div>
-        <div class="quiz-question" id="q2-3">
-          <div class="quiz-q">3. ¿En qué situación se coloca a la víctima en Posición Lateral de Seguridad?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q2-3" value="a"> Cuando tiene fractura de columna vertebral</label>
-            <label class="quiz-opt"><input type="radio" name="q2-3" value="b"> Cuando está inconsciente pero respira normalmente</label>
-            <label class="quiz-opt"><input type="radio" name="q2-3" value="c"> Cuando tiene hemorragia externa grave</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(2)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-2"></div>
+        <button class="quiz-submit" onclick="checkMiniQuiz('mod2',{'q2a':'b','q2b':'c'})">Verificar respuestas</button>
+        <div class="quiz-result" id="mod2-result"></div>
       </div>
 
       <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente módulo →</button>
+        <button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo 1</button>
+        <button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente: Heridas y Hemorragias →</button>
       </div>
     </div>
 
-    <!-- ====== MODULE 3 ====== -->
-    <div class="module-panel" id="mod-3" style="display:none">
+    <!-- ======== MÓDULO 3 ======== -->
+    <div class="module-panel" id="mod-3">
       <div class="module-header">
         <span class="module-tag">Módulo 3 de 6</span>
-        <h1 class="module-title">Heridas y Hemorragias</h1>
-        <p class="module-desc">Clasificación, evaluación y control de heridas y hemorragias en el ambiente laboral.</p>
+        <h1 class="module-title">Heridas y Control de Hemorragias</h1>
+        <p class="module-desc">Clasificación de heridas, tipos de hemorragia y técnicas de control desde la presión directa hasta el uso del torniquete táctico.</p>
+      </div>
+
+      <div class="norm-ref"><strong>Base normativa:</strong> Guías TCCC (Tactical Combat Casualty Care) · NFPA 450 · Protocolo MARCH (Massive hemorrhage, Airway, Respiration, Circulation, Hypothermia) · Decreto 2393 Art. 175</div>
+
+      <div class="content-section">
+        <h3>Clasificación de Heridas</h3>
+        <table class="data-table">
+          <thead><tr><th>Tipo</th><th>Características</th><th>Riesgo</th><th>Manejo inicial</th></tr></thead>
+          <tbody>
+            <tr><td>Abrasión</td><td>Raspado superficial de la piel</td><td>Bajo — infección</td><td>Limpieza con agua, antiséptico, cubrir</td></tr>
+            <tr><td>Laceración</td><td>Corte irregular de bordes irregulares</td><td>Medio — infección, sangrado</td><td>Presión directa, aproximar bordes, apósito</td></tr>
+            <tr><td>Punzante</td><td>Entrada pequeña, profundidad variable</td><td>Alto — órganos internos</td><td>NO retirar objeto; inmovilizar, trasladar</td></tr>
+            <tr><td>Avulsión</td><td>Tejido arrancado o colgante</td><td>Alto — sangrado masivo</td><td>Recuperar tejido, húmedo, refrigerado; presión</td></tr>
+            <tr><td>Amputación</td><td>Pérdida total de una parte</td><td>Crítico — shock hemorrágico</td><td>Torniquete; parte amputada en bolsa seca + hielo</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="content-section">
-        <p>Las heridas y las hemorragias son las emergencias más frecuentes en el entorno laboral ecuatoriano. Una hemorragia no controlada puede llevar a un trabajador al shock hipovolémico en cuestión de minutos, por lo que el brigadista debe dominar las técnicas de control hemorrágico con rapidez y precisión. La correcta clasificación de la herida permite aplicar el tratamiento más adecuado y prever complicaciones.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Tipos de Heridas</h3>
-        <p>Las heridas se clasifican según el mecanismo de producción:</p>
-        <ul>
-          <li><strong>Incisas:</strong> bordes limpios y regulares, producidas por objetos cortantes. Sangran abundantemente pero cicatrizan bien.</li>
-          <li><strong>Contusas:</strong> bordes irregulares y aplastados, producidas por golpe con objeto romo. Mayor riesgo de infección.</li>
-          <li><strong>Punzantes:</strong> orificio de entrada pequeño, trayecto profundo. Peligrosas por compromiso de órganos internos.</li>
-          <li><strong>Avulsiones:</strong> desgarro o arrancamiento de tejidos. Requieren atención especializada inmediata.</li>
-          <li><strong>Abrasiones:</strong> rozamiento superficial, pérdida de epidermis. Dolorosas pero de menor gravedad.</li>
-        </ul>
-      </div>
-
-      <div class="content-section">
-        <h3>Control de Hemorragias</h3>
-        <p>Las hemorragias se clasifican en: <strong>arteriales</strong> (sangre roja brillante, pulso sincronizado, más graves), <strong>venosas</strong> (sangre roja oscura, flujo continuo) y <strong>capilares</strong> (pequeños sangrados superficiales en sábana).</p>
-        <p>El protocolo de control sigue una escalada de intervención:</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Presión directa</h4><p>Aplique compresas estériles o tela limpia sobre la herida con presión firme y constante durante mínimo 10 minutos. NO levante para revisar.</p></div></div>
-          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Elevación del miembro</h4><p>Si no hay fractura sospechada, eleve la extremidad afectada por encima del nivel del corazón para reducir el flujo sanguíneo.</p></div></div>
-          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Torniquete de emergencia</h4><p>Solo en hemorragias masivas de extremidades que amenazan la vida. Aplique 5-7 cm por encima de la herida. Registre la hora de aplicación. Nunca retire en campo.</p></div></div>
+        <h3>Tipos de Hemorragia y Reconocimiento</h3>
+        <div class="svg-container anim-fadein">
+          <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+            <!-- Arterial -->
+            <rect x="20" y="20" width="170" height="120" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+            <text x="105" y="46" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">ARTERIAL</text>
+            <text x="105" y="65" text-anchor="middle" font-size="10" fill="#7f1d1d">Color: rojo brillante</text>
+            <text x="105" y="82" text-anchor="middle" font-size="10" fill="#7f1d1d">Flujo: pulsátil (con latido)</text>
+            <text x="105" y="99" text-anchor="middle" font-size="10" fill="#7f1d1d">Velocidad: muy rápida</text>
+            <text x="105" y="116" text-anchor="middle" font-size="10" fill="#7f1d1d">Riesgo vital: INMEDIATO</text>
+            <text x="105" y="130" text-anchor="middle" font-size="9" fill="#b91c1c" font-style="italic">→ Torniquete/presión fuerte</text>
+            <!-- Venosa -->
+            <rect x="215" y="20" width="170" height="120" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+            <text x="300" y="46" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">VENOSA</text>
+            <text x="300" y="65" text-anchor="middle" font-size="10" fill="#78350f">Color: rojo oscuro</text>
+            <text x="300" y="82" text-anchor="middle" font-size="10" fill="#78350f">Flujo: continuo y manso</text>
+            <text x="300" y="99" text-anchor="middle" font-size="10" fill="#78350f">Velocidad: moderada</text>
+            <text x="300" y="116" text-anchor="middle" font-size="10" fill="#78350f">Riesgo vital: en minutos</text>
+            <text x="300" y="130" text-anchor="middle" font-size="9" fill="#92400e" font-style="italic">→ Presión directa + vendaje</text>
+            <!-- Capilar -->
+            <rect x="410" y="20" width="170" height="120" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <text x="495" y="46" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">CAPILAR</text>
+            <text x="495" y="65" text-anchor="middle" font-size="10" fill="#166534">Color: rojo rosado</text>
+            <text x="495" y="82" text-anchor="middle" font-size="10" fill="#166534">Flujo: en sábana / rezuma</text>
+            <text x="495" y="99" text-anchor="middle" font-size="10" fill="#166534">Velocidad: lenta</text>
+            <text x="495" y="116" text-anchor="middle" font-size="10" fill="#166534">Riesgo vital: bajo</text>
+            <text x="495" y="130" text-anchor="middle" font-size="9" fill="#15803d" font-style="italic">→ Limpieza + apósito</text>
+          </svg>
+          <figcaption>Clasificación de hemorragias por origen vascular — reconocimiento visual y manejo</figcaption>
         </div>
+      </div>
 
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>Signos de Shock Hemorrágico</h4>
-            <p>Palidez, piel fría y húmeda, pulso rápido y débil, confusión, sed intensa. Active 911 de inmediato.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Epistaxis (Sangrado Nasal)</h4>
-            <p>Incline la cabeza hacia adelante (no hacia atrás). Comprima las fosas nasales durante 10-15 minutos. Aplique frío externo.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Hemorragias Internas</h4>
-            <p>Sospeche si hay trauma abdominal o torácico, dolor intenso, distensión, rigidez. No aplique presión. Traslade urgente.</p>
-          </div>
+      <div class="content-section">
+        <h3>Técnicas de Control de Hemorragia — Escalera de Intervención</h3>
+        <div class="steps anim-fadein">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Presión Directa (1ª línea)</h4><p>Apósito estéril o tela limpia, presión sostenida mínimo 10 minutos SIN levantar. Agregar más gasas encima si empapa. Eficaz para hemorragias venosas y capilares.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Vendaje Compresivo (2ª línea)</h4><p>Rollo de venda apretado sobre la gasa, fijando la presión. Permite liberar las manos. Verificar pulso distal cada 5 min para evitar isquemia.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Torniquete Táctico (CAT, SOF-T) — 3ª línea</h4><p>Indicado para hemorragia arterial en extremidades que no cede con presión directa. Colocar 5-8 cm proximal a la herida. Anotar hora de colocación. Máximo: 2 horas (1 hora si posible). NUNCA aflojar en campo.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Hemostáticos Tópicos (Combat Gauze, QuikClot)</h4><p>Para heridas en zonas donde el torniquete no aplica (cuello, axila, ingle). Empacar la herida con gasa hemostática y presión directa durante 3 minutos. Uso en brigadas industriales avanzadas.</p></div></div>
+        </div>
+        <div class="alert danger"><div class="alert-icon">🚫</div><p><strong>Regla del torniquete:</strong> Colocar — Apretar hasta que el sangrado CESE completamente — Marcar hora con marcador — NO aflojar — Trasladar urgente. El tiempo de isquemia tolerable es de 2 horas máximo.</p></div>
+      </div>
+
+      <div class="content-section">
+        <h3>Heridas con Objetos Empalados</h3>
+        <div class="alert danger"><div class="alert-icon">⛔</div><p><strong>NUNCA retire un objeto empalado</strong>. El objeto hace hemostasia (tapón). Retirarlo puede provocar hemorragia masiva. Inmovilice el objeto con apósitos y traslade de urgencia.</p></div>
+        <p>Procedimiento: (1) No retire el objeto; (2) Corte el objeto si es muy largo para el traslado, dejando al menos 10 cm sobresaliendo; (3) Rodéelo con apósitos para fijarlo; (4) Traslade en posición que no comprima el objeto.</p>
+      </div>
+
+      <div class="abp-case anim-fadein">
+        <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+        <h4>Escenario: Amputación traumática en planta de corte</h4>
+        <p>En una procesadora de alimentos en Guayaquil, un operario sufre amputación traumática parcial de dos dedos (índice y medio) de la mano derecha por contacto con una sierra de cinta. El sangrado es abundante y pulsátil. La ambulancia del ECU-911 informa un tiempo de arribo de 25 minutos. El botiquín disponible tiene: vendas, gasas, torniquete CAT, solución salina, bolsas de plástico y hielo.</p>
+        <div class="abp-questions">
+          <p>❓ ¿Se aplica torniquete en los dedos? Justifica con criterio técnico.</p>
+          <p>❓ ¿Cómo debe preservarse la parte amputada para posible reimplante?</p>
+          <p>❓ ¿Qué posición debe mantener el paciente durante los 25 minutos de espera?</p>
+          <p>❓ ¿Qué información crítica debes dar al paramédico al llegar?</p>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>Hemorragia arterial: roja brillante, pulsátil, la más grave</li>
-          <li>Presión directa: primera línea de control hemorrágico</li>
-          <li>Torniquete: último recurso en hemorragia masiva de extremidades</li>
-          <li>Tiempo torniquete: registrar hora de aplicación, nunca retirar en campo</li>
-          <li>Epistaxis: cabeza hacia adelante, comprimir 10-15 minutos</li>
-          <li>Avulsión: envolver el tejido en gasa húmeda, trasladar urgente</li>
-          <li>Shock hipovolémico: complicación grave de hemorragia no controlada</li>
-        </ul>
+        <h3>Video de Referencia — Control de Hemorragias</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/wbVl8txg2b8" title="Primeros Auxilios Básicos Cruz Roja Antioquia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
       </div>
 
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/dFZFJkpU7ow" title="Control de Hemorragias - Primeros Auxilios" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 3 -->
       <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 3</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
+        <div class="quiz-title">Verificación de Aprendizaje — Módulo 3</div>
+        <div class="quiz-sub">Seleccione la respuesta correcta.</div>
         <div class="quiz-question">
-          <div class="quiz-q">1. ¿Cuál es la primera medida para controlar una hemorragia externa?</div>
+          <div class="quiz-q">5. ¿A cuántos centímetros proximal (hacia arriba) de la herida debe colocarse el torniquete?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q3-1" value="a"> Aplicar torniquete inmediatamente</label>
-            <label class="quiz-opt"><input type="radio" name="q3-1" value="b"> Presión directa con compresa estéril durante al menos 10 minutos</label>
-            <label class="quiz-opt"><input type="radio" name="q3-1" value="c"> Lavar la herida con agua y jabón</label>
+            <label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Directamente sobre la herida</label>
+            <label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) 5-8 cm por encima de la herida</label>
+            <label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) 15-20 cm por encima</label>
+            <label class="quiz-opt"><input type="radio" name="q3a" value="d"> d) Lo más cerca posible del tronco</label>
           </div>
         </div>
         <div class="quiz-question">
-          <div class="quiz-q">2. ¿Cómo se reconoce una hemorragia arterial?</div>
+          <div class="quiz-q">6. Una hemorragia arterial se reconoce porque:</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q3-2" value="a"> Sangre roja oscura y flujo continuo lento</label>
-            <label class="quiz-opt"><input type="radio" name="q3-2" value="b"> Sangre roja brillante y salida pulsátil sincronizada con el latido</label>
-            <label class="quiz-opt"><input type="radio" name="q3-2" value="c"> Sangrado superficial en sábana de pequeña cantidad</label>
+            <label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) La sangre es oscura y fluye despacio</label>
+            <label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) La sangre rezuma en sábana</label>
+            <label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) La sangre es brillante y sale a chorro pulsátil</label>
+            <label class="quiz-opt"><input type="radio" name="q3b" value="d"> d) Hay coagulación visible en 2 minutos</label>
           </div>
         </div>
-        <div class="quiz-question">
-          <div class="quiz-q">3. Ante epistaxis (sangrado nasal), ¿cuál es la posición correcta de la cabeza?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q3-3" value="a"> Inclinada hacia atrás para evitar el flujo</label>
-            <label class="quiz-opt"><input type="radio" name="q3-3" value="b"> Inclinada hacia adelante y comprimir las fosas nasales</label>
-            <label class="quiz-opt"><input type="radio" name="q3-3" value="c"> Acostado en posición supina</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(3)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-3"></div>
+        <button class="quiz-submit" onclick="checkMiniQuiz('mod3',{'q3a':'b','q3b':'c'})">Verificar respuestas</button>
+        <div class="quiz-result" id="mod3-result"></div>
       </div>
 
       <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente módulo →</button>
+        <button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo 2</button>
+        <button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente: Quemaduras →</button>
       </div>
     </div>
 
-    <!-- ====== MODULE 4 ====== -->
-    <div class="module-panel" id="mod-4" style="display:none">
+    <!-- ======== MÓDULO 4 ======== -->
+    <div class="module-panel" id="mod-4">
       <div class="module-header">
         <span class="module-tag">Módulo 4 de 6</span>
-        <h1 class="module-title">Quemaduras</h1>
-        <p class="module-desc">Clasificación, evaluación y manejo de quemaduras térmicas, eléctricas y químicas en el entorno laboral.</p>
+        <h1 class="module-title">Quemaduras y Lesiones Térmicas</h1>
+        <p class="module-desc">Clasificación por grado y extensión, cálculo de superficie afectada y manejo prehospitalario diferenciado para quemaduras térmicas, químicas y eléctricas.</p>
       </div>
 
-      <div class="content-section">
-        <p>Las quemaduras representan una de las lesiones más dolorosas e incapacitantes que puede sufrir un trabajador, especialmente en industrias con riesgo eléctrico, químico o de calor extremo. La gravedad de una quemadura depende de su agente causal, la profundidad del daño tisular y la extensión de la superficie corporal afectada. Una atención inicial incorrecta puede agravar significativamente el pronóstico del paciente.</p>
-      </div>
+      <div class="norm-ref"><strong>Base normativa:</strong> American Burn Association (ABA) · Protocolo de la Asociación Americana de Quemados · Decreto 2393 Art. 175 · NTE INEN 2-067 (equipos de protección contra calor)</div>
 
       <div class="content-section">
-        <h3>Clasificación de Quemaduras</h3>
-        <p>Según el agente causal se distinguen:</p>
-        <ul>
-          <li><strong>Térmicas:</strong> llamas, líquidos calientes, vapor, contacto con superficies calientes. Las más frecuentes.</li>
-          <li><strong>Eléctricas:</strong> corriente eléctrica. El daño interno puede ser mucho mayor que el visible externamente. Riesgo de paro cardíaco.</li>
-          <li><strong>Químicas:</strong> ácidos y álcalis. El daño continúa mientras el agente permanece en contacto con la piel.</li>
-          <li><strong>Por radiación:</strong> rayos UV, rayos X, radiación nuclear. Pueden tardar horas en manifestarse.</li>
-        </ul>
-        <p>Según la profundidad se clasifican en:</p>
-        <div class="info-grid">
-          <div class="info-card green">
-            <h4>Primer Grado (Superficial)</h4>
-            <p>Afecta solo la epidermis. Enrojecimiento, dolor intenso, sin ampollas. Ejemplo: quemadura solar leve. Sana en 3-5 días.</p>
+        <h3>Clasificación por Profundidad</h3>
+        <div class="concept-grid anim-fadein">
+          <div class="concept-card" style="border-top-color:#fca5a5">
+            <div class="cc-icon">🔴</div>
+            <h4>1° Grado (Epidérmica)</h4>
+            <p>Solo epidermis. Enrojecimiento, dolor intenso, sin ampollas. Ej: quemadura solar. No requiere traslado urgente.</p>
           </div>
-          <div class="info-card gold">
-            <h4>Segundo Grado (Parcial)</h4>
-            <p>Afecta epidermis y parte de la dermis. Ampollas, dolor intenso, superficie húmeda. Sana en 10-21 días. Puede dejar cicatriz.</p>
+          <div class="concept-card" style="border-top-color:#f97316">
+            <div class="cc-icon">🟠</div>
+            <h4>2° Superficial (Dérmica sup.)</h4>
+            <p>Epidermis + dermis superficial. Ampollas, fondo rosado, muy doloroso. Cura en 10-14 días sin secuelas.</p>
           </div>
-          <div class="info-card danger">
-            <h4>Tercer Grado (Profundo)</h4>
-            <p>Destrucción total de la piel. Aspecto blanco, marrón o negro. Sin dolor local (nervios destruidos). Requiere injertos. Emergencia.</p>
+          <div class="concept-card" style="border-top-color:#7c3aed">
+            <div class="cc-icon">🟣</div>
+            <h4>2° Profunda (Dérmica prof.)</h4>
+            <p>Dermis profunda. Ampollas rotas, fondo blanquecino, dolor reducido (nervios dañados). Puede requerir injerto.</p>
+          </div>
+          <div class="concept-card" style="border-top-color:#1e1b4b">
+            <div class="cc-icon">⚫</div>
+            <h4>3° y 4° Grado</h4>
+            <p>Todo el espesor dérmico + músculo/hueso. Color café/negro, sin dolor, aspecto carbonizado. Requiere cirugía urgente.</p>
           </div>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Regla de los Nueves y Manejo Inicial</h3>
-        <p>La <strong>Regla de los Nueves de Wallace</strong> permite estimar rápidamente la superficie corporal quemada (SCQ): cabeza y cuello = 9%, cada brazo = 9%, tórax anterior = 18%, dorso = 18%, cada pierna = 18%, genitales = 1%. Una SCQ mayor al 15% en adultos se considera quemadura mayor y requiere hospitalización urgente.</p>
-        <p><strong>Manejo inicial de quemaduras térmicas:</strong> Enfríe la quemadura con agua corriente a temperatura ambiente durante 10-20 minutos. No use hielo (causa vasoconstricción y agrava el daño). No reviente las ampollas. Cubra con apósito limpio y húmedo.</p>
-        <p><strong>Quemaduras químicas:</strong> Retire la ropa contaminada con guantes. Irrigue con abundante agua corriente durante al menos 20-30 minutos. No neutralice (reacción exotérmica puede empeorar la lesión).</p>
-        <p><strong>Quemaduras eléctricas:</strong> Antes de tocar a la víctima, asegúrese de que la fuente eléctrica esté desconectada. Evalúe paro cardíaco. Trate los puntos de entrada y salida de corriente. Traslade urgente.</p>
+        <h3>Regla de los Nueve (Wallace) — Superficie Corporal</h3>
+        <div class="svg-container anim-fadein">
+          <svg viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+            <!-- Figura anterior -->
+            <circle cx="130" cy="36" r="26" fill="#e8eef8" stroke="#1D51A3" stroke-width="2"/>
+            <text x="130" y="41" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">9%</text>
+            <text x="130" y="20" text-anchor="middle" font-size="9" fill="#5a6e8c">Cabeza y</text>
+            <text x="130" y="8" text-anchor="middle" font-size="9" fill="#5a6e8c">cuello</text>
+            <!-- Tronco anterior -->
+            <rect x="100" y="66" width="60" height="90" rx="6" fill="#dbeafe" stroke="#1D51A3" stroke-width="2"/>
+            <text x="130" y="116" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">18%</text>
+            <text x="130" y="130" text-anchor="middle" font-size="9" fill="#5a6e8c">Tronco ant.</text>
+            <!-- Brazo izq -->
+            <rect x="68" y="68" width="28" height="70" rx="6" fill="#e0f2fe" stroke="#1D51A3" stroke-width="1.5"/>
+            <text x="82" y="108" text-anchor="middle" font-size="9" fill="#1D51A3">9%</text>
+            <!-- Brazo der -->
+            <rect x="164" y="68" width="28" height="70" rx="6" fill="#e0f2fe" stroke="#1D51A3" stroke-width="1.5"/>
+            <text x="178" y="108" text-anchor="middle" font-size="9" fill="#1D51A3">9%</text>
+            <!-- Genitales -->
+            <rect x="115" y="158" width="30" height="20" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+            <text x="130" y="172" text-anchor="middle" font-size="8" fill="#92400e">1%</text>
+            <!-- Pierna izq -->
+            <rect x="92" y="180" width="36" height="100" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+            <text x="110" y="234" text-anchor="middle" font-size="10" fill="#15803d">18%</text>
+            <!-- Pierna der -->
+            <rect x="132" y="180" width="36" height="100" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+            <text x="150" y="234" text-anchor="middle" font-size="10" fill="#15803d">18%</text>
+            <!-- Separador -->
+            <line x1="230" y1="20" x2="230" y2="290" stroke="#dde4ef" stroke-width="1" stroke-dasharray="4"/>
+            <!-- Figura posterior -->
+            <circle cx="370" cy="36" r="26" fill="#e8eef8" stroke="#1D51A3" stroke-width="2"/>
+            <text x="370" y="41" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">9%</text>
+            <!-- Tronco posterior -->
+            <rect x="340" y="66" width="60" height="90" rx="6" fill="#dbeafe" stroke="#1D51A3" stroke-width="2"/>
+            <text x="370" y="116" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">18%</text>
+            <text x="370" y="130" text-anchor="middle" font-size="9" fill="#5a6e8c">Tronco post.</text>
+            <!-- Brazo izq post -->
+            <rect x="308" y="68" width="28" height="70" rx="6" fill="#e0f2fe" stroke="#1D51A3" stroke-width="1.5"/>
+            <text x="322" y="108" text-anchor="middle" font-size="9" fill="#1D51A3">9%</text>
+            <!-- Brazo der post -->
+            <rect x="404" y="68" width="28" height="70" rx="6" fill="#e0f2fe" stroke="#1D51A3" stroke-width="1.5"/>
+            <text x="418" y="108" text-anchor="middle" font-size="9" fill="#1D51A3">9%</text>
+            <!-- Piernas post -->
+            <rect x="332" y="180" width="36" height="100" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+            <text x="350" y="234" text-anchor="middle" font-size="10" fill="#15803d">18%</text>
+            <rect x="372" y="180" width="36" height="100" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+            <text x="390" y="234" text-anchor="middle" font-size="10" fill="#15803d">18%</text>
+            <!-- Labels -->
+            <text x="130" y="290" text-anchor="middle" font-size="10" fill="#5a6e8c" font-style="italic">Vista anterior</text>
+            <text x="370" y="290" text-anchor="middle" font-size="10" fill="#5a6e8c" font-style="italic">Vista posterior</text>
+            <text x="520" y="60" text-anchor="middle" font-size="10" fill="#5a6e8c">Brazos:</text>
+            <text x="520" y="74" text-anchor="middle" font-size="10" fill="#1D51A3">9% c/u</text>
+            <text x="520" y="100" text-anchor="middle" font-size="10" fill="#5a6e8c">Piernas:</text>
+            <text x="520" y="114" text-anchor="middle" font-size="10" fill="#15803d">18% c/u</text>
+            <text x="520" y="140" text-anchor="middle" font-size="10" fill="#5a6e8c">Total:</text>
+            <text x="520" y="154" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="bold">100%</text>
+          </svg>
+          <figcaption>Regla de los Nueve de Wallace — Cálculo de Superficie Corporal Total (SCT) quemada</figcaption>
+        </div>
       </div>
 
       <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
+        <h3>Criterios de Traslado Urgente a Centro Especializado (ABA)</h3>
         <ul>
-          <li>Grados de quemadura: 1° superficial, 2° parcial, 3° profundo total</li>
-          <li>Regla de los 9 de Wallace: estimación de superficie corporal quemada</li>
-          <li>SCQ mayor al 15%: quemadura mayor, hospitalización urgente</li>
-          <li>Enfriamiento: agua corriente 10-20 min, nunca hielo</li>
-          <li>Quemadura química: irrigación prolongada 20-30 min, no neutralizar</li>
-          <li>Quemadura eléctrica: desconectar fuente, riesgo de paro cardíaco</li>
-          <li>No reviente ampollas: barrera de protección natural</li>
+          <li>Quemaduras de 2° profundo o 3° que afecten >10% SCT en adultos o >5% en niños</li>
+          <li>Quemaduras en cara, manos, pies, genitales, periné o articulaciones mayores</li>
+          <li>Quemaduras circulares en extremidades (riesgo de síndrome compartimental)</li>
+          <li>Quemaduras por inhalación de humo (esputo carbonáceo, estridor, voz ronca)</li>
+          <li>Quemaduras eléctricas de alta tensión (>1000 V) o por rayo</li>
+          <li>Quemaduras químicas por ácidos concentrados o álcalis</li>
         </ul>
       </div>
 
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/3nrJbQfNoFE" title="Primeros Auxilios en Quemaduras" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
+      <div class="content-section">
+        <h3>Manejo Prehospitalario — Lo que SÍ y lo que NO</h3>
+        <div class="alert success"><div class="alert-icon">✅</div><p><strong>SÍ hacer:</strong> Enfriar con agua tibia (15-20°C) durante 20 minutos. Retirar ropa no adherida y joyas. Cubrir con gasa húmeda o apósito limpio. Tratar el shock: posición Trendelenburg, abrigo, traslado urgente.</p></div>
+        <div class="alert danger"><div class="alert-icon">🚫</div><p><strong>NUNCA hacer:</strong> Pasta de dientes, aceite, mantequilla, clara de huevo — generan infección y retienen calor. No reviente ampollas. No aplique hielo directo (causa vasoconstricción y empeora el daño). No retire ropa adherida a la piel.</p></div>
+      </div>
 
-      <!-- QUIZ 4 -->
+      <div class="abp-case anim-fadein">
+        <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+        <h4>Escenario: Derrame de ácido en laboratorio</h4>
+        <p>Un técnico de laboratorio derrama ácido sulfúrico concentrado sobre su antebrazo izquierdo. La quemadura compromete aproximadamente el 9% SCT (brazo completo), con la piel blanquecina en algunas zonas y rosado intenso en otras. El supervisor sugiere cubrir con pasta de dientes porque "absorbe el ácido". La víctima dice no sentir dolor en las zonas más blancas.</p>
+        <div class="abp-questions">
+          <p>❓ ¿Qué grado de quemadura presentan cada zona según la descripción (blanca vs rosada)?</p>
+          <p>❓ ¿Es correcto el consejo del supervisor? Explica la reacción química del ácido con agua.</p>
+          <p>❓ ¿Por qué la víctima no siente dolor en las zonas blancas?</p>
+          <p>❓ Diseña el protocolo de atención prehospitalaria para las primeras 30 minutos.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Video de Referencia — Primeros Auxilios en Quemaduras</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/bbFHCj_fwd4" title="Primeros Auxilios Quemaduras" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+      </div>
+
       <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 4</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
+        <div class="quiz-title">Verificación de Aprendizaje — Módulo 4</div>
+        <div class="quiz-sub">Seleccione la respuesta correcta.</div>
         <div class="quiz-question">
-          <div class="quiz-q">1. ¿Cuánto tiempo debe mantenerse el enfriamiento de una quemadura térmica con agua?</div>
+          <div class="quiz-q">7. Según la Regla de los Nueve, ¿qué porcentaje de SCT representa un brazo completo?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q4-1" value="a"> 2-3 minutos hasta que deje de doler</label>
-            <label class="quiz-opt"><input type="radio" name="q4-1" value="b"> 10-20 minutos con agua corriente a temperatura ambiente</label>
-            <label class="quiz-opt"><input type="radio" name="q4-1" value="c"> Se aplica hielo directamente por 5 minutos</label>
+            <label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) 4.5%</label>
+            <label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) 9%</label>
+            <label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) 18%</label>
+            <label class="quiz-opt"><input type="radio" name="q4a" value="d"> d) 36%</label>
           </div>
         </div>
         <div class="quiz-question">
-          <div class="quiz-q">2. Según la Regla de los Nueves, ¿qué porcentaje corresponde a cada brazo?</div>
+          <div class="quiz-q">8. ¿Cuánto tiempo debe enfriarse una quemadura con agua tibia?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q4-2" value="a"> 18%</label>
-            <label class="quiz-opt"><input type="radio" name="q4-2" value="b"> 9%</label>
-            <label class="quiz-opt"><input type="radio" name="q4-2" value="c"> 4.5%</label>
+            <label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) 5 minutos</label>
+            <label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) 10 minutos</label>
+            <label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) 20 minutos</label>
+            <label class="quiz-opt"><input type="radio" name="q4b" value="d"> d) Hasta que el dolor cese</label>
           </div>
         </div>
-        <div class="quiz-question">
-          <div class="quiz-q">3. Ante una quemadura química, ¿qué se debe hacer tras retirar la ropa contaminada?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q4-3" value="a"> Aplicar bicarbonato si es ácido, vinagre si es álcali (neutralización)</label>
-            <label class="quiz-opt"><input type="radio" name="q4-3" value="b"> Irrigar con abundante agua corriente durante 20-30 minutos sin neutralizar</label>
-            <label class="quiz-opt"><input type="radio" name="q4-3" value="c"> Cubrir con un apósito seco y esperar al médico</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(4)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-4"></div>
+        <button class="quiz-submit" onclick="checkMiniQuiz('mod4',{'q4a':'b','q4b':'c'})">Verificar respuestas</button>
+        <div class="quiz-result" id="mod4-result"></div>
       </div>
 
       <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente módulo →</button>
+        <button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo 3</button>
+        <button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente: Trauma Osteoarticular →</button>
       </div>
     </div>
 
-    <!-- ====== MODULE 5 ====== -->
-    <div class="module-panel" id="mod-5" style="display:none">
+    <!-- ======== MÓDULO 5 ======== -->
+    <div class="module-panel" id="mod-5">
       <div class="module-header">
         <span class="module-tag">Módulo 5 de 6</span>
-        <h1 class="module-title">Trauma Osteoarticular</h1>
-        <p class="module-desc">Evaluación y manejo de fracturas, esguinces, luxaciones y trauma de columna vertebral.</p>
+        <h1 class="module-title">Trauma Osteoarticular e Inmovilización</h1>
+        <p class="module-desc">Diagnóstico diferencial entre fractura, luxación y esguince. Principios de inmovilización segura en el entorno laboral.</p>
+      </div>
+
+      <div class="norm-ref"><strong>Base normativa:</strong> Guías PHTLS 9ª ed. (Trauma Musculoesquelético) · NAEMSP (Protocolo de Inmovilización) · Decreto 2393 Arts. 136-140 (EPP en trabajos de altura) · ISO 11228 (ergonomía y manejo de cargas)</div>
+
+      <div class="content-section">
+        <h3>Diferenciación: Fractura vs Luxación vs Esguince</h3>
+        <table class="data-table">
+          <thead><tr><th>Lesión</th><th>Definición</th><th>Signos clásicos</th><th>Manejo</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Fractura</strong></td><td>Solución de continuidad del hueso</td><td>Deformidad, crepitación, impotencia funcional, hematoma</td><td>Inmovilizar como está, hielo, traslado</td></tr>
+            <tr><td><strong>Luxación</strong></td><td>Pérdida de relación articular</td><td>Deformidad articular, posición anómala, dolor severo, resorte</td><td>NUNCA reducir en campo; inmovilizar en posición encontrada</td></tr>
+            <tr><td><strong>Esguince</strong></td><td>Distensión/rotura de ligamentos</td><td>Dolor, edema, equimosis periarticular, estabilidad reducida</td><td>RICE: Reposo, Hielo, Compresión, Elevación</td></tr>
+          </tbody>
+        </table>
+        <div class="alert important"><div class="alert-icon">💡</div><p><strong>Regla de oro:</strong> "Inmoviliza como encuentras". Si dudas entre fractura y esguince, trátalo como fractura. La reducción de luxaciones en campo está contraindicada — solo médico especialista.</p></div>
       </div>
 
       <div class="content-section">
-        <p>Las lesiones del sistema músculo-esquelético son extremadamente comunes en accidentes laborales, especialmente en industrias de construcción, manufactura y agricultura. Una mala manipulación de una fractura o un trauma de columna puede convertir una lesión tratable en una discapacidad permanente. El brigadista debe conocer los principios de inmovilización y traslado seguro antes de actuar.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Fracturas: Tipos y Reconocimiento</h3>
-        <p>Una fractura es la ruptura de la continuidad ósea. Se clasifican en:</p>
-        <ul>
-          <li><strong>Cerradas:</strong> la piel permanece intacta sobre la fractura.</li>
-          <li><strong>Abiertas:</strong> el hueso penetra o se expone a través de la piel. Alto riesgo de infección.</li>
-          <li><strong>Conminutas:</strong> el hueso se fragmenta en múltiples pedazos.</li>
-          <li><strong>En tallo verde:</strong> fractura incompleta frecuente en niños (hueso más flexible).</li>
-        </ul>
-        <p><strong>Signos y síntomas:</strong> dolor intenso localizado, deformidad, crepitación (no provoque), inflamación, hematoma, impotencia funcional, posición antiálgica del miembro.</p>
-        <p><strong>Inmovilización:</strong> utilice férulas improvisadas con materiales disponibles (tablillas, cartón, revistas). La férula debe inmovilizar la articulación superior e inferior a la fractura. Acojche los extremos. No intente alinear fragmentos.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Esguinces, Luxaciones y Protocolo RICE</h3>
-        <p>Un <strong>esguince</strong> es la distensión o rotura parcial de ligamentos articulares. Una <strong>luxación</strong> es la pérdida completa de la relación normal entre los extremos óseos de una articulación. Ambas se tratan en campo con el protocolo <strong>RICE</strong>:</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">R</div><div class="step-body"><h4>Rest — Reposo</h4><p>Detenga la actividad física. Inmovilice la articulación afectada en la posición más cómoda para el paciente.</p></div></div>
-          <div class="step"><div class="step-num">I</div><div class="step-body"><h4>Ice — Hielo</h4><p>Aplique bolsa de hielo envuelta en tela (nunca hielo directo) durante 15-20 minutos cada hora. Reduce inflamación y dolor.</p></div></div>
-          <div class="step"><div class="step-num">C</div><div class="step-body"><h4>Compression — Compresión</h4><p>Venda elástica con presión moderada y uniforme. No demasiado apretada (riesgo de compromiso circulatorio).</p></div></div>
-          <div class="step"><div class="step-num">E</div><div class="step-body"><h4>Elevation — Elevación</h4><p>Eleve el miembro lesionado por encima del nivel del corazón para reducir el edema.</p></div></div>
-        </div>
-
-        <div class="alert danger">
-          <span class="alert-icon">⚠️</span>
-          <p><strong>Trauma de Columna Vertebral:</strong> Sospeche en caídas desde altura, accidentes de tránsito, golpe directo en espalda o cuello, o víctima inconsciente por trauma. Signos de alarma: hormigueo, debilidad o parálisis en extremidades, dolor en cuello o espalda. NO mueva la víctima salvo peligro inminente. Estabilice la cabeza en posición neutra. Traslade en bloque con inmovilización cervical.</p>
-        </div>
-
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>Fractura Abierta</h4>
-            <p>Cubra el hueso expuesto con apósito estéril húmedo. No intente reintroducir el fragmento. Controle hemorragia sin presión directa sobre el hueso.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Traslado Seguro</h4>
-            <p>Antes de mover a un paciente traumatizado: inmovilice la lesión, evalúe función neurovascular distal, use camilla rígida cuando sea posible.</p>
-          </div>
+        <h3>Fracturas de Alto Riesgo Vital en el Entorno Laboral</h3>
+        <div class="info-grid anim-fadein">
+          <div class="info-card danger"><h4>Columna Vertebral</h4><p>Trauma cervical o dorsal: inmovilizar TODA la columna. Restricción de movimiento espinal (RME). No movilizar sin tabla espinal y collarín.</p></div>
+          <div class="info-card danger"><h4>Pelvis</h4><p>Puede ocasionar hemorragia interna de hasta 3-4 litros. Aplicar cinturón pélvico de emergencia (o improvise con sábana). Shock hemorrágico inminente.</p></div>
+          <div class="info-card danger"><h4>Fémur</h4><div class="info-card"><p></p></div><p>Pérdida de 500-1000 mL de sangre. Férula de tracción (Sager o Thomas) si disponible. Signo: acortamiento y rotación externa de la pierna.</p></div>
+          <div class="info-card gold"><h4>Extremidades Distales</h4><p>Riesgo de síndrome compartimental. Verificar 6 P: Pain, Pressure, Paralysis, Paresthesia, Pallor, Pulselessness.</p></div>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>Fractura abierta: alto riesgo infeccioso, cubrir sin reducir</li>
-          <li>Inmovilización: abarca articulación superior e inferior a la fractura</li>
-          <li>No intente reducir luxaciones en campo</li>
-          <li>RICE: Rest, Ice, Compression, Elevation</li>
-          <li>Trauma de columna: mantener posición neutra, no mover sin equipo</li>
-          <li>Signos de alarma neurológica: parestesias, paresia, parálisis</li>
-          <li>Evaluar pulso, sensibilidad y movilidad distal tras inmovilización</li>
-        </ul>
+        <h3>Tipos de Férulas y su Indicación</h3>
+        <div class="steps anim-fadein">
+          <div class="step"><div class="step-num">A</div><div class="step-body"><h4>Férulas Improvisadas</h4><p>Tablillas de madera, cartón rígido, revistas enrolladas. Acolchar con telas. Inmovilizar articulación superior e inferior a la fractura.</p></div></div>
+          <div class="step"><div class="step-num">B</div><div class="step-body"><h4>Férulas Neumáticas</h4><p>Inflado a presión suficiente para inmovilizar sin cortar circulación. Verificar pulso distal. No usar en fracturas con herida abierta grande.</p></div></div>
+          <div class="step"><div class="step-num">C</div><div class="step-body"><h4>Tablilla de Vacío</h4><p>Moldeable + extracción de aire la rigidiza. Excelente para fracturas irregulares. Más costosa, requiere mantenimiento.</p></div></div>
+          <div class="step"><div class="step-num">D</div><div class="step-body"><h4>Collarín Cervical</h4><p>Medida del cuello: mentón-clavícula (cuello extendido). Tamaño correcto evita hiperextensión o flexión. Es complemento, no reemplaza restricción manual.</p></div></div>
+        </div>
       </div>
 
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/x1yRBfPB4uo" title="Inmovilización de Fracturas - Primeros Auxilios" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
+      <div class="content-section">
+        <h3>Síndrome Compartimental — Reconocimiento de Urgencia</h3>
+        <p>El síndrome compartimental ocurre cuando la presión dentro de un compartimento muscular cerrado supera la presión de perfusión capilar. Es una emergencia quirúrgica.</p>
+        <div class="alert danger"><div class="alert-icon">🚨</div><p><strong>Las 6 P del síndrome compartimental:</strong> (1) Pain (dolor desproporcionado al estiramiento pasivo), (2) Pressure (sensación de tensión), (3) Paralysis (debilidad muscular), (4) Paresthesia (hormigueo, entumecimiento), (5) Pallor (palidez), (6) Pulselessness (ausencia de pulso distal — signo TARDÍO). Si detecta los primeros 4, traslade de inmediato.</p></div>
+      </div>
 
-      <!-- QUIZ 5 -->
+      <div class="abp-case anim-fadein">
+        <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+        <h4>Escenario: Caída de altura en bodega</h4>
+        <p>Un almacenista cae 2.5 metros desde una estantería en una bodega de distribución en Cuenca. Se queja de dolor severo en pierna derecha (visible deformidad angulada a nivel de tibia), dolor cervical intenso y hormigueo en ambas manos. Está consciente y alerta. El supervisor quiere sentarlo para que "esté más cómodo" antes de llamar al 911.</p>
+        <div class="abp-questions">
+          <p>❓ ¿Qué lesiones son prioritarias en este caso y en qué orden?</p>
+          <p>❓ ¿Tiene razón el supervisor al querer sentar al paciente? Justifica.</p>
+          <p>❓ ¿Cuántas personas se necesitan para el movimiento en bloque y cómo se coordina?</p>
+          <p>❓ ¿Qué señales de síndrome compartimental debes monitorizar cada 5 min en la pierna derecha?</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Video de Referencia — Inmovilización de Fracturas</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/WZJeSHGHjQQ" title="Manejo y Uso de Extintores — Capacitación" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+      </div>
+
       <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 5</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
-
+        <div class="quiz-title">Verificación de Aprendizaje — Módulo 5</div>
+        <div class="quiz-sub">Seleccione la respuesta correcta.</div>
         <div class="quiz-question">
-          <div class="quiz-q">1. ¿Qué significa la "I" en el protocolo RICE?</div>
+          <div class="quiz-q">9. ¿Qué fractura puede provocar pérdida de sangre de hasta 4 litros internamente?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q5-1" value="a"> Inmovilización con vendaje rígido</label>
-            <label class="quiz-opt"><input type="radio" name="q5-1" value="b"> Ice (aplicación de hielo envuelto en tela)</label>
-            <label class="quiz-opt"><input type="radio" name="q5-1" value="c"> Irrigación con solución salina</label>
+            <label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) Fractura de cúbito</label>
+            <label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) Fractura de pelvis</label>
+            <label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) Fractura de clavícula</label>
+            <label class="quiz-opt"><input type="radio" name="q5a" value="d"> d) Fractura de rótula</label>
           </div>
         </div>
         <div class="quiz-question">
-          <div class="quiz-q">2. Al inmovilizar una fractura con férula, ¿qué se debe incluir?</div>
+          <div class="quiz-q">10. La inmovilización correcta de una fractura debe incluir:</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q5-2" value="a"> Solo el sitio de la fractura</label>
-            <label class="quiz-opt"><input type="radio" name="q5-2" value="b"> La articulación superior e inferior a la fractura</label>
-            <label class="quiz-opt"><input type="radio" name="q5-2" value="c"> Todo el miembro desde la cadera hasta el pie</label>
+            <label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) Solo la zona de la fractura</label>
+            <label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) La articulación distal solamente</label>
+            <label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) La articulación superior e inferior a la fractura</label>
+            <label class="quiz-opt"><input type="radio" name="q5b" value="d"> d) Todo el miembro desde la raíz</label>
           </div>
         </div>
-        <div class="quiz-question">
-          <div class="quiz-q">3. ¿Cuál es la conducta correcta ante sospecha de trauma de columna vertebral?</div>
-          <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q5-3" value="a"> Ayudar al paciente a sentarse para facilitar la respiración</label>
-            <label class="quiz-opt"><input type="radio" name="q5-3" value="b"> Mantener cabeza en posición neutra, no mover sin equipo adecuado</label>
-            <label class="quiz-opt"><input type="radio" name="q5-3" value="c"> Acostar al paciente de lado en posición lateral de seguridad</label>
-          </div>
-        </div>
-        <button class="quiz-submit" onclick="checkQuiz(5)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-5"></div>
+        <button class="quiz-submit" onclick="checkMiniQuiz('mod5',{'q5a':'b','q5b':'c'})">Verificar respuestas</button>
+        <div class="quiz-result" id="mod5-result"></div>
       </div>
 
       <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente módulo →</button>
+        <button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo 4</button>
+        <button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente: RCP y DEA →</button>
       </div>
     </div>
 
-    <!-- ====== MODULE 6 ====== -->
-    <div class="module-panel" id="mod-6" style="display:none">
+    <!-- ======== MÓDULO 6 + QUIZ FINAL ======== -->
+    <div class="module-panel" id="mod-6">
       <div class="module-header">
         <span class="module-tag">Módulo 6 de 6</span>
-        <h1 class="module-title">Soporte Vital Básico</h1>
-        <p class="module-desc">RCP, manejo de vía aérea obstruida y uso del desfibrilador externo automático según guías AHA 2020.</p>
+        <h1 class="module-title">Soporte Vital Básico — RCP y DEA</h1>
+        <p class="module-desc">Reanimación cardiopulmonar según guías AHA 2020, desfibrilación con DEA y manejo de obstrucción de vía aérea por cuerpo extraño.</p>
+      </div>
+
+      <div class="norm-ref"><strong>Base normativa:</strong> Guías AHA 2020 (American Heart Association) · European Resuscitation Council (ERC) 2021 · Decreto 2393 Art. 175 (botiquín tipo A) · Resolución MDT-2020 (DEA en establecimientos)</div>
+
+      <div class="content-section">
+        <h3>Cadena de Supervivencia AHA 2020 — Actualización</h3>
+        <p>Las guías AHA 2020 reorganizan la cadena de supervivencia en 6 eslabones para énfasis en <strong>la recuperación post-paro</strong>:</p>
+        <ol style="padding-left:22px;color:var(--muted);line-height:2.2;font-size:.93rem">
+          <li><strong>Reconocimiento y activación del sistema</strong> — Identifica paro, llama al 911 simultáneamente</li>
+          <li><strong>RCP de calidad inmediata</strong> — Inicia dentro de los 10 segundos de identificar el paro</li>
+          <li><strong>Desfibrilación rápida</strong> — DEA en menos de 3-5 minutos desde el colapso</li>
+          <li><strong>Cuidados avanzados</strong> — Personal médico especializado</li>
+          <li><strong>Cuidados post-resucitación</strong> — UCI, hipotermia terapéutica</li>
+          <li><strong>Recuperación</strong> — Rehabilitación física y neurológica</li>
+        </ol>
       </div>
 
       <div class="content-section">
-        <p>El Soporte Vital Básico (SVB) es el conjunto de habilidades que permiten reconocer y tratar una parada cardiorrespiratoria (PCR) hasta la llegada de soporte vital avanzado. Cada minuto que transcurre sin RCP disminuye las probabilidades de supervivencia en un 7-10%. La capacidad del brigadista para iniciar RCP de calidad en los primeros minutos es el factor individual más importante en la supervivencia del paciente.</p>
-      </div>
-
-      <div class="content-section">
-        <h3>Cadena de Supervivencia (AHA 2020)</h3>
-        <p>La Asociación Americana del Corazón (AHA) actualiza periódicamente las guías de RCP. La cadena de supervivencia para el ámbito extrahospitalario incluye:</p>
-        <div class="steps">
-          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Reconocimiento y activación del SEM</h4><p>Verifique seguridad de la escena. Confirme ausencia de respuesta y respiración anormal. Llame al 911. Solicite DEA.</p></div></div>
-          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>RCP de alta calidad precoz</h4><p>Inicie compresiones torácicas inmediatamente. 30 compresiones : 2 ventilaciones. Frecuencia 100-120/min. Profundidad 5-6 cm.</p></div></div>
-          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Desfibrilación precoz</h4><p>Aplique el DEA tan pronto esté disponible. Cada minuto sin desfibrilación reduce la supervivencia un 10%.</p></div></div>
-          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Soporte vital avanzado</h4><p>Continuación por personal paramédico y médico de emergencia.</p></div></div>
-          <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Cuidados post-PCR</h4><p>Manejo hospitalario especializado tras recuperación de circulación espontánea.</p></div></div>
+        <h3>RCP de Calidad — Parámetros Exactos</h3>
+        <div class="concept-grid anim-fadein">
+          <div class="concept-card"><div class="cc-icon">🤲</div><h4>Posición de Manos</h4><p>Talón de la mano dominante en el centro del tórax (mitad inferior del esternón). Segunda mano encima, dedos entrelazados.</p></div>
+          <div class="concept-card"><div class="cc-icon">📏</div><h4>Profundidad</h4><p>5–6 cm en adultos. Mínimo 4 cm en niños. No comprimir más de 6 cm (riesgo de fractura costal y lesión hepática).</p></div>
+          <div class="concept-card"><div class="cc-icon">⏱️</div><h4>Frecuencia</h4><p>100–120 compresiones por minuto. Ritmo: "Staying Alive" de Bee Gees (103 bpm) o "Highway to Hell" (116 bpm).</p></div>
+          <div class="concept-card"><div class="cc-icon">🔄</div><h4>Descompresión</h4><p>Permitir el retroceso completo del tórax entre compresiones. No apoyarse sobre el tórax. Cambio de reanimador cada 2 minutos.</p></div>
+          <div class="concept-card"><div class="cc-icon">😮‍💨</div><h4>Ventilaciones</h4><p>30 compresiones : 2 ventilaciones. Cada ventilación: 1 segundo, volumen suficiente para ver el tórax elevarse. Sin hiperventilación.</p></div>
+          <div class="concept-card"><div class="cc-icon">⏸️</div><h4>Interrupciones</h4><p>Minimizar pausas. El análisis del DEA es la única pausa justificada. Reanudar compresiones inmediatamente tras la descarga.</p></div>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Técnica de RCP en Adultos y Pediátrico</h3>
-        <p><strong>RCP en adultos (AHA 2020):</strong> Coloque al paciente en posición supina sobre superficie firme. Sitúese de rodillas al costado del tórax. Entrelace los dedos con las palmas de las manos superpuestas sobre el centro del esternón. Comprima 5-6 cm. Frecuencia 100-120 compresiones por minuto. Permita la reexpansión torácica completa. Ratio 30:2. Cambie de reanimador cada 2 minutos.</p>
-        <p><strong>RCP pediátrico (1-8 años):</strong> Use el talón de una sola mano o dos dedos. Profundidad: 1/3 del diámetro antero-posterior del tórax (~5 cm). Ratio 30:2 con un reanimador, 15:2 con dos reanimadores de salud.</p>
-        <p><strong>Lactantes (menor de 1 año):</strong> Dos dedos en el centro del esternón, 1 dedo por debajo de la línea intermamaria. Profundidad ~4 cm. Tenga especial cuidado con las ventilaciones (volumen corriente pequeño).</p>
+        <h3>Uso del DEA (Desfibrilador Externo Automático)</h3>
+        <div class="steps anim-fadein">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Encender y colocar parches</h4><p>Enciende el DEA — seguirá instrucciones de voz. Seca el tórax si está húmedo. Parche derecho: bajo la clavícula derecha. Parche izquierdo: bajo la axila izquierda (5° espacio intercostal).</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Análisis del ritmo</h4><p>"Analizando" — NADIE toca al paciente. La RCP se detiene durante el análisis (máx 10 segundos). Si indica "descarga recomendada" → paso 3. Si indica "no hay descarga" → reanudar RCP.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Carga y descarga</h4><p>"Cargando... todos alejados". Verificar que NADIE toca al paciente ni al suelo húmedo. Presionar el botón de descarga cuando el DEA lo indique. Reanudar RCP INMEDIATAMENTE después.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Ciclos de 2 minutos</h4><p>Continuar RCP 2 minutos → el DEA reanaliza automáticamente → descarga si indica → reiniciar ciclo. No retirar los parches hasta que llegue la ambulancia.</p></div></div>
+        </div>
+        <div class="alert danger"><div class="alert-icon">⚡</div><p><strong>Seguridad en la descarga:</strong> Nunca toque al paciente durante la descarga. Atención especial si el piso está mojado — aislarse del suelo. Los parches deben estar secos y bien adheridos.</p></div>
+      </div>
 
-        <div class="info-grid">
-          <div class="info-card danger">
-            <h4>OVACE — Obstrucción de Vía Aérea</h4>
-            <p>Adulto consciente: 5 golpes interescapulares + 5 compresiones abdominales (Heimlich). Inconsciente: inicie RCP y revise boca antes de ventilar.</p>
-          </div>
-          <div class="info-card gold">
-            <h4>Maniobra de Heimlich en Lactantes</h4>
-            <p>5 golpes en espalda (boca abajo) + 5 compresiones torácicas (boca arriba). Nunca compresiones abdominales en menores de 1 año.</p>
-          </div>
-          <div class="info-card green">
-            <h4>Uso del DEA</h4>
-            <p>Encienda el DEA y siga las instrucciones de voz. Coloque parches según indicación. Aleje a todos durante el análisis y la descarga. Reanude RCP inmediatamente tras la descarga.</p>
-          </div>
+      <div class="content-section">
+        <h3>Obstrucción de Vía Aérea — Maniobra de Heimlich</h3>
+        <table class="data-table">
+          <thead><tr><th>Paciente</th><th>Obstrucción parcial</th><th>Obstrucción total</th></tr></thead>
+          <tbody>
+            <tr><td>Adulto consciente</td><td>Animar a toser</td><td>5 golpes interescapulares + 5 compresiones abdominales (Heimlich)</td></tr>
+            <tr><td>Adulto inconsciente</td><td>—</td><td>RCP convencional (compresiones pueden expulsar el cuerpo extraño)</td></tr>
+            <tr><td>Embarazada / Obeso</td><td>Animar a toser</td><td>Compresiones TORÁCICAS (no abdominales)</td></tr>
+            <tr><td>Lactante (<1 año)</td><td>—</td><td>5 golpes dorsales + 5 compresiones torácicas (NO Heimlich)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="abp-case anim-fadein">
+        <span class="abp-label">CASO DE ESTUDIO — ABP</span>
+        <h4>Escenario: Paro cardíaco en reunión ejecutiva</h4>
+        <p>Durante una reunión estratégica en una empresa de 120 personas, el CEO (62 años, hipertenso, diabético) pierde el conocimiento sin previo aviso. No respira normalmente (bocadas agonales). Hay 18 personas en la sala. Un DEA está instalado en el pasillo a 25 metros. Dos personas afirman saber RCP, pero una lo aprendió hace 5 años. No hay personal médico presente.</p>
+        <div class="abp-questions">
+          <p>❓ Diseña la delegación de roles para las primeras 2 personas que reaccionen.</p>
+          <p>❓ ¿Son las "bocadas agonales" consideradas respiración normal? ¿Qué implica para iniciar RCP?</p>
+          <p>❓ ¿Debe la persona que aprendió RCP hace 5 años abstenerse? ¿Por qué sí o por qué no?</p>
+          <p>❓ ¿Qué datos exactos debe comunicar quien llama al ECU-911?</p>
         </div>
       </div>
 
       <div class="content-section">
-        <h3>Conceptos Clave del Módulo</h3>
-        <ul>
-          <li>RCP adulto: 30:2, 100-120/min, 5-6 cm de profundidad</li>
-          <li>Cada minuto sin RCP: -7 a 10% de supervivencia</li>
-          <li>Desfibrilación precoz: componente crítico de la cadena de supervivencia</li>
-          <li>DEA: seguro para usar por personal no médico, siga voz del equipo</li>
-          <li>OVACE adulto: 5 golpes espalda + 5 compresiones abdominales (Heimlich)</li>
-          <li>OVACE lactante: 5 golpes espalda + 5 compresiones torácicas (NO abdominales)</li>
-          <li>Cambio de reanimador cada 2 minutos para mantener calidad</li>
-        </ul>
+        <h3>Video de Referencia — RCP y DEA Cruz Roja</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/OaoJuikmWvY" title="RCP y Primeros Auxilios — Cruz Roja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
       </div>
 
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/W7RbO_JoVxg" title="RCP - Reanimación Cardiopulmonar Cruz Roja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;margin:16px 0"></iframe>
-
-      <!-- QUIZ 6 -->
-      <div class="quiz-section">
-        <div class="quiz-title">Autoevaluación — Módulo 6</div>
-        <div class="quiz-sub">Seleccione la opción correcta en cada pregunta.</div>
+      <!-- QUIZ FINAL -->
+      <div class="quiz-section" id="finalQuizSection">
+        <div class="quiz-title">✅ Evaluación Final del Curso — Brigadas de Primeros Auxilios</div>
+        <div class="quiz-sub">Complete todas las preguntas para obtener su certificado de aprobación. Debe responder correctamente al menos 6 de 8 preguntas.</div>
 
         <div class="quiz-question">
-          <div class="quiz-q">1. ¿Cuál es el ratio correcto de compresiones y ventilaciones en RCP para adultos?</div>
+          <div class="quiz-q">1. ¿Cuántos trabajadores mínimos debe tener una empresa para estar obligada a conformar brigadas según el Decreto 2393?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q6-1" value="a"> 15:2</label>
-            <label class="quiz-opt"><input type="radio" name="q6-1" value="b"> 30:2</label>
-            <label class="quiz-opt"><input type="radio" name="q6-1" value="c"> 5:1</label>
+            <label class="quiz-opt"><input type="radio" name="fq1" value="a"> a) 10 trabajadores</label>
+            <label class="quiz-opt"><input type="radio" name="fq1" value="b"> b) 25 trabajadores</label>
+            <label class="quiz-opt"><input type="radio" name="fq1" value="c"> c) 50 trabajadores</label>
+            <label class="quiz-opt"><input type="radio" name="fq1" value="d"> d) 100 trabajadores</label>
           </div>
         </div>
         <div class="quiz-question">
-          <div class="quiz-q">2. Ante obstrucción de vía aérea (OVACE) en un lactante, ¿cuál es la maniobra correcta?</div>
+          <div class="quiz-q">2. ¿Qué significa la letra "D" en el protocolo ABCDE?</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q6-2" value="a"> Maniobra de Heimlich (compresiones abdominales)</label>
-            <label class="quiz-opt"><input type="radio" name="q6-2" value="b"> 5 golpes en espalda + 5 compresiones torácicas (nunca abdominales)</label>
-            <label class="quiz-opt"><input type="radio" name="q6-2" value="c"> Introducir el dedo para extraer el cuerpo extraño</label>
+            <label class="quiz-opt"><input type="radio" name="fq2" value="a"> a) Daño externo visible</label>
+            <label class="quiz-opt"><input type="radio" name="fq2" value="b"> b) Disability — Estado neurológico</label>
+            <label class="quiz-opt"><input type="radio" name="fq2" value="c"> c) Drenaje de heridas</label>
+            <label class="quiz-opt"><input type="radio" name="fq2" value="d"> d) Diagnóstico de lesiones</label>
           </div>
         </div>
         <div class="quiz-question">
-          <div class="quiz-q">3. Tras aplicar una descarga con el DEA, ¿qué se debe hacer inmediatamente?</div>
+          <div class="quiz-q">3. La frecuencia correcta de compresiones en RCP adulto según AHA 2020 es:</div>
           <div class="quiz-options">
-            <label class="quiz-opt"><input type="radio" name="q6-3" value="a"> Esperar 2 minutos para evaluar el pulso antes de actuar</label>
-            <label class="quiz-opt"><input type="radio" name="q6-3" value="b"> Reanudar RCP inmediatamente comenzando con compresiones</label>
-            <label class="quiz-opt"><input type="radio" name="q6-3" value="c"> Retirar los parches del DEA y evaluar respiración</label>
+            <label class="quiz-opt"><input type="radio" name="fq3" value="a"> a) 60-80 por minuto</label>
+            <label class="quiz-opt"><input type="radio" name="fq3" value="b"> b) 100-120 por minuto</label>
+            <label class="quiz-opt"><input type="radio" name="fq3" value="c"> c) 130-150 por minuto</label>
+            <label class="quiz-opt"><input type="radio" name="fq3" value="d"> d) 80-100 por minuto</label>
           </div>
         </div>
-        <button class="quiz-submit" onclick="checkQuiz(6)">Verificar respuestas</button>
-        <div class="quiz-result" id="quiz-result-6"></div>
+        <div class="quiz-question">
+          <div class="quiz-q">4. Según la Regla de los Nueve, el tronco anterior (pecho y abdomen) representa:</div>
+          <div class="quiz-options">
+            <label class="quiz-opt"><input type="radio" name="fq4" value="a"> a) 9% de la superficie corporal</label>
+            <label class="quiz-opt"><input type="radio" name="fq4" value="b"> b) 27% de la superficie corporal</label>
+            <label class="quiz-opt"><input type="radio" name="fq4" value="c"> c) 18% de la superficie corporal</label>
+            <label class="quiz-opt"><input type="radio" name="fq4" value="d"> d) 36% de la superficie corporal</label>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <div class="quiz-q">5. ¿Cuánto tiempo máximo puede permanecer colocado un torniquete sin riesgo de amputación por isquemia?</div>
+          <div class="quiz-options">
+            <label class="quiz-opt"><input type="radio" name="fq5" value="a"> a) 30 minutos</label>
+            <label class="quiz-opt"><input type="radio" name="fq5" value="b"> b) 1 hora</label>
+            <label class="quiz-opt"><input type="radio" name="fq5" value="c"> c) 2 horas (con vigilancia)</label>
+            <label class="quiz-opt"><input type="radio" name="fq5" value="d"> d) Sin límite de tiempo</label>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <div class="quiz-q">6. La relación compresiones : ventilaciones en RCP adulto con 1 reanimador es:</div>
+          <div class="quiz-options">
+            <label class="quiz-opt"><input type="radio" name="fq6" value="a"> a) 30:2</label>
+            <label class="quiz-opt"><input type="radio" name="fq6" value="b"> b) 15:2</label>
+            <label class="quiz-opt"><input type="radio" name="fq6" value="c"> c) 5:1</label>
+            <label class="quiz-opt"><input type="radio" name="fq6" value="d"> d) 20:2</label>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <div class="quiz-q">7. Ante un objeto empalado en el abdomen, el brigadista debe:</div>
+          <div class="quiz-options">
+            <label class="quiz-opt"><input type="radio" name="fq7" value="a"> a) Retirarlo suavemente para limpiar la herida</label>
+            <label class="quiz-opt"><input type="radio" name="fq7" value="b"> b) Empujarlo para que no cause más daño</label>
+            <label class="quiz-opt"><input type="radio" name="fq7" value="c"> c) Dejarlo y estabilizarlo con apósitos alrededor</label>
+            <label class="quiz-opt"><input type="radio" name="fq7" value="d"> d) Cortar el objeto a ras de la piel</label>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <div class="quiz-q">8. La maniobra de Heimlich NO está indicada en:</div>
+          <div class="quiz-options">
+            <label class="quiz-opt"><input type="radio" name="fq8" value="a"> a) Adulto consciente con obstrucción total</label>
+            <label class="quiz-opt"><input type="radio" name="fq8" value="b"> b) Trabajador obeso con cuerpo extraño</label>
+            <label class="quiz-opt"><input type="radio" name="fq8" value="c"> c) Embarazada con obstrucción total</label>
+            <label class="quiz-opt"><input type="radio" name="fq8" value="d"> d) Adulto consciente con obstrucción parcial</label>
+          </div>
+        </div>
+
+        <button class="quiz-submit" onclick="submitFinalQuiz()" style="margin-top:16px;font-size:15px;padding:13px 32px">Enviar evaluación final</button>
+        <div class="quiz-result" id="finalResult"></div>
       </div>
 
       <!-- COMPLETION CARD -->
       <div class="completion-card" id="completionCard">
-        <div class="cert-icon">🎓</div>
-        <h2>¡Curso Completado!</h2>
-        <p>Ha finalizado todos los módulos del curso <strong>Brigadas de Primeros Auxilios</strong>. Su dedicación contribuye a un entorno laboral más seguro para todos en Ecuador.</p>
-        <button class="btn-cert" onclick="alert('Su certificado de finalización está siendo generado. Recibirá una notificación por correo electrónico.')">Obtener Certificado</button>
+        <div class="cert-icon">🏅</div>
+        <h2>¡Curso Aprobado!</h2>
+        <p>Has completado con éxito el curso de <strong>Brigadas de Primeros Auxilios</strong> de Preventive Health.</p>
+        <p style="font-size:.9rem;opacity:.8">Este certificado acredita que el participante ha adquirido las competencias básicas en primeros auxilios conforme al Decreto Ejecutivo 2393 y las guías AHA 2020.</p>
+        <p style="font-size:.85rem;margin-top:16px;background:rgba(255,255,255,.15);padding:12px;border-radius:8px">Para obtener el certificado oficial firmado por el instructor, comuníquese con Preventive Health a través del correo de contacto registrado.</p>
       </div>
 
       <div class="module-nav">
-        <button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo anterior</button>
-        <button class="btn-nav btn-next" onclick="nextModule(6)" id="finishBtn">Finalizar curso ✓</button>
+        <button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo 5</button>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- MOBILE NAV -->
+    <div class="mob-nav">
+      <div class="mob-nav-inner">
+        <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><div class="mob-tab-icon">⚖️</div><div class="mob-tab-label">Legal</div></div>
+        <div class="mob-tab" data-mod="2" onclick="showModule(2)"><div class="mob-tab-icon">🔤</div><div class="mob-tab-label">ABCDE</div></div>
+        <div class="mob-tab" data-mod="3" onclick="showModule(3)"><div class="mob-tab-icon">🩸</div><div class="mob-tab-label">Heridas</div></div>
+        <div class="mob-tab" data-mod="4" onclick="showModule(4)"><div class="mob-tab-icon">🔥</div><div class="mob-tab-label">Quemad.</div></div>
+        <div class="mob-tab" data-mod="5" onclick="showModule(5)"><div class="mob-tab-icon">🦴</div><div class="mob-tab-label">Trauma</div></div>
+        <div class="mob-tab" data-mod="6" onclick="showModule(6)"><div class="mob-tab-icon">❤️</div><div class="mob-tab-label">RCP</div></div>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- MOBILE NAV -->
-<nav class="mob-nav">
-  <div class="mob-nav-inner">
-    <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><span class="mob-tab-icon">📋</span><span class="mob-tab-label">M1 Legal</span></div>
-    <div class="mob-tab" data-mod="2" onclick="showModule(2)"><span class="mob-tab-icon">🔍</span><span class="mob-tab-label">M2 Eval</span></div>
-    <div class="mob-tab" data-mod="3" onclick="showModule(3)"><span class="mob-tab-icon">🩸</span><span class="mob-tab-label">M3 Heridas</span></div>
-    <div class="mob-tab" data-mod="4" onclick="showModule(4)"><span class="mob-tab-icon">🔥</span><span class="mob-tab-label">M4 Quem</span></div>
-    <div class="mob-tab" data-mod="5" onclick="showModule(5)"><span class="mob-tab-icon">🦴</span><span class="mob-tab-label">M5 Trauma</span></div>
-    <div class="mob-tab" data-mod="6" onclick="showModule(6)"><span class="mob-tab-icon">❤️</span><span class="mob-tab-label">M6 RCP</span></div>
-  </div>
-</nav>
-
 <script>
-  const TOTAL = 6;
-  // correctAnswers[moduleIndex] = [answer for q1, answer for q2, answer for q3]
-  const correctAnswers = {
-    1: ['b','a','b'],
-    2: ['b','b','b'],
-    3: ['b','b','b'],
-    4: ['b','b','b'],
-    5: ['b','b','b'],
-    6: ['b','b','b']
-  };
+const TOTAL = 6;
+const STORAGE_KEY = 'pab_done';
+let done = new Set(JSON.parse(localStorage.getItem('pab_progress') || '[]'));
+let quizPassed = false;
 
-  let doneModules = new Set(JSON.parse(localStorage.getItem('pab_done') || '[]'));
-  let currentMod = 1;
+function saveDone(){localStorage.setItem('pab_progress', JSON.stringify([...done]))}
 
-  function saveDone() {
-    localStorage.setItem('pab_done', JSON.stringify([...doneModules]));
-  }
+function updateProgress(){
+  const pct = Math.round(done.size / TOTAL * 100);
+  document.getElementById('progBar').style.width = pct + '%';
+  document.getElementById('progPct').textContent = pct + '%';
+  document.getElementById('topProg').style.width = pct + '%';
+  document.querySelectorAll('.mod-item').forEach(el => {
+    const m = +el.dataset.mod;
+    el.classList.toggle('done', done.has(m));
+  });
+}
 
-  function updateProgress() {
-    const pct = Math.round((doneModules.size / TOTAL) * 100);
-    document.getElementById('progBar').style.width = pct + '%';
-    document.getElementById('progPct').textContent = pct + '%';
-    document.getElementById('topProg').style.width = pct + '%';
-    // update sidebar items
-    document.querySelectorAll('.mod-item').forEach(el => {
-      const m = parseInt(el.dataset.mod);
-      el.classList.toggle('done', doneModules.has(m));
-      el.classList.toggle('active', m === currentMod);
+function showModule(n){
+  document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('mod-' + n).classList.add('active');
+  document.querySelectorAll('.mod-item,.mob-tab').forEach(el => {
+    el.classList.toggle('active', +el.dataset.mod === n);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  // Trigger animations
+  setTimeout(() => {
+    document.querySelectorAll('#mod-'+n+' .anim-fadein').forEach((el,i) => {
+      setTimeout(() => el.classList.add('visible'), i * 120);
     });
-    // update mob tabs
-    document.querySelectorAll('.mob-tab').forEach(el => {
-      el.classList.toggle('active', parseInt(el.dataset.mod) === currentMod);
-    });
-    // show completion card if all done
-    if (doneModules.size === TOTAL) {
-      document.getElementById('completionCard').style.display = 'block';
-    }
-  }
+  }, 50);
+}
 
-  function showModule(n) {
-    document.querySelectorAll('.module-panel').forEach(p => p.style.display = 'none');
-    document.getElementById('mod-' + n).style.display = 'block';
-    currentMod = n;
-    updateProgress();
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
-
-  function nextModule(n) {
-    doneModules.add(n);
-    saveDone();
-    if (n < TOTAL) {
-      showModule(n + 1);
-    } else {
-      updateProgress();
-      document.getElementById('completionCard').style.display = 'block';
-      document.getElementById('completionCard').scrollIntoView({behavior: 'smooth'});
-    }
-  }
-
-  function checkQuiz(modNum) {
-    const answers = correctAnswers[modNum];
-    let score = 0;
-    const total = answers.length;
-    const panel = document.getElementById('mod-' + modNum);
-
-    answers.forEach((correct, i) => {
-      const qNum = i + 1;
-      const selected = panel.querySelector('input[name="q' + modNum + '-' + qNum + '"]:checked');
-      const opts = panel.querySelectorAll('input[name="q' + modNum + '-' + qNum + '"]');
-      opts.forEach(opt => {
-        const label = opt.closest('.quiz-opt');
-        label.classList.remove('correct', 'wrong', 'selected');
-        if (opt.value === correct) {
-          label.classList.add('correct');
-        }
-        if (selected && opt.value === selected.value && opt.value !== correct) {
-          label.classList.add('wrong');
-        }
-      });
-      if (selected && selected.value === correct) score++;
-    });
-
-    const resultEl = document.getElementById('quiz-result-' + modNum);
-    resultEl.style.display = 'block';
-    if (score === total) {
-      resultEl.className = 'quiz-result pass';
-      resultEl.innerHTML = '✅ ¡Excelente! Respondió correctamente las ' + total + ' preguntas. Puede continuar al siguiente módulo.';
-      doneModules.add(modNum);
-      saveDone();
-      updateProgress();
-    } else {
-      resultEl.className = 'quiz-result fail';
-      resultEl.innerHTML = '❌ Obtuvo ' + score + ' de ' + total + ' respuestas correctas. Revise el contenido del módulo e inténtelo nuevamente.';
-    }
-  }
-
-  // Initialize
-  doneModules.forEach(m => {}); // already loaded from localStorage
+function nextModule(current){
+  done.add(current);
+  saveDone();
   updateProgress();
-  showModule(1);
+  showModule(current + 1);
+}
+
+function checkMiniQuiz(modId, answers){
+  const resultEl = document.getElementById(modId + '-result');
+  let correct = 0;
+  Object.entries(answers).forEach(([name, ans]) => {
+    const sel = document.querySelector(`input[name="${name}"]:checked`);
+    if(!sel){return;}
+    const label = sel.closest('.quiz-opt');
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      const l = r.closest('.quiz-opt');
+      if(r.value === ans) l.classList.add('correct');
+      else if(r === sel && r.value !== ans) l.classList.add('wrong');
+      r.disabled = true;
+    });
+    if(sel.value === ans) correct++;
+  });
+  const total = Object.keys(answers).length;
+  resultEl.style.display = 'block';
+  resultEl.className = 'quiz-result ' + (correct === total ? 'pass' : 'fail');
+  resultEl.textContent = correct === total
+    ? '✅ ¡Excelente! Todas las respuestas correctas.'
+    : `⚠️ ${correct} de ${total} correctas. Revisa el contenido del módulo.`;
+}
+
+function submitFinalQuiz(){
+  const answers = {fq1:'b', fq2:'b', fq3:'b', fq4:'c', fq5:'c', fq6:'a', fq7:'c', fq8:'c'};
+  let correct = 0;
+  let allAnswered = true;
+  Object.entries(answers).forEach(([name, ans]) => {
+    const sel = document.querySelector(`input[name="${name}"]:checked`);
+    if(!sel){allAnswered = false; return;}
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      const l = r.closest('.quiz-opt');
+      if(r.value === ans) l.classList.add('correct');
+      else if(r === sel && r.value !== ans) l.classList.add('wrong');
+      r.disabled = true;
+    });
+    if(sel.value === ans) correct++;
+  });
+  if(!allAnswered){
+    alert('Por favor responda todas las preguntas antes de enviar.');
+    return;
+  }
+  const resultEl = document.getElementById('finalResult');
+  resultEl.style.display = 'block';
+  const passed = correct >= 6;
+  resultEl.className = 'quiz-result ' + (passed ? 'pass' : 'fail');
+  resultEl.innerHTML = passed
+    ? `<strong>🎉 ¡Aprobado! ${correct}/8 respuestas correctas.</strong><br>Puede solicitar su certificado a Preventive Health.`
+    : `<strong>❌ ${correct}/8 correctas. Se requieren mínimo 6.</strong><br>Revise los módulos indicados y vuelva a intentarlo.`;
+  if(passed){
+    localStorage.setItem(STORAGE_KEY, 'true');
+    done.add(6);
+    saveDone();
+    updateProgress();
+    setTimeout(() => { document.getElementById('completionCard').style.display = 'block'; }, 400);
+    document.querySelector('#finalQuizSection .quiz-submit').disabled = true;
+  }
+}
+
+// Init
+done.forEach(m => {});
+updateProgress();
+showModule(1);
+
+// IntersectionObserver for animations
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, {threshold:0.1});
+document.querySelectorAll('.anim-fadein').forEach(el => {
+  el.style.transform = 'translateY(20px)';
+  io.observe(el);
+});
+
+// Restore completed modules
+if(localStorage.getItem(STORAGE_KEY) === 'true') quizPassed = true;
 </script>
 </body>
 </html>
