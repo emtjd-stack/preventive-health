@@ -1,707 +1,1147 @@
 <!DOCTYPE html>
 <html lang="es" style="visibility:hidden">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<script>document.documentElement.style.visibility='hidden'</script>
-<script type="module" src="../../js/auth.js"></script>
-<title>Manejo de Emergencias | Preventive Health</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gestión de Emergencias — Preventive Health</title>
+<script src="../../js/auth.js" type="module"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1D51A3;--blue-dark:#163d7a;--blue-light:#e8eef8;--gold:#F0C319;--text:#1a2840;--muted:#5a6e8c;--bg:#f5f7fb;--white:#fff;--border:#dde4ef;--radius:10px;--shadow:0 2px 12px rgba(29,81,163,.10)}
-html{scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;font-size:16px}
-h1,h2,h3,h4{font-weight:700;line-height:1.2}
-a{color:var(--blue);text-decoration:none}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.anim-fadein{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
-.anim-fadein.visible{opacity:1;transform:none}
-nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px solid var(--gold);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{color:#fff;font-weight:700;font-size:18px}
-.nav-back{color:rgba(255,255,255,.8);font-size:13px;padding:5px 10px;border-radius:6px;transition:.15s}
-.nav-back:hover{color:#fff;background:rgba(255,255,255,.12)}
-.top-progress{height:4px;background:rgba(255,255,255,.2)}
-.top-progress-fill{height:100%;background:var(--gold);transition:width .4s;width:0%}
-.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px)}
-.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 18px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.sidebar-progress{padding:12px 18px;margin-bottom:4px}
-.prog-bar-bg{height:5px;background:var(--border);border-radius:3px;margin-top:4px}
-.prog-bar-fill{height:5px;background:var(--blue);border-radius:3px;transition:width .4s}
-.prog-pct{font-size:11px;color:var(--muted);margin-top:3px}
-.mod-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;border-left:3px solid transparent;transition:.18s;user-select:none}
-.mod-item:hover{background:var(--bg)}
-.mod-item.active{background:var(--blue-light);border-left-color:var(--blue)}
-.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);transition:.2s}
-.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue);color:#fff}
-.mod-label{font-size:13px;font-weight:500;line-height:1.3}
-.mod-check{margin-left:auto;font-size:14px;opacity:0;transition:.2s}
-.mod-item.done .mod-check{opacity:1}
-.main{padding:36px 40px;max-width:820px}
-.module-panel{display:none;animation:fadeIn .3s ease}
-.module-panel.active{display:block}
-.module-header{margin-bottom:28px}
-.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:rgba(29,81,163,.1);padding:3px 12px;border-radius:20px;margin-bottom:10px}
-.module-title{font-size:clamp(1.5rem,3vw,2rem);color:var(--blue);margin-bottom:8px}
-.module-desc{font-size:1rem;color:var(--muted)}
-.content-section{margin-bottom:28px}
-.content-section h3{font-size:1.1rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
-.content-section p{font-size:.95rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
-.content-section ul,.content-section ol{padding-left:22px;color:var(--muted);font-size:.93rem;line-height:2}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
-.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue);transition:transform .2s}
-.info-card:hover{transform:translateY(-2px)}
-.info-card.gold{border-left-color:var(--gold)}.info-card.danger{border-left-color:#dc2626}.info-card.green{border-left-color:#16a34a}
-.info-card h4{font-size:13px;font-weight:700;margin-bottom:6px}.info-card p{font-size:13px;color:var(--muted);line-height:1.5}
-.alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);margin:16px 0;font-size:.92rem}
-.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.alert.important{background:#fef3c7;border:1px solid #f59e0b}.alert.danger{background:#fee2e2;border:1px solid #dc2626}
-.alert.info{background:var(--blue-light);border:1px solid var(--blue)}.alert.success{background:#dcfce7;border:1px solid #16a34a}
-.alert p{margin:0;color:var(--text);line-height:1.55}
-.steps{display:flex;flex-direction:column;gap:12px;margin:18px 0}
-.step{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:transform .2s}
-.step:hover{transform:translateX(4px)}
-.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}.step-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
-.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
-.concept-card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--blue);transition:transform .2s}
-.concept-card:hover{transform:translateY(-4px)}.concept-card .cc-icon{font-size:28px;margin-bottom:8px}
-.concept-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}.concept-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
-.abp-case{background:linear-gradient(135deg,#eef3ff,#e0eaff);border-radius:12px;padding:24px;margin:24px 0;border:2px solid rgba(29,81,163,.2)}
-.abp-label{background:var(--blue);color:#fff;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px}
-.abp-case h4{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px}
-.abp-case p{font-size:.92rem;color:#334;line-height:1.7;margin-bottom:10px}
-.abp-questions{background:rgba(255,255,255,.6);border-radius:8px;padding:14px;margin-top:12px}
-.abp-questions p{font-size:.88rem;margin:6px 0;color:var(--blue);font-weight:600}
-.norm-ref{background:var(--white);border-left:3px solid var(--gold);padding:12px 16px;margin:12px 0;font-size:.84rem;color:var(--muted);border-radius:0 8px 8px 0;border:1px solid var(--border);border-left:3px solid var(--gold)}
-.norm-ref strong{color:var(--text)}
-.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
-.data-table th{background:var(--blue);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
-.data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
-.data-table tr:nth-child(even) td{background:var(--bg)}
-.svg-container{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
-.svg-container figcaption{font-size:.82rem;color:var(--muted);margin-top:10px}
-.triage-box{display:inline-flex;flex-direction:column;align-items:center;padding:14px 18px;border-radius:10px;margin:6px;min-width:120px}
-.quiz-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
-.quiz-title{font-size:1.05rem;font-weight:700;margin-bottom:6px}.quiz-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
-.quiz-question{margin-bottom:22px}.quiz-q{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:10px}
-.quiz-options{display:flex;flex-direction:column;gap:8px}
-.quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-size:.9rem;user-select:none}
-.quiz-opt:hover{border-color:var(--blue);background:var(--blue-light)}
-.quiz-opt.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d}
-.quiz-opt.wrong{border-color:#dc2626!important;background:#fee2e2!important;color:#b91c1c}
-.quiz-opt input[type=radio]{accent-color:var(--blue)}
-.quiz-submit{margin-top:8px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
-.quiz-submit:hover{background:var(--blue-dark)}
-.quiz-result{margin-top:16px;padding:16px;border-radius:var(--radius);display:none;text-align:center}
-.quiz-result.pass{background:#dcfce7;border:1px solid #16a34a;color:#15803d}
-.quiz-result.fail{background:#fee2e2;border:1px solid #dc2626;color:#b91c1c}
-.module-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border)}
-.btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:.18s}
-.btn-prev{background:var(--white);border:1.5px solid var(--border);color:var(--muted)}.btn-prev:hover{border-color:var(--blue);color:var(--blue)}
-.btn-next{background:var(--blue);color:#fff}.btn-next:hover{background:var(--blue-dark)}
-.completion-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:var(--radius);padding:40px;text-align:center;color:#fff;margin-top:32px;display:none;animation:fadeInUp .5s ease}
-.completion-card h2{font-size:1.8rem;margin-bottom:12px}.completion-card p{color:rgba(255,255,255,.85);margin-bottom:16px}
-.cert-icon{font-size:64px;margin-bottom:16px}
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0}
-.mob-nav-inner{display:flex;overflow-x:auto;gap:4px;padding:0 12px;scrollbar-width:none}
-.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:60px;transition:.15s;user-select:none}
-.mob-tab.active{background:var(--blue-light)}.mob-tab-icon{font-size:18px}
-.mob-tab-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}.mob-tab.active .mob-tab-label{color:var(--blue)}
-@media(max-width:768px){.course-layout{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px 16px 100px}.mob-nav{display:block}.info-grid,.concept-grid{grid-template-columns:1fr}}
+:root{
+  --blue:#1D51A3;--blue-dark:#163d7a;--gold:#F0C319;
+  --bg:#f0f4fa;--card:#fff;--text:#1a2840;--muted:#2e4060;
+  --radius:14px;--shadow:0 4px 20px rgba(29,81,163,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.7}
+a{color:var(--blue)}
+.shell{display:flex;min-height:100vh}
+nav{width:260px;background:var(--blue-dark);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;padding:24px 0}
+nav .brand{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:12px}
+nav .brand img{height:36px;filter:brightness(0) invert(1)}
+nav .brand p{font-size:.72rem;opacity:.7;margin-top:4px}
+nav ul{list-style:none}
+nav ul li a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.82);text-decoration:none;font-size:.88rem;border-left:3px solid transparent;transition:.2s}
+nav ul li a:hover,nav ul li a.active{color:#fff;background:rgba(255,255,255,.1);border-left-color:var(--gold)}
+nav .prog-wrap{padding:16px 20px 0;font-size:.75rem;opacity:.7}
+nav .prog-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:6px}
+nav .prog-fill{height:5px;background:var(--gold);border-radius:3px;transition:.4s}
+main{flex:1;padding:32px 40px;max-width:960px}
+.page-hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;border-radius:var(--radius);padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden}
+.page-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:rgba(240,195,25,.12);border-radius:50%}
+.page-hero h1{font-size:2rem;font-weight:800}
+.page-hero p{opacity:.85;margin-top:8px;font-size:1.05rem}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:600}
+.badge.gold{background:var(--gold);color:#1a2840;border-color:var(--gold)}
+.mod-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:28px;overflow:hidden}
+.mod-header{background:linear-gradient(90deg,var(--blue),#2d6fd4);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+.mod-num{background:var(--gold);color:#1a2840;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0}
+.mod-header h2{font-size:1.15rem;font-weight:700}
+.mod-body{padding:24px}
+.mod-body p{margin-bottom:12px;color:var(--text)}
+.mod-body h3{font-size:1rem;font-weight:700;color:var(--blue-dark);margin:20px 0 8px;border-left:4px solid var(--gold);padding-left:10px}
+.mod-body ul{padding-left:20px;margin-bottom:12px;color:var(--text)}
+.mod-body ul li{margin-bottom:6px}
+.info-box{border-left:4px solid var(--blue);background:#e8f0fb;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.warn-box{border-left:4px solid #e05c2d;background:#fdf0eb;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.tip-box{border-left:4px solid #22a86b;background:#e6f9f1;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.vid-wrap{position:relative;padding-bottom:56.25%;border-radius:10px;overflow:hidden;margin:18px 0;background:#000}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-label{font-size:.8rem;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.diagram-wrap{background:#fff;border:1.5px solid #d8e4f5;border-radius:12px;padding:16px;margin:20px 0;overflow:visible}
+.diagram-title{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.quiz-section{background:linear-gradient(135deg,#f0f4fa,#e2ecfd);border:1.5px solid #c5d9f5;border-radius:12px;padding:22px;margin-top:24px}
+.quiz-section h4{color:var(--blue-dark);font-size:1rem;font-weight:700;margin-bottom:14px}
+.quiz-q{margin-bottom:14px}
+.quiz-q p{font-size:.95rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.quiz-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid #c5d9f5;border-radius:8px;cursor:pointer;margin-bottom:5px;font-size:.9rem;color:var(--text);background:#fff;transition:.15s}
+.quiz-opt:hover{border-color:var(--blue);background:#eef3fd}
+.quiz-opt.correct{border-color:#22a86b!important;background:#e6f9f1!important;color:#166a45}
+.quiz-opt.wrong{border-color:#e05c2d!important;background:#fdf0eb!important;color:#b63b1b}
+.quiz-btn,.sim-btn,.final-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:10px;transition:.2s}
+.quiz-btn:hover,.sim-btn:hover,.final-btn:hover{background:var(--blue-dark)}
+.quiz-result,.sim-result{display:none;margin-top:12px;padding:12px 16px;border-radius:8px;font-weight:700;font-size:.95rem}
+.pass{background:#e6f9f1;color:#166a45;border:1.5px solid #22a86b}
+.fail{background:#fdf0eb;color:#b63b1b;border:1.5px solid #e05c2d}
+.sim-section{background:linear-gradient(135deg,#1a2840,#1D51A3);border-radius:14px;padding:28px;margin:28px 0;color:#fff}
+.sim-badge{background:var(--gold);color:#1a2840;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px;letter-spacing:.04em;text-transform:uppercase}
+.sim-section h4{font-size:1.05rem;font-weight:700;margin-bottom:16px}
+.sim-q{margin-bottom:18px}
+.sim-q p{font-size:.93rem;font-weight:600;margin-bottom:8px;color:rgba(255,255,255,.92)}
+.sim-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;margin-bottom:6px;color:rgba(255,255,255,.88);font-size:.88rem;transition:.15s}
+.sim-opt:hover{border-color:rgba(240,195,25,.6);background:rgba(255,255,255,.07)}
+.sim-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.2)!important;color:#4ade80}
+.sim-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.2)!important;color:#f87171}
+.sim-opt input{accent-color:var(--gold)}
+.final-section{background:linear-gradient(135deg,#1a2840,#163d7a);border-radius:14px;padding:32px;margin-top:36px;color:#fff}
+.final-section h3{font-size:1.25rem;font-weight:800;margin-bottom:6px}
+.final-section p.sub{opacity:.7;font-size:.88rem;margin-bottom:20px}
+.final-q{margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:16px}
+.final-q p{font-weight:600;margin-bottom:8px;font-size:.92rem}
+.final-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;margin-bottom:5px;cursor:pointer;font-size:.88rem;color:rgba(255,255,255,.85)}
+.final-opt:hover{border-color:var(--gold);background:rgba(255,255,255,.07)}
+.final-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.15)!important;color:#4ade80}
+.final-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.15)!important;color:#f87171}
+.final-result{display:none;padding:20px;border-radius:10px;font-size:1.05rem;font-weight:700;margin-top:16px;text-align:center}
+.anim-fadein{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.anim-fadein.visible{opacity:1;transform:translateY(0)}
+.steps{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}
+.step{flex:1 1 140px;background:linear-gradient(135deg,var(--blue),#3a7bdc);color:#fff;border-radius:10px;padding:16px 14px;text-align:center}
+.step .num{font-size:1.6rem;font-weight:900;line-height:1;color:var(--gold)}
+.step p{font-size:.8rem;margin-top:6px;opacity:.9}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
+th{background:var(--blue);color:#fff;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid #d8e4f5;color:var(--text)}
+tr:nth-child(even) td{background:#f4f8fe}
 </style>
 </head>
 <body>
+<div class="shell">
 <nav>
-  <a class="nav-logo" href="../../index.html">Preventive Health</a>
-  <a class="nav-back" href="../index.html">← Catálogo</a>
+  <div class="brand">
+    <img src="../../assets/logo.png" alt="Preventive Health">
+    <p>Gestión de Emergencias</p>
+  </div>
+  <ul>
+    <li><a href="#m1" class="active">🏗️ M1 · Sistema de Comando</a></li>
+    <li><a href="#m2">🏷️ M2 · Triage START</a></li>
+    <li><a href="#m3">🏥 M3 · Emergencias Médicas</a></li>
+    <li><a href="#m4">☢️ M4 · MATPEL / NFPA 704</a></li>
+    <li><a href="#m5">📋 M5 · Planes de Contingencia</a></li>
+    <li><a href="#m6">🧠 M6 · Psicología de Emergencias</a></li>
+    <li><a href="#final">📝 Evaluación Final</a></li>
+  </ul>
+  <div class="prog-wrap">
+    Progreso del curso
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
 </nav>
-<div class="top-progress"><div class="top-progress-fill" id="topProg"></div></div>
-<div class="course-layout">
-<aside class="sidebar">
-  <div class="sidebar-title">Manejo de Emergencias</div>
-  <div class="sidebar-progress">
-    <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:600">Progreso</span><span class="prog-pct" id="progPct">0%</span></div>
-    <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
-  </div>
-  <div class="mod-item active" data-mod="1" onclick="showModule(1)"><div class="mod-num">1</div><div class="mod-label">Sistema de Comando de Incidentes (SCI)</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="2" onclick="showModule(2)"><div class="mod-num">2</div><div class="mod-label">Triage START — Clasificación de Víctimas</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="3" onclick="showModule(3)"><div class="mod-num">3</div><div class="mod-label">Emergencias Médicas Laborales</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="4" onclick="showModule(4)"><div class="mod-num">4</div><div class="mod-label">Materiales Peligrosos (MATPEL)</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="5" onclick="showModule(5)"><div class="mod-num">5</div><div class="mod-label">Plan de Continuidad Operacional (PCO)</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="6" onclick="showModule(6)"><div class="mod-num">6</div><div class="mod-label">Psicología de la Emergencia</div><div class="mod-check">✓</div></div>
-</aside>
-<main class="main" id="mainContent">
 
-<!-- ===== MÓDULO 1 ===== -->
-<div class="module-panel active" id="mod-1">
-  <div class="module-header">
-    <span class="module-tag">Módulo 1 de 6</span>
-    <h1 class="module-title">Sistema de Comando de Incidentes (SCI)</h1>
-    <p class="module-desc">Estructura estandarizada para gestionar cualquier emergencia con cadena de mando clara, eficiencia en recursos y comunicación interinstitucional.</p>
+<main>
+<div class="page-hero anim-fadein">
+  <h1>Gestión de Emergencias</h1>
+  <p>Coordinación de respuesta ante incidentes, triage, materiales peligrosos, planes de contingencia y apoyo psicológico en emergencias laborales.</p>
+  <div class="badges">
+    <span class="badge">6 Módulos</span>
+    <span class="badge">SCI · ISO 22301 · NFPA 704</span>
+    <span class="badge gold">Certificación Incluida</span>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> NIMS (National Incident Management System) · ICS-100/200 FEMA · Decreto Ejecutivo 486 Ecuador (SGR) · Acuerdo MDT-2020-077</div>
-  <div class="content-section">
-    <h3>¿Qué es el SCI y por qué es el estándar mundial?</h3>
-    <p>El <strong>Sistema de Comando de Incidentes (SCI/ICS)</strong> fue desarrollado tras el análisis de los fallos de coordinación durante los incendios forestales de California en 1970. Hoy es el estándar adoptado por FEMA, Cruz Roja, OPS/OMS y la Secretaría de Gestión de Riesgos (SGR) de Ecuador para toda emergencia: desde un derrame de 10 litros hasta una catástrofe nacional.</p>
-    <div class="alert info"><div class="alert-icon">🔑</div><p><strong>Principio fundamental:</strong> Una sola persona puede supervisar efectivamente entre 3 y 7 individuos (span of control óptimo: 5). El SCI garantiza que nadie reciba órdenes de más de un superior simultáneamente.</p></div>
-  </div>
-  <div class="content-section">
-    <h3>Estructura del SCI — 5 Secciones</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <!-- Comandante -->
-        <rect x="240" y="10" width="160" height="45" rx="8" fill="#1D51A3"/>
-        <text x="320" y="30" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">COMANDANTE</text>
-        <text x="320" y="46" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.8)">DEL INCIDENTE</text>
-        <!-- Staff comandante -->
-        <rect x="430" y="15" width="100" height="35" rx="6" fill="#163d7a"/>
-        <text x="480" y="30" text-anchor="middle" font-size="10" fill="#fff">Seguridad</text>
-        <text x="480" y="42" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Información · Enlace</text>
-        <line x1="400" y1="32" x2="430" y2="32" stroke="#F0C319" stroke-width="2"/>
-        <!-- Línea central -->
-        <line x1="320" y1="55" x2="320" y2="90" stroke="#F0C319" stroke-width="2"/>
-        <line x1="60" y1="90" x2="580" y2="90" stroke="#F0C319" stroke-width="2"/>
-        <!-- 5 secciones -->
-        <line x1="60" y1="90" x2="60" y2="115" stroke="#F0C319" stroke-width="2"/>
-        <rect x="10" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
-        <text x="60" y="140" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">OPERACIONES</text>
-        <text x="60" y="156" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Atención</text>
-        <text x="60" y="168" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">directa del</text>
-        <text x="60" y="180" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">incidente</text>
-        <line x1="190" y1="90" x2="190" y2="115" stroke="#F0C319" stroke-width="2"/>
-        <rect x="140" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
-        <text x="190" y="140" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">PLANIFICACIÓN</text>
-        <text x="190" y="156" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Información</text>
-        <text x="190" y="168" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">situacional</text>
-        <text x="190" y="180" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">y pronóstico</text>
-        <line x1="320" y1="90" x2="320" y2="115" stroke="#F0C319" stroke-width="2"/>
-        <rect x="270" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
-        <text x="320" y="140" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">LOGÍSTICA</text>
-        <text x="320" y="156" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Recursos</text>
-        <text x="320" y="168" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">materiales</text>
-        <text x="320" y="180" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">y personal</text>
-        <line x1="450" y1="90" x2="450" y2="115" stroke="#F0C319" stroke-width="2"/>
-        <rect x="400" y="115" width="100" height="70" rx="8" fill="#163d7a"/>
-        <text x="450" y="136" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">FINANZAS/</text>
-        <text x="450" y="150" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">ADMINIST.</text>
-        <text x="450" y="166" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Costos y</text>
-        <text x="450" y="178" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">contratos</text>
-        <line x1="580" y1="90" x2="580" y2="115" stroke="#F0C319" stroke-width="2"/>
-        <rect x="530" y="115" width="100" height="70" rx="8" fill="#dc2626"/>
-        <text x="580" y="136" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">INTELIGENCIA/</text>
-        <text x="580" y="150" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">INVESTIGACIÓN</text>
-        <text x="580" y="166" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Evidencias</text>
-        <text x="580" y="178" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">forenses</text>
-        <!-- Nota span of control -->
-        <text x="320" y="220" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">Span of control óptimo: 1 supervisor → 3-7 subordinados</text>
-      </svg>
-      <figcaption>Estructura del Sistema de Comando de Incidentes — 5 secciones funcionales bajo el Comandante del Incidente</figcaption>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Fases de Activación del SCI</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Notificación y activación</h4><p>El primer respondedor asume automáticamente el rol de Comandante del Incidente hasta que llegue alguien de mayor jerarquía. Reportar: qué, dónde, cuántos afectados, recursos necesarios.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Establecimiento del Puesto de Mando (PM)</h4><p>Lugar fijo, visible, seguro y fuera de la zona caliente. Todos los comandantes de sección reportan aquí. Identificar con chaleco o bandera.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Transferencia de mando</h4><p>Cuando llega una autoridad superior, el briefing debe cubrir: situación actual, acciones tomadas, recursos disponibles y comprometidos, pronóstico inmediato.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Desmobilización y documentación</h4><p>Al controlar el incidente: liberar recursos en orden inverso, documentar en formulario ICS-214, generar informe post-incidente en 72h.</p></div></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Zonas de Intervención</h3>
-    <div class="info-grid anim-fadein">
-      <div class="info-card danger"><h4>Zona Caliente (Roja)</h4><p>Área de máximo peligro. Solo personal con EPP completo y entrenamiento específico. Operaciones de rescate inmediato.</p></div>
-      <div class="info-card gold"><h4>Zona Tibia (Amarilla)</h4><p>Área de descontaminación y estabilización. Reducción del riesgo. Personal de apoyo técnico.</p></div>
-      <div class="info-card green"><h4>Zona Fría (Verde)</h4><p>Área segura. Puesto de mando, triage, atención médica avanzada, medios de comunicación controlados.</p></div>
-    </div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Explosión en planta industrial — 12 heridos</h4>
-    <p>A las 14h30 ocurre una explosión en el área de calderas de una planta industrial. Hay 12 heridos visibles, 3 atrapados, humo denso y riesgo de segunda explosión. Llegan simultáneamente: el jefe de seguridad de la empresa, el equipo de brigadas, una ambulancia del ECU-911 y el camión de bomberos. Cada uno quiere "tomar el mando".</p>
-    <div class="abp-questions">
-      <p>❓ ¿Quién debe ser el Comandante del Incidente y bajo qué criterio se determina?</p>
-      <p>❓ Establece las zonas caliente/tibia/fría para este escenario. ¿Dónde ubicas el puesto de mando?</p>
-      <p>❓ Asigna las 5 secciones del SCI a los actores disponibles en el escenario.</p>
-      <p>❓ ¿Qué información debe contener el briefing de transferencia de mando cuando llegue el Comandante del Cuerpo de Bomberos?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/YUDGceSIuik" title="Sistema de Comando de Incidentes SCI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 1</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">1. ¿Cuál es el span of control óptimo en el SCI?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 1 supervisor por 10 subordinados</label><label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 1 supervisor por 3 a 7 subordinados</label><label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 2 supervisores por 20 subordinados</label><label class="quiz-opt"><input type="radio" name="q1a" value="d"> d) No hay límite establecido</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">2. La Zona Caliente en el SCI corresponde a:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) El área del puesto de mando</label><label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) El área de triage y atención médica avanzada</label><label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) El área de máximo peligro donde solo entra personal con EPP completo</label><label class="quiz-opt"><input type="radio" name="q1b" value="d"> d) La zona de descontaminación</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod1',{'q1a':'b','q1b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod1-result"></div>
-  </div>
-  <div class="module-nav"><span></span><button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente: Triage START →</button></div>
 </div>
 
-<!-- ===== MÓDULO 2 ===== -->
-<div class="module-panel" id="mod-2">
-  <div class="module-header">
-    <span class="module-tag">Módulo 2 de 6</span>
-    <h1 class="module-title">Triage START — Clasificación de Víctimas en Masa</h1>
-    <p class="module-desc">El método START (Simple Triage And Rapid Treatment) permite clasificar múltiples víctimas en 30-60 segundos por víctima para optimizar el uso de recursos médicos limitados.</p>
+<!-- ====== MÓDULO 1 ====== -->
+<div class="mod-card anim-fadein" id="m1">
+  <div class="mod-header">
+    <div class="mod-num">1</div>
+    <div><h2>Sistema de Comando de Incidentes (SCI)</h2>
+    <small style="opacity:.8">Estructura de mando estandarizada para la gestión de emergencias</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> OPS/OMS — Clasificación de Víctimas · AHA 2020 (RCP) · ATLS (Advanced Trauma Life Support) · Protocolo ECU-911</div>
-  <div class="content-section">
-    <h3>Sistema de Colores START</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+  <div class="mod-body">
+    <p>El <strong>Sistema de Comando de Incidentes (SCI)</strong> es un modelo de gestión estandarizado que permite coordinar a múltiples agencias y recursos en una emergencia bajo una cadena de mando unificada. Fue desarrollado originalmente por los servicios de bomberos de California (FIRESCOPE) y adoptado internacionalmente, incluyendo por el <strong>Sistema Nacional de Gestión de Incidentes (NIMS, por sus siglas en inglés)</strong> de los Estados Unidos y los protocolos de la <strong>Secretaría de Gestión de Riesgos (SGR)</strong> del Ecuador.</p>
+
+    <h3>Principios del SCI</h3>
+    <ul>
+      <li><strong>Unidad de mando:</strong> cada persona reporta a un solo supervisor.</li>
+      <li><strong>Span of control (amplitud de control):</strong> cada supervisor maneja entre 3 y 7 personas (óptimo: 5).</li>
+      <li><strong>Terminología común:</strong> uso de lenguaje estandarizado para evitar confusiones.</li>
+      <li><strong>Modularidad:</strong> la estructura crece o se reduce según la complejidad del incidente.</li>
+      <li><strong>Gestión integral de recursos:</strong> todos los recursos son solicitados, activados y liberados de forma ordenada.</li>
+    </ul>
+
+    <!-- SVG Estructura SCI -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Estructura del SCI — 5 secciones funcionales</div>
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="sci0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#163d7a"/><stop offset="100%" stop-color="#1D51A3"/></linearGradient>
+          <linearGradient id="sci1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="sci2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="sci3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+          <linearGradient id="sci4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e7490"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+          <linearGradient id="sci5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b45309"/><stop offset="100%" stop-color="#F0C319"/></linearGradient>
+        </defs>
+        <!-- Commander -->
+        <rect x="220" y="5" width="260" height="48" rx="10" fill="url(#sci0)"/>
+        <text x="350" y="25" text-anchor="middle" fill="#F0C319" font-size="12" font-weight="800">COMANDANTE DE INCIDENTE</text>
+        <text x="350" y="43" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9">Responsabilidad total · Zona de Mando</text>
+        <!-- Staff line -->
+        <line x1="350" y1="53" x2="350" y2="75" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="60" y1="75" x2="640" y2="75" stroke="#1D51A3" stroke-width="2"/>
+        <!-- 5 sections -->
+        <line x1="60" y1="75" x2="60" y2="95" stroke="#e05c2d" stroke-width="2"/>
+        <line x1="195" y1="75" x2="195" y2="95" stroke="#22a86b" stroke-width="2"/>
+        <line x1="350" y1="75" x2="350" y2="95" stroke="#7c3aed" stroke-width="2"/>
+        <line x1="505" y1="75" x2="505" y2="95" stroke="#0e7490" stroke-width="2"/>
+        <line x1="640" y1="75" x2="640" y2="95" stroke="#b45309" stroke-width="2"/>
+
+        <rect x="0" y="95" width="120" height="70" rx="9" fill="url(#sci1)"/>
+        <text x="60" y="118" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">OPERACIONES</text>
+        <text x="60" y="135" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Respuesta táctica</text>
+        <text x="60" y="149" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7">Combate, rescate, EMS</text>
+
+        <rect x="135" y="95" width="120" height="70" rx="9" fill="url(#sci2)"/>
+        <text x="195" y="118" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">PLANIFICACIÓN</text>
+        <text x="195" y="135" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Análisis de situación</text>
+        <text x="195" y="149" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7">IAP · Recursos</text>
+
+        <rect x="290" y="95" width="120" height="70" rx="9" fill="url(#sci3)"/>
+        <text x="350" y="118" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">LOGÍSTICA</text>
+        <text x="350" y="135" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Apoyo y servicios</text>
+        <text x="350" y="149" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7">Suministros, transporte</text>
+
+        <rect x="445" y="95" width="120" height="70" rx="9" fill="url(#sci4)"/>
+        <text x="505" y="118" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">FINANZAS</text>
+        <text x="505" y="135" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Costos y contratos</text>
+        <text x="505" y="149" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7">Registro de tiempo</text>
+
+        <rect x="580" y="95" width="120" height="70" rx="9" fill="url(#sci5)"/>
+        <text x="640" y="118" text-anchor="middle" fill="#1a2840" font-size="10" font-weight="700">INFORMACIÓN</text>
+        <text x="640" y="135" text-anchor="middle" fill="#1a2840" font-size="8">y SEGURIDAD</text>
+        <text x="640" y="149" text-anchor="middle" fill="#1a2840" font-size="7">PIO · Enlace · Seguridad</text>
+
+        <!-- IAP note -->
+        <rect x="100" y="185" width="500" height="60" rx="10" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="350" y="208" text-anchor="middle" fill="#163d7a" font-size="10" font-weight="700">Plan de Acción del Incidente (PAI / IAP):</text>
+        <text x="350" y="225" text-anchor="middle" fill="#2e4060" font-size="9">Documento que define objetivos, estrategias, tácticas y recursos para cada período operacional.</text>
+        <text x="350" y="238" text-anchor="middle" fill="#2e4060" font-size="8">Período operacional típico: 12-24 horas · Se actualiza en cada briefing.</text>
+      </svg>
+    </div>
+
+    <h3>Niveles de Incidente y Escalada</h3>
+    <table>
+      <tr><th>Tipo</th><th>Complejidad</th><th>Recursos</th><th>Duración</th></tr>
+      <tr><td>Tipo 5</td><td>Mínima — un turno</td><td>Menos de 6 personas</td><td>Horas</td></tr>
+      <tr><td>Tipo 4</td><td>Baja — varios recursos</td><td>Hasta 20 personas</td><td>1-2 días</td></tr>
+      <tr><td>Tipo 3</td><td>Media — múltiples agencias</td><td>Hasta 200 personas</td><td>Varios días</td></tr>
+      <tr><td>Tipo 2</td><td>Alta — estructura completa</td><td>200-500 personas</td><td>Semanas</td></tr>
+      <tr><td>Tipo 1</td><td>Máxima — nacional</td><td>Más de 500</td><td>Meses</td></tr>
+    </table>
+
+    <div class="vid-label">Video — Sistema de Comando de Incidentes</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/YUDGceSIuik" allowfullscreen loading="lazy" title="SCI — Sistema de Comando de Incidentes"></iframe>
+    </div>
+
+    <!-- SIMULATOR M1 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 1</span>
+      <h4>Escenarios: Sistema de Comando de Incidentes (SCI)</h4>
+      <div class="sim-q">
+        <p>1. En un incidente, el trabajador de logística recibe instrucciones directas del jefe de operaciones. ¿Qué principio del SCI se viola?</p>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="a"> a) Modularidad</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="b"> b) Unidad de mando</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="c"> c) Terminología común</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="d"> d) Span of control</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Un supervisor del SCI tiene a 9 personas a su cargo. ¿Qué problema representa?</p>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="a"> a) Ninguno, entre más mejor</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="b"> b) Excede el span of control óptimo (3-7) — reducir la carga</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="c"> c) Es exactamente el límite permitido</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="d"> d) Solo aplica en incidentes Tipo 1</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Qué sección del SCI es responsable de analizar la situación y elaborar el Plan de Acción del Incidente?</p>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="a"> a) Operaciones</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="b"> b) Logística</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="c"> c) Planificación</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="d"> d) Finanzas</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Un incendio forestal involucra 350 personas de 5 agencias. ¿Qué tipo de incidente es?</p>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="a"> a) Tipo 5</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="b"> b) Tipo 3</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="c"> c) Tipo 2</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="d"> d) Tipo 4</label>
+      </div>
+      <div class="sim-q">
+        <p>5. El Comandante de Incidente necesita comunicar información a los medios. ¿A quién asigna esta función?</p>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="a"> a) Jefe de Operaciones</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="b"> b) Oficial de Información Pública (PIO)</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="c"> c) Jefe de Planificación</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="d"> d) Cualquier brigadista disponible</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s1',{s1_1:'b',s1_2:'b',s1_3:'c',s1_4:'c',s1_5:'b'})">Verificar Simulador</button>
+      <div id="s1-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 1</h4>
+      <div class="quiz-q">
+        <p>1. ¿Cuál es el span of control óptimo en el SCI?</p>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 10 personas</label>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 5 personas (rango 3-7)</label>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 2 personas</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué significa PAI en el contexto del SCI?</p>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) Plan de Atención Inmediata</label>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) Plan de Acción del Incidente</label>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) Protocolo de Acción Integrada</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq1',{q1a:'b',q1b:'b'})">Verificar</button>
+      <div id="mq1-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MÓDULO 2 ====== -->
+<div class="mod-card anim-fadein" id="m2">
+  <div class="mod-header">
+    <div class="mod-num">2</div>
+    <div><h2>Triage START en Incidentes con Múltiples Víctimas</h2>
+    <small style="opacity:.8">Clasificación rápida para optimizar recursos de socorro</small></div>
+  </div>
+  <div class="mod-body">
+    <p>El <strong>Triage START</strong> (del inglés: Simple Triage And Rapid Treatment — Triage Simple y Tratamiento Rápido) es un sistema de clasificación de víctimas en masa diseñado para que un primer respondedor evalúe una víctima en menos de 60 segundos y determine la prioridad de atención usando cuatro categorías codificadas por color.</p>
+
+    <h3>Las 4 Categorías del Triage START</h3>
+    <!-- SVG Triage START -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Clasificación por Colores — Triage START</div>
+      <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- ROJO -->
+        <rect x="5" y="10" width="163" height="110" rx="12" fill="#ef4444"/>
+        <text x="86" y="40" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">🔴 ROJO</text>
+        <text x="86" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">INMEDIATO</text>
+        <text x="86" y="78" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="9">Lesión grave pero sobrevivible</text>
+        <text x="86" y="93" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="9">Atención en &lt; 60 min</text>
+        <text x="86" y="108" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">RR &gt; 30/min · Sin pulso radial</text>
+
+        <!-- AMARILLO -->
+        <rect x="180" y="10" width="163" height="110" rx="12" fill="#f59e0b"/>
+        <text x="261" y="40" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">🟡 AMARILLO</text>
+        <text x="261" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">DIFERIDO</text>
+        <text x="261" y="78" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="9">Puede esperar &gt; 60 min</text>
+        <text x="261" y="93" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="9">Lesión significativa</text>
+        <text x="261" y="108" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Camina, pero con dolor intenso</text>
+
+        <!-- VERDE -->
+        <rect x="355" y="10" width="163" height="110" rx="12" fill="#22a86b"/>
+        <text x="436" y="40" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">🟢 VERDE</text>
+        <text x="436" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">LEVE / AMBULATORIO</text>
+        <text x="436" y="78" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="9">Lesión menor, puede caminar</text>
+        <text x="436" y="93" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="9">Auto-evacuación posible</text>
+        <text x="436" y="108" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Heridas superficiales, contusiones</text>
+
+        <!-- NEGRO -->
+        <rect x="530" y="10" width="163" height="110" rx="12" fill="#1a2840"/>
+        <text x="611" y="40" text-anchor="middle" fill="#9ca3af" font-size="18" font-weight="900">⚫ NEGRO</text>
+        <text x="611" y="60" text-anchor="middle" fill="#d1d5db" font-size="11" font-weight="700">EXPECTANTE</text>
+        <text x="611" y="78" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9">Sin respiración tras maniobra</text>
+        <text x="611" y="93" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9">o lesión incompatible con vida</text>
+        <text x="611" y="108" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8">No recibe RCP en Triage START</text>
+      </svg>
+    </div>
+
+    <h3>Algoritmo de Evaluación START (30-2-CAN DO)</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><p><strong>¿Camina?</strong> Si sí → VERDE. Si no, continúa.</p></div>
+      <div class="step"><div class="num">2</div><p><strong>¿Respira?</strong> Si no → abrir vía aérea. Si respira → ROJO. Si sigue sin respirar → NEGRO.</p></div>
+      <div class="step"><div class="num">3</div><p><strong>FR &gt; 30/min?</strong> Si sí → ROJO. Si no, continúa.</p></div>
+      <div class="step"><div class="num">4</div><p><strong>¿Pulso radial?</strong> Sin pulso → ROJO. Con pulso, continúa.</p></div>
+      <div class="step"><div class="num">5</div><p><strong>Estado mental:</strong> No obedece → ROJO. Obedece → AMARILLO.</p></div>
+    </div>
+
+    <div class="info-box"><strong>Mnemotecnia 30-2-CAN DO:</strong> Frecuencia Respiratoria menor de 30; llenado capilar menor de 2 segundos; CAN DO = obedece órdenes. Todos los parámetros normales = AMARILLO.</div>
+
+    <div class="vid-label">Video — Triage START en Incidentes con Múltiples Víctimas</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/hNkpnlbRtaY" allowfullscreen loading="lazy" title="Triage START"></iframe>
+    </div>
+
+    <!-- SIMULATOR M2 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 2</span>
+      <h4>Escenarios: Triage START</h4>
+      <div class="sim-q">
+        <p>1. Una víctima camina por sí misma hacia ti. ¿Qué clasificación Triage START le asignas?</p>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="a"> a) ROJO</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="b"> b) AMARILLO</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="c"> c) VERDE</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="d"> d) NEGRO</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Una víctima no respira. Abres su vía aérea con maniobra frente-mentón y comienza a respirar a 38 respiraciones por minuto. ¿Clasificación?</p>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="a"> a) VERDE</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="b"> b) ROJO</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="c"> c) AMARILLO</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="d"> d) NEGRO</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Una víctima no camina, respira a 22/min, tiene pulso radial y obedece la orden "aprieta mi mano". ¿Clasificación?</p>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="a"> a) ROJO</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="b"> b) AMARILLO</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="c"> c) VERDE</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="d"> d) NEGRO</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Una víctima con traumatismo craneal severo no respira tras abrir la vía aérea. En Triage START se clasifica como:</p>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="a"> a) ROJO — comenzar RCP</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="b"> b) NEGRO — expectante</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="c"> c) AMARILLO — esperar</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="d"> d) VERDE — ambulatorio</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Cuánto tiempo máximo se dispone para clasificar cada víctima en Triage START?</p>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="a"> a) 5 minutos</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="b"> b"> 60 segundos</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="c"> c) 3 minutos</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="d"> d) 10 minutos</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s2',{s2_1:'c',s2_2:'b',s2_3:'b',s2_4:'b',s2_5:'b'})">Verificar Simulador</button>
+      <div id="s2-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 2</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué color de Triage START indica atención inmediata?</p>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Amarillo</label>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Rojo</label>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Verde</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué significa START?</p>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) System for Triage And Rapid Treatment</label>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) Simple Triage And Rapid Treatment</label>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Standard Trauma And Rescue Technique</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq2',{q2a:'b',q2b:'b'})">Verificar</button>
+      <div id="mq2-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MÓDULO 3 ====== -->
+<div class="mod-card anim-fadein" id="m3">
+  <div class="mod-header">
+    <div class="mod-num">3</div>
+    <div><h2>Emergencias Médicas Laborales</h2>
+    <small style="opacity:.8">Reconocimiento y respuesta inicial ante urgencias médicas en el trabajo</small></div>
+  </div>
+  <div class="mod-body">
+    <p>Las <strong>emergencias médicas laborales</strong> son situaciones agudas que ponen en riesgo la vida de un trabajador y requieren respuesta inmediata antes de la llegada del Sistema de Emergencias Médicas (SEM). El primer respondedor debe reconocer signos de alerta y actuar dentro de los primeros minutos críticos.</p>
+
+    <h3>Principales Emergencias Médicas en el Trabajo</h3>
+    <!-- SVG mapa conceptual emergencias -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Mapa Conceptual — Emergencias Médicas Laborales</div>
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- Center -->
+        <ellipse cx="350" cy="110" rx="80" ry="40" fill="#1D51A3"/>
+        <text x="350" y="105" text-anchor="middle" fill="#F0C319" font-size="11" font-weight="800">EMERGENCIA</text>
+        <text x="350" y="122" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">MÉDICA LABORAL</text>
+        <!-- Branches -->
+        <line x1="272" y1="90" x2="180" y2="50" stroke="#e05c2d" stroke-width="2"/>
+        <rect x="60" y="20" width="130" height="50" rx="8" fill="#e05c2d"/>
+        <text x="125" y="41" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">PARO CARDÍACO</text>
+        <text x="125" y="56" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Sin pulso · Sin respiración</text>
+
+        <line x1="272" y1="115" x2="140" y2="115" stroke="#7c3aed" stroke-width="2"/>
+        <rect x="20" y="90" width="120" height="50" rx="8" fill="#7c3aed"/>
+        <text x="80" y="111" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">ICTUS (ACV)</text>
+        <text x="80" y="126" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">FAST: Cara-Brazo-Voz-Tiempo</text>
+
+        <line x1="272" y1="135" x2="180" y2="170" stroke="#22a86b" stroke-width="2"/>
+        <rect x="60" y="150" width="130" height="50" rx="8" fill="#22a86b"/>
+        <text x="125" y="171" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">HIPOGLUCEMIA</text>
+        <text x="125" y="186" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Glucosa &lt; 70 mg/dL · Mareo</text>
+
+        <line x1="428" y1="90" x2="520" y2="50" stroke="#0e7490" stroke-width="2"/>
+        <rect x="510" y="20" width="130" height="50" rx="8" fill="#0e7490"/>
+        <text x="575" y="41" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">CRISIS EPILÉPTICA</text>
+        <text x="575" y="56" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Convulsiones · Proteger cabeza</text>
+
+        <line x1="428" y1="115" x2="560" y2="115" stroke="#b45309" stroke-width="2"/>
+        <rect x="560" y="90" width="130" height="50" rx="8" fill="#b45309"/>
+        <text x="625" y="111" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">GOLPE DE CALOR</text>
+        <text x="625" y="126" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">T° &gt; 40°C · Sin sudoración</text>
+
+        <line x1="428" y1="135" x2="520" y2="170" stroke="#e05c2d" stroke-width="2"/>
+        <rect x="510" y="150" width="130" height="50" rx="8" fill="#163d7a"/>
+        <text x="575" y="171" text-anchor="middle" fill="#F0C319" font-size="9" font-weight="700">INTOXICACIÓN</text>
+        <text x="575" y="186" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Química / CO / gases</text>
+      </svg>
+    </div>
+
+    <h3>Protocolo FAST para Reconocer Accidente Cerebrovascular (ACV)</h3>
+    <table>
+      <tr><th>Letra</th><th>Evaluación</th><th>Signo positivo</th></tr>
+      <tr><td><strong>F</strong> — Face (Cara)</td><td>Pedir que sonría</td><td>Asimetría facial — un lado cae</td></tr>
+      <tr><td><strong>A</strong> — Arms (Brazos)</td><td>Extender ambos brazos</td><td>Un brazo cae o no puede levantarlo</td></tr>
+      <tr><td><strong>S</strong> — Speech (Habla)</td><td>Repetir una frase corta</td><td>Habla arrastrada, confusa o no puede</td></tr>
+      <tr><td><strong>T</strong> — Time (Tiempo)</td><td>Registrar hora de inicio</td><td>Llamar al 911 INMEDIATAMENTE</td></tr>
+    </table>
+
+    <h3>Actuación en Crisis Epiléptica</h3>
+    <ul>
+      <li>Proteger la cabeza con algo blando (ropa, mochila).</li>
+      <li>Retirar objetos del entorno que puedan causar golpes.</li>
+      <li><strong>NUNCA</strong> sujetar las extremidades ni introducir nada en la boca.</li>
+      <li>Registrar hora de inicio y duración de las convulsiones.</li>
+      <li>Si supera 5 minutos → llamar al 911 (estatus epiléptico).</li>
+      <li>Posición de recuperación al finalizar las convulsiones.</li>
+    </ul>
+
+    <div class="warn-box"><strong>Golpe de Calor (Heat Stroke):</strong> temperatura corporal mayor a 40°C con ausencia de sudoración es una emergencia vital. Enfriar con compresas de agua fría en axilas, ingle y cuello. Trasladar urgente.</div>
+
+    <div class="vid-label">Video — Emergencias Médicas en el Trabajo</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/F9EiMXtPsYI" allowfullscreen loading="lazy" title="Emergencias Médicas Laborales"></iframe>
+    </div>
+
+    <!-- SIMULATOR M3 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 3</span>
+      <h4>Escenarios: Emergencias Médicas</h4>
+      <div class="sim-q">
+        <p>1. Un compañero tiene la cara asimétrica al sonreír, no puede levantar el brazo derecho y habla de forma confusa. ¿Qué sospechas?</p>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="a"> a) Hipoglucemia</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="b"> b) Accidente Cerebrovascular (ACV)</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="c"> c) Crisis epiléptica</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="d"> d) Golpe de calor</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Durante una convulsión epiléptica, ¿cuál es la acción CORRECTA?</p>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="a"> a) Sujetar los brazos para evitar golpes</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="b"> b) Proteger la cabeza y retirar objetos del entorno</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="c"> c) Introducir un objeto entre los dientes</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="d"> d) Dar agua al paciente</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Un trabajador en bodega (40°C ambiente) colapsa, piel seca y muy caliente, temperatura axilar 41°C. ¿Qué haces primero?</p>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="a"> a"> Darle agua caliente para hidratar</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="b"> b) Aplicar compresas de agua fría en axilas e ingle, activar SEM</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="c"> c) Dejarlo en reposo en el mismo lugar sin moverlo</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="d"> d) Darle aspirina para bajar la temperatura</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Una crisis epiléptica dura 7 minutos sin ceder. ¿Qué indica esto?</p>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="a"> a) Es normal, esperar hasta que pase</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="b"> b) Estatus epiléptico — emergencia médica, llamar al 911</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="c"> c) Aplicar RCP</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="d"> d) Darle medicación anticonvulsivante</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Cuál de los siguientes niveles de glucosa indica hipoglucemia?</p>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="a"> a) 110 mg/dL</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="b"> b) 85 mg/dL</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="c"> c) 60 mg/dL</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="d"> d) 140 mg/dL</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s3',{s3_1:'b',s3_2:'b',s3_3:'b',s3_4:'b',s3_5:'c'})">Verificar Simulador</button>
+      <div id="s3-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 3</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué significa la "T" en el protocolo FAST?</p>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Tratamiento inmediato</label>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Tiempo — registrar hora y llamar al 911</label>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Temperatura corporal</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Cuántos minutos de convulsión sin ceder definen un estatus epiléptico?</p>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) 10 minutos</label>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) 5 minutos</label>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) 15 minutos</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq3',{q3a:'b',q3b:'b'})">Verificar</button>
+      <div id="mq3-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MÓDULO 4 ====== -->
+<div class="mod-card anim-fadein" id="m4">
+  <div class="mod-header">
+    <div class="mod-num">4</div>
+    <div><h2>Materiales Peligrosos (MATPEL) y Rombo NFPA 704</h2>
+    <small style="opacity:.8">Identificación, clasificación y respuesta inicial ante materiales peligrosos</small></div>
+  </div>
+  <div class="mod-body">
+    <p>Los <strong>Materiales Peligrosos (MATPEL)</strong> — denominados también <em>hazmat</em> en inglés — son sustancias que por su naturaleza física, química o biológica representan un riesgo para la salud, el ambiente o la infraestructura. La identificación correcta mediante el <strong>Rombo de Peligro NFPA 704</strong> y el <strong>Sistema de Identificación de Materiales Peligrosos (HMIS, por sus siglas en inglés)</strong> es el primer paso de la respuesta de emergencia.</p>
+
+    <h3>Rombo NFPA 704 — Significado de cada cuadrante</h3>
+    <!-- SVG Rombo NFPA 704 -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Rombo NFPA 704 — Peligros y escala</div>
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- Diamond -->
+        <polygon points="200,10 340,150 200,290 60,150" fill="none" stroke="#333" stroke-width="3"/>
+        <!-- Azul -->
+        <polygon points="200,10 340,150 200,150 60,150" fill="#1D51A3" opacity="0"/>
+        <polygon points="200,10 270,80 200,80 130,80" fill="#1D51A3"/>
+        <text x="200" y="52" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">1</text>
         <!-- Rojo -->
-        <rect x="10" y="20" width="130" height="160" rx="10" fill="#dc2626"/>
-        <text x="75" y="50" text-anchor="middle" font-size="28" fill="#fff">🔴</text>
-        <text x="75" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">ROJO</text>
-        <text x="75" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">INMEDIATA</text>
-        <text x="75" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Riesgo vital</text>
-        <text x="75" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">tratable.</text>
-        <text x="75" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Atención en</text>
-        <text x="75" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">&lt; 1 hora</text>
+        <polygon points="200,10 270,80 200,80 130,80" fill="#1D51A3" opacity="0"/>
+        <polygon points="60,150 130,80 130,150" fill="#ef4444"/>
+        <text x="95" y="125" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">2</text>
         <!-- Amarillo -->
-        <rect x="152" y="20" width="130" height="160" rx="10" fill="#d97706"/>
-        <text x="217" y="50" text-anchor="middle" font-size="28" fill="#fff">🟡</text>
-        <text x="217" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">AMARILLO</text>
-        <text x="217" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">DIFERIDA</text>
-        <text x="217" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Puede esperar</text>
-        <text x="217" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">sin riesgo</text>
-        <text x="217" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">inmediato.</text>
-        <text x="217" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">4-6 horas</text>
-        <!-- Verde -->
-        <rect x="294" y="20" width="130" height="160" rx="10" fill="#16a34a"/>
-        <text x="359" y="50" text-anchor="middle" font-size="28" fill="#fff">🟢</text>
-        <text x="359" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">VERDE</text>
-        <text x="359" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">MÍNIMA</text>
-        <text x="359" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Lesiones leves,</text>
-        <text x="359" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">deambula.</text>
-        <text x="359" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">"Víctimas que</text>
-        <text x="359" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">caminan"</text>
-        <!-- Negro -->
-        <rect x="436" y="20" width="130" height="160" rx="10" fill="#1f2937"/>
-        <text x="501" y="50" text-anchor="middle" font-size="28" fill="#fff">⚫</text>
-        <text x="501" y="75" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">NEGRO</text>
-        <text x="501" y="92" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)">EXPECTANTE</text>
-        <text x="501" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">Sin signos de</text>
-        <text x="501" y="127" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">vida o lesiones</text>
-        <text x="501" y="144" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">incompatibles</text>
-        <text x="501" y="160" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.85)">con la vida</text>
+        <polygon points="340,150 270,80 270,150" fill="#f59e0b"/>
+        <text x="305" y="125" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">3</text>
+        <!-- Blanco -->
+        <polygon points="200,290 130,220 130,150 270,150 270,220" fill="#f9fafb" stroke="#333" stroke-width="1"/>
+        <text x="200" y="225" text-anchor="middle" fill="#1a2840" font-size="16" font-weight="900">W</text>
+        <!-- Diamond outline top -->
+        <polygon points="200,10 270,80 200,80 130,80" fill="#1D51A3" opacity=".85"/>
+        <text x="200" y="55" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">2</text>
+
+        <!-- Legend cards -->
+        <rect x="370" y="10" width="310" height="55" rx="8" fill="#1D51A3" opacity=".9"/>
+        <text x="525" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">🔵 AZUL — SALUD</text>
+        <text x="525" y="50" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">0=Mínimo · 1=Leve · 2=Peligroso · 3=Grave · 4=Mortal</text>
+
+        <rect x="370" y="75" width="310" height="55" rx="8" fill="#ef4444" opacity=".9"/>
+        <text x="525" y="95" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">🔴 ROJO — INFLAMABILIDAD</text>
+        <text x="525" y="115" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">0=No arde · 4=Extremadamente inflamable</text>
+
+        <rect x="370" y="140" width="310" height="55" rx="8" fill="#f59e0b" opacity=".9"/>
+        <text x="525" y="160" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">🟡 AMARILLO — REACTIVIDAD</text>
+        <text x="525" y="180" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">0=Estable · 4=Detonación a TA</text>
+
+        <rect x="370" y="205" width="310" height="55" rx="8" fill="#f0f4fa" stroke="#333" stroke-width="1.5"/>
+        <text x="525" y="225" text-anchor="middle" fill="#1a2840" font-size="11" font-weight="700">⬜ BLANCO — ESPECIAL</text>
+        <text x="525" y="245" text-anchor="middle" fill="#2e4060" font-size="9">W=Reacciona con agua · OX=Oxidante · SA=Asfixiante</text>
       </svg>
-      <figcaption>Sistema de colores START — Clasificación de víctimas en masa</figcaption>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Algoritmo START — 30-60 Segundos por Víctima</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>¿Puede caminar?</h4><p>Si responde y camina → TAG VERDE. Se auto-asisten. Continúe con el siguiente paso para los que no caminan.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>¿Respira? (máx. 10 seg)</h4><p>No respira → reposicione la vía aérea. Si sigue sin respirar → TAG NEGRO. Si respira → TAG ROJO inmediato.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Frecuencia respiratoria</h4><p>&gt; 30 resp/min → TAG ROJO. ≤ 30 resp/min → evalúe perfusión.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Perfusión — Tiempo de llenado capilar (TLC)</h4><p>TLC &gt; 2 seg o pulso radial ausente → TAG ROJO (controlar hemorragia con torniquete si aplica). TLC ≤ 2 seg → evalúe estado de consciencia.</p></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Estado de consciencia</h4><p>No obedece órdenes simples → TAG ROJO. Obedece órdenes simples → TAG AMARILLO.</p></div></div>
-    </div>
-    <div class="alert important"><div class="alert-icon">⏱️</div><p><strong>Regla de oro del triage:</strong> NO se inicia tratamiento durante el triage (excepto abrir vía aérea y torniquete). El objetivo es clasificar rápido. Tratar después, en el área de atención por color.</p></div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Accidente vehicular múltiple — 8 víctimas</h4>
-    <p>Un autobús de trabajadores colisiona en vía rural. 8 víctimas: (A) inconsciente, no respira tras abrir vía aérea; (B) respira 38 rpm, TLC 4 seg; (C) camina aunque con dolor en brazo; (D) respira 22 rpm, TLC 1 seg, obedece órdenes; (E) respira 18 rpm, TLC 1 seg, confuso pero mueve extremidades; (F) respira, TLC &gt; 2 seg; (G) no respira — al abrir vía aérea reinicia respiración; (H) grita de dolor, herida superficial en cabeza.</p>
-    <div class="abp-questions">
-      <p>❓ Aplica el algoritmo START a cada víctima. Asigna el TAG correspondiente (negro/rojo/amarillo/verde).</p>
-      <p>❓ ¿En qué orden se deben trasladar las víctimas si solo hay 2 ambulancias disponibles?</p>
-      <p>❓ La víctima G inicia respiración al abrir la vía aérea. ¿Qué TAG recibe? ¿Por qué cambia respecto a la víctima A?</p>
-      <p>❓ ¿Qué error cometen los socorristas si dedican 10 minutos a reanimar a la víctima A antes de clasificar el resto?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/hNkpnlbRtaY" title="Triage START clasificación de víctimas" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 2</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">3. Una víctima que camina hacia el punto de reunión recibe en START el TAG:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Rojo</label><label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Amarillo</label><label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Verde</label><label class="quiz-opt"><input type="radio" name="q2a" value="d"> d) Negro</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">4. En el algoritmo START, si una víctima no respira y tras abrir la vía aérea tampoco lo hace, se asigna:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) TAG Rojo — atención inmediata</label><label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) TAG Amarillo — puede esperar</label><label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) TAG Negro — expectante</label><label class="quiz-opt"><input type="radio" name="q2b" value="d"> d) Se inicia RCP inmediatamente</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod2',{'q2a':'c','q2b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod2-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo 1</button><button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente: Emergencias Médicas →</button></div>
-</div>
 
-<!-- ===== MÓDULO 3 ===== -->
-<div class="module-panel" id="mod-3">
-  <div class="module-header">
-    <span class="module-tag">Módulo 3 de 6</span>
-    <h1 class="module-title">Emergencias Médicas en el Entorno Laboral</h1>
-    <p class="module-desc">Reconocimiento y respuesta inmediata ante las emergencias médicas más frecuentes en el trabajo: IAM, ACV, crisis hipertensiva, hipoglucemia y anafilaxia.</p>
-  </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> AHA 2020 (Cardiac Emergency) · Decreto 2393 Art. 46 · MDT — Protocolos de Atención de Emergencias Laborales</div>
-  <div class="content-section">
-    <h3>Infarto Agudo de Miocardio (IAM) — Cada Minuto Cuenta</h3>
-    <p>El IAM es la principal causa de muerte súbita en el entorno laboral. Por cada minuto sin reperfusión, el paciente pierde aproximadamente el <strong>10% de probabilidad de supervivencia</strong>. El tiempo objetivo "puerta-balón" (llegada-cateterismo) es &lt;90 minutos.</p>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">💔</div><h4>Signos clásicos</h4><p>Dolor opresivo en el pecho irradiado a brazo izquierdo, cuello o mandíbula. Sudoración fría, náuseas, disnea.</p></div>
-      <div class="concept-card"><div class="cc-icon">⚠️</div><h4>Presentaciones atípicas</h4><p>Más comunes en mujeres y diabéticos: solo fatiga extrema, dolor epigástrico o indigestión. No subestimar.</p></div>
-      <div class="concept-card"><div class="cc-icon">🚨</div><h4>Respuesta inmediata</h4><p>1. Sentar al paciente. 2. Llamar ECU-911. 3. Aspirina 325mg masticada (si no hay alergia). 4. AED si pierde consciencia.</p></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Reconocimiento Rápido de Emergencias Críticas</h3>
-    <table class="data-table">
-      <thead><tr><th>Emergencia</th><th>Señales de alerta</th><th>Acción inmediata</th><th>Errores críticos a evitar</th></tr></thead>
-      <tbody>
-        <tr><td><strong>ACV/Stroke</strong></td><td>FAST: Face (asimetría), Arms (debilidad), Speech (disartria), Time</td><td>ECU-911 inmediato. No dar agua/comida. Posición semisentado.</td><td>Dar aspirina (no en ACV hemorrágico). Dejar que "pase solo".</td></tr>
-        <tr><td><strong>Crisis hipertensiva</strong></td><td>PA &gt;180/120, cefalea severa, alteración visual, epistaxis</td><td>Sentar, calmar, ECU-911. Medicación solo si tiene prescripción.</td><td>Dar antihipertensivo no prescrito. Bajar presión muy rápido.</td></tr>
-        <tr><td><strong>Hipoglucemia severa</strong></td><td>Glucosa &lt;70 mg/dL, temblor, sudor frío, confusión, inconsciencia</td><td>Si consciente: 15-20g glucosa oral (3 sobres azúcar). Si inconsciente: ECU-911, NO dar nada oral.</td><td>Dar líquidos a persona inconsciente (aspiración).</td></tr>
-        <tr><td><strong>Anafilaxia</strong></td><td>Urticaria + edema + broncoespasmo + hipotensión en minutos</td><td>Epinefrina 0.3mg IM lateral del muslo (si disponible). ECU-911. Posición supina piernas elevadas.</td><td>Sentar al paciente (agrava hipotensión). No usar epi si no está entrenado.</td></tr>
-        <tr><td><strong>Convulsión</strong></td><td>Movimientos tónicos-clónicos, pérdida de consciencia, mordedura de lengua</td><td>Proteger la cabeza, retirar objetos, cronometrar. Al recuperar: posición lateral de seguridad.</td><td>Sujetar al paciente. Introducir objetos en la boca.</td></tr>
-      </tbody>
+    <h3>Clasificación ONU de Materiales Peligrosos</h3>
+    <table>
+      <tr><th>Clase</th><th>Tipo</th><th>Ejemplo</th></tr>
+      <tr><td>1</td><td>Explosivos</td><td>TNT, pólvora</td></tr>
+      <tr><td>2</td><td>Gases</td><td>Propano (2.1), Cloro (2.3)</td></tr>
+      <tr><td>3</td><td>Líquidos inflamables</td><td>Gasolina, acetona</td></tr>
+      <tr><td>4</td><td>Sólidos inflamables</td><td>Fósforo, magnesio</td></tr>
+      <tr><td>5</td><td>Oxidantes y peróxidos</td><td>Agua oxigenada concentrada</td></tr>
+      <tr><td>6</td><td>Tóxicos e infecciosos</td><td>Plaguicidas, agentes biológicos</td></tr>
+      <tr><td>7</td><td>Radioactivos</td><td>Cobalto-60</td></tr>
+      <tr><td>8</td><td>Corrosivos</td><td>Ácido sulfúrico, sosa cáustica</td></tr>
+      <tr><td>9</td><td>Varios peligrosos</td><td>Litio, asbesto</td></tr>
     </table>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Colega colapsa en reunión de trabajo</h4>
-    <p>Durante una reunión, Carlos (52 años, diabético, con historial de HTA) se queja de "indigestión fuerte" y sudoración fría. A los 3 minutos pierde el conocimiento. Un compañero recuerda que Carlos tomó insulina esta mañana pero no almorzó. Otro compañero cree que es un ataque cardíaco y quiere darle aspirina.</p>
-    <div class="abp-questions">
-      <p>❓ Lista los dos diagnósticos diferenciales más probables y sus señales distintivas.</p>
-      <p>❓ ¿Es correcto dar aspirina en este momento? ¿Por qué sí o por qué no?</p>
-      <p>❓ Describe los primeros 3 minutos de respuesta paso a paso, incluyendo qué verificar y qué no hacer.</p>
-      <p>❓ ¿Cuándo estaría justificado usar el DEA disponible en la sala de reuniones?</p>
+
+    <h3>Protocolo de Respuesta Inicial MATPEL — Zona de Trabajo</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><p>Identificar el material (rombo, placa ONU, hoja de seguridad)</p></div>
+      <div class="step"><div class="num">2</div><p>Establecer zonas: caliente, templada y fría (NIOSH)</p></div>
+      <div class="step"><div class="num">3</div><p>Evacuar la zona caliente y activar SEM/Bomberos</p></div>
+      <div class="step"><div class="num">4</div><p>Consultar Guía de Respuesta a Emergencias (GRE 2020)</p></div>
+      <div class="step"><div class="num">5</div><p>No ingresar sin equipo de protección personal (EPP) adecuado</p></div>
+    </div>
+
+    <div class="vid-label">Video — MATPEL y NFPA 704</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/d0EEPuTt1QA" allowfullscreen loading="lazy" title="MATPEL y NFPA 704"></iframe>
+    </div>
+
+    <!-- SIMULATOR M4 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 4</span>
+      <h4>Escenarios: MATPEL / NFPA 704</h4>
+      <div class="sim-q">
+        <p>1. El rombo NFPA 704 de un tanque muestra: Azul=3, Rojo=4, Amarillo=2, Blanco=W. ¿Qué significa Azul=3?</p>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="a"> a) El material es extremadamente inflamable</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="b"> b) Peligro grave para la salud — puede causar daño severo</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="c"> c) Es un oxidante fuerte</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="d"> d) El material es estable</label>
+      </div>
+      <div class="sim-q">
+        <p>2. En la misma situación, "W" en el cuadrante blanco indica:</p>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="a"> a) Materiales radiactivos presentes</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="b"> b) El material reacciona peligrosamente con agua</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="c"> c) El material es un oxidante</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="d"> d) Se puede enfriar con agua</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Al llegar a una fuga de gas con placa ONU Clase 2.3, ¿qué haces primero?</p>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="a"> a) Ingresar con mascarilla quirúrgica para evaluar</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="b"> b) Evacuar, establecer zonas de seguridad y activar bomberos</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="c"> c) Cerrar la válvula manualmente</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="d"> d) Ventilar el área abriendo ventanas</label>
+      </div>
+      <div class="sim-q">
+        <p>4. La Guía de Respuesta a Emergencias (GRE 2020) se consulta para:</p>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="a"> a"> Calcular el costo del derrame</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="b"> b) Conocer distancias de aislamiento y acciones iniciales por número ONU</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="c"> c) Redactar el reporte de incidente</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="d"> d) Identificar al responsable del accidente</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Qué clase ONU corresponde al ácido sulfúrico?</p>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="a"> a) Clase 3 (líquido inflamable)</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="b"> b) Clase 8 (corrosivo)</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="c"> c) Clase 6 (tóxico)</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="d"> d) Clase 5 (oxidante)</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s4',{s4_1:'b',s4_2:'b',s4_3:'b',s4_4:'b',s4_5:'b'})">Verificar Simulador</button>
+      <div id="s4-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 4</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué color del rombo NFPA 704 indica inflamabilidad?</p>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) Azul</label>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) Rojo</label>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) Amarillo</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué clase ONU corresponde a gases tóxicos?</p>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) Clase 3</label>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) Clase 2.3</label>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) Clase 8</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq4',{q4a:'b',q4b:'b'})">Verificar</button>
+      <div id="mq4-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/F9EiMXtPsYI" title="Emergencias médicas en el trabajo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 3</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">5. El acrónimo FAST para reconocer un ACV evalúa:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Fiebre, Agitación, Sudoración, Temperatura</label><label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Face, Arms, Speech, Time</label><label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Frecuencia, Amplitud, Simetría, Tono</label><label class="quiz-opt"><input type="radio" name="q3a" value="d"> d) Fatiga, Ansiedad, Soplo, Taquicardia</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">6. En una hipoglucemia severa con pérdida de consciencia, se debe:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) Dar azúcar oral inmediatamente</label><label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) Dar jugo de naranja con cuchara</label><label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Llamar ECU-911 y NO dar nada oral (riesgo de aspiración)</label><label class="quiz-opt"><input type="radio" name="q3b" value="d"> d) Aplicar insulina para estabilizar</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod3',{'q3a':'b','q3b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod3-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo 2</button><button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente: MATPEL →</button></div>
 </div>
 
-<!-- ===== MÓDULO 4 ===== -->
-<div class="module-panel" id="mod-4">
-  <div class="module-header">
-    <span class="module-tag">Módulo 4 de 6</span>
-    <h1 class="module-title">Materiales Peligrosos (MATPEL) — NFPA 704 y ERG</h1>
-    <p class="module-desc">Identificación de materiales peligrosos, diamante NFPA 704, clasificación DOT/ONU y uso de la Guía de Respuesta a Emergencias (ERG) para la primera respuesta.</p>
+<!-- ====== MÓDULO 5 ====== -->
+<div class="mod-card anim-fadein" id="m5">
+  <div class="mod-header">
+    <div class="mod-num">5</div>
+    <div><h2>Planes de Contingencia y Continuidad — ISO 22301</h2>
+    <small style="opacity:.8">Gestión de la continuidad del negocio ante interrupciones</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> NFPA 704 · NFPA 472 (competencias HAZMAT) · DOT/ONU Sistema GHS · ERG 2020 (Transport Canada/DOT/SCT) · Decreto 2393 Art. 136</div>
-  <div class="content-section">
-    <h3>Diamante NFPA 704 — Lectura e Interpretación</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <!-- Diamante NFPA 704 -->
-        <!-- Salud (azul - izquierda) -->
-        <polygon points="100,170 170,100 170,240" fill="#1D51A3"/>
-        <text x="125" y="165" text-anchor="middle" font-size="28" fill="#fff" font-weight="bold">3</text>
-        <text x="125" y="185" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.9)">SALUD</text>
-        <!-- Inflamabilidad (rojo - arriba) -->
-        <polygon points="170,100 240,100 205,30" fill="#dc2626"/>
-        <text x="205" y="72" text-anchor="middle" font-size="22" fill="#fff" font-weight="bold">2</text>
-        <text x="205" y="88" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">INFLAMAB.</text>
-        <!-- Reactividad (amarillo - derecha) -->
-        <polygon points="240,100 310,170 240,240" fill="#d97706"/>
-        <text x="280" y="165" text-anchor="middle" font-size="28" fill="#fff" font-weight="bold">1</text>
-        <text x="280" y="185" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.9)">REACTIV.</text>
-        <!-- Especial (blanco - abajo) -->
-        <polygon points="170,240 240,240 205,310" fill="#f3f4f6" stroke="#ccc" stroke-width="1"/>
-        <text x="205" y="278" text-anchor="middle" font-size="14" fill="#1a2840" font-weight="bold">W</text>
-        <text x="205" y="295" text-anchor="middle" font-size="9" fill="#5a6e8c">ESPECIAL</text>
-        <!-- Escala -->
-        <text x="330" y="40" font-size="11" fill="#1a2840" font-weight="bold">Escala 0-4:</text>
-        <text x="330" y="58" font-size="10" fill="#dc2626">4 = Máximo riesgo</text>
-        <text x="330" y="74" font-size="10" fill="#d97706">3 = Riesgo grave</text>
-        <text x="330" y="90" font-size="10" fill="#1D51A3">2 = Riesgo moderado</text>
-        <text x="330" y="106" font-size="10" fill="#16a34a">1 = Riesgo leve</text>
-        <text x="330" y="122" font-size="10" fill="#6b7280">0 = Sin riesgo</text>
-        <text x="330" y="155" font-size="11" fill="#1a2840" font-weight="bold">Símbolos especiales:</text>
-        <text x="330" y="173" font-size="10" fill="#5a6e8c">W = No usar agua</text>
-        <text x="330" y="189" font-size="10" fill="#5a6e8c">OX = Oxidante</text>
-        <text x="330" y="205" font-size="10" fill="#5a6e8c">SA = Asfixiante simple</text>
-        <text x="330" y="221" font-size="10" fill="#5a6e8c">COR = Corrosivo</text>
-        <text x="330" y="237" font-size="10" fill="#5a6e8c">BIO = Biológico</text>
-        <text x="330" y="253" font-size="10" fill="#5a6e8c">RAD = Radioactivo</text>
+  <div class="mod-body">
+    <p>El <strong>Plan de Contingencia (PC)</strong> es el documento que establece los procedimientos para responder ante una emergencia específica y restaurar las operaciones críticas. La norma internacional <strong>ISO 22301 — Sistema de Gestión de la Continuidad del Negocio (SGCN)</strong> proporciona el marco para diseñar, implementar y mejorar continuamente estos planes.</p>
+
+    <h3>Ciclo de Vida de la Continuidad (ISO 22301)</h3>
+    <!-- SVG Ciclo SGCN -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Ciclo PDCA — ISO 22301 (SGCN)</div>
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- Circle -->
+        <circle cx="350" cy="110" r="85" fill="none" stroke="#d8e4f5" stroke-width="3"/>
+        <!-- Center -->
+        <circle cx="350" cy="110" r="36" fill="#1D51A3"/>
+        <text x="350" y="104" text-anchor="middle" fill="#F0C319" font-size="10" font-weight="800">SGCN</text>
+        <text x="350" y="120" text-anchor="middle" fill="#fff" font-size="8">ISO 22301</text>
+        <!-- PLAN -->
+        <rect x="330" y="10" width="100" height="44" rx="9" fill="#e05c2d"/>
+        <text x="380" y="28" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">PLAN</text>
+        <text x="380" y="44" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Análisis de impacto (BIA)</text>
+        <!-- DO -->
+        <rect x="450" y="88" width="110" height="44" rx="9" fill="#22a86b"/>
+        <text x="505" y="106" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">DO</text>
+        <text x="505" y="122" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Implementar procedimientos</text>
+        <!-- CHECK -->
+        <rect x="330" y="167" width="100" height="44" rx="9" fill="#7c3aed"/>
+        <text x="380" y="185" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">CHECK</text>
+        <text x="380" y="201" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Ejercicios y simulacros</text>
+        <!-- ACT -->
+        <rect x="140" y="88" width="110" height="44" rx="9" fill="#0e7490"/>
+        <text x="195" y="106" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">ACT</text>
+        <text x="195" y="122" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Mejora continua</text>
+        <!-- Arrows -->
+        <path d="M435,32 Q480,55 505,88" fill="none" stroke="#e05c2d" stroke-width="2" marker-end="url(#arPDCA1)"/>
+        <path d="M505,132 Q480,165 435,178" fill="none" stroke="#22a86b" stroke-width="2" marker-end="url(#arPDCA2)"/>
+        <path d="M330,185 Q265,170 250,132" fill="none" stroke="#7c3aed" stroke-width="2" marker-end="url(#arPDCA3)"/>
+        <path d="M250,88 Q265,55 330,32" fill="none" stroke="#0e7490" stroke-width="2" marker-end="url(#arPDCA4)"/>
+        <defs>
+          <marker id="arPDCA1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#e05c2d"/></marker>
+          <marker id="arPDCA2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#22a86b"/></marker>
+          <marker id="arPDCA3" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#7c3aed"/></marker>
+          <marker id="arPDCA4" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#0e7490"/></marker>
+        </defs>
       </svg>
-      <figcaption>Diamante NFPA 704 — ejemplo: producto con salud 3, inflamabilidad 2, reactividad 1, con restricción de agua (W)</figcaption>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Clasificación ONU/DOT — 9 Clases de Materiales Peligrosos</h3>
-    <table class="data-table">
-      <thead><tr><th>Clase</th><th>Tipo de peligro</th><th>Ejemplo</th><th>Símbolo</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>Explosivos</td><td>Dinamita, TNT, fuegos artificiales</td><td>💥</td></tr>
-        <tr><td>2</td><td>Gases (inflamables, tóxicos, inertes)</td><td>GLP, acetileno, cloro, nitrógeno</td><td>🔴/💀/⬜</td></tr>
-        <tr><td>3</td><td>Líquidos inflamables</td><td>Gasolina, alcohol, acetona</td><td>🔥</td></tr>
-        <tr><td>4</td><td>Sólidos inflamables / espontáneos / húmedos peligrosos</td><td>Magnesio, fósforo blanco, sodio</td><td>🔥⚡</td></tr>
-        <tr><td>5</td><td>Comburentes / peróxidos orgánicos</td><td>Peróxido de hidrógeno, nitrato amónico</td><td>🔴🔥</td></tr>
-        <tr><td>6</td><td>Materias tóxicas e infecciosas</td><td>Cianuro, muestras biológicas</td><td>💀☣️</td></tr>
-        <tr><td>7</td><td>Materias radiactivas</td><td>Uranio, cobalto-60</td><td>☢️</td></tr>
-        <tr><td>8</td><td>Materias corrosivas</td><td>Ácido sulfúrico, hidróxido de sodio</td><td>🧪</td></tr>
-        <tr><td>9</td><td>Materias peligrosas diversas</td><td>Asbestos, baterías de litio, hielo seco</td><td>⚫</td></tr>
-      </tbody>
+
+    <h3>Análisis de Impacto de Negocio (BIA)</h3>
+    <p>El <strong>Análisis de Impacto de Negocio (BIA, por sus siglas en inglés)</strong> identifica los procesos críticos de la organización y el impacto de su interrupción. Define dos parámetros clave:</p>
+    <table>
+      <tr><th>Parámetro</th><th>Significado</th></tr>
+      <tr><td><strong>RTO</strong> (Recovery Time Objective)</td><td>Tiempo máximo para restaurar la función después del desastre</td></tr>
+      <tr><td><strong>RPO</strong> (Recovery Point Objective)</td><td>Pérdida máxima de datos tolerable (tiempo entre respaldos)</td></tr>
+      <tr><td><strong>MTPD</strong> (Maximum Tolerable Period of Disruption)</td><td>Tiempo máximo que la organización puede sobrevivir la interrupción</td></tr>
     </table>
-  </div>
-  <div class="content-section">
-    <h3>ERG 2020 — Guía de Respuesta a Emergencias</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Identificar el material</h4><p>Por número UN (4 dígitos en placa naranja), nombre del producto en la hoja de datos o diamante NFPA. También por símbolo de peligro si no hay número.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Consultar la tabla de índice</h4><p>Buscar el número UN en la sección amarilla o el nombre en la sección azul del ERG. Obtener el número de GUÍA (ej. Guía 128).</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Consultar la Guía naranja</h4><p>La página naranja da: peligros potenciales, protección personal mínima, respuesta de emergencia y primeros auxilios específicos para ese producto.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Verificar tabla de aislamiento inicial</h4><p>La sección verde del ERG indica distancias de aislamiento inicial (pequeño/gran derrame, de día/de noche) para materiales tóxicos.</p></div></div>
+
+    <h3>Estructura del Plan de Contingencia</h3>
+    <ul>
+      <li>Alcance y objetivos del plan</li>
+      <li>Identificación de amenazas y vulnerabilidades</li>
+      <li>Roles y responsabilidades del equipo de respuesta</li>
+      <li>Procedimientos de activación y escalada</li>
+      <li>Estrategias de recuperación por proceso crítico</li>
+      <li>Plan de comunicación interno y externo</li>
+      <li>Programa de pruebas, simulacros y actualización</li>
+    </ul>
+
+    <div class="vid-label">Video — Continuidad de Negocio y Planes de Contingencia</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/7Ei2kXpbcSQ" allowfullscreen loading="lazy" title="ISO 22301 Continuidad del Negocio"></iframe>
     </div>
-    <div class="alert danger"><div class="alert-icon">🚫</div><p><strong>Nivel de intervención según NFPA 472:</strong> Solo personal con certificación Nivel Operaciones o Técnico puede aproximarse a la zona caliente de un incidente MATPEL. Los Primeros Respondedores — Nivel Consciencia solo identifican, aislan y notifican. NO intervienen.</p></div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Derrame de ácido sulfúrico en fábrica de baterías</h4>
-    <p>Un operario rompe accidentalmente un contenedor de 200 litros de H₂SO₄ (ácido sulfúrico concentrado, UN 1830). Hay vapores visibles, el operario tiene quemaduras en manos y cara, y el ácido fluye hacia el drenaje que conecta con el río cercano. Llegan 3 guardias de seguridad sin EPP específico para MATPEL.</p>
-    <div class="abp-questions">
-      <p>❓ Según NFPA 472, ¿en qué nivel de intervención están los guardias? ¿Qué pueden y qué NO pueden hacer?</p>
-      <p>❓ Con el ERG y el número UN 1830, ¿a qué guía se consulta? Describe las acciones de respuesta indicadas.</p>
-      <p>❓ ¿Qué EPP mínimo se requiere para asistir al operario lesionado en la zona tibia?</p>
-      <p>❓ ¿Qué implicaciones legales tiene el derrame al drenaje que conecta al río? (Referencia: Código Orgánico Ambiental Ecuador)</p>
+
+    <!-- SIMULATOR M5 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 5</span>
+      <h4>Escenarios: Planes de Contingencia</h4>
+      <div class="sim-q">
+        <p>1. El RTO de un proceso crítico es 4 horas. Significa que:</p>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="a"> a) Se puede perder hasta 4 horas de datos</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="b"> b) El proceso debe estar restaurado en máximo 4 horas después del desastre</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="c"> c) El plan de contingencia tarda 4 horas en activarse</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="d"> d) Se hacen respaldos cada 4 horas</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿Cuál etapa del ciclo ISO 22301 incluye la realización de simulacros?</p>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="a"> a) PLAN</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="b"> b) DO</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="c"> c) CHECK</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="d"> d) ACT</label>
+      </div>
+      <div class="sim-q">
+        <p>3. El BIA identifica que la facturación es el proceso más crítico. El siguiente paso es:</p>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="a"> a) Eliminar el proceso para reducir riesgos</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="b"> b) Definir RTO/RPO y estrategias de recuperación específicas</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="c"> c) Contratar más personal para ese proceso</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="d"> d) Documentar el proceso y archivar</label>
+      </div>
+      <div class="sim-q">
+        <p>4. La empresa tiene un MTPD de 72 horas. Si la interrupción dura 80 horas sin plan de contingencia activado, ¿qué ocurre?</p>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="a"> a) Nada relevante</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="b"> b) Se supera el tiempo de supervivencia organizacional — riesgo de cierre</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="c"> c) Se activa automáticamente ISO 22301</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="d"> d) El RTO se reinicia</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Cuál es la metodología de mejora continua que estructura el ciclo de la ISO 22301?</p>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="a"> a) DMAIC</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="b"> b) PDCA (Plan-Do-Check-Act)</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="c"> c) HAZOP</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="d"> d) FMEA</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s5',{s5_1:'b',s5_2:'c',s5_3:'b',s5_4:'b',s5_5:'b'})">Verificar Simulador</button>
+      <div id="s5-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 5</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué norma internacional regula los Sistemas de Gestión de Continuidad del Negocio?</p>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) ISO 9001</label>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) ISO 22301</label>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) ISO 14001</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué significa RPO?</p>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) Tiempo máximo de restauración del servicio</label>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) Pérdida máxima de datos tolerable</label>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) Plan de respuesta operativa</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq5',{q5a:'b',q5b:'b'})">Verificar</button>
+      <div id="mq5-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/d0EEPuTt1QA" title="MATPEL Materiales Peligrosos NFPA 704" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 4</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">7. En el diamante NFPA 704, el cuadrante azul (izquierda) indica:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) Riesgo de inflamabilidad</label><label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) Riesgo para la salud</label><label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) Riesgo de reactividad</label><label class="quiz-opt"><input type="radio" name="q4a" value="d"> d) Peligros especiales</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">8. El símbolo "W" en el cuadrante blanco del NFPA 704 significa:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) Peligro para el agua subterránea</label><label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) No usar agua para combatir el incendio</label><label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) Soluble en agua</label><label class="quiz-opt"><input type="radio" name="q4b" value="d"> d) Requiere agua en el EPP</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod4',{'q4a':'b','q4b':'b'})">Verificar</button>
-    <div class="quiz-result" id="mod4-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo 3</button><button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente: PCO →</button></div>
 </div>
 
-<!-- ===== MÓDULO 5 ===== -->
-<div class="module-panel" id="mod-5">
-  <div class="module-header">
-    <span class="module-tag">Módulo 5 de 6</span>
-    <h1 class="module-title">Plan de Continuidad Operacional (PCO)</h1>
-    <p class="module-desc">Metodología para garantizar que las funciones críticas de la organización continúen o se restablezcan rápidamente ante cualquier disrupción grave.</p>
+<!-- ====== MÓDULO 6 ====== -->
+<div class="mod-card anim-fadein" id="m6">
+  <div class="mod-header">
+    <div class="mod-num">6</div>
+    <div><h2>Psicología en Emergencias — Primeros Auxilios Psicológicos (PAP)</h2>
+    <small style="opacity:.8">Apoyo emocional inicial y manejo del estrés post-traumático</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> ISO 22301 (Continuidad del Negocio) · NFPA 1600 · Decreto Ejecutivo 486 SGR Ecuador · COBIT (Continuidad TI)</div>
-  <div class="content-section">
-    <h3>Análisis de Impacto en el Negocio (BIA)</h3>
-    <p>El <strong>Business Impact Analysis (BIA)</strong> es el fundamento del PCO. Identifica qué funciones son críticas, cuánto tiempo puede la organización operar sin ellas, y cuál es el costo por hora de interrupción.</p>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">⏱️</div><h4>RTO — Recovery Time Objective</h4><p>Tiempo máximo tolerable de interrupción. Ejemplo: el sistema de facturación no puede estar caído más de 4 horas.</p></div>
-      <div class="concept-card"><div class="cc-icon">💾</div><h4>RPO — Recovery Point Objective</h4><p>Punto en el tiempo hasta el cual se acepta la pérdida de datos. Ejemplo: copias de seguridad cada 2 horas → pérdida máxima 2h de datos.</p></div>
-      <div class="concept-card"><div class="cc-icon">🏭</div><h4>MTPD — Maximum Tolerable Period of Disruption</h4><p>Tiempo máximo que la organización puede sobrevivir sin la función crítica antes del impacto irreversible (clientes, reguladores, finanzas).</p></div>
+  <div class="mod-body">
+    <p>Los <strong>Primeros Auxilios Psicológicos (PAP)</strong> son intervenciones de apoyo emocional inmediato diseñadas para reducir el impacto psicológico de una emergencia. Desarrollados por la <strong>Organización Mundial de la Salud (OMS)</strong> y la <strong>Federación Internacional de Sociedades de la Cruz Roja y la Media Luna Roja (FICR)</strong>, los PAP no son psicoterapia: son acciones de contención humanitaria.</p>
+
+    <h3>Los 5 Principios de los PAP (OMS)</h3>
+    <!-- SVG Principios PAP -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Principios de los Primeros Auxilios Psicológicos (OMS)</div>
+      <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="pap1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
+          <linearGradient id="pap2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="pap3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+          <linearGradient id="pap4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="pap5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e7490"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+        </defs>
+        <rect x="5" y="10" width="128" height="110" rx="10" fill="url(#pap1)"/>
+        <text x="69" y="38" text-anchor="middle" fill="#F0C319" font-size="22">🔒</text>
+        <text x="69" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">SEGURIDAD</text>
+        <text x="69" y="78" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Entorno seguro</text>
+        <text x="69" y="92" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">para la persona</text>
+
+        <rect x="143" y="10" width="128" height="110" rx="10" fill="url(#pap2)"/>
+        <text x="207" y="38" text-anchor="middle" fill="#F0C319" font-size="22">😌</text>
+        <text x="207" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">CALMA</text>
+        <text x="207" y="78" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Reducir ansiedad</text>
+        <text x="207" y="92" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">y agitación</text>
+
+        <rect x="281" y="10" width="128" height="110" rx="10" fill="url(#pap3)"/>
+        <text x="345" y="38" text-anchor="middle" fill="#F0C319" font-size="22">🤝</text>
+        <text x="345" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">CONEXIÓN</text>
+        <text x="345" y="78" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Redes de apoyo</text>
+        <text x="345" y="92" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">familia/comunidad</text>
+
+        <rect x="419" y="10" width="128" height="110" rx="10" fill="url(#pap4)"/>
+        <text x="483" y="38" text-anchor="middle" fill="#F0C319" font-size="22">💪</text>
+        <text x="483" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">AUTOEFICACIA</text>
+        <text x="483" y="78" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Capacidad propia</text>
+        <text x="483" y="92" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">de afrontamiento</text>
+
+        <rect x="557" y="10" width="138" height="110" rx="10" fill="url(#pap5)"/>
+        <text x="626" y="38" text-anchor="middle" fill="#F0C319" font-size="22">🌱</text>
+        <text x="626" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">ESPERANZA</text>
+        <text x="626" y="78" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Expectativas</text>
+        <text x="626" y="92" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">positivas reales</text>
+      </svg>
     </div>
-    <div class="alert info"><div class="alert-icon">📊</div><p><strong>Ejemplo de priorización:</strong> En un hospital, el MTPD para el sistema de registros clínicos podría ser 1 hora, para la cafetería 48 horas. El PCO asigna recursos inversamente proporcionales al MTPD.</p></div>
-  </div>
-  <div class="content-section">
-    <h3>Estructura del PCO — 6 Componentes ISO 22301</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Política y alcance</h4><p>Compromiso de la alta dirección. Definición de las funciones críticas incluidas y los escenarios de amenaza contemplados (sismos, inundaciones, ciberataques, pandemias).</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Análisis de Riesgo y BIA</h4><p>Identificar amenazas, vulnerabilidades, probabilidad e impacto. Calcular RTO/RPO/MTPD para cada función crítica.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Estrategias de continuidad</h4><p>Sitios alternos de trabajo, proveedores de respaldo, redundancia de sistemas TI, acuerdos de reciprocidad con otras organizaciones.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Planes de respuesta</h4><p>Procedimientos paso a paso: quién hace qué, con qué, cuándo. Árbol de llamadas. Protocolos de comunicación con stakeholders.</p></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Ejercicios y pruebas</h4><p>Ejercicios de escritorio (tabletop), pruebas funcionales y simulacros completos. ISO 22301 exige ejercicios anuales como mínimo.</p></div></div>
-      <div class="step"><div class="step-num">6</div><div class="step-body"><h4>Revisión y mejora continua</h4><p>Actualización tras cada ejercicio, cambio organizacional o nueva amenaza. Revisión mínima anual y tras cualquier incidente real.</p></div></div>
+
+    <h3>Reacciones Normales ante una Emergencia</h3>
+    <table>
+      <tr><th>Fase</th><th>Reacciones Típicas</th><th>Duración Habitual</th></tr>
+      <tr><td>Impacto inmediato</td><td>Llanto, temblor, confusión, entumecimiento emocional</td><td>Minutos a horas</td></tr>
+      <tr><td>Aguda (días 1-3)</td><td>Insomnio, hipervigilancia, flashbacks, irritabilidad</td><td>1-3 días</td></tr>
+      <tr><td>Adaptación</td><td>Tristeza, ansiedad moderada, reorganización</td><td>Semanas</td></tr>
+      <tr><td>Recuperación</td><td>Integración del evento, retorno al funcionamiento</td><td>Meses</td></tr>
+    </table>
+
+    <h3>Qué HACER y qué EVITAR en PAP</h3>
+    <div class="steps">
+      <div class="step"><div class="num">✅</div><p><strong>HACER:</strong> Presentarse, escucha activa, validar emociones, ofrecer agua/abrigo, conectar con familia</p></div>
+      <div class="step"><div class="num">❌</div><p><strong>EVITAR:</strong> Forzar relato del trauma, dar falsas promesas, decir "sé cómo te sientes", minimizar ("ya pasó")</p></div>
+      <div class="step"><div class="num">⚠️</div><p><strong>REFERIR:</strong> Si hay ideación suicida, disociación severa o síntomas más de 4 semanas → salud mental profesional</p></div>
+    </div>
+
+    <div class="info-box"><strong>Trastorno de Estrés Post-Traumático (TEPT):</strong> Si los síntomas persisten más de un mes tras el evento, se debe referir a atención especializada. El primer respondedor NO trata el TEPT — contiene y deriva.</div>
+
+    <div class="vid-label">Video — Primeros Auxilios Psicológicos</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/FWKl2UKB0f8" allowfullscreen loading="lazy" title="Primeros Auxilios Psicológicos PAP"></iframe>
+    </div>
+
+    <!-- SIMULATOR M6 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 6</span>
+      <h4>Escenarios: Psicología de Emergencias</h4>
+      <div class="sim-q">
+        <p>1. Un colega que presenció un accidente grave está llorando y temblando. Según los PAP, ¿qué haces primero?</p>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="a"> a) Pedirle que cuente exactamente lo que vio</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="b"> b) Presentarte, acompañarlo a un lugar seguro y escuchar activamente</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="c"> c) Decirle "tranquilo, ya pasó todo"</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="d"> d) Dejarlo solo para que procese</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿Cuál de estas frases es CORRECTA al aplicar los PAP?</p>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="a"> a) "Sé exactamente cómo te sientes, a mí también me pasó"</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="b"> b) "Es comprensible que te sientas así después de lo que viviste"</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="c"> c) "No llores, tienes que ser fuerte"</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="d"> d) "Prometo que todo va a salir bien"</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Una trabajadora afectada por el incidente expresa que "preferiría no estar aquí". ¿Cuál es tu acción?</p>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="a"> a"> Normalizar la frase y continuar</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="b"> b) Explorar si existe ideación suicida y referir a salud mental urgente</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="c"> c) Cambiar el tema para distraerla</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="d"> d) Avisar al jefe para que la llame a trabajar</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Los síntomas de estrés agudo de un trabajador persisten 5 semanas tras el incidente. ¿Qué indica?</p>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="a"> a) Reacción normal, esperar</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="b"> b) Posible TEPT — derivar a atención profesional de salud mental</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="c"> c) Aplicar más sesiones de PAP</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="d"> d) Reportar al área de RRHH por bajo rendimiento</label>
+      </div>
+      <div class="sim-q">
+        <p>5. El principio de "conexión" en los PAP busca:</p>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="a"> a) Conectar al afectado con los medios de comunicación</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="b"> b) Facilitar el contacto con redes de apoyo: familia, amigos y comunidad</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="c"> c) Conectar síntomas con el diagnóstico clínico</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="d"> d) Establecer conexión entre rescatadores</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s6',{s6_1:'b',s6_2:'b',s6_3:'b',s6_4:'b',s6_5:'b'})">Verificar Simulador</button>
+      <div id="s6-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 6</h4>
+      <div class="quiz-q">
+        <p>1. Los PAP fueron desarrollados por la OMS para ser aplicados por:</p>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="a"> a) Solo psicólogos clínicos</label>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="b"> b) Cualquier primer respondedor entrenado</label>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="c"> c) Exclusivamente médicos</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿A partir de cuántas semanas con síntomas se debe referir a salud mental profesional?</p>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="a"> a) 2 semanas</label>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="b"> b"> 4 semanas (1 mes)</label>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="c"> c) 8 semanas</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq6',{q6a:'b',q6b:'b'})">Verificar</button>
+      <div id="mq6-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Empresa exportadora afectada por sismo 6.5 en Ecuador</h4>
-    <p>Una empresa exportadora de flores (150 empleados, contratos con Europa) sufre un sismo de magnitud 6.5. La planta frigorífica queda inhabilitada, el 30% de los empleados clave no puede llegar por daños viales, el sistema ERP está caído por daño al servidor local, y tienen 48 horas para entregar un contenedor de rosas para San Valentín (contrato por $280,000).</p>
-    <div class="abp-questions">
-      <p>❓ Identifica las 3 funciones más críticas y calcula un RTO razonable para cada una.</p>
-      <p>❓ La empresa no tenía PCO. Diseña las estrategias de continuidad que habrían evitado el impacto de cada función crítica.</p>
-      <p>❓ ¿Qué protocolo de comunicación se debe activar con el cliente europeo? ¿Cuándo y cómo comunicar la situación?</p>
-      <p>❓ ¿Qué impacto tendría una certificación ISO 22301 en la relación comercial con los clientes europeos?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/7Ei2kXpbcSQ" title="Plan de Continuidad de Negocio ISO 22301" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 5</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">9. El RTO (Recovery Time Objective) en un PCO se refiere a:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) El tiempo que tarda en implementarse el plan de continuidad</label><label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) El tiempo máximo tolerable de interrupción de una función crítica</label><label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) El tiempo de respuesta del equipo de emergencias</label><label class="quiz-opt"><input type="radio" name="q5a" value="d"> d) El intervalo entre copias de seguridad</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">10. La norma internacional que rige los Sistemas de Gestión de Continuidad del Negocio es:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) ISO 9001</label><label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) ISO 45001</label><label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) ISO 22301</label><label class="quiz-opt"><input type="radio" name="q5b" value="d"> d) NFPA 1600</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod5',{'q5a':'b','q5b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod5-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo 4</button><button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente: Psicología →</button></div>
 </div>
 
-<!-- ===== MÓDULO 6 ===== -->
-<div class="module-panel" id="mod-6">
-  <div class="module-header">
-    <span class="module-tag">Módulo 6 de 6</span>
-    <h1 class="module-title">Psicología de la Emergencia y Primeros Auxilios Psicológicos</h1>
-    <p class="module-desc">Respuesta humana ante el trauma, primeros auxilios psicológicos (PAP), manejo del estrés en respondedores y prevención del burnout en brigadas.</p>
+<!-- ====== EVALUACIÓN FINAL ====== -->
+<div class="final-section anim-fadein" id="final">
+  <h3>Evaluación Final — Gestión de Emergencias</h3>
+  <p class="sub">Responde las 8 preguntas. Necesitas 6/8 correctas para aprobar y recibir tu certificado.</p>
+
+  <div class="final-q">
+    <p>1. ¿Cuál es el span of control óptimo en el Sistema de Comando de Incidentes (SCI)?</p>
+    <label class="final-opt"><input type="radio" name="fq1" value="a"> a) 10 personas</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="b"> b) 5 personas (rango 3-7)</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="c"> c) 2 personas</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="d"> d) Sin límite</label>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> OPS/OMS — Guía PAP (2012) · DSM-5 (PTSD) · Decreto 2393 Art. 11 · ISO 45003 (Bienestar psicológico en el trabajo)</div>
-  <div class="content-section">
-    <h3>Respuesta Humana al Trauma — Fases</h3>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">⚡</div><h4>Fase de Impacto (0-72h)</h4><p>Respuesta aguda al estrés: parálisis, agitación, llanto, confusión, disociación. Normal y transitoria en la mayoría de personas.</p></div>
-      <div class="concept-card"><div class="cc-icon">🔄</div><h4>Fase de Reacción (3-30 días)</h4><p>Procesamiento emocional: pesadillas, hipervigilancia, evitación. Si dura más de 30 días con impacto funcional → PTSD.</p></div>
-      <div class="concept-card"><div class="cc-icon">🌱</div><h4>Fase de Adaptación (&gt;1 mes)</h4><p>Integración del trauma. Con apoyo adecuado: crecimiento postraumático. Sin apoyo: trastorno de estrés postraumático (PTSD) o duelo complicado.</p></div>
-    </div>
+  <div class="final-q">
+    <p>2. En Triage START, una víctima que camina por sí misma se clasifica como:</p>
+    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) ROJO</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) AMARILLO</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) VERDE</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) NEGRO</label>
   </div>
-  <div class="content-section">
-    <h3>Primeros Auxilios Psicológicos (PAP) — 5 Elementos OMS</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">👁️</div><div class="step-body"><h4>Observar — Mirar, Escuchar, Conectar</h4><p>Evaluar el entorno (¿es seguro?), identificar personas con angustia aguda, distinguir quién necesita apoyo prioritario.</p></div></div>
-      <div class="step"><div class="step-num">🤝</div><div class="step-body"><h4>Acercarse con respeto</h4><p>Presentarse, preguntar si puede ayudar. No imponer la conversación. No decir "sé cómo te sientes" — normalizar su reacción: "lo que sientes es normal ante algo así".</p></div></div>
-      <div class="step"><div class="step-num">🔒</div><div class="step-body"><h4>Cubrir necesidades básicas y seguridad</h4><p>Agua, cobija, lugar seguro, comunicación con familiares. La seguridad física debe preceder a la intervención psicológica.</p></div></div>
-      <div class="step"><div class="step-num">👂</div><div class="step-body"><h4>Escucha activa sin presionar</h4><p>Si la persona quiere hablar, escuche sin interrumpir ni juzgar. Si no quiere hablar, acompañe en silencio. Nunca pida que relate los detalles traumáticos.</p></div></div>
-      <div class="step"><div class="step-num">🔗</div><div class="step-body"><h4>Conectar con redes de apoyo y servicios</h4><p>Referir a servicios de salud mental, líneas de crisis, grupos comunitarios. Dar información sobre recursos disponibles de forma clara y sin jerga técnica.</p></div></div>
-    </div>
-    <div class="alert important"><div class="alert-icon">🚫</div><p><strong>Lo que NO son los PAP:</strong> No es debriefing (no se pide que relaten el trauma secuencialmente), no es psicoterapia, no es diagnóstico psiquiátrico. Los PAP los puede aplicar cualquier persona capacitada — no requieren ser psicólogos.</p></div>
+  <div class="final-q">
+    <p>3. El protocolo FAST se usa para reconocer:</p>
+    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) Paro cardíaco</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="b"> b"> Accidente Cerebrovascular (ACV)</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) Golpe de calor</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) Crisis epiléptica</label>
   </div>
-  <div class="content-section">
-    <h3>Estrés en Respondedores — Prevención del Burnout</h3>
-    <div class="info-grid anim-fadein">
-      <div class="info-card danger"><h4>Señales de alerta</h4><p>Insomnio persistente, irritabilidad, desapego emocional ("ya no me afecta nada"), errores frecuentes, ausentismo, consumo de alcohol.</p></div>
-      <div class="info-card gold"><h4>Defusing (desahogo)</h4><p>Sesión informal de 20-45 min con el equipo inmediatamente tras el incidente. Objetivo: procesar emociones, no analizar errores técnicos.</p></div>
-      <div class="info-card green"><h4>Autocuidado activo</h4><p>Sueño regular, actividad física, rotación de turnos en incidentes de alto impacto, límite de exposición a imágenes traumáticas.</p></div>
-    </div>
+  <div class="final-q">
+    <p>4. En el rombo NFPA 704, el cuadrante rojo indica:</p>
+    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) Peligro para la salud</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="b"> b) Inflamabilidad</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) Reactividad</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) Peligros especiales</label>
   </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Equipo de brigada después de un fallecimiento en servicio</h4>
-    <p>La brigada de emergencias de una empresa minera respondió a un accidente fatal donde falleció un compañero de 34 años. Tres semanas después: el jefe de brigada no duerme, revive el accidente en sueños, evita entrar al área donde ocurrió y dice "estoy bien, no necesito ayuda". Dos brigadistas renunciaron. El departamento de RRHH pregunta al área de SST cómo proceder.</p>
-    <div class="abp-questions">
-      <p>❓ Identifica los síntomas del jefe de brigada y clasifícalos según las fases de respuesta al trauma.</p>
-      <p>❓ ¿Se deben activar los PAP con el jefe de brigada? ¿Quién debe hacerlo y cuándo?</p>
-      <p>❓ ¿Qué protocolo de defusing debió implementarse en las primeras 24 horas post-incidente?</p>
-      <p>❓ ¿Cuál es la responsabilidad legal de la empresa en este caso según el Decreto 2393 e ISO 45003?</p>
-    </div>
+  <div class="final-q">
+    <p>5. ¿Qué norma regula los Sistemas de Gestión de la Continuidad del Negocio (SGCN)?</p>
+    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) ISO 9001</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="b"> b) ISO 22301</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) NFPA 101</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) ISO 14001</label>
   </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/FWKl2UKB0f8" title="Primeros Auxilios Psicológicos PAP emergencias" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
+  <div class="final-q">
+    <p>6. El RTO en el BIA representa:</p>
+    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) Pérdida máxima de datos tolerable</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) Tiempo máximo para restaurar un proceso crítico</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) Tiempo de respuesta del SEM</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) Registro de tiempo de operaciones</label>
+  </div>
+  <div class="final-q">
+    <p>7. En los Primeros Auxilios Psicológicos (PAP), ¿cuál frase es CORRECTA?</p>
+    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) "Tranquilo, ya pasó, no es para tanto"</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="b"> b) "Es comprensible que te sientas así"</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) "Sé exactamente cómo te sientes"</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) "Cuéntame con detalle lo que pasó"</label>
+  </div>
+  <div class="final-q">
+    <p>8. ¿Qué sección del SCI es responsable de la respuesta táctica directa?</p>
+    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) Planificación</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) Operaciones</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) Logística</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) Finanzas</label>
   </div>
 
-  <!-- QUIZ FINAL -->
-  <div class="quiz-section" id="finalQuizSection">
-    <div class="quiz-title">✅ Evaluación Final — Manejo de Emergencias</div>
-    <div class="quiz-sub">Responda todas las preguntas. Mínimo 6/8 correctas para aprobar.</div>
-    <div class="quiz-question"><div class="quiz-q">1. El span of control óptimo en el SCI es:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq1" value="a"> a) 1 supervisor por 10 subordinados</label><label class="quiz-opt"><input type="radio" name="fq1" value="b"> b) 1 supervisor por 3 a 7 subordinados</label><label class="quiz-opt"><input type="radio" name="fq1" value="c"> c) Sin límite establecido</label><label class="quiz-opt"><input type="radio" name="fq1" value="d"> d) 2 supervisores por cada sección</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">2. En el triage START, una víctima que respira 38 veces por minuto con llenado capilar de 4 segundos recibe TAG:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq2" value="a"> a) Verde</label><label class="quiz-opt"><input type="radio" name="fq2" value="b"> b) Amarillo</label><label class="quiz-opt"><input type="radio" name="fq2" value="c"> c) Rojo</label><label class="quiz-opt"><input type="radio" name="fq2" value="d"> d) Negro</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">3. La principal acción ante sospecha de ACV/Stroke es:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq3" value="a"> a) Dar aspirina de inmediato</label><label class="quiz-opt"><input type="radio" name="fq3" value="b"> b) Dar agua para que el paciente no se deshidrate</label><label class="quiz-opt"><input type="radio" name="fq3" value="c"> c) Llamar ECU-911 inmediato, no dar nada oral, posición semisentado</label><label class="quiz-opt"><input type="radio" name="fq3" value="d"> d) Esperar 30 minutos para ver si mejora</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">4. El cuadrante rojo (arriba) del diamante NFPA 704 indica:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq4" value="a"> a) Riesgo para la salud</label><label class="quiz-opt"><input type="radio" name="fq4" value="b"> b) Riesgo de inflamabilidad</label><label class="quiz-opt"><input type="radio" name="fq4" value="c"> c) Riesgo de reactividad</label><label class="quiz-opt"><input type="radio" name="fq4" value="d"> d) Peligros especiales</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">5. El RPO (Recovery Point Objective) en un PCO se refiere a:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq5" value="a"> a) El tiempo de recuperación de los sistemas</label><label class="quiz-opt"><input type="radio" name="fq5" value="b"> b) El punto en el tiempo hasta el cual se acepta la pérdida de datos</label><label class="quiz-opt"><input type="radio" name="fq5" value="c"> c) El tiempo máximo de interrupción tolerable</label><label class="quiz-opt"><input type="radio" name="fq5" value="d"> d) La periodicidad de los simulacros</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">6. Los Primeros Auxilios Psicológicos (PAP) de la OMS NO incluyen:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq6" value="a"> a) Escucha activa sin presionar a la persona</label><label class="quiz-opt"><input type="radio" name="fq6" value="b"> b) Cubrir necesidades básicas de seguridad</label><label class="quiz-opt"><input type="radio" name="fq6" value="c"> c) Pedir que relate detalladamente los momentos traumáticos</label><label class="quiz-opt"><input type="radio" name="fq6" value="d"> d) Conectar con redes de apoyo y servicios</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">7. El nivel de intervención MATPEL de un "Primer Respondedor — Nivel Consciencia" según NFPA 472 implica:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq7" value="a"> a) Puede ingresar a la zona caliente con EPP básico</label><label class="quiz-opt"><input type="radio" name="fq7" value="b"> b) Solo identifica, aísla y notifica — NO interviene</label><label class="quiz-opt"><input type="radio" name="fq7" value="c"> c) Puede contener derrames menores de clase B</label><label class="quiz-opt"><input type="radio" name="fq7" value="d"> d) Aplica antídotos y descontamina víctimas</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">8. En el SCI, ¿cuántas secciones funcionales existen bajo el Comandante del Incidente?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq8" value="a"> a) 3</label><label class="quiz-opt"><input type="radio" name="fq8" value="b"> b) 4</label><label class="quiz-opt"><input type="radio" name="fq8" value="c"> c) 5</label><label class="quiz-opt"><input type="radio" name="fq8" value="d"> d) 7</label></div></div>
-    <button class="quiz-submit" onclick="submitFinalQuiz()" style="margin-top:16px;font-size:15px;padding:13px 32px">Enviar evaluación final</button>
-    <div class="quiz-result" id="finalResult"></div>
-  </div>
-  <div class="completion-card" id="completionCard">
-    <div class="cert-icon">🏅</div>
-    <h2>¡Manejo de Emergencias Aprobado!</h2>
-    <p>Has completado con éxito el curso de <strong>Manejo de Emergencias</strong> de Preventive Health.</p>
-    <p style="font-size:.9rem;opacity:.8">Certificado conforme al Decreto 2393, ISO 22301, Protocolo PAP OMS y NFPA 472/704. Comuníquese con Preventive Health para el certificado firmado por instructor.</p>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo 5</button><span></span></div>
+  <button class="final-btn" onclick="submitFinalQuiz()">Enviar Evaluación Final</button>
+  <div id="final-result" class="final-result"></div>
 </div>
-
 </main>
 </div>
-<div class="mob-nav"><div class="mob-nav-inner">
-  <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><div class="mob-tab-icon">🎯</div><div class="mob-tab-label">SCI</div></div>
-  <div class="mob-tab" data-mod="2" onclick="showModule(2)"><div class="mob-tab-icon">🏷️</div><div class="mob-tab-label">Triage</div></div>
-  <div class="mob-tab" data-mod="3" onclick="showModule(3)"><div class="mob-tab-icon">🏥</div><div class="mob-tab-label">Médicas</div></div>
-  <div class="mob-tab" data-mod="4" onclick="showModule(4)"><div class="mob-tab-icon">☣️</div><div class="mob-tab-label">MATPEL</div></div>
-  <div class="mob-tab" data-mod="5" onclick="showModule(5)"><div class="mob-tab-icon">🔄</div><div class="mob-tab-label">PCO</div></div>
-  <div class="mob-tab" data-mod="6" onclick="showModule(6)"><div class="mob-tab-icon">🧠</div><div class="mob-tab-label">Psicología</div></div>
-</div></div>
+
 <script>
-const STORAGE_KEY='emergencia_done';
-let done=new Set(JSON.parse(localStorage.getItem('emergencia_progress')||'[]'));
-function saveDone(){localStorage.setItem('emergencia_progress',JSON.stringify([...done]))}
-function updateProgress(){
-  const pct=Math.round(done.size/6*100);
-  document.getElementById('progBar').style.width=pct+'%';
-  document.getElementById('progPct').textContent=pct+'%';
-  document.getElementById('topProg').style.width=pct+'%';
-  document.querySelectorAll('.mod-item').forEach(el=>el.classList.toggle('done',done.has(+el.dataset.mod)));
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible') }), {threshold:.12});
+document.querySelectorAll('.anim-fadein').forEach(el => io.observe(el));
+
+(function initProg(){
+  const done = JSON.parse(localStorage.getItem('emergencia_progress')||'{}');
+  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const pct = Math.round(Object.keys(done).length / keys.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+})();
+
+function saveProg(key){
+  const d = JSON.parse(localStorage.getItem('emergencia_progress')||'{}');
+  d[key]=1;
+  localStorage.setItem('emergencia_progress', JSON.stringify(d));
+  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const pct = Math.round(Object.keys(d).length / keys.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
 }
-function showModule(n){
-  document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('mod-'+n).classList.add('active');
-  document.querySelectorAll('.mod-item,.mob-tab').forEach(el=>el.classList.toggle('active',+el.dataset.mod===n));
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(()=>{document.querySelectorAll('#mod-'+n+' .anim-fadein').forEach((el,i)=>setTimeout(()=>el.classList.add('visible'),i*120))},50);
-}
-function nextModule(c){done.add(c);saveDone();updateProgress();showModule(c+1)}
-function checkMiniQuiz(id,answers){
-  const r=document.getElementById(id+'-result');
-  let ok=0;
-  Object.entries(answers).forEach(([n,a])=>{
-    const s=document.querySelector(`input[name="${n}"]:checked`);
-    if(!s)return;
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
-      const l=i.closest('.quiz-opt');
-      if(i.value===a)l.classList.add('correct');
-      else if(i===s&&i.value!==a)l.classList.add('wrong');
+
+function checkMiniQuiz(id, correct){
+  let ok=0, all=true;
+  Object.entries(correct).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.quiz-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
       i.disabled=true;
     });
-    if(s.value===a)ok++;
+    if(s.value===a) ok++;
   });
-  r.style.display='block';r.className='quiz-result '+(ok===Object.keys(answers).length?'pass':'fail');
-  r.textContent=ok===Object.keys(answers).length?'✅ ¡Correcto!':'⚠️ '+ok+'/'+Object.keys(answers).length+' correctas. Revisa el módulo.';
-}
-function submitFinalQuiz(){
-  const answers={fq1:'b',fq2:'c',fq3:'c',fq4:'b',fq5:'b',fq6:'c',fq7:'b',fq8:'c'};
-  let ok=0,all=true;
-  Object.entries(answers).forEach(([n,a])=>{
-    const s=document.querySelector(`input[name="${n}"]:checked`);
-    if(!s){all=false;return;}
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
-      const l=i.closest('.quiz-opt');
-      if(i.value===a)l.classList.add('correct');
-      else if(i===s&&i.value!==a)l.classList.add('wrong');
-      i.disabled=true;
-    });
-    if(s.value===a)ok++;
-  });
-  if(!all){alert('Por favor responda todas las preguntas.');return;}
-  const r=document.getElementById('finalResult');
+  if(!all){ alert('Responde todas las preguntas.'); return; }
+  const r = document.getElementById(id+'-result');
   r.style.display='block';
-  const passed=ok>=6;
-  r.className='quiz-result '+(passed?'pass':'fail');
-  r.innerHTML=passed?`<strong>🎉 Aprobado! ${ok}/8 correctas.</strong><br>Puede solicitar su certificado a Preventive Health.`:`<strong>❌ ${ok}/8 correctas. Se requieren mínimo 6.</strong><br>Revise los módulos y vuelva a intentarlo.`;
-  if(passed){localStorage.setItem(STORAGE_KEY,'true');done.add(6);saveDone();updateProgress();setTimeout(()=>{document.getElementById('completionCard').style.display='block'},400);document.querySelector('#finalQuizSection .quiz-submit').disabled=true;}
+  const total = Object.keys(correct).length;
+  r.className = 'quiz-result ' + (ok>=total?'pass':'fail');
+  r.textContent = ok===total ? `✅ ${ok}/${total} — ¡Correcto!` : `⚠️ ${ok}/${total} — Revisa el módulo`;
+  if(ok===total) saveProg(id);
 }
-const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1});
-document.querySelectorAll('.anim-fadein').forEach(el=>io.observe(el));
-updateProgress();showModule(1);
+
+function runSim(simId, answers){
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.sim-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas del simulador.'); return; }
+  const r = document.getElementById(simId+'-result');
+  r.style.display='block';
+  r.className = 'sim-result ' + (ok>=4?'pass':'fail');
+  r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
+}
+
+function submitFinalQuiz(){
+  const answers = {fq1:'b',fq2:'c',fq3:'b',fq4:'b',fq5:'b',fq6:'b',fq7:'b',fq8:'b'};
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.final-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
+  const r = document.getElementById('final-result');
+  r.style.display='block';
+  if(ok>=6){
+    r.className='final-result pass';
+    r.innerHTML=`🎉 ¡Aprobado! ${ok}/8 correctas<br><small>Certificado disponible en tu perfil</small>`;
+    localStorage.setItem('emergencia_done','1');
+    saveProg('final');
+  } else {
+    r.className='final-result fail';
+    r.innerHTML=`❌ ${ok}/8 — Necesitas 6 para aprobar. Revisa los módulos e intenta nuevamente.`;
+  }
+}
+
+const sections = document.querySelectorAll('[id^="m"],[id="final"]');
+const navLinks = document.querySelectorAll('nav ul li a');
+window.addEventListener('scroll', () => {
+  let cur='';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+}, {passive:true});
 </script>
 </body>
 </html>
