@@ -1,704 +1,1135 @@
 <!DOCTYPE html>
 <html lang="es" style="visibility:hidden">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<script>document.documentElement.style.visibility='hidden'</script>
-<script type="module" src="../../js/auth.js"></script>
-<title>Operación Segura de Drones | Preventive Health</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Operación de Drones — Preventive Health</title>
+<script src="../../js/auth.js" type="module"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1D51A3;--blue-dark:#163d7a;--blue-light:#e8eef8;--gold:#F0C319;--text:#1a2840;--muted:#5a6e8c;--bg:#f5f7fb;--white:#fff;--border:#dde4ef;--radius:10px;--shadow:0 2px 12px rgba(29,81,163,.10)}
-html{scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;font-size:16px}
-h1,h2,h3,h4{font-weight:700;line-height:1.2}
-a{color:var(--blue);text-decoration:none}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes rotorSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.anim-fadein{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
-.anim-fadein.visible{opacity:1;transform:none}
-nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px solid var(--gold);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{color:#fff;font-weight:700;font-size:18px}
-.nav-back{color:rgba(255,255,255,.8);font-size:13px;padding:5px 10px;border-radius:6px;transition:.15s}
-.nav-back:hover{color:#fff;background:rgba(255,255,255,.12)}
-.top-progress{height:4px;background:rgba(255,255,255,.2)}
-.top-progress-fill{height:100%;background:var(--gold);transition:width .4s;width:0%}
-.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px)}
-.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 18px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.sidebar-progress{padding:12px 18px;margin-bottom:4px}
-.prog-bar-bg{height:5px;background:var(--border);border-radius:3px;margin-top:4px}
-.prog-bar-fill{height:5px;background:var(--blue);border-radius:3px;transition:width .4s}
-.prog-pct{font-size:11px;color:var(--muted);margin-top:3px}
-.mod-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;border-left:3px solid transparent;transition:.18s;user-select:none}
-.mod-item:hover{background:var(--bg)}
-.mod-item.active{background:var(--blue-light);border-left-color:var(--blue)}
-.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);transition:.2s}
-.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue);color:#fff}
-.mod-label{font-size:13px;font-weight:500;line-height:1.3}
-.mod-check{margin-left:auto;font-size:14px;opacity:0;transition:.2s}
-.mod-item.done .mod-check{opacity:1}
-.main{padding:36px 40px;max-width:820px}
-.module-panel{display:none;animation:fadeIn .3s ease}
-.module-panel.active{display:block}
-.module-header{margin-bottom:28px}
-.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:rgba(29,81,163,.1);padding:3px 12px;border-radius:20px;margin-bottom:10px}
-.module-title{font-size:clamp(1.5rem,3vw,2rem);color:var(--blue);margin-bottom:8px}
-.module-desc{font-size:1rem;color:var(--muted)}
-.content-section{margin-bottom:28px}
-.content-section h3{font-size:1.1rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
-.content-section p{font-size:.95rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
-.content-section ul,.content-section ol{padding-left:22px;color:var(--muted);font-size:.93rem;line-height:2}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
-.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue);transition:transform .2s}
-.info-card:hover{transform:translateY(-2px)}
-.info-card.gold{border-left-color:var(--gold)}.info-card.danger{border-left-color:#dc2626}.info-card.green{border-left-color:#16a34a}
-.info-card h4{font-size:13px;font-weight:700;margin-bottom:6px}.info-card p{font-size:13px;color:var(--muted);line-height:1.5}
-.alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);margin:16px 0;font-size:.92rem}
-.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.alert.important{background:#fef3c7;border:1px solid #f59e0b}.alert.danger{background:#fee2e2;border:1px solid #dc2626}
-.alert.info{background:var(--blue-light);border:1px solid var(--blue)}.alert.success{background:#dcfce7;border:1px solid #16a34a}
-.alert p{margin:0;color:var(--text);line-height:1.55}
-.steps{display:flex;flex-direction:column;gap:12px;margin:18px 0}
-.step{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:transform .2s}
-.step:hover{transform:translateX(4px)}
-.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}.step-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
-.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
-.concept-card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--blue);transition:transform .2s}
-.concept-card:hover{transform:translateY(-4px)}.concept-card .cc-icon{font-size:28px;margin-bottom:8px}
-.concept-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}.concept-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
-.abp-case{background:linear-gradient(135deg,#eef3ff,#e0eaff);border-radius:12px;padding:24px;margin:24px 0;border:2px solid rgba(29,81,163,.2)}
-.abp-label{background:var(--blue);color:#fff;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px}
-.abp-case h4{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px}
-.abp-case p{font-size:.92rem;color:#334;line-height:1.7;margin-bottom:10px}
-.abp-questions{background:rgba(255,255,255,.6);border-radius:8px;padding:14px;margin-top:12px}
-.abp-questions p{font-size:.88rem;margin:6px 0;color:var(--blue);font-weight:600}
-.norm-ref{background:var(--white);border-left:3px solid var(--gold);padding:12px 16px;margin:12px 0;font-size:.84rem;color:var(--muted);border-radius:0 8px 8px 0;border:1px solid var(--border);border-left:3px solid var(--gold)}
-.norm-ref strong{color:var(--text)}
-.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
-.data-table th{background:var(--blue);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
-.data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
-.data-table tr:nth-child(even) td{background:var(--bg)}
-.svg-container{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
-.svg-container figcaption{font-size:.82rem;color:var(--muted);margin-top:10px}
-.zone-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;margin:4px}
-.quiz-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
-.quiz-title{font-size:1.05rem;font-weight:700;margin-bottom:6px}.quiz-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
-.quiz-question{margin-bottom:22px}.quiz-q{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:10px}
-.quiz-options{display:flex;flex-direction:column;gap:8px}
-.quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-size:.9rem;user-select:none}
-.quiz-opt:hover{border-color:var(--blue);background:var(--blue-light)}
-.quiz-opt.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d}
-.quiz-opt.wrong{border-color:#dc2626!important;background:#fee2e2!important;color:#b91c1c}
-.quiz-opt input[type=radio]{accent-color:var(--blue)}
-.quiz-submit{margin-top:8px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
-.quiz-submit:hover{background:var(--blue-dark)}
-.quiz-result{margin-top:16px;padding:16px;border-radius:var(--radius);display:none;text-align:center}
-.quiz-result.pass{background:#dcfce7;border:1px solid #16a34a;color:#15803d}
-.quiz-result.fail{background:#fee2e2;border:1px solid #dc2626;color:#b91c1c}
-.module-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border)}
-.btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:.18s}
-.btn-prev{background:var(--white);border:1.5px solid var(--border);color:var(--muted)}.btn-prev:hover{border-color:var(--blue);color:var(--blue)}
-.btn-next{background:var(--blue);color:#fff}.btn-next:hover{background:var(--blue-dark)}
-.completion-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:var(--radius);padding:40px;text-align:center;color:#fff;margin-top:32px;display:none;animation:fadeInUp .5s ease}
-.completion-card h2{font-size:1.8rem;margin-bottom:12px}.completion-card p{color:rgba(255,255,255,.85);margin-bottom:16px}
-.cert-icon{font-size:64px;margin-bottom:16px}
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0}
-.mob-nav-inner{display:flex;overflow-x:auto;gap:4px;padding:0 12px;scrollbar-width:none}
-.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:60px;transition:.15s;user-select:none}
-.mob-tab.active{background:var(--blue-light)}.mob-tab-icon{font-size:18px}
-.mob-tab-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}.mob-tab.active .mob-tab-label{color:var(--blue)}
-@media(max-width:768px){.course-layout{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px 16px 100px}.mob-nav{display:block}.info-grid,.concept-grid{grid-template-columns:1fr}}
+:root{
+  --blue:#1D51A3;--blue-dark:#163d7a;--gold:#F0C319;
+  --bg:#f0f4fa;--card:#fff;--text:#1a2840;--muted:#2e4060;
+  --radius:14px;--shadow:0 4px 20px rgba(29,81,163,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.7}
+a{color:var(--blue)}
+.shell{display:flex;min-height:100vh}
+nav{width:260px;background:var(--blue-dark);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;padding:24px 0}
+nav .brand{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:12px}
+nav .brand img{height:36px;filter:brightness(0) invert(1)}
+nav .brand p{font-size:.72rem;opacity:.7;margin-top:4px}
+nav ul{list-style:none}
+nav ul li a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.82);text-decoration:none;font-size:.88rem;border-left:3px solid transparent;transition:.2s}
+nav ul li a:hover,nav ul li a.active{color:#fff;background:rgba(255,255,255,.1);border-left-color:var(--gold)}
+nav .prog-wrap{padding:16px 20px 0;font-size:.75rem;opacity:.7}
+nav .prog-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:6px}
+nav .prog-fill{height:5px;background:var(--gold);border-radius:3px;transition:.4s}
+main{flex:1;padding:32px 40px;max-width:960px}
+.page-hero{background:linear-gradient(135deg,var(--blue-dark),#1a3a6e);color:#fff;border-radius:var(--radius);padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden}
+.page-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:rgba(240,195,25,.12);border-radius:50%}
+.page-hero h1{font-size:2rem;font-weight:800}
+.page-hero p{opacity:.85;margin-top:8px;font-size:1.05rem}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:600}
+.badge.gold{background:var(--gold);color:#1a2840;border-color:var(--gold)}
+.mod-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:28px;overflow:hidden}
+.mod-header{background:linear-gradient(90deg,var(--blue),#2d6fd4);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+.mod-num{background:var(--gold);color:#1a2840;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0}
+.mod-header h2{font-size:1.15rem;font-weight:700}
+.mod-body{padding:24px}
+.mod-body p{margin-bottom:12px;color:var(--text)}
+.mod-body h3{font-size:1rem;font-weight:700;color:var(--blue-dark);margin:20px 0 8px;border-left:4px solid var(--gold);padding-left:10px}
+.mod-body ul{padding-left:20px;margin-bottom:12px;color:var(--text)}
+.mod-body ul li{margin-bottom:6px}
+.info-box{border-left:4px solid var(--blue);background:#e8f0fb;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.warn-box{border-left:4px solid #e05c2d;background:#fdf0eb;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.tip-box{border-left:4px solid #22a86b;background:#e6f9f1;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.vid-wrap{position:relative;padding-bottom:56.25%;border-radius:10px;overflow:hidden;margin:18px 0;background:#000}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-label{font-size:.8rem;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.diagram-wrap{background:#fff;border:1.5px solid #d8e4f5;border-radius:12px;padding:16px;margin:20px 0;overflow:visible}
+.diagram-title{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.quiz-section{background:linear-gradient(135deg,#f0f4fa,#e2ecfd);border:1.5px solid #c5d9f5;border-radius:12px;padding:22px;margin-top:24px}
+.quiz-section h4{color:var(--blue-dark);font-size:1rem;font-weight:700;margin-bottom:14px}
+.quiz-q{margin-bottom:14px}
+.quiz-q p{font-size:.95rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.quiz-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid #c5d9f5;border-radius:8px;cursor:pointer;margin-bottom:5px;font-size:.9rem;color:var(--text);background:#fff;transition:.15s}
+.quiz-opt:hover{border-color:var(--blue);background:#eef3fd}
+.quiz-opt.correct{border-color:#22a86b!important;background:#e6f9f1!important;color:#166a45}
+.quiz-opt.wrong{border-color:#e05c2d!important;background:#fdf0eb!important;color:#b63b1b}
+.quiz-btn,.sim-btn,.final-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:10px;transition:.2s}
+.quiz-btn:hover,.sim-btn:hover,.final-btn:hover{background:var(--blue-dark)}
+.quiz-result,.sim-result{display:none;margin-top:12px;padding:12px 16px;border-radius:8px;font-weight:700;font-size:.95rem}
+.pass{background:#e6f9f1;color:#166a45;border:1.5px solid #22a86b}
+.fail{background:#fdf0eb;color:#b63b1b;border:1.5px solid #e05c2d}
+.sim-section{background:linear-gradient(135deg,#1a2840,#1D51A3);border-radius:14px;padding:28px;margin:28px 0;color:#fff}
+.sim-badge{background:var(--gold);color:#1a2840;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px;letter-spacing:.04em;text-transform:uppercase}
+.sim-section h4{font-size:1.05rem;font-weight:700;margin-bottom:16px}
+.sim-q{margin-bottom:18px}
+.sim-q p{font-size:.93rem;font-weight:600;margin-bottom:8px;color:rgba(255,255,255,.92)}
+.sim-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;margin-bottom:6px;color:rgba(255,255,255,.88);font-size:.88rem;transition:.15s}
+.sim-opt:hover{border-color:rgba(240,195,25,.6);background:rgba(255,255,255,.07)}
+.sim-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.2)!important;color:#4ade80}
+.sim-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.2)!important;color:#f87171}
+.sim-opt input{accent-color:var(--gold)}
+.final-section{background:linear-gradient(135deg,#1a2840,#163d7a);border-radius:14px;padding:32px;margin-top:36px;color:#fff}
+.final-section h3{font-size:1.25rem;font-weight:800;margin-bottom:6px}
+.final-section p.sub{opacity:.7;font-size:.88rem;margin-bottom:20px}
+.final-q{margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:16px}
+.final-q p{font-weight:600;margin-bottom:8px;font-size:.92rem}
+.final-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;margin-bottom:5px;cursor:pointer;font-size:.88rem;color:rgba(255,255,255,.85)}
+.final-opt:hover{border-color:var(--gold);background:rgba(255,255,255,.07)}
+.final-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.15)!important;color:#4ade80}
+.final-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.15)!important;color:#f87171}
+.final-result{display:none;padding:20px;border-radius:10px;font-size:1.05rem;font-weight:700;margin-top:16px;text-align:center}
+.anim-fadein{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.anim-fadein.visible{opacity:1;transform:translateY(0)}
+.steps{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}
+.step{flex:1 1 140px;background:linear-gradient(135deg,var(--blue),#3a7bdc);color:#fff;border-radius:10px;padding:16px 14px;text-align:center}
+.step .num{font-size:1.5rem;font-weight:900;line-height:1;color:var(--gold)}
+.step p{font-size:.8rem;margin-top:6px;opacity:.9}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
+th{background:var(--blue);color:#fff;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid #d8e4f5;color:var(--text)}
+tr:nth-child(even) td{background:#f4f8fe}
 </style>
 </head>
 <body>
+<div class="shell">
 <nav>
-  <a class="nav-logo" href="../../index.html">Preventive Health</a>
-  <a class="nav-back" href="../index.html">← Catálogo</a>
+  <div class="brand">
+    <img src="../../assets/logo.png" alt="Preventive Health">
+    <p>Operación de Drones</p>
+  </div>
+  <ul>
+    <li><a href="#m1" class="active">📋 M1 · Marco Legal RAC-107</a></li>
+    <li><a href="#m2">🚁 M2 · Clasificación UAS/RPAS</a></li>
+    <li><a href="#m3">🗺️ M3 · Zonas y Geofencing</a></li>
+    <li><a href="#m4">✅ M4 · Preflight PAVE/IMSAFE</a></li>
+    <li><a href="#m5">📊 M5 · Evaluación SORA</a></li>
+    <li><a href="#m6">🔧 M6 · Mantenimiento y Bitácoras</a></li>
+    <li><a href="#final">📝 Evaluación Final</a></li>
+  </ul>
+  <div class="prog-wrap">
+    Progreso del curso
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
 </nav>
-<div class="top-progress"><div class="top-progress-fill" id="topProg"></div></div>
-<div class="course-layout">
-<aside class="sidebar">
-  <div class="sidebar-title">Operación Segura de Drones</div>
-  <div class="sidebar-progress">
-    <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:600">Progreso</span><span class="prog-pct" id="progPct">0%</span></div>
-    <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
-  </div>
-  <div class="mod-item active" data-mod="1" onclick="showModule(1)"><div class="mod-num">1</div><div class="mod-label">Marco Legal DGAC — RAC-107 Ecuador</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="2" onclick="showModule(2)"><div class="mod-num">2</div><div class="mod-label">Clasificación de UAS/RPAS</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="3" onclick="showModule(3)"><div class="mod-num">3</div><div class="mod-label">Zonas de Vuelo y Restricciones</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="4" onclick="showModule(4)"><div class="mod-num">4</div><div class="mod-label">Preflight y Vuelo Seguro</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="5" onclick="showModule(5)"><div class="mod-num">5</div><div class="mod-label">Gestión del Riesgo Operacional (SORA)</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="6" onclick="showModule(6)"><div class="mod-num">6</div><div class="mod-label">Mantenimiento, Bitácoras y Registro</div><div class="mod-check">✓</div></div>
-</aside>
-<main class="main" id="mainContent">
 
-<!-- ===== MÓDULO 1 ===== -->
-<div class="module-panel active" id="mod-1">
-  <div class="module-header">
-    <span class="module-tag">Módulo 1 de 6</span>
-    <h1 class="module-title">Marco Legal DGAC — RAC-107 Ecuador</h1>
-    <p class="module-desc">Regulación aeronáutica civil ecuatoriana para operación de Sistemas de Aeronaves No Tripuladas (UAS), requisitos de registro, habilitación del piloto remoto y seguros obligatorios.</p>
+<main>
+<div class="page-hero anim-fadein">
+  <h1>Operación de Drones</h1>
+  <p>Marco regulatorio ecuatoriano, clasificación de aeronaves no tripuladas, gestión de espacio aéreo, procedimientos de vuelo y mantenimiento bajo el Reglamento Aeronáutico del Ecuador RAC-107.</p>
+  <div class="badges">
+    <span class="badge">6 Módulos</span>
+    <span class="badge">RAC-107 · DGAC Ecuador</span>
+    <span class="badge gold">Certificación Incluida</span>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> RAC-107 DGAC Ecuador (Decreto Ejecutivo) · OACI Doc 10019 (Manual RPAS) · Resolución DGAC-2021-0183 · Convenio de Chicago — Anexo 2</div>
-  <div class="content-section">
-    <h3>¿Qué regula el RAC-107 en Ecuador?</h3>
-    <p>La <strong>Dirección General de Aviación Civil (DGAC)</strong> de Ecuador promulgó el <strong>RAC-107</strong> como norma específica para la operación de Sistemas de Aeronaves No Tripuladas (UAS/RPAS/drones). Todo vuelo comercial o de uso público de un UAS en territorio ecuatoriano está sujeto a esta regulación, independientemente del tamaño de la aeronave.</p>
-    <div class="alert info"><div class="alert-icon">⚖️</div><p><strong>Principio de soberanía aérea:</strong> El espacio aéreo ecuatoriano es soberanía del Estado (Constitución 2008, Art. 4). Ningún vuelo, tripulado o no, puede realizarse sin autorización de la DGAC. Volar sin autorización es una infracción tipificada en la Ley de Aviación Civil.</p></div>
-  </div>
-  <div class="content-section">
-    <h3>Obligaciones del Operador Remoto (Piloto PIC)</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Registro del UAS ante la DGAC</h4><p>Todo UAS con peso de despegue máximo (MTOW) mayor a 250g debe estar registrado. El operador recibe un número de identificación que debe marcarse físicamente en la aeronave.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Habilitación del Piloto Remoto</h4><p>Aprobar el examen teórico DGAC (aeronáutica general, meteorología, reglamentación, operaciones UAS). Renovación cada 2 años. Edad mínima: 18 años para uso comercial.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Autorización de vuelo</h4><p>Para operaciones en espacio aéreo controlado o zonas restringidas: solicitar permiso DGAC mínimo 72h antes vía sistema en línea. Operaciones VLOS estándar en zonas permitidas pueden realizarse sin permiso previo.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Seguro de responsabilidad civil</h4><p>Obligatorio para todo vuelo comercial. Mínimo USD 10,000 por daños a terceros. Certificado de seguro debe portarse en cada operación.</p></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Notificación de accidentes</h4><p>Accidentes con daños a personas, bienes o aeronaves deben reportarse a la DGAC dentro de las 24 horas. Omisión puede resultar en suspensión de habilitación.</p></div></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Sanciones RAC-107 — Escala de Infracciones</h3>
-    <table class="data-table">
-      <thead><tr><th>Infracción</th><th>Consecuencia</th></tr></thead>
-      <tbody>
-        <tr><td>Volar sin registro del UAS</td><td>Multa de 1-3 SBU + decomiso temporal del equipo</td></tr>
-        <tr><td>Operar sin habilitación de piloto</td><td>Multa de 3-5 SBU + suspensión de actividad</td></tr>
-        <tr><td>Vuelo en zona restringida sin autorización</td><td>Multa de 5-10 SBU + inhabilitación 6-12 meses</td></tr>
-        <tr><td>Vuelo sobre aglomeraciones sin permiso especial</td><td>Multa de 10-20 SBU + inhabilitación permanente si hay daños</td></tr>
-        <tr><td>Interferencia con aeronave tripulada</td><td>Proceso penal por poner en riesgo la vida (Código Penal Art. 291)</td></tr>
-      </tbody>
-    </table>
-    <div class="alert danger"><div class="alert-icon">✈️</div><p><strong>Colisión entre drone y aeronave tripulada:</strong> Un drone de 1kg impactando en un motor de avión a 300 km/h puede causar un accidente catastrófico. En los aeropuertos de Quito y Guayaquil, las infracciones con drones han resultado en investigaciones penales. La DGAC tiene potestad para interceptar y derribar drones no autorizados.</p></div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Empresa de inspección que opera sin habilitación completa</h4>
-    <p>Una empresa de inspección de tendidos eléctricos usa drones DJI Mavic 3 de 895g para inspección de torres en la Sierra ecuatoriana. El piloto tiene 2 años de experiencia práctica pero nunca realizó el examen DGAC. Los drones no están registrados porque "son pequeños". Han operado 8 meses sin incidentes. La DGAC es notificada por una denuncia de un vecino.</p>
-    <div class="abp-questions">
-      <p>❓ ¿Cuántas infracciones específicas al RAC-107 ha cometido la empresa? Listarlas con su sanción correspondiente.</p>
-      <p>❓ ¿El argumento "son pequeños" es válido para eximirse del registro? Justifica con el RAC-107.</p>
-      <p>❓ ¿Qué acción inmediata debe tomar la empresa al recibir la notificación de la DGAC?</p>
-      <p>❓ Diseña un programa de regularización de 30 días para poner la operación en cumplimiento total.</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/lFMCk_xRkJk" title="Regulación drones Ecuador DGAC RAC-107" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 1</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">1. ¿A partir de qué peso máximo de despegue (MTOW) un UAS debe estar registrado ante la DGAC en Ecuador?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 1,000 gramos (1 kg)</label><label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 250 gramos</label><label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 500 gramos</label><label class="quiz-opt"><input type="radio" name="q1a" value="d"> d) 2,000 gramos (2 kg)</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">2. ¿Cuánto tiempo mínimo antes debe solicitarse autorización de vuelo en espacio controlado?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) 24 horas</label><label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) 48 horas</label><label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) 72 horas</label><label class="quiz-opt"><input type="radio" name="q1b" value="d"> d) 1 semana</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod1',{'q1a':'b','q1b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod1-result"></div>
-  </div>
-  <div class="module-nav"><span></span><button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente: Clasificación UAS →</button></div>
 </div>
 
-<!-- ===== MÓDULO 2 ===== -->
-<div class="module-panel" id="mod-2">
-  <div class="module-header">
-    <span class="module-tag">Módulo 2 de 6</span>
-    <h1 class="module-title">Clasificación de UAS/RPAS — Tipos y Aplicaciones</h1>
-    <p class="module-desc">Taxonomía técnica de drones por configuración, peso y uso, con énfasis en los equipos más usados en inspecciones, seguridad y monitoreo industrial en Ecuador.</p>
+<!-- ====== MÓDULO 1 ====== -->
+<div class="mod-card anim-fadein" id="m1">
+  <div class="mod-header">
+    <div class="mod-num">1</div>
+    <div><h2>Marco Legal — RAC-107 y DGAC Ecuador</h2>
+    <small style="opacity:.8">Regulación ecuatoriana para sistemas de aeronaves no tripuladas</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> RAC-107 DGAC · OACI Doc 10019 Tabla 1-1 · FAA Part 107 (referencia técnica) · Clasificación MTOW: Categorías A, B, C, D</div>
-  <div class="content-section">
+  <div class="mod-body">
+    <p>El <strong>Reglamento Aeronáutico Civil RAC-107</strong> es la norma que regula en Ecuador la operación de <strong>Sistemas de Aeronaves No Tripuladas (UAS, por sus siglas en inglés)</strong>, comunmente llamados drones. La autoridad competente es la <strong>Dirección General de Aviación Civil (DGAC)</strong>, que establece los requisitos de registro, habilitación de pilotos y condiciones operacionales.</p>
+
+    <h3>Definiciones Clave (RAC-107)</h3>
+    <!-- SVG definiciones -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Terminología RAC-107 — Jerarquía de conceptos</div>
+      <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="r1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#163d7a"/><stop offset="100%" stop-color="#1D51A3"/></linearGradient>
+          <linearGradient id="r2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
+          <linearGradient id="r3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="r4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+        </defs>
+        <!-- UAS -->
+        <rect x="220" y="10" width="260" height="44" rx="10" fill="url(#r1)"/>
+        <text x="350" y="29" text-anchor="middle" fill="#F0C319" font-size="11" font-weight="800">UAS — Sistema de Aeronave No Tripulada</text>
+        <text x="350" y="46" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Aeronave + Estación de Control + Enlace de datos</text>
+        <line x1="260" y1="54" x2="160" y2="80" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="440" y1="54" x2="540" y2="80" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="350" y1="54" x2="350" y2="80" stroke="#1D51A3" stroke-width="2"/>
+        <!-- UA -->
+        <rect x="60" y="80" width="190" height="44" rx="9" fill="url(#r2)"/>
+        <text x="155" y="98" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">UA — Aeronave No Tripulada</text>
+        <text x="155" y="114" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Componente de vuelo del UAS</text>
+        <!-- RPAS -->
+        <rect x="258" y="80" width="185" height="44" rx="9" fill="url(#r3)"/>
+        <text x="350" y="98" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">RPAS — Sistema Pilotado</text>
+        <text x="350" y="114" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Remotamente (requiere piloto activo)</text>
+        <!-- RPA -->
+        <rect x="450" y="80" width="190" height="44" rx="9" fill="url(#r4)"/>
+        <text x="545" y="98" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">RPA — Aeronave Pilotada</text>
+        <text x="545" y="114" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8">Remotamente (el drone en sí)</text>
+        <!-- RPIC -->
+        <rect x="160" y="145" width="380" height="30" rx="8" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="350" y="165" text-anchor="middle" fill="#163d7a" font-size="9" font-weight="700">RPIC — Piloto al Mando Remoto: responsable legal y operacional de cada vuelo</text>
+      </svg>
+    </div>
+
+    <h3>Requisitos del Piloto Remoto (RPIC) según RAC-107</h3>
+    <table>
+      <tr><th>Requisito</th><th>Detalle</th></tr>
+      <tr><td>Edad mínima</td><td>16 años para operaciones de recreo; 18 para comerciales</td></tr>
+      <tr><td>Registro del UAS</td><td>Obligatorio en DGAC para todo UAS > 250 g</td></tr>
+      <tr><td>Habilitación RPIC</td><td>Examen teórico DGAC para operaciones comerciales</td></tr>
+      <tr><td>Seguro de responsabilidad civil</td><td>Obligatorio para operaciones sobre personas o zonas urbanas</td></tr>
+      <tr><td>Plan de vuelo</td><td>Requerido para espacios aéreos controlados (Clase B, C, D)</td></tr>
+    </table>
+
+    <h3>Límites Operacionales Generales (RAC-107)</h3>
+    <ul>
+      <li>Altura máxima: <strong>400 pies (122 m)</strong> sobre el nivel del suelo salvo autorización DGAC.</li>
+      <li>Visibilidad visual mínima: <strong>3 millas estatutarias</strong> desde la posición del RPIC.</li>
+      <li>Operación únicamente en <strong>Vuelo Visual (VLOS, por sus siglas en inglés)</strong> sin extensiones.</li>
+      <li>Prohibido volar sobre personas no participantes sin autorización.</li>
+      <li>Prohibido volar de noche sin waiver o habilitación especial.</li>
+    </ul>
+
+    <div class="warn-box"><strong>Operación en Espacio Aéreo Controlado:</strong> requiere autorización de la DGAC y coordinación con el <strong>Control de Tránsito Aéreo (ATC, por sus siglas en inglés)</strong>. En Ecuador se tramita a través del sistema de la DGAC con mínimo 72 horas de antelación.</div>
+
+    <div class="vid-label">Video — Marco Regulatorio de Drones en Ecuador (RAC-107)</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/lFMCk_xRkJk" allowfullscreen loading="lazy" title="RAC-107 DGAC Ecuador"></iframe>
+    </div>
+
+    <!-- SIMULATOR M1 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 1</span>
+      <h4>Escenarios: Marco Legal RAC-107</h4>
+      <div class="sim-q">
+        <p>1. Quieres fotografiar una obra de construcción con tu drone de 350 g para cobrar al cliente. ¿Qué debes tener?</p>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="a"> a) Solo registro del drone, no necesitas habilitación</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="b"> b) Registro en DGAC, habilitación RPIC, y seguro de responsabilidad civil</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="c"> c) Basta con ser mayor de 16 años</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="d"> d) No necesitas nada si vuelas a menos de 100 m</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿Cuál es la altura máxima de vuelo sin autorización especial según RAC-107?</p>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="a"> a) 200 m sobre el suelo</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="b"> b) 400 pies (122 m) sobre el suelo</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="c"> c) 500 pies sobre el nivel del mar</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="d"> d) Sin límite si el drone pesa menos de 1 kg</label>
+      </div>
+      <div class="sim-q">
+        <p>3. VLOS en la operación de drones significa que el RPIC debe:</p>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="a"> a) Usar gafas FPV conectadas a la cámara del drone</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="b"> b) Mantener contacto visual directo con la aeronave en todo momento</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="c"> c) Volar solo con visibilidad nocturna</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="d"> d) Ver el drone a través del video de la cámara</label>
+      </div>
+      <div class="sim-q">
+        <p>4. El UAS está compuesto por:</p>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="a"> a) Solo el drone y la batería</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="b"> b"> El drone, la estación de control en tierra y el enlace de datos</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="c"> c) El drone y el piloto</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="d"> d) Solo el drone con GPS integrado</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Con cuántas horas de antelación mínima se tramita autorización para espacio aéreo controlado en Ecuador?</p>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="a"> a) 24 horas</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="b"> b) 72 horas</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="c"> c) 1 semana</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="d"> d) El mismo día si hay urgencia</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s1',{s1_1:'b',s1_2:'b',s1_3:'b',s1_4:'b',s1_5:'b'})">Verificar Simulador</button>
+      <div id="s1-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 1</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué significa RPIC en el contexto del RAC-107?</p>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) Remote Pilot in Command (Piloto al Mando Remoto)</label>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) Registered Pilot Identification Code</label>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) Reglamento de Piloto en Condiciones</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿A partir de qué peso es obligatorio registrar un UAS en la DGAC?</p>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) Más de 1 kg</label>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) Más de 250 g</label>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) Más de 500 g</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq1',{q1a:'a',q1b:'b'})">Verificar</button>
+      <div id="mq1-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MÓDULO 2 ====== -->
+<div class="mod-card anim-fadein" id="m2">
+  <div class="mod-header">
+    <div class="mod-num">2</div>
+    <div><h2>Clasificación de UAS / RPAS</h2>
+    <small style="opacity:.8">Tipos de aeronaves no tripuladas, propulsión y capacidades</small></div>
+  </div>
+  <div class="mod-body">
+    <p>Los <strong>Sistemas de Aeronaves Pilotadas Remotamente (RPAS, por sus siglas en inglés)</strong> se clasifican por su configuración aerodinámica, peso máximo de despegue y propósito operacional. Conocer las características de cada tipo permite seleccionar el UAS adecuado para cada misión y respetar las restricciones operacionales aplicables.</p>
+
     <h3>Tipos de UAS por Configuración</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+    <!-- SVG tipos UAS -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Comparativa de Tipos de UAS</div>
+      <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
         <!-- Multirotor -->
-        <rect x="10" y="20" width="140" height="180" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="80" y="42" text-anchor="middle" font-size="10" fill="#1D51A3" font-weight="bold">MULTIROTOR</text>
-        <!-- Drone body -->
-        <circle cx="80" cy="100" r="14" fill="#1D51A3"/>
-        <line x1="80" y1="100" x2="52" y2="72" stroke="#163d7a" stroke-width="3"/>
-        <line x1="80" y1="100" x2="108" y2="72" stroke="#163d7a" stroke-width="3"/>
-        <line x1="80" y1="100" x2="52" y2="128" stroke="#163d7a" stroke-width="3"/>
-        <line x1="80" y1="100" x2="108" y2="128" stroke="#163d7a" stroke-width="3"/>
-        <circle cx="52" cy="72" r="8" fill="#F0C319"/>
-        <circle cx="108" cy="72" r="8" fill="#F0C319"/>
-        <circle cx="52" cy="128" r="8" fill="#F0C319"/>
-        <circle cx="108" cy="128" r="8" fill="#F0C319"/>
-        <text x="80" y="158" text-anchor="middle" font-size="9" fill="#5a6e8c">4-8 rotores</text>
-        <text x="80" y="172" text-anchor="middle" font-size="9" fill="#5a6e8c">VTOL · Maniobrable</text>
-        <text x="80" y="186" text-anchor="middle" font-size="9" fill="#16a34a">DJI Phantom/Mavic</text>
+        <rect x="5" y="10" width="160" height="150" rx="11" fill="#e8f0fb" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="85" y="34" text-anchor="middle" fill="#163d7a" font-size="10" font-weight="700">MULTIROTOR</text>
+        <!-- drone icon simplified -->
+        <circle cx="85" cy="80" r="12" fill="#1D51A3" opacity=".2"/>
+        <line x1="73" y1="68" x2="55" y2="55" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="97" y1="68" x2="115" y2="55" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="73" y1="92" x2="55" y2="105" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="97" y1="92" x2="115" y2="105" stroke="#1D51A3" stroke-width="2"/>
+        <circle cx="55" cy="53" r="8" fill="#1D51A3" opacity=".6"/>
+        <circle cx="115" cy="53" r="8" fill="#1D51A3" opacity=".6"/>
+        <circle cx="55" cy="107" r="8" fill="#1D51A3" opacity=".6"/>
+        <circle cx="115" cy="107" r="8" fill="#1D51A3" opacity=".6"/>
+        <text x="85" y="128" text-anchor="middle" fill="#163d7a" font-size="8">✓ VTOL · Maniobrable</text>
+        <text x="85" y="142" text-anchor="middle" fill="#163d7a" font-size="8">✗ Autonomía baja</text>
+        <text x="85" y="155" text-anchor="middle" fill="#163d7a" font-size="8">Uso: foto/video, inspección</text>
+
         <!-- Ala fija -->
-        <rect x="160" y="20" width="140" height="180" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="230" y="42" text-anchor="middle" font-size="10" fill="#1D51A3" font-weight="bold">ALA FIJA</text>
-        <ellipse cx="230" cy="95" rx="55" ry="12" fill="#163d7a"/>
-        <ellipse cx="230" cy="95" rx="8" ry="20" fill="#1D51A3"/>
-        <ellipse cx="230" cy="125" rx="22" ry="6" fill="#163d7a"/>
-        <circle cx="210" cy="95" r="6" fill="#F0C319"/>
-        <text x="230" y="158" text-anchor="middle" font-size="9" fill="#5a6e8c">Mayor autonomía</text>
-        <text x="230" y="172" text-anchor="middle" font-size="9" fill="#5a6e8c">Cubre grandes áreas</text>
-        <text x="230" y="186" text-anchor="middle" font-size="9" fill="#16a34a">Parrot Disco/eBee</text>
-        <!-- VTOL híbrido -->
-        <rect x="310" y="20" width="140" height="180" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="380" y="42" text-anchor="middle" font-size="10" fill="#1D51A3" font-weight="bold">VTOL HÍBRIDO</text>
-        <ellipse cx="380" cy="95" rx="45" ry="10" fill="#163d7a"/>
-        <circle cx="350" cy="80" r="7" fill="#F0C319"/>
-        <circle cx="410" cy="80" r="7" fill="#F0C319"/>
-        <circle cx="350" cy="110" r="7" fill="#F0C319"/>
-        <circle cx="410" cy="110" r="7" fill="#F0C319"/>
-        <text x="380" y="158" text-anchor="middle" font-size="9" fill="#5a6e8c">Despegue vertical</text>
-        <text x="380" y="172" text-anchor="middle" font-size="9" fill="#5a6e8c">vuelo ala fija</text>
-        <text x="380" y="186" text-anchor="middle" font-size="9" fill="#16a34a">Wingtra/WingtraOne</text>
+        <rect x="178" y="10" width="160" height="150" rx="11" fill="#e6f9f1" stroke="#22a86b" stroke-width="1.5"/>
+        <text x="258" y="34" text-anchor="middle" fill="#166a45" font-size="10" font-weight="700">ALA FIJA</text>
+        <!-- plane shape -->
+        <polygon points="258,55 230,85 240,85 238,105 258,98 278,105 276,85 286,85" fill="#22a86b" opacity=".7"/>
+        <text x="258" y="128" text-anchor="middle" fill="#166a45" font-size="8">✓ Gran autonomía</text>
+        <text x="258" y="142" text-anchor="middle" fill="#166a45" font-size="8">✗ Requiere pista/lanzador</text>
+        <text x="258" y="155" text-anchor="middle" fill="#166a45" font-size="8">Uso: mapeo, vigilancia</text>
+
+        <!-- VTOL hibrido -->
+        <rect x="351" y="10" width="160" height="150" rx="11" fill="#fff0f5" stroke="#e05c2d" stroke-width="1.5"/>
+        <text x="431" y="34" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">VTOL HÍBRIDO</text>
+        <!-- hybrid shape -->
+        <polygon points="431,55 400,90 415,90 413,105 431,98 449,105 447,90 462,90" fill="#e05c2d" opacity=".5"/>
+        <circle cx="400" cy="65" r="8" fill="#e05c2d" opacity=".5"/>
+        <circle cx="462" cy="65" r="8" fill="#e05c2d" opacity=".5"/>
+        <text x="431" y="128" text-anchor="middle" fill="#b91c1c" font-size="8">✓ VTOL + autonomía fija</text>
+        <text x="431" y="142" text-anchor="middle" fill="#b91c1c" font-size="8">✗ Mayor costo</text>
+        <text x="431" y="155" text-anchor="middle" fill="#b91c1c" font-size="8">Uso: mapeo largo alcance</text>
+
         <!-- Helicóptero -->
-        <rect x="460" y="20" width="140" height="180" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="530" y="42" text-anchor="middle" font-size="10" fill="#1D51A3" font-weight="bold">HELICÓPTERO</text>
-        <ellipse cx="530" cy="100" rx="60" ry="8" fill="#F0C319"/>
-        <ellipse cx="530" cy="100" rx="14" ry="25" fill="#163d7a"/>
-        <ellipse cx="560" cy="108" rx="20" ry="5" fill="#1D51A3" transform="rotate(-30 560 108)"/>
-        <text x="530" y="158" text-anchor="middle" font-size="9" fill="#5a6e8c">Alta carga útil</text>
-        <text x="530" y="172" text-anchor="middle" font-size="9" fill="#5a6e8c">Zonas de difícil acceso</text>
-        <text x="530" y="186" text-anchor="middle" font-size="9" fill="#16a34a">Unique/Hertel</text>
+        <rect x="524" y="10" width="170" height="150" rx="11" fill="#f5f0ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="609" y="34" text-anchor="middle" fill="#5b21b6" font-size="10" font-weight="700">HELICÓPTERO UAS</text>
+        <!-- heli shape -->
+        <ellipse cx="609" cy="80" rx="25" ry="18" fill="#7c3aed" opacity=".3"/>
+        <line x1="584" y1="65" x2="545" y2="62" stroke="#7c3aed" stroke-width="2.5"/>
+        <line x1="634" y1="65" x2="673" y2="62" stroke="#7c3aed" stroke-width="2.5"/>
+        <line x1="609" y1="98" x2="609" y2="115" stroke="#7c3aed" stroke-width="2"/>
+        <line x1="598" y1="115" x2="625" y2="115" stroke="#7c3aed" stroke-width="2"/>
+        <text x="609" y="130" text-anchor="middle" fill="#5b21b6" font-size="8">✓ VTOL, carga pesada</text>
+        <text x="609" y="144" text-anchor="middle" fill="#5b21b6" font-size="8">✗ Complejo mecánicamente</text>
+        <text x="609" y="158" text-anchor="middle" fill="#5b21b6" font-size="8">Uso: carga, agricultura</text>
       </svg>
-      <figcaption>Tipos principales de UAS por configuración aerodinàmica y sus aplicaciones típicas</figcaption>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Categorías por Peso (MTOW) — RAC-107</h3>
-    <table class="data-table">
-      <thead><tr><th>Categoría</th><th>MTOW</th><th>Requisitos DGAC</th><th>Uso típico</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Micro</strong></td><td>&lt; 250g</td><td>Sin registro obligatorio. Solo regulación básica.</td><td>Recreativo interior, fotografía casual</td></tr>
-        <tr><td><strong>Pequeño A</strong></td><td>250g – 2kg</td><td>Registro DGAC + habilitación piloto básica</td><td>Fotografía/video, inspección visual</td></tr>
-        <tr><td><strong>Pequeño B</strong></td><td>2kg – 25kg</td><td>Registro + habilitación + manual de operaciones</td><td>Cartografía, agricultura de precisión, inspección industrial</td></tr>
-        <tr><td><strong>Grande</strong></td><td>25kg – 150kg</td><td>Certificado de aeronavegabilidad + permiso por operación</td><td>Carga, despacho de paquetes, operaciones especiales</td></tr>
-        <tr><td><strong>Muy grande</strong></td><td>&gt; 150kg</td><td>Regulación equiparable a aeronaves tripuladas</td><td>Carga pesada, operaciones de defensa</td></tr>
-      </tbody>
+
+    <h3>Categorías por Peso Máximo de Despegue (MTOW)</h3>
+    <table>
+      <tr><th>Categoría</th><th>MTOW</th><th>Riesgo regulatorio</th><th>Ejemplo</th></tr>
+      <tr><td>Micro</td><td>&lt; 250 g</td><td>Mínimo (sin registro)</td><td>DJI Mini 4</td></tr>
+      <tr><td>Pequeño</td><td>250 g – 2 kg</td><td>Registro obligatorio</td><td>DJI Air 3</td></tr>
+      <tr><td>Mediano</td><td>2 – 25 kg</td><td>Habilitación RPIC requerida</td><td>DJI Matrice 300</td></tr>
+      <tr><td>Grande</td><td>25 – 150 kg</td><td>Certificación específica</td><td>Drones agrícolas</td></tr>
+      <tr><td>Muy grande</td><td>&gt; 150 kg</td><td>Certificación tipo aeronave</td><td>Sistemas industriales</td></tr>
     </table>
-  </div>
-  <div class="content-section">
-    <h3>Modos de Operación</h3>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">👁️</div><h4>VLOS</h4><p><strong>Visual Line of Sight.</strong> El piloto mantiene contacto visual directo con el UAS en todo momento. El modo estándar bajo RAC-107.</p></div>
-      <div class="concept-card"><div class="cc-icon">🔭</div><h4>EVLOS</h4><p><strong>Extended VLOS.</strong> Observadores secundarios asisten al piloto para extender el rango visual. Requiere autorización especial DGAC.</p></div>
-      <div class="concept-card"><div class="cc-icon">📡</div><h4>BVLOS</h4><p><strong>Beyond Visual Line of Sight.</strong> Operaciones más allá del alcance visual. Alto riesgo — requiere mitigaciones técnicas y permiso especial DGAC.</p></div>
-      <div class="concept-card"><div class="cc-icon">🤖</div><h4>Autónomo</h4><p>Vuelo por waypoints sin intervención del piloto en tiempo real. Requiere sistema de detección y evasión (DAA) y aprobación caso por caso.</p></div>
+
+    <h3>Componentes Principales del RPAS</h3>
+    <ul>
+      <li><strong>Fuselaje/chasis:</strong> estructura portante de fibra de carbono o polímero.</li>
+      <li><strong>Motores y hélices:</strong> brushless en multirotores; turbohélice o eléctrico en ala fija.</li>
+      <li><strong>Controlador de vuelo (FC):</strong> cerebro del drone — IMU, barómetro, GPS integrado.</li>
+      <li><strong>Batería LiPo/LiIon:</strong> fuente de energía; determina autonomía.</li>
+      <li><strong>Enlace de datos (datalink):</strong> comunicación drone-mando; frecuencias 2.4 / 5.8 GHz.</li>
+      <li><strong>Cámara/payload:</strong> carga útil para la misión.</li>
+    </ul>
+
+    <div class="vid-label">Video — Tipos y Clasificación de UAS/RPAS</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/RtFB5F8D3PA" allowfullscreen loading="lazy" title="Clasificación UAS RPAS"></iframe>
+    </div>
+
+    <!-- SIMULATOR M2 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 2</span>
+      <h4>Escenarios: Clasificación UAS</h4>
+      <div class="sim-q">
+        <p>1. Necesitas mapear 5 000 hectáreas de plantación en un solo vuelo. ¿Qué tipo de UAS es más adecuado?</p>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="a"> a) Multirotor — mejor maniobra</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="b"> b) Ala fija — mayor autonomía y cobertura</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="c"> c) Helicóptero UAS — más estabilidad</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="d"> d) Micro UAS — más ligero</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Un drone pesa 1.8 kg de MTOW. ¿En qué categoría de peso se clasifica?</p>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="a"> a) Micro</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="b"> b) Pequeño (250 g – 2 kg)</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="c"> c) Mediano</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="d"> d) Grande</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Qué componente del RPAS actúa como el "cerebro" que integra IMU, GPS y barómetro?</p>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="a"> a) La batería LiPo</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="b"> b) El controlador de vuelo (FC)</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="c"> c) El enlace de datos</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="d"> d) La cámara</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Un UAS VTOL híbrido combina las ventajas de:</p>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="a"> a) Multirotor y helicóptero</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="b"> b) Despegue/aterrizaje vertical (VTOL) y autonomía de ala fija</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="c"> c) Alta carga y bajo consumo</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="d"> d) Velocidad máxima y sigilo</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿A qué frecuencias trabajan típicamente los enlaces de datos de los RPAS comerciales?</p>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="a"> a) 900 MHz y 1.8 GHz</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="b"> b) 2.4 GHz y 5.8 GHz</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="c"> c) 4G LTE únicamente</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="d"> d) Infrarrojo y Bluetooth</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s2',{s2_1:'b',s2_2:'b',s2_3:'b',s2_4:'b',s2_5:'b'})">Verificar Simulador</button>
+      <div id="s2-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 2</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué tipo de UAS no requiere pista para despegar o aterrizar?</p>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Ala fija</label>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Multirotor (VTOL)</label>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Planeador</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué significa MTOW?</p>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) Maximum Take-Off Weight (Peso Máximo de Despegue)</label>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) Minimum Test Operating Weight</label>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Manual Transfer of Weight</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq2',{q2a:'b',q2b:'a'})">Verificar</button>
+      <div id="mq2-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Selección de UAS para inspección de oleoducto en la Amazonía</h4>
-    <p>Una empresa petrolera necesita inspeccionar visualmente 80 km de oleoducto en la Amazonía ecuatoriana (vegetación densa, sin acceso vehicular). El área incluye zonas de Patrimonio Natural protegido (ZA Yasuni) y cruza el espacio aéreo de una pista de aterrizaje comunitaria. Presupuesto para el UAS: USD 15,000. El equipo técnico propone 3 opciones: (A) DJI Mavic 3 Thermal 920g, (B) eBee X ala fija 1.2kg, (C) Wingtra VTOL 4.2kg.</p>
-    <div class="abp-questions">
-      <p>❓ Clasifica cada UAS por categoría MTOW según el RAC-107 y lista los requisitos de cada uno.</p>
-      <p>❓ ¿Cuál es el modo de operación (VLOS/EVLOS/BVLOS) que se requeriría para 80km lineales? ¿Qué implica esto en términos de autorización?</p>
-      <p>❓ ¿Cuál opción recomendarías y por qué? Considera autonomía, cobertura, categoría regulatoria y zona protegida.</p>
-      <p>❓ ¿Qué permisos adicionales (más allá del RAC-107) podrían requerirse para operar en Zona Protegida Yasuni?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/RtFB5F8D3PA" title="Tipos de drones clasificación UAS" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 2</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">3. VLOS en operaciones de drones significa:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Very Long Operation System</label><label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Visual Line of Sight — el piloto mantiene contacto visual con el UAS</label><label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Vertical Landing Operation Sequence</label><label class="quiz-opt"><input type="radio" name="q2a" value="d"> d) Video Live Output System</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">4. Un UAS de 3.5 kg de MTOW corresponde a la categoría RAC-107:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) Micro</label><label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) Pequeño A (250g-2kg)</label><label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Pequeño B (2kg-25kg)</label><label class="quiz-opt"><input type="radio" name="q2b" value="d"> d) Grande (25kg-150kg)</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod2',{'q2a':'b','q2b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod2-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo 1</button><button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente: Zonas de Vuelo →</button></div>
 </div>
 
-<!-- ===== MÓDULO 3 ===== -->
-<div class="module-panel" id="mod-3">
-  <div class="module-header">
-    <span class="module-tag">Módulo 3 de 6</span>
-    <h1 class="module-title">Zonas de Vuelo y Restricciones — Geofencing y Airspace</h1>
-    <p class="module-desc">Estructura del espacio aéreo ecuatoriano, zonas de restricción permanente y temporal, aplicaciones de geofencing y consulta de cartografía aeronáutica.</p>
+<!-- ====== MÓDULO 3 ====== -->
+<div class="mod-card anim-fadein" id="m3">
+  <div class="mod-header">
+    <div class="mod-num">3</div>
+    <div><h2>Zonas de Vuelo y Geofencing</h2>
+    <small style="opacity:.8">Clasificación del espacio aéreo, zonas restringidas y tecnología geofencing</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> RAC-107 Sección 107.45 · AIP Ecuador (Aeronautical Information Publication) · NOTAM DGAC · Resolución No. DGAC-2021-0183 Art. 18-24</div>
-  <div class="content-section">
-    <h3>Estructura del Espacio Aéreo — Clases OACI</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 580 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <!-- Perfil altitudinal -->
-        <rect x="20" y="20" width="540" height="240" rx="8" fill="#f0f4fa" stroke="#dde4ef" stroke-width="1"/>
-        <!-- Suelo -->
-        <rect x="20" y="240" width="540" height="20" fill="#d4a843" rx="0"/>
-        <text x="300" y="256" text-anchor="middle" font-size="10" fill="#92400e">SUPERFICIE</text>
-        <!-- Zona G (no controlada) -->
-        <rect x="20" y="190" width="540" height="50" fill="rgba(134,239,172,.4)" stroke="#16a34a" stroke-width="1"/>
-        <text x="300" y="220" text-anchor="middle" font-size="11" fill="#15803d" font-weight="bold">CLASE G — No controlada (0 - 300m AGL en rural)</text>
-        <text x="300" y="234" text-anchor="middle" font-size="9" fill="#15803d">UAS VLOS permitidos sin ATC contact (zona no restringida)</text>
-        <!-- CTR aeropuerto -->
-        <rect x="20" y="130" width="200" height="60" fill="rgba(239,68,68,.25)" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,3"/>
-        <text x="120" y="153" text-anchor="middle" font-size="10" fill="#b91c1c" font-weight="bold">CTR</text>
-        <text x="120" y="167" text-anchor="middle" font-size="9" fill="#b91c1c">Radio 8-15km aeropuerto</text>
-        <text x="120" y="179" text-anchor="middle" font-size="9" fill="#b91c1c">UAS PROHIBIDO sin permiso</text>
-        <!-- TMA -->
-        <rect x="20" y="80" width="540" height="50" fill="rgba(29,81,163,.18)" stroke="#1D51A3" stroke-width="1"/>
-        <text x="300" y="107" text-anchor="middle" font-size="11" fill="#1D51A3" font-weight="bold">CLASE D/E — Área Terminal de Maniobra (TMA)</text>
-        <text x="300" y="121" text-anchor="middle" font-size="9" fill="#1D51A3">Requiere autorización ATC y transpondedor / comunicación</text>
-        <!-- En ruta -->
-        <rect x="20" y="30" width="540" height="50" fill="rgba(29,81,163,.35)" stroke="#163d7a" stroke-width="1"/>
-        <text x="300" y="55" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CLASE A — Espacio En Ruta (&gt; FL180 / 5500m)</text>
-        <text x="300" y="70" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">Vuelo instrumental (IFR) exclusivo. UAS PROHIBIDO.</text>
-        <!-- Altitud labels -->
-        <text x="562" y="203" font-size="9" fill="#5a6e8c">300m</text>
-        <text x="562" y="145" font-size="9" fill="#5a6e8c">600m</text>
-        <text x="562" y="95" font-size="9" fill="#5a6e8c">3,000m</text>
+  <div class="mod-body">
+    <p>El espacio aéreo ecuatoriano se organiza en clases (A–G) según los estándares de la <strong>Organización de Aviación Civil Internacional (OACI)</strong>. El <strong>Geofencing</strong> es la tecnología que usa límites geográficos virtuales (GPS) para restringir automáticamente el vuelo del drone en zonas prohibidas o sensibles.</p>
+
+    <h3>Clases del Espacio Aéreo — OACI</h3>
+    <!-- SVG perfil espacio aéreo -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Perfil del Espacio Aéreo — Clases OACI y límites UAS</div>
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- Ground -->
+        <rect x="0" y="185" width="700" height="35" rx="0" fill="#c8a96e"/>
+        <text x="350" y="207" text-anchor="middle" fill="#6b4c10" font-size="10" font-weight="700">SUPERFICIE (GND)</text>
+        <!-- Class G -->
+        <rect x="0" y="140" width="700" height="45" fill="#e6f9f1" opacity=".9"/>
+        <text x="15" y="158" fill="#166a45" font-size="9" font-weight="700">G</text>
+        <text x="15" y="172" fill="#166a45" font-size="8">0 – 1200 ft AGL</text>
+        <text x="350" y="165" text-anchor="middle" fill="#166a45" font-size="9">Sin servicio ATC · VFRUÁS libre &lt; 400 ft</text>
+        <!-- UAS limit line -->
+        <line x1="0" y1="158" x2="700" y2="158" stroke="#F0C319" stroke-width="2.5" stroke-dasharray="8"/>
+        <text x="360" y="150" fill="#b45309" font-size="9" font-weight="700">← Límite UAS: 400 ft (122 m) →</text>
+        <!-- Class D -->
+        <rect x="0" y="95" width="700" height="45" fill="#e8f0fb" opacity=".9"/>
+        <text x="15" y="113" fill="#163d7a" font-size="9" font-weight="700">D</text>
+        <text x="15" y="127" fill="#163d7a" font-size="8">1200 – 2500 ft</text>
+        <text x="350" y="120" text-anchor="middle" fill="#163d7a" font-size="9">Espacio controlado — requiere autorización DGAC/ATC</text>
+        <!-- Class C -->
+        <rect x="0" y="55" width="700" height="40" fill="#dde8f8" opacity=".9"/>
+        <text x="15" y="73" fill="#163d7a" font-size="9" font-weight="700">C</text>
+        <text x="15" y="87" fill="#163d7a" font-size="8">2500 – 10 000 ft</text>
+        <text x="350" y="80" text-anchor="middle" fill="#163d7a" font-size="9">Tráfico denso — UAS prohibido sin waiver especial</text>
+        <!-- Class A -->
+        <rect x="0" y="10" width="700" height="45" fill="#c8d8f5" opacity=".9"/>
+        <text x="15" y="30" fill="#163d7a" font-size="9" font-weight="700">A</text>
+        <text x="15" y="44" fill="#163d7a" font-size="8">&gt; 18 000 ft</text>
+        <text x="350" y="37" text-anchor="middle" fill="#163d7a" font-size="9">Solo vuelo instrumental (IFR) — UAS no autorizado</text>
+        <!-- Aeropuerto -->
+        <rect x="480" y="140" width="160" height="80" rx="6" fill="#fdf0eb" stroke="#e05c2d" stroke-width="2"/>
+        <text x="560" y="165" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="700">AEROPUERTO</text>
+        <text x="560" y="182" text-anchor="middle" fill="#b91c1c" font-size="8">Zona de exclusión</text>
+        <text x="560" y="196" text-anchor="middle" fill="#b91c1c" font-size="8">5 NM radio mínimo</text>
       </svg>
-      <figcaption>Perfil del espacio aéreo ecuatoriano — clases OACI y restricciones para UAS por altitud</figcaption>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Zonas de Exclusión Permanente para UAS</h3>
-    <div class="info-grid anim-fadein">
-      <div class="info-card danger"><h4>Aeropuertos y CTR</h4><p>Radio de protección de 8-15km según el aeropuerto. Quito (SEQM) y Guayaquil (SEGU) tienen zonas CTR amplias. Zona estricta interior: 5km — vuelo absolutamente prohibido.</p></div>
-      <div class="info-card danger"><h4>Instalaciones militares</h4><p>Bases aéreas, cuarteles y zonas de seguridad del Estado. Radar de defensa puede rastrear e interceptar. Vuelo constituye infracción grave y posible delito.</p></div>
-      <div class="info-card gold"><h4>Áreas naturales protegidas</h4><p>Parques nacionales, reservas marinas. Requieren permiso del Ministerio del Ambiente (MAATE) adicional a la DGAC. Galápagos: zona de restricción especial OACI.</p></div>
-      <div class="info-card"><h4>Plantas energéticas e infraestructura crítica</h4><p>Centrales hidroeléctricas, refinerías, oleoductos. La DGAC puede declarar zonas de peligro (D) temporales o permanentes sobre estas instalaciones.</p></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>NOTAM y Cartografía Aeronáutica</h3>
-    <p>Un <strong>NOTAM (Notice to Airmen)</strong> es un aviso oficial de la DGAC que alerta sobre restricciones temporales del espacio aéreo: eventos especiales, trabajos en ruta de vuelo, ejercicios militares, zonas de incendio activo. El piloto remoto <strong>debe revisar los NOTAMs activos</strong> antes de cada operación.</p>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Consulta de NOTAMs</h4><p>Portal DGAC Ecuador → Servicios en línea → NOTAMs activos. También disponible en ForeFlight, UAV Forecast y aplicaciones especializadas para pilotos remotos.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Aplicaciones de geofencing</h4><p>DJI Fly/GO usan bases de datos de zonas restringidas en tiempo real y bloquean automáticamente el despegue en zonas prohibidas. Sin embargo, el piloto sigue siendo legalmente responsable — el geofencing es una ayuda, no una exoneración.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>AIP Ecuador</h4><p>Aeronautical Information Publication — Publicación de Información Aeronáutica oficial con cartas aeronáuticas del espacio aéreo ecuatoriano. Disponible en dgac.gob.ec. Actualización ciclo AIRAC (28 días).</p></div></div>
-    </div>
-    <div class="alert important"><div class="alert-icon">📱</div><p><strong>App recomendada — UAV Forecast:</strong> Muestra clasificación del espacio aéreo, NOTAMs, velocidad del viento en altitud, visibilidad y puntaje de condiciones de vuelo (B-VLOS, VLOS, NO-GO). Disponible gratuita en iOS y Android.</p></div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Vuelo de filmación en Quito rechazado el día del evento</h4>
-    <p>Una productora de video contrata servicios de drone para filmar el concierto en la Plaza de la República de Quito. El piloto certifica tener habilitación DGAC y su DJI Air 2S (595g) está registrado. Cuando enciende el drone el día del evento, el sistema geofencing lo bloquea automáticamente. Revisa la app y descubre que se emitió un NOTAM de restricción 3 días antes por ejercicio militar regional de 48h + el evento es aglomeración de más de 10,000 personas.</p>
-    <div class="abp-questions">
-      <p>❓ ¿Cuántas razones independientes impiden el vuelo ese día? ¿Cuál es la base legal de cada restricción?</p>
-      <p>❓ ¿Podría el piloto haber evitado esta situación? ¿Cuándo y cómo?</p>
-      <p>❓ El cliente dice "desbloquea el geofencing manualmente, yo asumo la responsabilidad". ¿Puede el piloto hacerlo? ¿Qué riesgo asume?</p>
-      <p>❓ Diseña el protocolo de planificación pre-operacional que debió seguirse desde la firma del contrato.</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/Oa6v9hWJgNg" title="Espacio aéreo y zonas restringidas drones" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 3</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">5. Un NOTAM en aviación es:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) El certificado de tipo del UAS</label><label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Un aviso oficial sobre restricciones temporales del espacio aéreo</label><label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) El manual de operaciones del drone</label><label class="quiz-opt"><input type="radio" name="q3a" value="d"> d) La licencia de vuelo del piloto</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">6. ¿El sistema de geofencing de DJI exonera legalmente al piloto de volar en zona restringida?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) Sí, si el sistema bloqueó el vuelo el piloto no tiene responsabilidad</label><label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) No, el geofencing es una ayuda; el piloto sigue siendo legalmente responsable</label><label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Solo si el piloto no tenía acceso a internet ese día</label><label class="quiz-opt"><input type="radio" name="q3b" value="d"> d) Depende del peso del UAS</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod3',{'q3a':'b','q3b':'b'})">Verificar</button>
-    <div class="quiz-result" id="mod3-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo 2</button><button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente: Preflight →</button></div>
-</div>
 
-<!-- ===== MÓDULO 4 ===== -->
-<div class="module-panel" id="mod-4">
-  <div class="module-header">
-    <span class="module-tag">Módulo 4 de 6</span>
-    <h1 class="module-title">Checklist Preflight y Procedimientos de Vuelo Seguro</h1>
-    <p class="module-desc">Inspección previa al vuelo, procedimientos estándar de operación, manejo de emergencias en vuelo y condiciones meteorológicas para vuelo seguro.</p>
-  </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> RAC-107 Sección 107.15 (condición aeronavegable) · Manual del Fabricante · OACI Doc 10019 Capítulo 7</div>
-  <div class="content-section">
-    <h3>Checklist Preflight — Secuencia IMSAFE + PAVE</h3>
-    <div class="alert info"><div class="alert-icon">🧠</div><p><strong>IMSAFE — Evaluación del piloto:</strong> Illness (enfermedad), Medication (medicamentos que afecten reacción), Stress (estrés), Alcohol (últimas 8h), Fatigue (fatiga), Emotion (estado emocional). Si alguno aplica → NO VOLAR.</p></div>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">P</div><div class="step-body"><h4>Piloto — IMSAFE</h4><p>Evaluación personal: condición física y mental. Revisar habilitación vigente, manual de operaciones disponible, seguro activo.</p></div></div>
-      <div class="step"><div class="step-num">A</div><div class="step-body"><h4>Aeronave (UAS)</h4><p>Inspección visual completa: hélices (grietas, desequilibrio), motores (suciedad, corrosión), estructura del frame, cámaras/payload, luces de navegación. Carga de batería &gt;80%.</p></div></div>
-      <div class="step"><div class="step-num">V</div><div class="step-body"><h4>entorno (enVironment)</h4><p>Meteorología: viento &lt;10m/s en tierra, visibilidad &gt;1.5km, sin lluvia ni tormenta eléctrica. Consultar METAR del aeropuerto más cercano o app meteorológica para altitud de vuelo.</p></div></div>
-      <div class="step"><div class="step-num">E</div><div class="step-body"><h4>Entorno operacional</h4><p>Verificar: NOTAMs, zona de vuelo autorizada, obstáculos en área (torres, cables, árboles), personas y vehículos en la zona de aterrizaje, punto de despegue/aterrizaje estable y despejado.</p></div></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Checklist Pre-Despegue (Secuencia Operacional)</h3>
-    <table class="data-table">
-      <thead><tr><th>#</th><th>Ítem</th><th>Acción</th><th>OK</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>Batería UAS</td><td>Carga ≥80%, conexiones firmes, sin hinchazón (LiPo)</td><td>☐</td></tr>
-        <tr><td>2</td><td>Batería controlador</td><td>Carga ≥80%, emparejamiento correcto</td><td>☐</td></tr>
-        <tr><td>3</td><td>Hélices</td><td>Sin grietas, montadas correctamente (CW/CCW), bien apretadas</td><td>☐</td></tr>
-        <tr><td>4</td><td>Calibración IMU/compás</td><td>Sin alertas de calibración, GPS ≥8 satélites, HDOP &lt;1.5</td><td>☐</td></tr>
-        <tr><td>5</td><td>Modo de vuelo</td><td>Confirmar modo P/GPS activo, RTH configurado correctamente</td><td>☐</td></tr>
-        <tr><td>6</td><td>Return to Home (RTH)</td><td>Altura RTH &gt;30m sobre obstáculos más altos en el área</td><td>☐</td></tr>
-        <tr><td>7</td><td>Área de vuelo despejada</td><td>Sin personas a menos de 30m del punto de despegue</td><td>☐</td></tr>
-        <tr><td>8</td><td>Grabación de vuelo</td><td>SD card con espacio suficiente, logging de telemetría activo</td><td>☐</td></tr>
-      </tbody>
+    <h3>Zonas Restringidas para UAS en Ecuador</h3>
+    <table>
+      <tr><th>Zona</th><th>Descripción</th><th>Radio/Altura</th></tr>
+      <tr><td>Aeropuertos</td><td>Zona de exclusión total sin autorización ATC</td><td>5 NM (9.3 km) radio</td></tr>
+      <tr><td>Instalaciones militares</td><td>Prohibido sin permiso Ministerio de Defensa</td><td>Variable</td></tr>
+      <tr><td>Centrales eléctricas</td><td>Infraestructura crítica — zona de exclusión</td><td>1 NM radio</td></tr>
+      <tr><td>Zonas urbanas densas</td><td>Requiere evaluación de riesgo y seguro</td><td>Altitud max 120 m</td></tr>
+      <tr><td>Áreas protegidas SNAP</td><td>Sistema Nacional de Áreas Protegidas — permiso MAE</td><td>Variable</td></tr>
     </table>
-  </div>
-  <div class="content-section">
-    <h3>Procedimientos de Emergencia en Vuelo</h3>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">🔋</div><h4>Batería crítica</h4><p>Al 20-25%: regresar inmediatamente (RTH). Al 10%: aterrizaje de emergencia en el punto más seguro disponible.</p></div>
-      <div class="concept-card"><div class="cc-icon">📡</div><h4>Pérdida de señal</h4><p>El RTH se activa automáticamente. Si el RTH falla: el UAS mantiene posición hover (GPS) o aterriza lentamente (ATTI mode).</p></div>
-      <div class="concept-card"><div class="cc-icon">💨</div><h4>Viento excesivo</h4><p>Si el UAS deriva sin recuperar posición o el motor trabaja al 90%+: descender inmediatamente y aterrizar contra el viento.</p></div>
-      <div class="concept-card"><div class="cc-icon">🔧</div><h4>Falla de motor</h4><p>Activar modo de emergencia del fabricante si disponible. Mantener control y dirigir el UAS hacia zona sin personas. Reportar a DGAC en 24h.</p></div>
+
+    <h3>Geofencing — Tipos y Funcionamiento</h3>
+    <ul>
+      <li><strong>Hard geofence:</strong> el drone no puede cruzar el límite de forma alguna (zona prohibida absoluta). Implementado en firmware.</li>
+      <li><strong>Soft geofence:</strong> emite advertencia y requiere confirmación del operador para cruzar (zona de precaución).</li>
+      <li><strong>Dynamic geofence:</strong> zonas temporales activadas para eventos especiales (concentraciones, accidentes en curso).</li>
+    </ul>
+
+    <div class="tip-box"><strong>Herramientas de consulta:</strong> AirMap, Drone Deploy y la plataforma de la DGAC Ecuador permiten verificar restricciones del espacio aéreo antes de cada operación. Siempre consultar <em>antes</em> del vuelo.</div>
+
+    <div class="vid-label">Video — Zonas Aéreas y Restricciones para Drones</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/Oa6v9hWJgNg" allowfullscreen loading="lazy" title="Zonas y Geofencing Drones"></iframe>
+    </div>
+
+    <!-- SIMULATOR M3 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 3</span>
+      <h4>Escenarios: Zonas y Geofencing</h4>
+      <div class="sim-q">
+        <p>1. Quieres volar a 3 km del aeropuerto de Quito. ¿Qué debes hacer?</p>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="a"> a) Volar libremente si es de madrugada</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="b"> b) Solicitar autorización a la DGAC y al ATC del aeropuerto</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="c"> c) Volar a menos de 50 m de altura sin problema</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="d"> d) Solo avisarle al aeropuerto por teléfono</label>
+      </div>
+      <div class="sim-q">
+        <p>2. El drone muestra una advertencia de zona amarilla (soft geofence). Esto significa:</p>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="a"> a) Puede cruzar libremente</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="b"> b) Es una zona de precaución que requiere confirmación del operador para cruzar</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="c"> c) El drone aterrizará automáticamente</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="d"> d) La batería está baja</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Cuál es el radio de exclusión mínimo alrededor de un aeropuerto en Ecuador?</p>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="a"> a) 1 km</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="b"> b) 5 millas náuticas (9.3 km)</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="c"> c) 500 metros</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="d"> d) 2 km</label>
+      </div>
+      <div class="sim-q">
+        <p>4. ¿En qué clase de espacio aéreo opera la mayoría de los UAS comerciales en Ecuador sin autorización especial?</p>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="a"> a) Clase A</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="b"> b) Clase G (0 – 1200 ft, por debajo de 400 ft)</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="c"> c) Clase C</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="d"> d) Clase B</label>
+      </div>
+      <div class="sim-q">
+        <p>5. Para volar sobre un Área Protegida del SNAP en Ecuador, ¿qué permiso se requiere?</p>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="a"> a) Solo avisar al guarda parques</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="b"> b) Permiso del Ministerio del Ambiente (MAE) y DGAC</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="c"> c) Ninguno si el drone pesa menos de 250 g</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="d"> d) Solo registro del drone</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s3',{s3_1:'b',s3_2:'b',s3_3:'b',s3_4:'b',s3_5:'b'})">Verificar Simulador</button>
+      <div id="s3-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 3</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué tipo de geofence impide cruzar el límite de forma absoluta?</p>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Soft geofence</label>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Hard geofence</label>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Dynamic geofence</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿En qué clase de espacio aéreo operan libremente los UAS bajo 400 ft en Ecuador?</p>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) Clase D</label>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) Clase G</label>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Clase C</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq3',{q3a:'b',q3b:'b'})">Verificar</button>
+      <div id="mq3-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Pérdida de señal durante inspección de puente en Manabí</h4>
-    <p>Un piloto realiza inspección bajo el tablero de un puente vehicular a 15m de altura sobre el río. De repente pierde la señal de video y control del drone. El RTH está configurado para subir a 30m automáticamente — pero hay el tablero del puente encima a 8m. El drone tiene batería al 35%. El río corre a 3 m/s. Hay tráfico vehicular sobre el puente.</p>
-    <div class="abp-questions">
-      <p>❓ ¿Cuál es el riesgo de activar el RTH automático en esta configuración específica? ¿Qué habría pasado?</p>
-      <p>❓ ¿Qué configuración del RTH debió haberse establecido antes de iniciar esta inspección bajo tablero?</p>
-      <p>❓ ¿Qué acción debe tomar el piloto en los primeros 10 segundos tras perder la señal?</p>
-      <p>❓ ¿Cómo habría ayudado tener un observador visual (VO) en esta operación?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/sKDPPSYCLF8" title="Checklist preflight drones seguridad operacional" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 4</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">7. En el checklist PAVE, la "V" corresponde a:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) Velocidad máxima del UAS</label><label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) Entorno (enVironment) — condiciones meteorológicas y contexto</label><label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) Video en tiempo real verificado</label><label class="quiz-opt"><input type="radio" name="q4a" value="d"> d) Vuelo VLOS confirmado</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">8. ¿A qué porcentaje de batería debe iniciarse el regreso inmediato según buenas prácticas?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) 50%</label><label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) 30%</label><label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) 20-25%</label><label class="quiz-opt"><input type="radio" name="q4b" value="d"> d) 10%</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod4',{'q4a':'b','q4b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod4-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo 3</button><button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente: Gestión de Riesgo →</button></div>
 </div>
 
-<!-- ===== MÓDULO 5 ===== -->
-<div class="module-panel" id="mod-5">
-  <div class="module-header">
-    <span class="module-tag">Módulo 5 de 6</span>
-    <h1 class="module-title">Gestión del Riesgo Operacional — SORA y CONOPS</h1>
-    <p class="module-desc">Metodología SORA (Specific Operations Risk Assessment) de JARUS adoptada por la OACI para evaluar el riesgo de operaciones UAS fuera de categoría abierta.</p>
+<!-- ====== MÓDULO 4 ====== -->
+<div class="mod-card anim-fadein" id="m4">
+  <div class="mod-header">
+    <div class="mod-num">4</div>
+    <div><h2>Procedimientos Pre-vuelo — PAVE e IMSAFE</h2>
+    <small style="opacity:.8">Listas de verificación para la toma de decisiones segura antes de cada vuelo</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> JARUS SORA v2.0 · OACI Doc 10019 Capítulo 10 · RAC-107 Sección 107.200 (operaciones especiales) · EASA UAS Categoría Específica</div>
-  <div class="content-section">
-    <h3>¿Qué es el SORA?</h3>
-    <p>El <strong>Specific Operations Risk Assessment (SORA)</strong> es el estándar internacional para evaluar el riesgo de operaciones UAS que no encajan en la "categoría abierta" (VLOS rutinario, sin personas en zona de riesgo). El SORA determina si la operación requiere mitigaciones técnicas y qué nivel de garantías de seguridad (SAIL) se necesita.</p>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">👤</div><h4>Riesgo en Tierra (GRC)</h4><p><strong>Ground Risk Class.</strong> Evalúa la población en la zona de operación. De 1 (área despoblada) a 7+ (zona urbana densa). Factor clave: densidad de personas bajo la trayectoria.</p></div>
-      <div class="concept-card"><div class="cc-icon">✈️</div><h4>Riesgo en Aire (ARC)</h4><p><strong>Air Risk Class.</strong> Evalúa el conflicto con otras aeronaves. De a (muy bajo, espacio no controlado rural) a d (alto, área terminal de aeropuerto).</p></div>
-      <div class="concept-card"><div class="cc-icon">📊</div><h4>SAIL — Nivel de Garantía</h4><p><strong>Specific Assurance and Integrity Level.</strong> Del I (mínimo) al VI (máximo). Determina qué medidas operacionales, técnicas y organizativas son obligatorias.</p></div>
+  <div class="mod-body">
+    <p>Los checklist de preflight son herramientas de gestión del riesgo adaptadas desde la aviación tripulada. El acrónimo <strong>PAVE</strong> evalúa los factores del entorno de la misión, mientras que <strong>IMSAFE</strong> evalúa las condiciones del piloto remoto. Ningún vuelo debe iniciarse si alguno de estos factores presenta riesgo no mitigado.</p>
+
+    <!-- SVG PAVE + IMSAFE -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Checklists PAVE e IMSAFE — Preflight Decision Making</div>
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- PAVE -->
+        <rect x="5" y="5" width="330" height="190" rx="12" fill="#e8f0fb" stroke="#1D51A3" stroke-width="2"/>
+        <text x="170" y="30" text-anchor="middle" fill="#163d7a" font-size="13" font-weight="800">PAVE</text>
+        <text x="170" y="46" text-anchor="middle" fill="#1D51A3" font-size="9">Evaluación del entorno de vuelo</text>
+        <rect x="20" y="55" width="300" height="34" rx="7" fill="#1D51A3"/>
+        <text x="38" y="68" fill="#F0C319" font-size="12" font-weight="800">P</text>
+        <text x="55" y="68" fill="#fff" font-size="10" font-weight="700">ilot</text>
+        <text x="55" y="80" fill="rgba(255,255,255,.8)" font-size="8">Competencia y habilitación del RPIC</text>
+        <rect x="20" y="95" width="300" height="34" rx="7" fill="#3a7bdc"/>
+        <text x="38" y="108" fill="#F0C319" font-size="12" font-weight="800">A</text>
+        <text x="55" y="108" fill="#fff" font-size="10" font-weight="700">ircraft</text>
+        <text x="55" y="120" fill="rgba(255,255,255,.8)" font-size="8">Estado del UAS, batería, calibración</text>
+        <rect x="20" y="135" width="300" height="34" rx="7" fill="#1D51A3"/>
+        <text x="38" y="148" fill="#F0C319" font-size="12" font-weight="800">V</text>
+        <text x="55" y="148" fill="#fff" font-size="10" font-weight="700">ironment</text>
+        <text x="55" y="160" fill="rgba(255,255,255,.8)" font-size="8">Clima, viento, visibilidad, espacio aéreo</text>
+        <rect x="20" y="175" width="300" height="20" rx="7" fill="#3a7bdc"/>
+        <text x="38" y="188" fill="#F0C319" font-size="12" font-weight="800">E</text>
+        <text x="55" y="188" fill="#fff" font-size="9" font-weight="700">xternal pressures — Presión del entorno</text>
+
+        <!-- IMSAFE -->
+        <rect x="365" y="5" width="330" height="190" rx="12" fill="#e6f9f1" stroke="#22a86b" stroke-width="2"/>
+        <text x="530" y="30" text-anchor="middle" fill="#166a45" font-size="13" font-weight="800">IMSAFE</text>
+        <text x="530" y="46" text-anchor="middle" fill="#22a86b" font-size="9">Autoevaluación del piloto remoto (RPIC)</text>
+        <line x1="380" y1="55" x2="680" y2="55" stroke="#22a86b" stroke-width="1"/>
+        <text x="380" y="73" fill="#166a45" font-size="9"><tspan font-weight="700">I</tspan>llness — Enfermedad · ¿Estoy sano?</text>
+        <text x="380" y="93" fill="#166a45" font-size="9"><tspan font-weight="700">M</tspan>edication — Medicamentos · ¿Afectan concentración?</text>
+        <text x="380" y="113" fill="#166a45" font-size="9"><tspan font-weight="700">S</tspan>tress — Estrés · ¿Estoy mentalmente apto?</text>
+        <text x="380" y="133" fill="#166a45" font-size="9"><tspan font-weight="700">A</tspan>lcohol — ¿He consumido alcohol en 8 h previas?</text>
+        <text x="380" y="153" fill="#166a45" font-size="9"><tspan font-weight="700">F</tspan>atigue — Fatiga · ¿He descansado suficientemente?</text>
+        <text x="380" y="173" fill="#166a45" font-size="9"><tspan font-weight="700">E</tspan>motion — Emociones · ¿Estoy emocionalmente estable?</text>
+        <rect x="370" y="180" width="320" height="14" rx="5" fill="#22a86b" opacity=".15"/>
+        <text x="530" y="191" text-anchor="middle" fill="#166a45" font-size="8" font-weight="700">Respuesta NO en cualquier ítem = NO VOLAR</text>
+      </svg>
+    </div>
+
+    <h3>Checklist Pre-vuelo del UAS (física)</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><p>Inspección visual de estructura, hélices y motores</p></div>
+      <div class="step"><div class="num">2</div><p>Verificar nivel de batería ≥ 80% para misión normal</p></div>
+      <div class="step"><div class="num">3</div><p>Calibrar brújula e IMU en zona libre de interferencias</p></div>
+      <div class="step"><div class="num">4</div><p>Confirmar Fix GPS (mínimo 6 satélites)</p></div>
+      <div class="step"><div class="num">5</div><p>Verificar enlace de datos y telemetría</p></div>
+      <div class="step"><div class="num">6</div><p>Establecer RTH (Return to Home) y altura de seguridad</p></div>
+    </div>
+
+    <div class="warn-box"><strong>Regla 30/30 para tormentas eléctricas:</strong> Si escuchas un trueno en menos de 30 segundos tras el relámpago → aterrizar inmediatamente. No reiniciar vuelo hasta 30 minutos después del último trueno.</div>
+
+    <div class="vid-label">Video — Procedimientos de Preflight para Drones</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/sKDPPSYCLF8" allowfullscreen loading="lazy" title="Preflight PAVE IMSAFE Drones"></iframe>
+    </div>
+
+    <!-- SIMULATOR M4 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 4</span>
+      <h4>Escenarios: Preflight PAVE / IMSAFE</h4>
+      <div class="sim-q">
+        <p>1. Llegaste a la zona de vuelo y el GPS muestra solo 4 satélites. ¿Qué decides?</p>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="a"> a) Volar igual — el drone tiene ATTI mode</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="b"> b) Esperar hasta obtener mínimo 6 satélites o abortar la misión</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="c"> c) Calibrar la brújula y despegar</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="d"> d) Volar a baja altura donde no hace falta GPS</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Según IMSAFE, tomaste un antihistamínico esta mañana. ¿Qué haces?</p>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="a"> a) Volar normal — no es alcohol</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="b"> b) Evaluar si el medicamento produce somnolencia; si sí → no volar</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="c"> c) Consultar solo si vas a volar más de 1 hora</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="d"> d) Solo aplica a medicamentos controlados</label>
+      </div>
+      <div class="sim-q">
+        <p>3. La batería del drone está al 65% antes de la misión. Según el checklist, ¿qué haces?</p>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="a"> a) Volar — queda suficiente para una misión corta</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="b"> b) Cargar la batería al menos al 80% o usar una batería diferente</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="c"> c) Usar el drone en modo ahorro de energía</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="d"> d) Volar más bajo para compensar</label>
+      </div>
+      <div class="sim-q">
+        <p>4. En PAVE, la "E" de External Pressures representa:</p>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="a"> a) El estado eléctrico del drone</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="b"> b) La presión del entorno social o comercial para completar la misión aun con riesgos</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="c"> c) El viento externo</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="d"> d) Las condiciones de espacio aéreo</label>
+      </div>
+      <div class="sim-q">
+        <p>5. Escuchas un trueno 20 segundos después de un relámpago. ¿Qué haces según la Regla 30/30?</p>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="a"> a) Terminar rápido la misión en 5 minutos</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="b"> b) Aterrizar inmediatamente y esperar 30 min tras el último trueno</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="c"> c) Subir más para evitar el rayo</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="d"> d) Seguir si llueve poco</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s4',{s4_1:'b',s4_2:'b',s4_3:'b',s4_4:'b',s4_5:'b'})">Verificar Simulador</button>
+      <div id="s4-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 4</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué evalúa el checklist IMSAFE?</p>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) El estado del UAS</label>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) Las condiciones físicas y mentales del piloto remoto</label>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) Las condiciones meteorológicas</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Cuántos satélites GPS mínimos se necesitan para un vuelo seguro?</p>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) 3</label>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) 6</label>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) 10</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq4',{q4a:'b',q4b:'b'})">Verificar</button>
+      <div id="mq4-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="content-section">
-    <h3>Niveles SAIL y sus Requisitos</h3>
-    <table class="data-table">
-      <thead><tr><th>SAIL</th><th>GRC + ARC típico</th><th>Operación típica</th><th>Requisitos principales</th></tr></thead>
-      <tbody>
-        <tr><td><strong>I</strong></td><td>GRC 1-2, ARC a</td><td>VLOS en campo abierto sin personas</td><td>Manual de operaciones básico, checklist</td></tr>
-        <tr><td><strong>II</strong></td><td>GRC 3, ARC a-b</td><td>VLOS sobre carretera rural, pocos transeúntes</td><td>Plan de vuelo, seguro, procedimientos de emergencia</td></tr>
-        <tr><td><strong>III</strong></td><td>GRC 4, ARC b</td><td>EVLOS en área semiurbana</td><td>Entrenamiento formal piloto, sistema de comunicación con ATC</td></tr>
-        <tr><td><strong>IV</strong></td><td>GRC 5, ARC c</td><td>BVLOS sobre área suburbana</td><td>Certificación del UAS, sistema C2 robusto, DAA básico</td></tr>
-        <tr><td><strong>V-VI</strong></td><td>GRC 6+, ARC d</td><td>BVLOS sobre ciudad densa/aeropuerto</td><td>Certificación EASA tipo, DAA certificado, redundancias múltiples</td></tr>
-      </tbody>
+</div>
+
+<!-- ====== MÓDULO 5 ====== -->
+<div class="mod-card anim-fadein" id="m5">
+  <div class="mod-header">
+    <div class="mod-num">5</div>
+    <div><h2>Evaluación de Riesgo SORA y Concepto de Operaciones (ConOps)</h2>
+    <small style="opacity:.8">Metodología JARUS para la categorización y gestión del riesgo UAS</small></div>
+  </div>
+  <div class="mod-body">
+    <p>La <strong>Evaluación Específica de Riesgo de Operaciones (SORA, por sus siglas en inglés)</strong> es la metodología desarrollada por la <strong>Junta de Autoridades para Sistemas de Aeronaves No Tripuladas (JARUS, por sus siglas en inglés)</strong> para evaluar el riesgo de una operación UAS y determinar el nivel de mitigación requerido. El <strong>Concepto de Operaciones (ConOps)</strong> es el documento que describe la operación completa.</p>
+
+    <h3>Estructura del Proceso SORA</h3>
+    <!-- SVG SORA -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Proceso SORA — Evaluación de Riesgo UAS</div>
+      <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="s1g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="s2g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+          <linearGradient id="s3g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="s4g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
+        </defs>
+        <!-- Step 1 -->
+        <rect x="5" y="10" width="155" height="160" rx="11" fill="url(#s1g)"/>
+        <text x="82" y="38" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">PASO 1</text>
+        <text x="82" y="55" text-anchor="middle" fill="#F0C319" font-size="10" font-weight="700">ConOps</text>
+        <text x="82" y="75" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Descripción de</text>
+        <text x="82" y="89" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">la operación</text>
+        <text x="82" y="108" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Aeronave · Piloto</text>
+        <text x="82" y="122" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Zona · Condiciones</text>
+        <polygon points="160,90 175,80 175,100" fill="url(#s1g)"/>
+
+        <!-- Step 2 -->
+        <rect x="178" y="10" width="155" height="160" rx="11" fill="url(#s2g)"/>
+        <text x="255" y="38" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">PASO 2</text>
+        <text x="255" y="55" text-anchor="middle" fill="#F0C319" font-size="10" font-weight="700">GRC · ARC</text>
+        <text x="255" y="75" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">GRC: Categoría de</text>
+        <text x="255" y="89" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Riesgo en Suelo</text>
+        <text x="255" y="108" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">ARC: Categoría de</text>
+        <text x="255" y="122" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Riesgo Aéreo</text>
+        <polygon points="333,90 348,80 348,100" fill="url(#s2g)"/>
+
+        <!-- Step 3 -->
+        <rect x="351" y="10" width="155" height="160" rx="11" fill="url(#s3g)"/>
+        <text x="428" y="38" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">PASO 3</text>
+        <text x="428" y="55" text-anchor="middle" fill="#F0C319" font-size="10" font-weight="700">SAIL</text>
+        <text x="428" y="75" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Nivel de Seguridad</text>
+        <text x="428" y="89" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">de la Operación</text>
+        <text x="428" y="108" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">SAIL I (bajo riesgo)</text>
+        <text x="428" y="122" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">SAIL VI (alto riesgo)</text>
+        <polygon points="506,90 521,80 521,100" fill="url(#s3g)"/>
+
+        <!-- Step 4 -->
+        <rect x="524" y="10" width="172" height="160" rx="11" fill="url(#s4g)"/>
+        <text x="610" y="38" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">PASO 4</text>
+        <text x="610" y="55" text-anchor="middle" fill="#F0C319" font-size="10" font-weight="700">OSO + TMPR</text>
+        <text x="610" y="75" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Objetivos de</text>
+        <text x="610" y="89" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Seguridad (OSO)</text>
+        <text x="610" y="108" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">Medidas de</text>
+        <text x="610" y="122" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="8">mitigación TMPR</text>
+      </svg>
+    </div>
+
+    <h3>Categorías Operacionales EASA/DGAC</h3>
+    <table>
+      <tr><th>Categoría</th><th>Riesgo</th><th>Requisitos</th><th>Ejemplo</th></tr>
+      <tr><td><strong>OPEN (Abierta)</strong></td><td>Bajo</td><td>Solo registro; VLOS; &lt; 120 m</td><td>Fotos recreativas, inspección básica</td></tr>
+      <tr><td><strong>SPECIFIC (Específica)</strong></td><td>Medio</td><td>SORA + autorización DGAC</td><td>Fotogrametría urbana, entrega de paquetes</td></tr>
+      <tr><td><strong>CERTIFIED (Certificada)</strong></td><td>Alto</td><td>Certificación de tipo aeronave</td><td>Transporte de personas, UAS > 150 kg</td></tr>
     </table>
-  </div>
-  <div class="content-section">
-    <h3>ConOps — Concept of Operations</h3>
-    <p>El <strong>Concepto de Operaciones (ConOps)</strong> es el documento central del SORA: describe detalladamente cómo se ejecutará la operación, las mitigaciones de riesgo aplicadas y las contingencias. Es el equivalente al plan de vuelo para operaciones especiales.</p>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">📍</div><div class="step-body"><h4>Descripción de la operación</h4><p>Qué se hará, dónde, cuándo, con qué UAS, cuántos pilotos, altitud máxima, distancias mínimas a obstáculos y personas.</p></div></div>
-      <div class="step"><div class="step-num">⚠️</div><div class="step-body"><h4>Identificación de peligros</h4><p>Colisión con aeronave tripulada, pérdida de enlace de datos, falla de motor, interferencia electromagnética, condiciones meteorológicas adversas.</p></div></div>
-      <div class="step"><div class="step-num">🛡️</div><div class="step-body"><h4>Mitigaciones operacionales (M1/M2)</div><p>M1: reducir probabilidad del peligro (checklist riguroso, formación, procedimientos). M2: reducir consecuencias (paracaídas balístico, zona de amortiguación buffer).</p></div></div>
-      <div class="step"><div class="step-num">🚁</div><div class="step-body"><h4>Plan de contingencias</h4><p>Protocolo para cada peligro identificado: RTH, aterrizaje de emergencia designado, contacto con ATC, notificación a ECU-911.</p></div></div>
+
+    <h3>Contenido del Concepto de Operaciones (ConOps)</h3>
+    <ul>
+      <li>Descripción del UAS (tipo, MTOW, autonomía, payload)</li>
+      <li>Descripción de la operación: zona, altitud, distancia, duración</li>
+      <li>Evaluación de riesgos GRC y ARC</li>
+      <li>Medidas de mitigación técnicas y procedimentales</li>
+      <li>Procedimientos de emergencia y contingencia</li>
+      <li>Datos del RPIC y certificaciones</li>
+    </ul>
+
+    <div class="vid-label">Video — Metodología SORA para Drones</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/m3dGrJEQfRc" allowfullscreen loading="lazy" title="SORA ConOps Drones"></iframe>
+    </div>
+
+    <!-- SIMULATOR M5 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 5</span>
+      <h4>Escenarios: SORA y ConOps</h4>
+      <div class="sim-q">
+        <p>1. Quieres hacer fotogrametría sobre el centro histórico de Quito (zona urbana densa). ¿Qué categoría operacional aplica?</p>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="a"> a) OPEN — no requiere autorización especial</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="b"> b) SPECIFIC — requiere SORA y autorización DGAC</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="c"> c) CERTIFIED — requiere certificación de tipo</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="d"> d) Ninguna — solo registrar el drone</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿Cuántos niveles SAIL existen en la metodología SORA?</p>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="a"> a) 3 (bajo, medio, alto)</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="b"> b) 6 (SAIL I al SAIL VI)</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="c"> c) 4 (A, B, C, D)</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="d"> d) 10</label>
+      </div>
+      <div class="sim-q">
+        <p>3. El GRC en SORA evalúa:</p>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="a"> a) El riesgo de colisión con otras aeronaves</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="b"> b) La categoría de riesgo para personas en el suelo</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="c"> c) El estado técnico del UAS</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="d"> d) El costo de la operación</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Un ConOps debe incluir procedimientos de:</p>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="a"> a) Marketing de la empresa</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="b"> b) Emergencia y contingencia ante fallo del UAS</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="c"> c) Facturación del servicio</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="d"> d) Solo la ruta de vuelo</label>
+      </div>
+      <div class="sim-q">
+        <p>5. La categoría CERTIFIED aplica cuando:</p>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="a"> a) El drone pesa menos de 2 kg</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="b"> b) El riesgo es alto: UAS > 150 kg o transporte de personas</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="c"> c) La operación es nocturna</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="d"> d) Se usa en zonas rurales</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s5',{s5_1:'b',s5_2:'b',s5_3:'b',s5_4:'b',s5_5:'b'})">Verificar Simulador</button>
+      <div id="s5-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 5</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué significa SORA en el contexto de UAS?</p>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) Specific Operations Risk Assessment</label>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) Standard Operation Remote Aviation</label>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) Safety Operations Review Analysis</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Cuál categoría operacional requiere SORA y autorización DGAC?</p>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) OPEN</label>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) SPECIFIC</label>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) CERTIFIED</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq5',{q5a:'a',q5b:'b'})">Verificar</button>
+      <div id="mq5-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Empresa de delivery con drones en Quito quiere aprobación BVLOS</h4>
-    <p>Una empresa de logística desea operar entregas de medicamentos con drones BVLOS entre 3 clínicas en el norte de Quito (sector densamente poblado, bajo la TMA del aeropuerto SEQM). El drone propuesto: MTOW 8kg, alcance 25km, sistema de paracaídas automático. La empresa estima 20 vuelos diarios en horario 8h-18h.</p>
-    <div class="abp-questions">
-      <p>❓ Determina el GRC (0-7) y ARC (a-d) para esta operación. ¿Cuál es el SAIL resultante?</p>
-      <p>❓ ¿Qué componentes obligatorios tendría el ConOps para SAIL IV o superior?</p>
-      <p>❓ El paracaídas automático es una mitigación M1 o M2. Explica cuál y cómo reduce el riesgo calculado.</p>
-      <p>❓ ¿Cuáles son los 3 principales riesgos de una operación BVLOS en TMA de aeropuerto ocupado? ¿Qué mitigaciones técnicas son indispensables?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/m3dGrJEQfRc" title="SORA riesgo operacional drones BVLOS" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 5</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">9. En el SORA, el GRC evalúa principalmente:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) El riesgo de colisión con otras aeronaves</label><label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) La densidad de población en la zona de operación (riesgo en tierra)</label><label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) El nivel de confiabilidad del UAS</label><label class="quiz-opt"><input type="radio" name="q5a" value="d"> d) La experiencia del piloto remoto</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">10. El SAIL (Specific Assurance and Integrity Level) en el SORA va de:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) 1 a 10</label><label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) A a F</label><label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) I a VI</label><label class="quiz-opt"><input type="radio" name="q5b" value="d"> d) 0 a 5</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod5',{'q5a':'b','q5b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod5-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo 4</button><button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente: Mantenimiento →</button></div>
 </div>
 
-<!-- ===== MÓDULO 6 ===== -->
-<div class="module-panel" id="mod-6">
-  <div class="module-header">
-    <span class="module-tag">Módulo 6 de 6</span>
-    <h1 class="module-title">Mantenimiento, Bitácoras y Registro DGAC</h1>
-    <p class="module-desc">Programa de mantenimiento preventivo del UAS, gestión de baterías LiPo, documentación obligatoria y procedimientos de baja o transferencia ante la DGAC.</p>
+<!-- ====== MÓDULO 6 ====== -->
+<div class="mod-card anim-fadein" id="m6">
+  <div class="mod-header">
+    <div class="mod-num">6</div>
+    <div><h2>Mantenimiento de UAS y Bitácoras de Vuelo</h2>
+    <small style="opacity:.8">Inspección, mantenimiento preventivo y registro obligatorio de operaciones</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> RAC-107 Sección 107.15 (Condición aeronavegable) · Manual del fabricante del UAS · IATA Li-ion and Lithium Metal Battery Guidance</div>
-  <div class="content-section">
-    <h3>Programa de Mantenimiento Preventivo del UAS</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">🕐</div><div class="step-body"><h4>Inspección pre-vuelo (cada vuelo)</h4><p>Checklist PAVE completo. Inspección visual de hélices, frame, cámaras, conectores. Verificación firmware actualizado si hay conectividad.</p></div></div>
-      <div class="step"><div class="step-num">📅</div><div class="step-body"><h4>Mantenimiento mensual (o cada 20 horas de vuelo)</h4><p>Limpieza de motores y ventiladores con aire comprimido. Verificar y limpiar conectores XT30/XT60. Revisar logs de vuelo para detectar errores recurrentes. Calibrar IMU y compás en campo abierto.</p></div></div>
-      <div class="step"><div class="step-num">🔧</div><div class="step-body"><h4>Mantenimiento trimestral (o cada 100 horas)</h4><p>Verificar desgaste de engranes (si aplica). Reemplazar hélices preventivamente. Inspección estructural del frame con lupas para micro-grietas. Actualizar certificado de calibración de sensores.</p></div></div>
-      <div class="step"><div class="step-num">🏭</div><div class="step-body"><h4>Servicio técnico autorizado (anual)</h4><p>Revisión completa por centro de servicio autorizado del fabricante. Obligatoria para UAS usados en operaciones comerciales de alto riesgo. Certificado de aeronavegabilidad renovado.</p></div></div>
+  <div class="mod-body">
+    <p>El mantenimiento sistemático del UAS es obligatorio por el RAC-107 y esencial para la seguridad operacional. Las <strong>Bitácoras de Vuelo (BV)</strong> son el registro oficial de cada operación; deben conservarse mínimo 12 meses y estar disponibles para inspección de la DGAC en cualquier momento.</p>
+
+    <h3>Plan de Mantenimiento Preventivo</h3>
+    <!-- SVG plan mantenimiento -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Ciclo de Mantenimiento UAS — Pre-vuelo / Post-vuelo / Periódico</div>
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <rect x="5" y="10" width="210" height="140" rx="12" fill="#e8f0fb" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="110" y="34" text-anchor="middle" fill="#163d7a" font-size="11" font-weight="700">PRE-VUELO</text>
+        <text x="110" y="52" text-anchor="middle" fill="#163d7a" font-size="8" font-weight="600">(Cada operación)</text>
+        <text x="15" y="72" fill="#2e4060" font-size="8">✓ Inspección visual hélices/motores</text>
+        <text x="15" y="87" fill="#2e4060" font-size="8">✓ Batería nivel, ciclos, hinchazón</text>
+        <text x="15" y="102" fill="#2e4060" font-size="8">✓ Calibración IMU/brújula</text>
+        <text x="15" y="117" fill="#2e4060" font-size="8">✓ Firmware actualizado</text>
+        <text x="15" y="132" fill="#2e4060" font-size="8">✓ Enlace de datos operativo</text>
+
+        <rect x="245" y="10" width="210" height="140" rx="12" fill="#e6f9f1" stroke="#22a86b" stroke-width="1.5"/>
+        <text x="350" y="34" text-anchor="middle" fill="#166a45" font-size="11" font-weight="700">POST-VUELO</text>
+        <text x="350" y="52" text-anchor="middle" fill="#166a45" font-size="8" font-weight="600">(Cada operación)</text>
+        <text x="255" y="72" fill="#166a45" font-size="8">✓ Revisar logs de vuelo</text>
+        <text x="255" y="87" fill="#166a45" font-size="8">✓ Inspección por golpes/daños</text>
+        <text x="255" y="102" fill="#166a45" font-size="8">✓ Limpiar hélices y sensores</text>
+        <text x="255" y="117" fill="#166a45" font-size="8">✓ Cargar baterías (almacenar al 60%)</text>
+        <text x="255" y="132" fill="#166a45" font-size="8">✓ Registrar en bitácora de vuelo</text>
+
+        <rect x="485" y="10" width="210" height="140" rx="12" fill="#f5f0ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="590" y="34" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700">PERIÓDICO</text>
+        <text x="590" y="52" text-anchor="middle" fill="#5b21b6" font-size="8" font-weight="600">(50-100 h de vuelo)</text>
+        <text x="495" y="72" fill="#5b21b6" font-size="8">✓ Reemplazo de hélices</text>
+        <text x="495" y="87" fill="#5b21b6" font-size="8">✓ Revisión de motores (vibración)</text>
+        <text x="495" y="102" fill="#5b21b6" font-size="8">✓ Actualización firmware/SW</text>
+        <text x="495" y="117" fill="#5b21b6" font-size="8">✓ Revisión estructura (grietas)</text>
+        <text x="495" y="132" fill="#5b21b6" font-size="8">✓ Calibración de sensores</text>
+      </svg>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Gestión de Baterías LiPo — Seguridad Crítica</h3>
-    <div class="info-grid anim-fadein">
-      <div class="info-card danger"><h4>Señales de batería defectuosa</h4><p>Hinchazón (puffing) — inutilizar de inmediato. Calor excesivo al cargar. Pérdida de capacidad &gt;20% vs. nueva. Descarga rápida inesperada.</p></div>
-      <div class="info-card gold"><h4>Almacenamiento correcto</h4><p>Cargar al 50-60% para almacenamiento &gt;72h. Temperatura ideal: 15-25°C. Bolsa ignífuga anti-LiPo para transporte y almacenamiento. Nunca dejar cargando sin supervisión.</p></div>
-      <div class="info-card gold"><h4>Ciclos de vida</h4><p>Las baterías LiPo de drones tienen 200-400 ciclos típicamente. Registrar cada ciclo. Reemplazar al detectar capacidad reducida o celdas desbalanceadas.</p></div>
-      <div class="info-card danger"><h4>Disposición final</h4><p>Las baterías LiPo NO van a la basura ordinaria. Llevar a puntos de recolección de residuos electrónicos. En Ecuador: registro en el Ministerio del Ambiente si son &gt;1kg.</p></div>
-    </div>
-    <div class="alert danger"><div class="alert-icon">🔥</div><p><strong>Incendio de batería LiPo:</strong> Temperatura de ignición: 130-150°C. Un incendio LiPo genera gases tóxicos (HF, CO) y es MUY difícil de extinguir. Usar arena seca o extintor clase D. NO agua (reacción exotérmica violenta). El dron nunca debe transportarse con la batería conectada en avión de pasajeros.</p></div>
-  </div>
-  <div class="content-section">
-    <h3>Bitácora de Vuelo — Requisitos RAC-107</h3>
-    <p>El RAC-107 exige que cada piloto remoto mantenga una <strong>bitácora de vuelo</strong> con los siguientes datos por operación:</p>
-    <table class="data-table">
-      <thead><tr><th>Campo</th><th>Contenido mínimo</th></tr></thead>
-      <tbody>
-        <tr><td>Fecha y hora (UTC)</td><td>Inicio y fin de cada vuelo</td></tr>
-        <tr><td>Identificación del UAS</td><td>Número de registro DGAC + número de serie</td></tr>
-        <tr><td>Identificación del piloto</td><td>Nombre + número de habilitación DGAC</td></tr>
-        <tr><td>Ubicación</td><td>Coordenadas GPS del área de operación</td></tr>
-        <tr><td>Tiempo de vuelo</td><td>Horas y minutos de vuelo efectivo</td></tr>
-        <tr><td>Tipo de operación</td><td>Fotografía, inspección, cartografía, etc.</td></tr>
-        <tr><td>Incidentes</td><td>Cualquier anomalía, emergencia o daño ocurrido</td></tr>
-        <tr><td>Firma</td><td>Piloto remoto responsable</td></tr>
-      </tbody>
+
+    <h3>Contenido Obligatorio de la Bitácora de Vuelo</h3>
+    <table>
+      <tr><th>Campo</th><th>Descripción</th></tr>
+      <tr><td>Fecha y hora de vuelo</td><td>Hora local y UTC de inicio y fin</td></tr>
+      <tr><td>Identificación del UAS</td><td>Número de registro DGAC, modelo, serie</td></tr>
+      <tr><td>RPIC</td><td>Nombre, habilitación, firma</td></tr>
+      <tr><td>Zona de operación</td><td>Coordenadas GPS o descripción del área</td></tr>
+      <tr><td>Tiempo de vuelo</td><td>Duración total y ciclos de batería usados</td></tr>
+      <tr><td>Incidencias</td><td>Fallas, anomalías, acciones correctivas</td></tr>
+      <tr><td>Observaciones</td><td>Condiciones meteorológicas, propósito de la misión</td></tr>
     </table>
-    <div class="alert info"><div class="alert-icon">📱</div><p><strong>Bitácora digital:</strong> Apps como DJI Flight Hub, AirData UAV o Google Sheets con plantilla estandarizada son aceptadas por la DGAC siempre que los datos sean completos y respaldados. Los logs de telemetría del fabricante (archivos DAT/CSV) complementan pero no reemplazan la bitácora formal.</p></div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Auditoría DGAC a empresa de fotografía aérea</h4>
-    <p>La DGAC realiza una auditoría sorpresiva a una empresa de fotografía aérea con 3 DJI Matrice 300 RTK registrados. Los hallazgos: Piloto A tiene habilitación vencida hace 6 meses; la bitácora del mes anterior tiene 12 vuelos sin coordenadas GPS ni tiempo de vuelo exacto; una batería tiene el "puffing" visible; el seguro de responsabilidad civil venció hace 3 semanas.</p>
-    <div class="abp-questions">
-      <p>❓ Clasifica cada hallazgo (crítico/mayor/menor) y asigna la sanción RAC-107 correspondiente.</p>
-      <p>❓ ¿Puede el Piloto B (habilitación vigente) continuar volando durante la auditoría? ¿Con qué condiciones?</p>
-      <p>❓ ¿Qué acción inmediata debe tomarse con la batería con puffing? ¿Por qué es un hallazgo crítico de seguridad?</p>
-      <p>❓ Diseña un sistema de gestión documental que prevenga cada uno de los 4 hallazgos encontrados.</p>
+
+    <h3>Manejo y Almacenamiento de Baterías LiPo</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><p>Almacenar al 40-60% de carga si no se usarán por más de 3 días</p></div>
+      <div class="step"><div class="num">2</div><p>Temperatura de almacenamiento: 5-25°C lejos de materiales inflamables</p></div>
+      <div class="step"><div class="num">3</div><p>Nunca cargar batería caliente (esperar 15 min post-vuelo)</p></div>
+      <div class="step"><div class="step p">&gt; </div><p>Desechar en contenedor ignífugo si está hinchada o dañada</p></div>
+      <div class="step"><div class="num">4</div><p>Revisar ciclos: baterías LiPo degradan tras 200-300 ciclos</p></div>
+    </div>
+
+    <div class="vid-label">Video — Mantenimiento y Bitácoras para Drones</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/K3oFNJHzJoM" allowfullscreen loading="lazy" title="Mantenimiento UAS Bitácoras"></iframe>
+    </div>
+
+    <!-- SIMULATOR M6 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 6</span>
+      <h4>Escenarios: Mantenimiento y Bitácoras</h4>
+      <div class="sim-q">
+        <p>1. Terminas el vuelo y la batería LiPo está al 90%. No vuelas hasta en 5 días. ¿Qué haces?</p>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="a"> a) Dejarla al 90% hasta el próximo vuelo</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="b"> b) Descargarla al 40-60% (modo almacenamiento)</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="c"> c) Cargarla al 100% para tenerla lista</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="d"> d) Desecharla si no se va a usar</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Detectas que una hélice tiene una pequeña grieta en la punta. ¿Qué haces?</p>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="a"> a) Volar con precaución si es pequeña</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="b"> b) Reemplazar la hélice antes del vuelo</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="c"> c) Aplicar cinta adhesiva y continuar</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="d"> d) Reducir la velocidad de vuelo</label>
+      </div>
+      <div class="sim-q">
+        <p>3. La bitácora de vuelo debe conservarse por un mínimo de:</p>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="a"> a) 1 mes</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="b"> b"> 12 meses</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="c"> c) 3 años</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="d"> d) No hay obligación de conservarla</label>
+      </div>
+      <div class="sim-q">
+        <p>4. La batería LiPo llega caliente tras el vuelo. ¿Cuándo la cargas?</p>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="a"> a) Inmediatamente para ahorrar tiempo</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="b"> b) Esperar al menos 15 minutos hasta que se enfríe</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="c"> c) Meterla al refrigerador para enfriarla rápido</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="d"> d) Cargar a la mitad de la corriente normal</label>
+      </div>
+      <div class="sim-q">
+        <p>5. Una batería LiPo comienza a hincharse (puffy). ¿Qué haces?</p>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="a"> a) Continuar usándola con vuelos más cortos</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="b"> b"> Desecharla en contenedor ignífugo — es un peligro de incendio</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="c"> c) Descargarla completamente y volver a cargar</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="d"> d) Presionarla para devolver la forma</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s6',{s6_1:'b',s6_2:'b',s6_3:'b',s6_4:'b',s6_5:'b'})">Verificar Simulador</button>
+      <div id="s6-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 6</h4>
+      <div class="quiz-q">
+        <p>1. ¿A qué porcentaje de carga se almacenan las baterías LiPo si no se usan por más de 3 días?</p>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="a"> a) 100%</label>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="b"> b) 40-60%</label>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="c"> c) 10%</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Por cuánto tiempo mínimo deben conservarse las bitácoras de vuelo según la DGAC?</p>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="a"> a) 3 meses</label>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="b"> b) 12 meses</label>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="c"> c) 5 años</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq6',{q6a:'b',q6b:'b'})">Verificar</button>
+      <div id="mq6-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/K3oFNJHzJoM" title="Mantenimiento drones baterías LiPo seguridad" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-
-  <!-- QUIZ FINAL -->
-  <div class="quiz-section" id="finalQuizSection">
-    <div class="quiz-title">✅ Evaluación Final — Operación Segura de Drones</div>
-    <div class="quiz-sub">Responda todas las preguntas. Mínimo 6/8 correctas para aprobar.</div>
-    <div class="quiz-question"><div class="quiz-q">1. ¿A partir de qué peso de despegue (MTOW) un UAS requiere registro ante la DGAC?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq1" value="a"> a) 500 gramos</label><label class="quiz-opt"><input type="radio" name="fq1" value="b"> b) 250 gramos</label><label class="quiz-opt"><input type="radio" name="fq1" value="c"> c) 1,000 gramos</label><label class="quiz-opt"><input type="radio" name="fq1" value="d"> d) 2,000 gramos</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">2. BVLOS significa:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq2" value="a"> a) Before Visual Launch of System</label><label class="quiz-opt"><input type="radio" name="fq2" value="b"> b) Beyond Visual Line of Sight — más allá del alcance visual</label><label class="quiz-opt"><input type="radio" name="fq2" value="c"> c) Battery Visual Level of Safety</label><label class="quiz-opt"><input type="radio" name="fq2" value="d"> d) Base Vector Landing Operations System</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">3. El geofencing de DJI en zona restringida:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq3" value="a"> a) Exonera legalmente al piloto de la infracción</label><label class="quiz-opt"><input type="radio" name="fq3" value="b"> b) Es una ayuda; el piloto sigue siendo legalmente responsable</label><label class="quiz-opt"><input type="radio" name="fq3" value="c"> c) Solo aplica si el drone pesa más de 1kg</label><label class="quiz-opt"><input type="radio" name="fq3" value="d"> d) Solo aplica cerca de aeropuertos internacionales</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">4. En el checklist PAVE para preflight de drones, la "A" corresponde a:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq4" value="a"> a) Altitud de vuelo</label><label class="quiz-opt"><input type="radio" name="fq4" value="b"> b) Autorización DGAC vigente</label><label class="quiz-opt"><input type="radio" name="fq4" value="c"> c) Aeronave (UAS) — inspección física del equipo</label><label class="quiz-opt"><input type="radio" name="fq4" value="d"> d) Área de vuelo despejada</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">5. ¿Qué indica una batería LiPo con "puffing" (hinchazón)?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq5" value="a"> a) Que necesita una carga completa antes de usar</label><label class="quiz-opt"><input type="radio" name="fq5" value="b"> b) Que está a temperatura óptima de operación</label><label class="quiz-opt"><input type="radio" name="fq5" value="c"> c) Que está defectuosa y debe inutilizarse de inmediato</label><label class="quiz-opt"><input type="radio" name="fq5" value="d"> d) Que tiene más de 200 ciclos de carga</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">6. En el SORA, el SAIL determina:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq6" value="a"> a) El número máximo de vuelos diarios permitidos</label><label class="quiz-opt"><input type="radio" name="fq6" value="b"> b) El nivel de garantías de seguridad y medidas obligatorias de la operación</label><label class="quiz-opt"><input type="radio" name="fq6" value="c"> c) La potencia máxima permitida del sistema de propulsión</label><label class="quiz-opt"><input type="radio" name="fq6" value="d"> d) La altitud máxima de vuelo autorizada</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">7. El seguro de responsabilidad civil para vuelos comerciales en Ecuador debe cubrir un mínimo de:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq7" value="a"> a) USD 5,000</label><label class="quiz-opt"><input type="radio" name="fq7" value="b"> b) USD 10,000</label><label class="quiz-opt"><input type="radio" name="fq7" value="c"> c) USD 25,000</label><label class="quiz-opt"><input type="radio" name="fq7" value="d"> d) No hay mínimo establecido</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">8. La bitácora de vuelo obligatoria según el RAC-107 debe incluir:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq8" value="a"> a) Solo la fecha y el tiempo de vuelo</label><label class="quiz-opt"><input type="radio" name="fq8" value="b"> b) Únicamente el número de registro del UAS</label><label class="quiz-opt"><input type="radio" name="fq8" value="c"> c) Fecha, UAS ID, piloto, ubicación GPS, tiempo de vuelo, tipo de operación e incidentes</label><label class="quiz-opt"><input type="radio" name="fq8" value="d"> d) Solo es necesaria si ocurre un incidente</label></div></div>
-    <button class="quiz-submit" onclick="submitFinalQuiz()" style="margin-top:16px;font-size:15px;padding:13px 32px">Enviar evaluación final</button>
-    <div class="quiz-result" id="finalResult"></div>
-  </div>
-  <div class="completion-card" id="completionCard">
-    <div class="cert-icon">🏅</div>
-    <h2>¡Operación Segura de Drones Aprobado!</h2>
-    <p>Has completado con éxito el curso de <strong>Operación Segura de Drones</strong> de Preventive Health.</p>
-    <p style="font-size:.9rem;opacity:.8">Certificado conforme al RAC-107 DGAC Ecuador, JARUS SORA v2.0 y OACI Doc 10019. Comuníquese con Preventive Health para el certificado firmado por instructor.</p>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo 5</button><span></span></div>
 </div>
 
+<!-- ====== EVALUACIÓN FINAL ====== -->
+<div class="final-section anim-fadein" id="final">
+  <h3>Evaluación Final — Operación de Drones</h3>
+  <p class="sub">Responde las 8 preguntas. Necesitas 6/8 correctas para aprobar y recibir tu certificado.</p>
+
+  <div class="final-q">
+    <p>1. ¿Cuál es la altura máxima de vuelo de un UAS sin autorización especial según RAC-107?</p>
+    <label class="final-opt"><input type="radio" name="fq1" value="a"> a) 200 metros</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="b"> b) 400 pies (122 m)</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="c"> c) 500 pies</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="d"> d) Sin límite si pesa menos de 250 g</label>
+  </div>
+  <div class="final-q">
+    <p>2. Un UAS de 1.8 kg MTOW se clasifica en la categoría de peso:</p>
+    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) Micro</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) Pequeño (250 g – 2 kg)</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) Mediano</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) Grande</label>
+  </div>
+  <div class="final-q">
+    <p>3. ¿Qué tipo de geofencing impide absolutamente cruzar el límite virtual?</p>
+    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) Soft geofence</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="b"> b) Hard geofence</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) Dynamic geofence</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) Smart geofence</label>
+  </div>
+  <div class="final-q">
+    <p>4. En IMSAFE, la "M" evalúa:</p>
+    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) El estado de los motores del drone</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="b"> b) Si el piloto ha tomado medicamentos que afecten su desempeño</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) Las condiciones meteorológicas</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) El mantenimiento del UAS</label>
+  </div>
+  <div class="final-q">
+    <p>5. ¿Qué categoría operacional requiere SORA y autorización de la DGAC?</p>
+    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) OPEN</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="b"> b) SPECIFIC</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) CERTIFIED</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) Todas las categorías</label>
+  </div>
+  <div class="final-q">
+    <p>6. Las baterías LiPo deben almacenarse a un nivel de carga de:</p>
+    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) 100%</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) 40-60%</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) 0% (completamente descargada)</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) 80%</label>
+  </div>
+  <div class="final-q">
+    <p>7. ¿Qué mínimo de satélites GPS se requiere para un vuelo seguro con UAS?</p>
+    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) 3</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="b"> b) 6</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) 10</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) 12</label>
+  </div>
+  <div class="final-q">
+    <p>8. Las bitácoras de vuelo deben conservarse por un mínimo de:</p>
+    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) 3 meses</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) 12 meses</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) 5 años</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) Solo mientras el drone esté operativo</label>
+  </div>
+
+  <button class="final-btn" onclick="submitFinalQuiz()">Enviar Evaluación Final</button>
+  <div id="final-result" class="final-result"></div>
+</div>
 </main>
 </div>
-<div class="mob-nav"><div class="mob-nav-inner">
-  <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><div class="mob-tab-icon">⚖️</div><div class="mob-tab-label">Legal</div></div>
-  <div class="mob-tab" data-mod="2" onclick="showModule(2)"><div class="mob-tab-icon">🚁</div><div class="mob-tab-label">Tipos UAS</div></div>
-  <div class="mob-tab" data-mod="3" onclick="showModule(3)"><div class="mob-tab-icon">🗺️</div><div class="mob-tab-label">Zonas</div></div>
-  <div class="mob-tab" data-mod="4" onclick="showModule(4)"><div class="mob-tab-icon">✅</div><div class="mob-tab-label">Preflight</div></div>
-  <div class="mob-tab" data-mod="5" onclick="showModule(5)"><div class="mob-tab-icon">📊</div><div class="mob-tab-label">SORA</div></div>
-  <div class="mob-tab" data-mod="6" onclick="showModule(6)"><div class="mob-tab-icon">🔧</div><div class="mob-tab-label">Mant.</div></div>
-</div></div>
+
 <script>
-const STORAGE_KEY='drones_done';
-let done=new Set(JSON.parse(localStorage.getItem('drones_progress')||'[]'));
-function saveDone(){localStorage.setItem('drones_progress',JSON.stringify([...done]))}
-function updateProgress(){
-  const pct=Math.round(done.size/6*100);
-  document.getElementById('progBar').style.width=pct+'%';
-  document.getElementById('progPct').textContent=pct+'%';
-  document.getElementById('topProg').style.width=pct+'%';
-  document.querySelectorAll('.mod-item').forEach(el=>el.classList.toggle('done',done.has(+el.dataset.mod)));
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible') }), {threshold:.12});
+document.querySelectorAll('.anim-fadein').forEach(el => io.observe(el));
+
+(function initProg(){
+  const done = JSON.parse(localStorage.getItem('drones_progress')||'{}');
+  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const pct = Math.round(Object.keys(done).length / keys.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+})();
+
+function saveProg(key){
+  const d = JSON.parse(localStorage.getItem('drones_progress')||'{}');
+  d[key]=1;
+  localStorage.setItem('drones_progress', JSON.stringify(d));
+  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const pct = Math.round(Object.keys(d).length / keys.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
 }
-function showModule(n){
-  document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('mod-'+n).classList.add('active');
-  document.querySelectorAll('.mod-item,.mob-tab').forEach(el=>el.classList.toggle('active',+el.dataset.mod===n));
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(()=>{document.querySelectorAll('#mod-'+n+' .anim-fadein').forEach((el,i)=>setTimeout(()=>el.classList.add('visible'),i*120))},50);
-}
-function nextModule(c){done.add(c);saveDone();updateProgress();showModule(c+1)}
-function checkMiniQuiz(id,answers){
-  const r=document.getElementById(id+'-result');
-  let ok=0;
-  Object.entries(answers).forEach(([n,a])=>{
-    const s=document.querySelector(`input[name="${n}"]:checked`);
-    if(!s)return;
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
-      const l=i.closest('.quiz-opt');
-      if(i.value===a)l.classList.add('correct');
-      else if(i===s&&i.value!==a)l.classList.add('wrong');
+
+function checkMiniQuiz(id, correct){
+  let ok=0, all=true;
+  Object.entries(correct).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.quiz-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
       i.disabled=true;
     });
-    if(s.value===a)ok++;
+    if(s.value===a) ok++;
   });
-  r.style.display='block';r.className='quiz-result '+(ok===Object.keys(answers).length?'pass':'fail');
-  r.textContent=ok===Object.keys(answers).length?'✅ ¡Correcto!':'⚠️ '+ok+'/'+Object.keys(answers).length+' correctas. Revisa el módulo.';
-}
-function submitFinalQuiz(){
-  const answers={fq1:'b',fq2:'b',fq3:'b',fq4:'c',fq5:'c',fq6:'b',fq7:'b',fq8:'c'};
-  let ok=0,all=true;
-  Object.entries(answers).forEach(([n,a])=>{
-    const s=document.querySelector(`input[name="${n}"]:checked`);
-    if(!s){all=false;return;}
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
-      const l=i.closest('.quiz-opt');
-      if(i.value===a)l.classList.add('correct');
-      else if(i===s&&i.value!==a)l.classList.add('wrong');
-      i.disabled=true;
-    });
-    if(s.value===a)ok++;
-  });
-  if(!all){alert('Por favor responda todas las preguntas.');return;}
-  const r=document.getElementById('finalResult');
+  if(!all){ alert('Responde todas las preguntas.'); return; }
+  const r = document.getElementById(id+'-result');
   r.style.display='block';
-  const passed=ok>=6;
-  r.className='quiz-result '+(passed?'pass':'fail');
-  r.innerHTML=passed?`<strong>🎉 Aprobado! ${ok}/8 correctas.</strong><br>Puede solicitar su certificado a Preventive Health.`:`<strong>❌ ${ok}/8 correctas. Se requieren mínimo 6.</strong><br>Revise los módulos y vuelva a intentarlo.`;
-  if(passed){localStorage.setItem(STORAGE_KEY,'true');done.add(6);saveDone();updateProgress();setTimeout(()=>{document.getElementById('completionCard').style.display='block'},400);document.querySelector('#finalQuizSection .quiz-submit').disabled=true;}
+  const total = Object.keys(correct).length;
+  r.className = 'quiz-result ' + (ok>=total?'pass':'fail');
+  r.textContent = ok===total ? `✅ ${ok}/${total} — ¡Correcto!` : `⚠️ ${ok}/${total} — Revisa el módulo`;
+  if(ok===total) saveProg(id);
 }
-const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1});
-document.querySelectorAll('.anim-fadein').forEach(el=>io.observe(el));
-updateProgress();showModule(1);
+
+function runSim(simId, answers){
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.sim-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas del simulador.'); return; }
+  const r = document.getElementById(simId+'-result');
+  r.style.display='block';
+  r.className = 'sim-result ' + (ok>=4?'pass':'fail');
+  r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
+}
+
+function submitFinalQuiz(){
+  const answers = {fq1:'b',fq2:'b',fq3:'b',fq4:'b',fq5:'b',fq6:'b',fq7:'b',fq8:'b'};
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.final-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
+  const r = document.getElementById('final-result');
+  r.style.display='block';
+  if(ok>=6){
+    r.className='final-result pass';
+    r.innerHTML=`🎉 ¡Aprobado! ${ok}/8 correctas<br><small>Certificado disponible en tu perfil</small>`;
+    localStorage.setItem('drones_done','1');
+    saveProg('final');
+  } else {
+    r.className='final-result fail';
+    r.innerHTML=`❌ ${ok}/8 — Necesitas 6 para aprobar. Revisa los módulos e intenta nuevamente.`;
+  }
+}
+
+const sections = document.querySelectorAll('[id^="m"],[id="final"]');
+const navLinks = document.querySelectorAll('nav ul li a');
+window.addEventListener('scroll', () => {
+  let cur='';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+}, {passive:true});
 </script>
 </body>
 </html>
