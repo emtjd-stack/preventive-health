@@ -108,6 +108,42 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
 .completion-banner h3{font-size:1.3rem;font-weight:800;margin-bottom:8px}
 .completion-banner p{opacity:.9;font-size:.92rem}
 
+/* ── MODULE LOCK ── */
+.mod-card.locked .mod-body{display:none}
+.mod-card.locked{opacity:.6;filter:grayscale(.4)}
+.mod-card.locked .mod-header{cursor:default}
+.lock-badge{background:rgba(255,255,255,.25);color:#fff;font-size:.72rem;padding:3px 12px;border-radius:12px;margin-left:auto;display:flex;align-items:center;gap:5px}
+.gate-quiz{background:linear-gradient(135deg,#0f1f3a,#163d7a);border-radius:12px;padding:24px;margin:24px 0;border:2px solid var(--gold)}
+.gate-quiz h4{color:var(--gold);font-size:.95rem;font-weight:700;margin-bottom:4px}
+.gate-quiz .gate-sub{font-size:.78rem;color:rgba(255,255,255,.6);margin-bottom:16px}
+.gate-q{margin-bottom:14px}
+.gate-q p{font-size:.88rem;color:#fff;margin-bottom:8px;font-weight:600}
+.gate-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;margin-bottom:5px;cursor:pointer;font-size:.85rem;color:rgba(255,255,255,.85)}
+.gate-opt:hover{border-color:var(--gold);background:rgba(240,195,25,.08)}
+.gate-opt input{accent-color:var(--gold)}
+.gate-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.15)!important;color:#4ade80}
+.gate-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.15)!important;color:#f87171}
+.gate-result{margin-top:12px;padding:10px 16px;border-radius:8px;font-weight:700;font-size:.9rem;display:none}
+.gate-result.pass{background:rgba(74,222,128,.2);color:#4ade80;border:1.5px solid #4ade80}
+.gate-result.fail{background:rgba(248,113,113,.15);color:#f87171;border:1.5px solid #f87171}
+.unlock-anim{animation:unlockPop .5s ease}
+@keyframes unlockPop{0%{transform:scale(.97);opacity:.5}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+
+/* ── ECG MONITOR ── */
+.monitor-wrap{background:#000;border-radius:14px;overflow:hidden;margin:24px 0;border:3px solid #222}
+.monitor-instructions{background:#0d1117;border-bottom:1px solid #1a2a1a;padding:14px 18px;color:#aaa;font-size:.82rem}
+.monitor-instructions h4{color:#00ff41;font-size:.85rem;font-weight:700;margin-bottom:8px}
+.monitor-instructions ol{padding-left:18px}
+.monitor-instructions ol li{margin-bottom:4px;line-height:1.5}
+.monitor-screen{padding:6px 0 0;background:#000;display:flex;justify-content:center}
+#ecgCanvas{display:block;background:#000}
+.rhythm-btns{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;background:#0a0a0a}
+.rbtn{padding:7px 16px;border-radius:6px;border:1.5px solid #333;background:#111;color:#ccc;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;font-family:inherit;letter-spacing:.03em}
+.rbtn:hover{border-color:#555;background:#1a1a1a}
+.rbtn.active{border-color:currentColor;background:rgba(255,255,255,.08)}
+.rbtn-green{color:#00ff41}.rbtn-red{color:#ff4444}.rbtn-gray{color:#aaa}
+.monitor-label{padding:8px 14px;background:#0d1117;color:#00ff41;font-size:.78rem;font-family:monospace;border-top:1px solid #1a2a1a;min-height:32px}
+
 /* ── ANIMATIONS ── */
 .anim-fadein{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
 .anim-fadein.visible{opacity:1;transform:none}
@@ -302,7 +338,34 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="sim-result" id="s1-result"></div>
     </div>
 
-    <button class="btn" onclick="markDone(1)">Marcar módulo completado ✓</button>
+    <!-- GATE QUIZ M1 -->
+    <div class="gate-quiz" id="gate1">
+      <h4>🔐 Evaluación de acceso al Módulo 2</h4>
+      <p class="gate-sub">Responde las 5 preguntas correctamente para desbloquear el siguiente módulo.</p>
+      <div class="gate-q"><p>1. ¿Qué onda representa la despolarización auricular?</p>
+        <label class="gate-opt"><input type="radio" name="g1q1" value="a"> Onda T</label>
+        <label class="gate-opt"><input type="radio" name="g1q1" value="b"> Onda P</label>
+        <label class="gate-opt"><input type="radio" name="g1q1" value="c"> Onda R</label></div>
+      <div class="gate-q"><p>2. El complejo QRS representa:</p>
+        <label class="gate-opt"><input type="radio" name="g1q2" value="a"> Repolarización auricular</label>
+        <label class="gate-opt"><input type="radio" name="g1q2" value="b"> Despolarización ventricular</label>
+        <label class="gate-opt"><input type="radio" name="g1q2" value="c"> Repolarización ventricular</label></div>
+      <div class="gate-q"><p>3. Duración normal del complejo QRS:</p>
+        <label class="gate-opt"><input type="radio" name="g1q3" value="a"> 200–300 ms</label>
+        <label class="gate-opt"><input type="radio" name="g1q3" value="b"> 60–100 ms</label>
+        <label class="gate-opt"><input type="radio" name="g1q3" value="c"> 400–500 ms</label></div>
+      <div class="gate-q"><p>4. El impulso eléctrico cardíaco normal se origina en:</p>
+        <label class="gate-opt"><input type="radio" name="g1q4" value="a"> Nodo Auriculoventricular (NAV)</label>
+        <label class="gate-opt"><input type="radio" name="g1q4" value="b"> Nodo Sinoauricular (NSA)</label>
+        <label class="gate-opt"><input type="radio" name="g1q4" value="c"> Fibras de Purkinje</label></div>
+      <div class="gate-q"><p>5. Un segmento ST elevado ≥2 mm en derivaciones contiguas sugiere:</p>
+        <label class="gate-opt"><input type="radio" name="g1q5" value="a"> Ritmo sinusal normal</label>
+        <label class="gate-opt"><input type="radio" name="g1q5" value="b"> Infarto Agudo de Miocardio (IAM) con elevación del ST</label>
+        <label class="gate-opt"><input type="radio" name="g1q5" value="c"> Bradicardia sinusal</label></div>
+      <button class="btn btn-gold" onclick="checkGate(1,{g1q1:'b',g1q2:'b',g1q3:'b',g1q4:'b',g1q5:'b'})">Verificar y desbloquear →</button>
+      <div class="gate-result" id="gate1-result"></div>
+    </div>
+
   </div>
 </div>
 
@@ -491,7 +554,34 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="sim-result" id="s2-result"></div>
     </div>
 
-    <button class="btn" onclick="markDone(2)">Marcar módulo completado ✓</button>
+    <!-- GATE QUIZ M2 -->
+    <div class="gate-quiz" id="gate2">
+      <h4>🔐 Evaluación de acceso al Módulo 3</h4>
+      <p class="gate-sub">Responde las 5 preguntas correctamente para desbloquear el siguiente módulo.</p>
+      <div class="gate-q"><p>1. ¿Cuántos milisegundos equivale un cuadro grande (5 mm) a 25 mm/s?</p>
+        <label class="gate-opt"><input type="radio" name="g2q1" value="a"> 40 ms</label>
+        <label class="gate-opt"><input type="radio" name="g2q1" value="b"> 200 ms</label>
+        <label class="gate-opt"><input type="radio" name="g2q1" value="c"> 500 ms</label></div>
+      <div class="gate-q"><p>2. Con la regla de 300, si hay 4 cuadros grandes entre dos R, la FC es:</p>
+        <label class="gate-opt"><input type="radio" name="g2q2" value="a"> 60 lpm</label>
+        <label class="gate-opt"><input type="radio" name="g2q2" value="b"> 75 lpm</label>
+        <label class="gate-opt"><input type="radio" name="g2q2" value="c"> 100 lpm</label></div>
+      <div class="gate-q"><p>3. La señal de calibración estándar de 1 mV equivale en papel a:</p>
+        <label class="gate-opt"><input type="radio" name="g2q3" value="a"> 5 mm de altura</label>
+        <label class="gate-opt"><input type="radio" name="g2q3" value="b"> 10 mm de altura</label>
+        <label class="gate-opt"><input type="radio" name="g2q3" value="c"> 20 mm de altura</label></div>
+      <div class="gate-q"><p>4. Un cuadro grande del papel ECG equivale a cuántos cuadros pequeños:</p>
+        <label class="gate-opt"><input type="radio" name="g2q4" value="a"> 3</label>
+        <label class="gate-opt"><input type="radio" name="g2q4" value="b"> 5</label>
+        <label class="gate-opt"><input type="radio" name="g2q4" value="c"> 10</label></div>
+      <div class="gate-q"><p>5. A velocidad de 50 mm/s los intervalos se ven en el papel:</p>
+        <label class="gate-opt"><input type="radio" name="g2q5" value="a"> Iguales</label>
+        <label class="gate-opt"><input type="radio" name="g2q5" value="b"> Más largos (el doble)</label>
+        <label class="gate-opt"><input type="radio" name="g2q5" value="c"> Más cortos</label></div>
+      <button class="btn btn-gold" onclick="checkGate(2,{g2q1:'b',g2q2:'b',g2q3:'b',g2q4:'b',g2q5:'b'})">Verificar y desbloquear →</button>
+      <div class="gate-result" id="gate2-result"></div>
+    </div>
+
   </div>
 </div>
 
@@ -643,7 +733,34 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="sim-result" id="s3-result"></div>
     </div>
 
-    <button class="btn" onclick="markDone(3)">Marcar módulo completado ✓</button>
+    <!-- GATE QUIZ M3 -->
+    <div class="gate-quiz" id="gate3">
+      <h4>🔐 Evaluación de acceso al Módulo 4</h4>
+      <p class="gate-sub">Responde las 5 preguntas correctamente para desbloquear el siguiente módulo.</p>
+      <div class="gate-q"><p>1. ¿Cuántos electrodos físicos usa el ECG de 12 derivaciones?</p>
+        <label class="gate-opt"><input type="radio" name="g3q1" value="a"> 12</label>
+        <label class="gate-opt"><input type="radio" name="g3q1" value="b"> 10</label>
+        <label class="gate-opt"><input type="radio" name="g3q1" value="c"> 6</label></div>
+      <div class="gate-q"><p>2. El electrodo V4 se coloca en:</p>
+        <label class="gate-opt"><input type="radio" name="g3q2" value="a"> 4.° espacio, borde esternal derecho</label>
+        <label class="gate-opt"><input type="radio" name="g3q2" value="b"> 5.° espacio, línea medioclavicular</label>
+        <label class="gate-opt"><input type="radio" name="g3q2" value="c"> 5.° espacio, línea axilar media</label></div>
+      <div class="gate-q"><p>3. Las derivaciones II, III y aVF exploran la cara _____ del corazón:</p>
+        <label class="gate-opt"><input type="radio" name="g3q3" value="a"> Lateral</label>
+        <label class="gate-opt"><input type="radio" name="g3q3" value="b"> Anterior</label>
+        <label class="gate-opt"><input type="radio" name="g3q3" value="c"> Inferior</label></div>
+      <div class="gate-q"><p>4. La derivación preferida para monitoreo continuo de onda P es:</p>
+        <label class="gate-opt"><input type="radio" name="g3q4" value="a"> aVR</label>
+        <label class="gate-opt"><input type="radio" name="g3q4" value="b"> DII</label>
+        <label class="gate-opt"><input type="radio" name="g3q4" value="c"> V1</label></div>
+      <div class="gate-q"><p>5. Un QRS completamente positivo en aVR indica:</p>
+        <label class="gate-opt"><input type="radio" name="g3q5" value="a"> Hipertrofia ventricular</label>
+        <label class="gate-opt"><input type="radio" name="g3q5" value="b"> Inversión de electrodos de extremidades</label>
+        <label class="gate-opt"><input type="radio" name="g3q5" value="c"> Bloqueo de rama</label></div>
+      <button class="btn btn-gold" onclick="checkGate(3,{g3q1:'b',g3q2:'b',g3q3:'c',g3q4:'b',g3q5:'b'})">Verificar y desbloquear →</button>
+      <div class="gate-result" id="gate3-result"></div>
+    </div>
+
   </div>
 </div>
 
@@ -794,7 +911,34 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="sim-result" id="s4-result"></div>
     </div>
 
-    <button class="btn" onclick="markDone(4)">Marcar módulo completado ✓</button>
+    <!-- GATE QUIZ M4 -->
+    <div class="gate-quiz" id="gate4">
+      <h4>🔐 Evaluación de acceso al Módulo 5</h4>
+      <p class="gate-sub">Responde las 5 preguntas correctamente para desbloquear el siguiente módulo.</p>
+      <div class="gate-q"><p>1. El Ritmo Sinusal Normal (RSN) tiene una FC entre:</p>
+        <label class="gate-opt"><input type="radio" name="g4q1" value="a"> 40–80 lpm</label>
+        <label class="gate-opt"><input type="radio" name="g4q1" value="b"> 60–100 lpm</label>
+        <label class="gate-opt"><input type="radio" name="g4q1" value="c"> 100–150 lpm</label></div>
+      <div class="gate-q"><p>2. Un intervalo PR de 240 ms indica:</p>
+        <label class="gate-opt"><input type="radio" name="g4q2" value="a"> Conducción AV normal</label>
+        <label class="gate-opt"><input type="radio" name="g4q2" value="b"> Bloqueo AV de primer grado</label>
+        <label class="gate-opt"><input type="radio" name="g4q2" value="c"> Síndrome de WPW</label></div>
+      <div class="gate-q"><p>3. Para RSN cada QRS debe estar precedido de:</p>
+        <label class="gate-opt"><input type="radio" name="g4q3" value="a"> Puede no haber onda P</label>
+        <label class="gate-opt"><input type="radio" name="g4q3" value="b"> Una onda P positiva en DII</label>
+        <label class="gate-opt"><input type="radio" name="g4q3" value="c"> Una onda T invertida</label></div>
+      <div class="gate-q"><p>4. Un QRS con duración de 140 ms sugiere:</p>
+        <label class="gate-opt"><input type="radio" name="g4q4" value="a"> Conducción ventricular normal</label>
+        <label class="gate-opt"><input type="radio" name="g4q4" value="b"> Bloqueo de rama</label>
+        <label class="gate-opt"><input type="radio" name="g4q4" value="c"> Hipertrofia auricular</label></div>
+      <div class="gate-q"><p>5. El eje eléctrico normal requiere que DI y aVF sean:</p>
+        <label class="gate-opt"><input type="radio" name="g4q5" value="a"> Ambas negativas</label>
+        <label class="gate-opt"><input type="radio" name="g4q5" value="b"> Ambas positivas</label>
+        <label class="gate-opt"><input type="radio" name="g4q5" value="c"> DI negativa y aVF positiva</label></div>
+      <button class="btn btn-gold" onclick="checkGate(4,{g4q1:'b',g4q2:'b',g4q3:'b',g4q4:'b',g4q5:'b'})">Verificar y desbloquear →</button>
+      <div class="gate-result" id="gate4-result"></div>
+    </div>
+
   </div>
 </div>
 
@@ -804,7 +948,7 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
 <div class="mod-card anim-fadein" id="m5">
   <div class="mod-header">
     <div class="mod-num">5</div>
-    <h2>Ritmos Críticos: Shockables y No-Shockables</h2>
+    <h2>Ritmos Críticos: Desfibrilables y No Desfibrilables</h2>
   </div>
   <div class="mod-body">
     <div class="content-block">
@@ -814,7 +958,7 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
 
     <!-- SVG Clasificación ritmos críticos -->
     <div class="svg-wrap">
-      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="Clasificación ritmos shockables y no-shockables">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="Clasificación ritmos desfibrilables y no desfibrilables">
         <defs>
           <linearGradient id="shockGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#fef3c7"/>
@@ -837,7 +981,7 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
         <polygon points="498,85 498,96 508,90" fill="#c0392b"/>
         <!-- SHOCKABLE -->
         <rect x="30" y="90" width="300" height="200" rx="10" fill="url(#shockGrad)" stroke="#d97706" stroke-width="2"/>
-        <text x="180" y="112" font-size="13" font-weight="800" fill="#92400e" text-anchor="middle">⚡ SHOCKABLES</text>
+        <text x="180" y="112" font-size="13" font-weight="800" fill="#92400e" text-anchor="middle">⚡ DESFIBRILABLES</text>
         <!-- FV mini trace -->
         <text x="60" y="132" font-size="11" font-weight="700" fill="#b45309">Fibrilación Ventricular (FV)</text>
         <path d="M50,155 L60,155 L62,140 L65,170 L67,130 L70,165 L72,145 L75,175 L77,135 L80,160 L83,148 L86,168 L88,138 L91,163 L94,150 L97,173 L100,140 L103,162 L106,148 L109,170 L112,138 L115,165 L118,150 L120,155 L130,155" fill="none" stroke="#d97706" stroke-width="2"/>
@@ -848,7 +992,7 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
         <text x="75" y="273" font-size="10" fill="#6b7280" text-anchor="middle">(ver Módulo 6 – Farmacología ACLS)</text>
         <!-- NO SHOCKABLE -->
         <rect x="370" y="90" width="300" height="200" rx="10" fill="url(#noshockGrad)" stroke="#b91c1c" stroke-width="2"/>
-        <text x="520" y="112" font-size="13" font-weight="800" fill="#7f1d1d" text-anchor="middle">⛔ NO SHOCKABLES</text>
+        <text x="520" y="112" font-size="13" font-weight="800" fill="#7f1d1d" text-anchor="middle">⛔ NO DESFIBRILABLES</text>
         <text x="395" y="132" font-size="11" font-weight="700" fill="#991b1b">Actividad Eléctrica Sin Pulso (AESP)</text>
         <path d="M380,155 L400,155 Q408,155 412,145 Q416,135 420,145 Q424,155 428,155 L434,152 L437,130 L441,178 L445,112 L449,162 L452,155 L480,155 L500,155 Q508,155 512,145 Q516,135 520,145 Q524,155 528,155 L534,152 L537,130 L541,178 L545,112 L549,162 L552,155 L580,155 L600,155" fill="none" stroke="#dc2626" stroke-width="2"/>
         <text x="490" y="178" font-size="9" fill="#6b7280" text-anchor="middle">ECG "normal" pero sin pulso palpable</text>
@@ -871,19 +1015,45 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
     </div>
     <div class="content-block">
       <h3>Actividad Eléctrica Sin Pulso (AESP) y Asistolia</h3>
-      <p>La Actividad Eléctrica Sin Pulso (AESP) presenta actividad eléctrica organizada en el Electrocardiograma (ECG) pero sin pulso palpable. La asistolia es la ausencia total de actividad eléctrica (línea plana). Ambas son ritmos no-shockables. El tratamiento es Reanimación Cardiopulmonar (RCP) + adrenalina y búsqueda de causas reversibles: las "4H" (Hipoxia, Hipovolemia, Hipotermia, H⁺/acidosis) y "4T" (Trombosis coronaria, Tromboembolismo pulmonar, Taponamiento cardíaco, Tensión-neumotórax).</p>
+      <p>La Actividad Eléctrica Sin Pulso (AESP) presenta actividad eléctrica organizada en el Electrocardiograma (ECG) pero sin pulso palpable. La asistolia es la ausencia total de actividad eléctrica (línea plana). Ambas son ritmos no desfibrilables. El tratamiento es Reanimación Cardiopulmonar (RCP) + adrenalina y búsqueda de causas reversibles: las "4H" (Hipoxia, Hipovolemia, Hipotermia, H⁺/acidosis) y "4T" (Trombosis coronaria, Tromboembolismo pulmonar, Taponamiento cardíaco, Tensión-neumotórax).</p>
       <div class="warn-box"><strong>Regla crítica:</strong> No desfibrilar la asistolia ni la Actividad Eléctrica Sin Pulso (AESP). El shock eléctrico en línea plana no tiene efecto terapéutico y puede agravar el pronóstico.</div>
     </div>
 
     <!-- VIDEO M5 -->
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/m_Jmn2OLUXA" title="Ritmos shockables y no shockables ECG" allowfullscreen loading="lazy"></iframe>
+      <iframe src="https://www.youtube.com/embed/m_Jmn2OLUXA" title="Ritmos desfibrilables y no desfibrilables ECG" allowfullscreen loading="lazy"></iframe>
     </div>
     <p class="video-label">Video: Identificación de ritmos de paro – FV, TV sin pulso, AESP, Asistolia</p>
 
+    <!-- MONITOR DESFIBRILADOR SIMULADO -->
+    <div class="monitor-wrap" id="monitorWrap">
+      <div class="monitor-instructions">
+        <h4>🖥️ Cómo usar el simulador de monitor desfibrilador</h4>
+        <ol>
+          <li>Observa la traza en tiempo real como lo harías frente a un monitor desfibrilador real (Zoll / Philips).</li>
+          <li>Usa los botones para cambiar entre ritmos y practica identificarlos.</li>
+          <li>Decide si el ritmo es <strong>Desfibrilable</strong> (FV, TV sin pulso) o <strong>No desfibrilable</strong> (AESP, Asistolia, RSN).</li>
+          <li>El indicador inferior confirmará el diagnóstico correcto.</li>
+        </ol>
+      </div>
+      <div class="monitor-screen">
+        <canvas id="ecgCanvas" width="660" height="200"></canvas>
+      </div>
+      <div class="rhythm-btns">
+        <button class="rbtn rbtn-green active" onclick="ecgMon.setRhythm('RSN',this)">RSN</button>
+        <button class="rbtn rbtn-red"   onclick="ecgMon.setRhythm('FV',this)">FV ⚡</button>
+        <button class="rbtn rbtn-red"   onclick="ecgMon.setRhythm('TV',this)">TV sin pulso ⚡</button>
+        <button class="rbtn rbtn-gray"  onclick="ecgMon.setRhythm('AESP',this)">AESP</button>
+        <button class="rbtn rbtn-gray"  onclick="ecgMon.setRhythm('ASISTOLIA',this)">Asistolia</button>
+      </div>
+      <div id="monitorLabel" class="monitor-label">
+        🟢 RSN – Ritmo Sinusal Normal &nbsp;|&nbsp; FC: 75 lpm &nbsp;|&nbsp; ✅ NO Desfibrilable
+      </div>
+    </div>
+
     <!-- MINI-QUIZ M5 -->
     <div class="mini-quiz">
-      <p>¿Cuáles son los dos ritmos shockables en el contexto del Paro Cardiorrespiratorio (PCR)?</p>
+      <p>¿Cuáles son los dos ritmos desfibrilables en el contexto del Paro Cardiorrespiratorio (PCR)?</p>
       <label class="mq-opt"><input type="radio" name="mq5" value="a"> Asistolia y bradicardia sinusal</label>
       <label class="mq-opt"><input type="radio" name="mq5" value="b"> Fibrilación Ventricular (FV) y Taquicardia Ventricular (TV) sin pulso</label>
       <label class="mq-opt"><input type="radio" name="mq5" value="c"> Fibrilación auricular y flutter auricular</label>
@@ -924,11 +1094,11 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="sim-q">
         <p>4. La Taquicardia Ventricular (TV) sin pulso se diferencia de la Fibrilación Ventricular (FV) en el ECG porque:</p>
         <label class="sim-opt"><input type="radio" name="s5q4" value="a"> La TV tiene complejos QRS anchos y regulares; la FV es caótica sin QRS identificables</label>
-        <label class="sim-opt"><input type="radio" name="s5q4" value="b"> La TV es no-shockable; la FV es shockable</label>
+        <label class="sim-opt"><input type="radio" name="s5q4" value="b"> La TV es no desfibrilable; la FV es desfibrilable</label>
         <label class="sim-opt"><input type="radio" name="s5q4" value="c"> La TV muestra línea plana; la FV muestra trazado caótico</label>
       </div>
       <div class="sim-q">
-        <p>5. En el protocolo de Soporte Vital Cardiovascular Avanzado (ACLS), ¿cada cuántos minutos se administra adrenalina en paro no-shockable?</p>
+        <p>5. En el protocolo de Soporte Vital Cardiovascular Avanzado (ACLS), ¿cada cuántos minutos se administra adrenalina en paro no desfibrilable?</p>
         <label class="sim-opt"><input type="radio" name="s5q5" value="a"> Cada 1 minuto</label>
         <label class="sim-opt"><input type="radio" name="s5q5" value="b"> Cada 3–5 minutos</label>
         <label class="sim-opt"><input type="radio" name="s5q5" value="c"> Una sola dosis</label>
@@ -937,7 +1107,34 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="sim-result" id="s5-result"></div>
     </div>
 
-    <button class="btn" onclick="markDone(5)">Marcar módulo completado ✓</button>
+    <!-- GATE QUIZ M5 -->
+    <div class="gate-quiz" id="gate5">
+      <h4>🔐 Evaluación de acceso al Módulo 6</h4>
+      <p class="gate-sub">Responde las 5 preguntas correctamente para desbloquear el siguiente módulo.</p>
+      <div class="gate-q"><p>1. ¿Cuáles son los dos ritmos desfibrilables en el paro cardíaco?</p>
+        <label class="gate-opt"><input type="radio" name="g5q1" value="a"> Asistolia y bradicardia</label>
+        <label class="gate-opt"><input type="radio" name="g5q1" value="b"> FV y TV sin pulso</label>
+        <label class="gate-opt"><input type="radio" name="g5q1" value="c"> AESP y asistolia</label></div>
+      <div class="gate-q"><p>2. La Actividad Eléctrica Sin Pulso (AESP) se define como:</p>
+        <label class="gate-opt"><input type="radio" name="g5q2" value="a"> Línea plana en el ECG</label>
+        <label class="gate-opt"><input type="radio" name="g5q2" value="b"> ECG organizado sin pulso palpable</label>
+        <label class="gate-opt"><input type="radio" name="g5q2" value="c"> Trazado caótico sin QRS</label></div>
+      <div class="gate-q"><p>3. La asistolia en el ECG se muestra como:</p>
+        <label class="gate-opt"><input type="radio" name="g5q3" value="a"> Complejos QRS anchos rápidos</label>
+        <label class="gate-opt"><input type="radio" name="g5q3" value="b"> Línea casi plana sin actividad eléctrica</label>
+        <label class="gate-opt"><input type="radio" name="g5q3" value="c"> Ondas caóticas de amplitud variable</label></div>
+      <div class="gate-q"><p>4. ¿Se debe desfibrilar la asistolia?</p>
+        <label class="gate-opt"><input type="radio" name="g5q4" value="a"> Sí, a la máxima energía</label>
+        <label class="gate-opt"><input type="radio" name="g5q4" value="b"> No, es un ritmo no desfibrilable</label>
+        <label class="gate-opt"><input type="radio" name="g5q4" value="c"> Solo si persiste más de 5 minutos</label></div>
+      <div class="gate-q"><p>5. La adrenalina en paro no desfibrilable se administra cada:</p>
+        <label class="gate-opt"><input type="radio" name="g5q5" value="a"> 1 minuto</label>
+        <label class="gate-opt"><input type="radio" name="g5q5" value="b"> 3–5 minutos</label>
+        <label class="gate-opt"><input type="radio" name="g5q5" value="c"> 10 minutos</label></div>
+      <button class="btn btn-gold" onclick="checkGate(5,{g5q1:'b',g5q2:'b',g5q3:'b',g5q4:'b',g5q5:'b'})">Verificar y desbloquear →</button>
+      <div class="gate-result" id="gate5-result"></div>
+    </div>
+
   </div>
 </div>
 
@@ -1023,7 +1220,7 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
     <div class="content-block">
       <h3>Amiodarona</h3>
       <ul>
-        <li><strong>Dosis</strong>: Primera dosis 300 mg IV; segunda dosis 150 mg IV si persiste el ritmo shockable.</li>
+        <li><strong>Dosis</strong>: Primera dosis 300 mg IV; segunda dosis 150 mg IV si persiste el ritmo desfibrilable.</li>
         <li><strong>Mecanismo</strong>: Antiarrítmico clase III. Prolonga el potencial de acción y el período refractario.</li>
         <li><strong>Indicación</strong>: Fibrilación Ventricular (FV) / Taquicardia Ventricular (TV) refractaria a ≥2 descargas eléctricas.</li>
       </ul>
@@ -1185,10 +1382,11 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 </script>
 
 <script>
-// ── PROGRESS ──
+// ══════════════════════════════════════
+// MODULE LOCKING SYSTEM
+// ══════════════════════════════════════
 const TOTAL = 6;
 let done = JSON.parse(localStorage.getItem('ecg_done')||'[]');
-let progress = JSON.parse(localStorage.getItem('ecg_progress')||'[]');
 
 function updateProgress(){
   const pct = Math.round(done.length/TOTAL*100);
@@ -1196,27 +1394,77 @@ function updateProgress(){
   document.getElementById('progressTxt').textContent = done.length+' / '+TOTAL+' módulos';
 }
 
-function markDone(n){
-  if(!done.includes(n)) done.push(n);
-  localStorage.setItem('ecg_done', JSON.stringify(done));
-  updateProgress();
-  const btn = event.target;
-  btn.textContent = '✅ Módulo completado';
-  btn.disabled = true;
-  btn.style.background = '#059669';
+function isUnlocked(n){
+  if(n===1) return true;
+  return localStorage.getItem('ecg_mod_'+(n-1)+'_pass')==='1';
 }
+
+function unlockMod(n){
+  if(n>6) return;
+  const card = document.getElementById('m'+n);
+  if(!card) return;
+  card.classList.remove('locked');
+  card.classList.add('unlock-anim');
+  const lb = card.querySelector('.lock-badge');
+  if(lb) lb.remove();
+  // show gate quiz of previous module "completed"
+  const prevGate = document.getElementById('gate'+(n-1));
+  if(prevGate){
+    prevGate.style.border='2px solid #4ade80';
+    prevGate.style.opacity='.7';
+  }
+}
+
+function checkGate(modNum, answers){
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([name,correct])=>{
+    const sel = document.querySelector(`input[name="${name}"]:checked`);
+    if(!sel){all=false;return;}
+    document.querySelectorAll(`input[name="${name}"]`).forEach(inp=>{
+      const lbl = inp.closest('.gate-opt');
+      if(inp.value===correct) lbl.classList.add('correct');
+      else if(inp===sel && inp.value!==correct) lbl.classList.add('wrong');
+      inp.disabled=true;
+    });
+    if(sel.value===correct) ok++;
+  });
+  if(!all){alert('Responde todas las preguntas para continuar.');return;}
+  const res = document.getElementById('gate'+modNum+'-result');
+  if(ok===5){
+    res.style.display='block';
+    res.className='gate-result pass';
+    res.textContent='✅ 5/5 — ¡Excelente! Módulo '+(modNum+1)+' desbloqueado.';
+    localStorage.setItem('ecg_mod_'+modNum+'_pass','1');
+    if(!done.includes(modNum)) done.push(modNum);
+    localStorage.setItem('ecg_done',JSON.stringify(done));
+    updateProgress();
+    setTimeout(()=>unlockMod(modNum+1),500);
+  } else {
+    res.style.display='block';
+    res.className='gate-result fail';
+    res.textContent=`⚠️ ${ok}/5 — Debes responder las 5 preguntas correctamente para avanzar. Revisa el módulo e inténtalo de nuevo.`;
+    // reset after 3 seconds
+    setTimeout(()=>{
+      document.querySelectorAll(`[name^="g${modNum}q"]`).forEach(i=>{
+        i.disabled=false; i.checked=false;
+        const l=i.closest('.gate-opt');
+        l.classList.remove('correct','wrong');
+      });
+      res.style.display='none';
+    },3000);
+  }
+}
+window.checkGate = checkGate;
 
 // ── MINI QUIZ ──
 function checkMiniQuiz(name, correct){
   const sel = document.querySelector(`input[name="${name}"]:checked`);
   const fb = document.getElementById(name+'-fb');
-  if(!sel){ alert('Selecciona una opción.'); return; }
-  if(sel.value === correct){
-    fb.className = 'mq-feedback correct';
-    fb.textContent = '✅ ¡Correcto!';
+  if(!sel){alert('Selecciona una opción.');return;}
+  if(sel.value===correct){
+    fb.className='mq-feedback correct'; fb.textContent='✅ ¡Correcto!';
   } else {
-    fb.className = 'mq-feedback wrong';
-    fb.textContent = '❌ Incorrecto. Revisa el contenido del módulo.';
+    fb.className='mq-feedback wrong'; fb.textContent='❌ Incorrecto. Revisa el contenido del módulo.';
   }
 }
 window.checkMiniQuiz = checkMiniQuiz;
@@ -1224,68 +1472,252 @@ window.checkMiniQuiz = checkMiniQuiz;
 // ── SIMULATOR ──
 function runSim(simId, answers){
   let ok=0, all=true;
-  Object.entries(answers).forEach(([n,a]) => {
-    const s = document.querySelector(`input[name="${n}"]:checked`);
-    if(!s){ all=false; return; }
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
-      const l = i.closest('.sim-opt');
+  Object.entries(answers).forEach(([n,a])=>{
+    const s=document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){all=false;return;}
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
+      const l=i.closest('.sim-opt');
       if(i.value===a) l.classList.add('correct');
-      else if(i===s && i.value!==a) l.classList.add('wrong');
+      else if(i===s&&i.value!==a) l.classList.add('wrong');
       i.disabled=true;
     });
     if(s.value===a) ok++;
   });
-  if(!all){ alert('Responde todas las preguntas del simulador.'); return; }
-  const r = document.getElementById(simId+'-result');
+  if(!all){alert('Responde todas las preguntas del simulador.');return;}
+  const r=document.getElementById(simId+'-result');
   r.style.display='block';
-  r.className = 'sim-result ' + (ok>=4?'pass':'fail');
-  r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
+  r.className='sim-result '+(ok>=4?'pass':'fail');
+  r.textContent=ok>=4?`✅ ${ok}/5 — Excelente dominio`:`⚠️ ${ok}/5 — Repase el módulo`;
 }
 window.runSim = runSim;
 
 // ── FINAL QUIZ ──
 function submitFinalQuiz(){
-  const answers = {fq1:'b',fq2:'b',fq3:'b',fq4:'b',fq5:'c',fq6:'b',fq7:'b',fq8:'b'};
-  let ok=0, all=true;
-  Object.keys(answers).forEach(n => {
-    const s = document.querySelector(`input[name="${n}"]:checked`);
-    if(!s){ all=false; return; }
-    if(s.value===answers[n]) ok++;
+  const ans={fq1:'b',fq2:'b',fq3:'b',fq4:'b',fq5:'c',fq6:'b',fq7:'b',fq8:'b'};
+  let ok=0,all=true;
+  Object.keys(ans).forEach(n=>{
+    const s=document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){all=false;return;}
+    if(s.value===ans[n]) ok++;
   });
-  if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
-  const r = document.getElementById('fq-result');
+  if(!all){alert('Responde todas las preguntas antes de enviar.');return;}
+  const r=document.getElementById('fq-result');
   r.style.display='block';
-  const pass = ok>=6;
-  r.className = 'sim-result '+(pass?'pass':'fail');
-  r.textContent = pass
-    ? `✅ ${ok}/8 — Aprobado. Excelente manejo de Electrocardiografía Básica.`
-    : `⚠️ ${ok}/8 — No aprobado. Puntaje mínimo: 6/8. Revise los módulos e intente nuevamente.`;
+  const pass=ok>=6;
+  r.className='sim-result '+(pass?'pass':'fail');
+  r.textContent=pass
+    ?`✅ ${ok}/8 — Aprobado. Excelente manejo de Electrocardiografía Básica.`
+    :`⚠️ ${ok}/8 — No aprobado. Mínimo 6/8. Revise los módulos e intente nuevamente.`;
   if(pass){
-    localStorage.setItem('ecg_done', JSON.stringify([1,2,3,4,5,6]));
+    localStorage.setItem('ecg_done',JSON.stringify([1,2,3,4,5,6]));
     localStorage.setItem('ecg_progress','100');
-    updateProgress();
+    done=[1,2,3,4,5,6]; updateProgress();
     document.getElementById('completion-banner').style.display='block';
   }
 }
 window.submitFinalQuiz = submitFinalQuiz;
 
+// ══════════════════════════════════════
+// ECG MONITOR SIMULATOR
+// ══════════════════════════════════════
+class ECGMonitor {
+  constructor(id){
+    this.canvas = document.getElementById(id);
+    if(!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this.W = this.canvas.width;
+    this.H = this.canvas.height;
+    this.rhythm = 'RSN';
+    this.t = 0;          // time counter in samples
+    this.speed = 3;      // px per frame
+    this.buf = new Float32Array(this.W).fill(this.H/2);
+    this.animId = null;
+    this.fc = 75;
+    this.fiBuf = [];     // FV: random chaotic buffer
+    this.running = false;
+  }
+
+  // Generate one y-sample for current rhythm
+  sample(){
+    const mid = this.H/2;
+    const dt = this.t;
+    switch(this.rhythm){
+      case 'RSN':{
+        // cycle = 800 samples @75 bpm, speed 3px = ~60 frames/cycle visual
+        const cycle = 240;
+        const p = dt % cycle;
+        if(p<10) return mid - 10*Math.sin((p/10)*Math.PI);         // P wave
+        if(p>=50 && p<56) return mid - 5*(p-50)/6;                 // pre-Q
+        if(p>=56 && p<60) return mid - 5 + 5*(p-56)/4;             // Q down
+        if(p>=60 && p<68) return mid - 60*Math.sin(((p-60)/8)*Math.PI); // R spike
+        if(p>=68 && p<74) return mid + 15*Math.sin(((p-68)/6)*Math.PI); // S
+        if(p>=100 && p<130) return mid - 18*Math.sin(((p-100)/30)*Math.PI); // T
+        return mid + (Math.random()-0.5)*1.5; // baseline noise
+      }
+      case 'FV':{
+        // Chaotic, amplitude 20-60px, freq variable
+        const noise = (Math.random()-0.5)*2;
+        const f1 = Math.sin(dt*0.18)*40;
+        const f2 = Math.sin(dt*0.31+1.2)*25;
+        const f3 = Math.sin(dt*0.07+2.4)*15;
+        return mid - (f1+f2+f3+noise*8);
+      }
+      case 'TV':{
+        // Wide QRS, fast rate, no P, cycle ~70 samples
+        const cycle = 70;
+        const p = dt % cycle;
+        if(p>=5 && p<12) return mid - 55*Math.sin(((p-5)/7)*Math.PI);  // wide R
+        if(p>=12 && p<22) return mid + 20*Math.sin(((p-12)/10)*Math.PI);// S
+        if(p>=25 && p<40) return mid - 15*Math.sin(((p-25)/15)*Math.PI);// ST elev
+        return mid + (Math.random()-0.5)*2;
+      }
+      case 'AESP':{
+        // Looks like slow RSN but label says no pulse
+        const cycle = 320;
+        const p = dt % cycle;
+        if(p>=60 && p<68) return mid - 50*Math.sin(((p-60)/8)*Math.PI);
+        if(p>=68 && p<75) return mid + 12*Math.sin(((p-68)/7)*Math.PI);
+        if(p>=110 && p<135) return mid - 16*Math.sin(((p-110)/25)*Math.PI);
+        return mid + (Math.random()-0.5)*1.5;
+      }
+      case 'ASISTOLIA':{
+        // Nearly flat with minimal artifact
+        return mid + (Math.random()-0.5)*3;
+      }
+      default: return mid;
+    }
+  }
+
+  draw(){
+    const ctx = this.ctx, W = this.W, H = this.H;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle = '#0d2a0d';
+    ctx.lineWidth = 1;
+    for(let x=0;x<W;x+=20){
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+    }
+    for(let y=0;y<H;y+=20){
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+    }
+    // FC and rhythm name overlay
+    ctx.fillStyle = this.rhythm==='FV'||this.rhythm==='TV'?'#ff4444':'#00ff41';
+    ctx.font = 'bold 13px monospace';
+    const fcText = (this.rhythm==='FV'||this.rhythm==='ASISTOLIA')?'FC: ---':('FC: '+this.fc+' lpm');
+    ctx.fillText(fcText, W-120, 22);
+    ctx.font = 'bold 12px monospace';
+    ctx.fillStyle = '#00ff41';
+    const labels = {RSN:'RSN',FV:'FV',TV:'TV sin pulso',AESP:'AESP – SIN PULSO',ASISTOLIA:'ASISTOLIA'};
+    ctx.fillText(labels[this.rhythm]||'', 10, 22);
+    if(this.rhythm==='AESP'){
+      ctx.fillStyle='#ff4444'; ctx.font='bold 11px monospace';
+      ctx.fillText('⚠ NO HAY PULSO',10,H-10);
+    }
+    // Trace
+    ctx.strokeStyle = this.rhythm==='FV'||this.rhythm==='TV'?'#ff6644':'#00ff41';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = ctx.strokeStyle;
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    for(let i=0;i<W;i++){
+      const y = this.buf[i];
+      if(i===0) ctx.moveTo(i,y); else ctx.lineTo(i,y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  animate(){
+    // Shift buffer left by speed
+    for(let s=0;s<this.speed;s++){
+      this.buf.copyWithin(0,1);
+      this.buf[this.W-1] = this.sample();
+      this.t++;
+    }
+    this.draw();
+    this.animId = requestAnimationFrame(()=>this.animate());
+  }
+
+  start(){
+    if(this.running) return;
+    this.running=true;
+    this.animate();
+  }
+
+  stop(){
+    if(this.animId) cancelAnimationFrame(this.animId);
+    this.running=false;
+  }
+
+  setRhythm(name, btn){
+    this.rhythm = name;
+    this.t = 0;
+    const fcMap={RSN:75,TV:180,AESP:50,ASISTOLIA:0,FV:0};
+    this.fc = fcMap[name]||75;
+    // Update label
+    const desfib = (name==='FV'||name==='TV')?'⚡ DESFIBRILABLE':'✅ NO Desfibrilable';
+    const names={RSN:'Ritmo Sinusal Normal',FV:'Fibrilación Ventricular',TV:'TV sin pulso',AESP:'Actividad Eléctrica Sin Pulso',ASISTOLIA:'Asistolia'};
+    const fcLabel = (name==='FV'||name==='ASISTOLIA')?'---':(this.fc+' lpm');
+    const lbl=document.getElementById('monitorLabel');
+    if(lbl) lbl.textContent = `${names[name]} | FC: ${fcLabel} | ${desfib}`;
+    // Button active state
+    document.querySelectorAll('.rbtn').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  }
+}
+
+// Init monitor when M5 enters viewport
+let ecgMon = null;
+const monitorObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !ecgMon){
+      ecgMon = new ECGMonitor('ecgCanvas');
+      ecgMon.start();
+      window.ecgMon = ecgMon;
+    }
+  });
+},{threshold:0.1});
+const monitorEl = document.getElementById('monitorWrap');
+if(monitorEl) monitorObs.observe(monitorEl);
+
 // ── ANIMATIONS ──
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible');});
 },{threshold:0.08});
-document.querySelectorAll('.anim-fadein').forEach(el => obs.observe(el));
+document.querySelectorAll('.anim-fadein').forEach(el=>obs.observe(el));
 
 // ── SIDEBAR ACTIVE ──
 const navLinks = document.querySelectorAll('.sidebar nav a');
-const sections = [...document.querySelectorAll('[id^="m"]'), document.getElementById('final-quiz')];
+const sections = [...document.querySelectorAll('[id^="m"]'),document.getElementById('final-quiz')];
 window.addEventListener('scroll',()=>{
-  let cur = '';
-  sections.forEach(s=>{ if(s && window.scrollY >= s.offsetTop-120) cur=s.id; });
-  navLinks.forEach(a=>{ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+  let cur='';
+  sections.forEach(s=>{if(s&&window.scrollY>=s.offsetTop-120) cur=s.id;});
+  navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
 });
 
-// init
-updateProgress();
+// ── INIT: apply module lock state ──
+(function initLocks(){
+  for(let n=2;n<=6;n++){
+    const card=document.getElementById('m'+n);
+    if(!card) continue;
+    if(!isUnlocked(n)){
+      card.classList.add('locked');
+      // Add lock badge to header
+      const hdr = card.querySelector('.mod-header');
+      if(hdr && !hdr.querySelector('.lock-badge')){
+        const lb=document.createElement('span');
+        lb.className='lock-badge'; lb.innerHTML='🔒 Bloqueado';
+        hdr.appendChild(lb);
+      }
+    }
+  }
+  // Restore done array completeness
+  for(let n=1;n<=6;n++){
+    if(localStorage.getItem('ecg_mod_'+n+'_pass')==='1' && !done.includes(n)) done.push(n);
+  }
+  updateProgress();
+})();
 </script>
 </body>
 </html>
