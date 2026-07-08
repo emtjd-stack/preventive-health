@@ -936,6 +936,33 @@ tr:nth-child(even) td{background:#f4f8fe}
       <iframe src="https://www.youtube.com/embed/DUaxt8OlT3o" allowfullscreen loading="lazy" title="Uso del DEA"></iframe>
     </div>
 
+    <!-- BLS INTERACTIVE SIMULATOR -->
+    <div style="background:#000;border-radius:14px;overflow:hidden;margin:28px 0;border:3px solid #333" id="blsWrap">
+      <div style="background:#0d1117;padding:14px 18px;border-bottom:1px solid #222">
+        <span style="color:#00e5ff;font-family:monospace;font-weight:700;font-size:.85rem">🫀 SIMULADOR BLS — Soporte Vital Básico (SVB)</span>
+      </div>
+      <div style="padding:16px 18px;background:#050a0f;color:#ccc;font-size:.82rem;line-height:1.6">
+        <strong style="color:#f0c319">📋 Instrucciones:</strong>
+        <ol style="margin-top:6px;padding-left:18px;color:#aaa">
+          <li>Observa el ritmo de compresiones: <strong style="color:#4ade80">100–120/min</strong>, como recomienda la AHA 2020.</li>
+          <li>Usa el botón <strong style="color:#00e5ff">INICIAR RCP</strong> para arrancar/detener el metrónomo y la animación torácica.</li>
+          <li>Cuando el DEA llegue, presiona <strong style="color:#f0c319">ANALIZAR RITMO</strong> para simular el análisis del DEA.</li>
+          <li>Si el DEA aconseja choque, presiona <strong style="color:#f87171">⚡ DESCARGAR</strong> (asegúrate que nadie toque al paciente).</li>
+          <li>Reinicia RCP inmediatamente tras el choque.</li>
+        </ol>
+      </div>
+      <canvas id="blsCanvas" width="680" height="220" style="display:block;background:#000;width:100%"></canvas>
+      <div style="display:flex;gap:10px;padding:14px 18px;background:#0d1117;flex-wrap:wrap">
+        <button id="blsStartBtn" onclick="blsSim.toggleCPR()" style="background:#065f46;color:#4ade80;border:2px solid #4ade80;border-radius:8px;padding:10px 20px;font-weight:700;font-size:.88rem;cursor:pointer">▶ INICIAR RCP</button>
+        <button onclick="blsSim.analyzeRhythm()" style="background:#1c3a5e;color:#00e5ff;border:2px solid #00e5ff;border-radius:8px;padding:10px 20px;font-weight:700;font-size:.88rem;cursor:pointer">🔍 ANALIZAR RITMO (DEA)</button>
+        <button id="blsShockBtn" onclick="blsSim.shock()" style="background:#450a0a;color:#f87171;border:2px dashed #f87171;border-radius:8px;padding:10px 20px;font-weight:700;font-size:.88rem;cursor:pointer;opacity:.5" disabled>⚡ DESCARGAR</button>
+        <button onclick="blsSim.reset()" style="background:#1a2840;color:#94a3b8;border:2px solid #334155;border-radius:8px;padding:10px 20px;font-weight:700;font-size:.88rem;cursor:pointer">↺ REINICIAR</button>
+      </div>
+      <div id="blsStatus" style="padding:12px 18px;background:#050a0f;font-family:monospace;font-size:.8rem;color:#4ade80;min-height:44px;border-top:1px solid #1a2840">
+        Sistema listo. Presiona INICIAR RCP para comenzar la simulación.
+      </div>
+    </div>
+
     <!-- SIMULATOR M6 -->
     <div class="sim-section">
       <span class="sim-badge">Simulador · Módulo 6</span>
@@ -1163,6 +1190,169 @@ function submitFinalQuiz(){
     r.innerHTML=`❌ ${ok}/8 — Necesitas 6 para aprobar. Revisa los módulos e intenta nuevamente.`;
   }
 }
+
+// ── BLS Simulator ─────────────────────────────────────────────────
+const blsSim = (() => {
+  const W=680, H=220;
+  let canvas, ctx, running=false, raf=null, t=0, phase='idle';
+  let comprCount=0, cycleMs=500, lastComp=0, shockReady=false;
+  let statusEl, startBtn, shockBtn;
+  const BPM=110, interval=60000/BPM;
+
+  function setStatus(msg, color='#4ade80'){
+    if(!statusEl) statusEl=document.getElementById('blsStatus');
+    statusEl.style.color=color;
+    statusEl.textContent=msg;
+  }
+
+  function draw(){
+    if(!canvas){ canvas=document.getElementById('blsCanvas'); if(!canvas) return; ctx=canvas.getContext('2d'); }
+    ctx.clearRect(0,0,W,H);
+
+    // Background
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+
+    // Green grid
+    ctx.strokeStyle='rgba(0,80,0,.4)'; ctx.lineWidth=.5;
+    for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    const cy=H/2;
+
+    // Chest silhouette (torso)
+    ctx.save();
+    ctx.translate(80, cy);
+    const compress = (running && phase==='cpr') ? Math.max(0, Math.sin((Date.now()-lastComp)/interval*Math.PI)*12) : 0;
+    ctx.fillStyle='#1a2840'; ctx.strokeStyle='#334155'; ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.ellipse(0, compress/3, 46, 60-compress, 0, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+
+    // Ribs
+    ctx.strokeStyle='rgba(100,150,200,.5)'; ctx.lineWidth=1;
+    [-28,-14,0,14,28].forEach(ry=>{
+      ctx.beginPath(); ctx.ellipse(0, ry+compress/3, 40, 12, 0, 0, Math.PI*2); ctx.stroke();
+    });
+
+    // Hands icon
+    if(running && phase==='cpr'){
+      ctx.fillStyle='#f0c319';
+      const handY = -70 + compress;
+      ctx.beginPath(); ctx.roundRect(-18, handY, 36, 18, 4); ctx.fill();
+      ctx.fillStyle='#1a2840';
+      ctx.font='bold 10px monospace';
+      ctx.textAlign='center';
+      ctx.fillText('RCP', 0, handY+13);
+    }
+
+    // Heart indicator
+    const hb = (running && phase==='cpr') ? compress : 0;
+    ctx.fillStyle = hb>3 ? '#f87171' : '#334155';
+    ctx.font='22px serif'; ctx.textAlign='center';
+    ctx.fillText('❤', 0, 8+hb/2);
+    ctx.restore();
+
+    // Compression counter / metronome bar
+    const barX=160, barW=500, barH=30, barY=30;
+    ctx.fillStyle='#0d1117'; ctx.fillRect(barX, barY, barW, barH);
+    if(running && phase==='cpr'){
+      const progress = Math.min(1, (Date.now()-lastComp)/interval);
+      ctx.fillStyle='rgba(0,229,255,.7)';
+      ctx.fillRect(barX, barY, barW*progress, barH);
+    }
+    ctx.strokeStyle='#334155'; ctx.lineWidth=1; ctx.strokeRect(barX,barY,barW,barH);
+    ctx.fillStyle='#fff'; ctx.font='bold 12px monospace'; ctx.textAlign='center';
+    ctx.fillText(running&&phase==='cpr'?`COMPRESIONES: ${BPM}/min  |  Ciclo ${comprCount}`:'Metrónomo BLS apagado', barX+barW/2, barY+20);
+
+    // DEA panel
+    const deaX=160, deaY=75, deaW=220, deaH=130;
+    ctx.fillStyle='#0a1628'; ctx.fillRect(deaX,deaY,deaW,deaH);
+    ctx.strokeStyle= phase==='shock_ready'?'#f0c319':'#1e3a5f'; ctx.lineWidth=2; ctx.strokeRect(deaX,deaY,deaW,deaH);
+    ctx.fillStyle='#00e5ff'; ctx.font='bold 11px monospace'; ctx.textAlign='center';
+    ctx.fillText('DEA — DESFIBRILADOR EXTERNO', deaX+deaW/2, deaY+20);
+    ctx.font='10px monospace'; ctx.fillStyle='#94a3b8';
+    const deaMsg = phase==='shock_ready' ? '⚡ CHOQUE ACONSEJADO' : phase==='shocked' ? '✅ CHOQUE DADO — INICIE RCP' : phase==='analyzing' ? '⏳ ANALIZANDO RITMO...' : phase==='no_shock' ? '✋ NO SE ACONSEJA CHOQUE' : '— EN ESPERA —';
+    ctx.fillStyle = phase==='shock_ready'?'#f0c319': phase==='shocked'?'#4ade80': phase==='no_shock'?'#94a3b8':'#00e5ff';
+    ctx.font='bold 13px monospace'; ctx.fillText(deaMsg, deaX+deaW/2, deaY+55);
+
+    // Saturation indicator
+    const satX=400, satY=75, satW=260, satH=130;
+    const spo2 = phase==='idle'?95 : running?Math.min(99, 85+comprCount*0.5)|0:88;
+    ctx.fillStyle='#050f1a'; ctx.fillRect(satX,satY,satW,satH);
+    ctx.strokeStyle='#1e3a5f'; ctx.lineWidth=2; ctx.strokeRect(satX,satY,satW,satH);
+    ctx.fillStyle='#00e5ff'; ctx.font='bold 10px monospace'; ctx.textAlign='center';
+    ctx.fillText('SpO2  |  FC', satX+satW/2, satY+20);
+    ctx.font='bold 36px monospace';
+    ctx.fillStyle = spo2>=95?'#4ade80':spo2>=90?'#f0c319':'#f87171';
+    ctx.fillText(spo2+'%', satX+satW/2-40, satY+75);
+    ctx.fillStyle='#f0c319'; ctx.font='bold 28px monospace';
+    ctx.fillText(running&&phase==='cpr'?BPM:'---', satX+satW/2+60, satY+75);
+    ctx.fillStyle='#64748b'; ctx.font='9px monospace';
+    ctx.fillText('SpO2', satX+satW/2-40, satY+95);
+    ctx.fillText('lpm', satX+satW/2+60, satY+95);
+  }
+
+  function loop(){
+    const now=Date.now();
+    if(running && phase==='cpr' && now-lastComp >= interval){
+      lastComp=now; comprCount++;
+    }
+    draw();
+    raf=requestAnimationFrame(loop);
+  }
+
+  return {
+    toggleCPR(){
+      if(!startBtn) startBtn=document.getElementById('blsStartBtn');
+      running=!running;
+      if(running){ phase='cpr'; lastComp=Date.now(); comprCount=0; startBtn.textContent='⏸ PAUSAR RCP'; startBtn.style.background='#7f1d1d'; startBtn.style.color='#fca5a5'; startBtn.style.borderColor='#fca5a5'; setStatus(`RCP en curso — ${BPM} compresiones/min | Profundidad: 5-6 cm | 30:2`,'#4ade80'); }
+      else { startBtn.textContent='▶ REINICIAR RCP'; startBtn.style.background='#065f46'; startBtn.style.color='#4ade80'; startBtn.style.borderColor='#4ade80'; setStatus('RCP pausada.','#f0c319'); }
+      if(!raf) raf=requestAnimationFrame(loop);
+    },
+    analyzeRhythm(){
+      running=false; phase='analyzing';
+      if(startBtn){startBtn.textContent='▶ INICIAR RCP'; startBtn.style.background='#065f46'; startBtn.style.color='#4ade80'; startBtn.style.borderColor='#4ade80';}
+      setStatus('DEA analizando ritmo... NO TOQUE AL PACIENTE','#00e5ff');
+      setTimeout(()=>{
+        shockReady=true; phase='shock_ready';
+        if(!shockBtn) shockBtn=document.getElementById('blsShockBtn');
+        shockBtn.disabled=false; shockBtn.style.opacity='1'; shockBtn.style.background='#7f1d1d';
+        setStatus('⚡ CHOQUE ACONSEJADO — Asegúrese que NADIE toca al paciente. Presione DESCARGAR.','#f0c319');
+        if(!raf) raf=requestAnimationFrame(loop);
+      },2500);
+    },
+    shock(){
+      if(!shockReady) return;
+      phase='shocked'; shockReady=false;
+      if(!shockBtn) shockBtn=document.getElementById('blsShockBtn');
+      shockBtn.disabled=true; shockBtn.style.opacity='.5';
+      setStatus('⚡ ¡CHOQUE ADMINISTRADO! Inicie RCP INMEDIATAMENTE (30 compresiones)','#f87171');
+      setTimeout(()=>{
+        setStatus('Reinicia RCP ahora — 30 compresiones + 2 ventilaciones. Evalúa en 2 minutos.','#4ade80');
+      },1500);
+    },
+    reset(){
+      running=false; phase='idle'; comprCount=0; shockReady=false;
+      if(raf){ cancelAnimationFrame(raf); raf=null; }
+      if(!startBtn) startBtn=document.getElementById('blsStartBtn');
+      if(!shockBtn) shockBtn=document.getElementById('blsShockBtn');
+      startBtn.textContent='▶ INICIAR RCP'; startBtn.style.background='#065f46'; startBtn.style.color='#4ade80'; startBtn.style.borderColor='#4ade80';
+      shockBtn.disabled=true; shockBtn.style.opacity='.5';
+      setStatus('Sistema reiniciado. Presiona INICIAR RCP para comenzar.','#4ade80');
+      if(canvas && ctx){ ctx.clearRect(0,0,W,H); }
+      raf=requestAnimationFrame(loop);
+    }
+  };
+})();
+
+// Auto-start BLS canvas draw on page load
+(function initBLS(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ requestAnimationFrame(()=>{ blsSim.reset&&blsSim.reset(); }); obs.disconnect(); } });
+  },{threshold:.3});
+  const wrap=document.getElementById('blsWrap');
+  if(wrap) obs.observe(wrap);
+})();
 
 // ── Nav active link ───────────────────────────────────────────────
 const sections = document.querySelectorAll('[id^="m"],[id="final"]');

@@ -128,6 +128,9 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
 .gate-result.fail{background:rgba(248,113,113,.15);color:#f87171;border:1.5px solid #f87171}
 .unlock-anim{animation:unlockPop .5s ease}
 @keyframes unlockPop{0%{transform:scale(.97);opacity:.5}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+.locked-final{opacity:.5;filter:grayscale(.5);pointer-events:none;user-select:none}
+.locked-final .btn,.locked-final .fq-opt,.locked-final input{pointer-events:none}
+.lock-badge-final{background:linear-gradient(135deg,#0f1f3a,#163d7a);border:2px solid var(--gold);border-radius:10px;padding:14px 18px;margin-bottom:20px;color:rgba(255,255,255,.8);font-size:.88rem;font-weight:600;pointer-events:all;user-select:auto;opacity:1;filter:none}
 
 /* ── ECG MONITOR ── */
 .monitor-wrap{background:#000;border-radius:14px;overflow:hidden;margin:24px 0;border:3px solid #222}
@@ -1305,6 +1308,34 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
     </div>
 
     <button class="btn" onclick="markDone(6)">Marcar módulo completado ✓</button>
+
+    <!-- GATE QUIZ M6 → FINAL -->
+    <div class="gate-quiz" id="gate6">
+      <h4>🔒 Evaluación de Acceso — Módulo 6</h4>
+      <p style="font-size:.85rem;opacity:.8;margin-bottom:16px">Responde las 5 preguntas correctamente para habilitar la Evaluación Final.</p>
+      <div class="gate-q"><p>1. La adrenalina en paro cardíaco actúa principalmente como:</p>
+        <label class="gate-opt"><input type="radio" name="g6q1" value="a"> Antiarrítmico clase III</label>
+        <label class="gate-opt"><input type="radio" name="g6q1" value="b"> Vasoconstrictor que aumenta perfusión coronaria y cerebral</label>
+        <label class="gate-opt"><input type="radio" name="g6q1" value="c"> Broncodilatador de acción prolongada</label></div>
+      <div class="gate-q"><p>2. La dosis de adrenalina en paro cardíaco según ACLS es:</p>
+        <label class="gate-opt"><input type="radio" name="g6q2" value="a"> 0,5 mg IV cada 10 minutos</label>
+        <label class="gate-opt"><input type="radio" name="g6q2" value="b"> 1 mg IV cada 3–5 minutos</label>
+        <label class="gate-opt"><input type="radio" name="g6q2" value="c"> 5 mg IV en bolo único</label></div>
+      <div class="gate-q"><p>3. La amiodarona en Fibrilación Ventricular (FV) refractaria se administra:</p>
+        <label class="gate-opt"><input type="radio" name="g6q3" value="a"> 0,5 mg IV cada 5 minutos</label>
+        <label class="gate-opt"><input type="radio" name="g6q3" value="b"> 300 mg IV en bolo tras el tercer choque</label>
+        <label class="gate-opt"><input type="radio" name="g6q3" value="c"> 150 mg IM antes de la primera descarga</label></div>
+      <div class="gate-q"><p>4. La atropina en el algoritmo ACLS actual se indica principalmente para:</p>
+        <label class="gate-opt"><input type="radio" name="g6q4" value="a"> Fibrilación Ventricular resistente a choques</label>
+        <label class="gate-opt"><input type="radio" name="g6q4" value="b"> Bradicardia sintomática</label>
+        <label class="gate-opt"><input type="radio" name="g6q4" value="c"> Taquicardia Ventricular (TV) sin pulso</label></div>
+      <div class="gate-q"><p>5. En Actividad Eléctrica Sin Pulso (AESP) por hipovolemia, la intervención más inmediata es:</p>
+        <label class="gate-opt"><input type="radio" name="g6q5" value="a"> Amiodarona 300 mg IV</label>
+        <label class="gate-opt"><input type="radio" name="g6q5" value="b"> Reposición de volumen con cristaloides + control de hemorragia</label>
+        <label class="gate-opt"><input type="radio" name="g6q5" value="c"> Desfibrilar a 360 J monofásico</label></div>
+      <button class="btn btn-gold" onclick="checkGate(6,{g6q1:'b',g6q2:'b',g6q3:'b',g6q4:'b',g6q5:'b'})">Verificar y habilitar evaluación final →</button>
+      <div class="gate-result" id="gate6-result"></div>
+    </div>
   </div>
 </div>
 
@@ -1400,6 +1431,14 @@ function isUnlocked(n){
 }
 
 function unlockMod(n){
+  const prevGate = document.getElementById('gate'+(n-1));
+  if(prevGate){ prevGate.style.border='2px solid #4ade80'; prevGate.style.opacity='.7'; }
+  if(n===7){
+    // unlock final quiz
+    const fq = document.getElementById('final-quiz');
+    if(fq){ fq.classList.remove('locked-final'); fq.classList.add('unlock-anim'); const lb=fq.querySelector('.lock-badge-final'); if(lb)lb.remove(); }
+    return;
+  }
   if(n>6) return;
   const card = document.getElementById('m'+n);
   if(!card) return;
@@ -1407,12 +1446,6 @@ function unlockMod(n){
   card.classList.add('unlock-anim');
   const lb = card.querySelector('.lock-badge');
   if(lb) lb.remove();
-  // show gate quiz of previous module "completed"
-  const prevGate = document.getElementById('gate'+(n-1));
-  if(prevGate){
-    prevGate.style.border='2px solid #4ade80';
-    prevGate.style.opacity='.7';
-  }
 }
 
 function checkGate(modNum, answers){
@@ -1433,7 +1466,7 @@ function checkGate(modNum, answers){
   if(ok===5){
     res.style.display='block';
     res.className='gate-result pass';
-    res.textContent='✅ 5/5 — ¡Excelente! Módulo '+(modNum+1)+' desbloqueado.';
+    res.textContent = modNum===6 ? '✅ 5/5 — ¡Excelente! Evaluación Final habilitada.' : '✅ 5/5 — ¡Excelente! Módulo '+(modNum+1)+' desbloqueado.';
     localStorage.setItem('ecg_mod_'+modNum+'_pass','1');
     if(!done.includes(modNum)) done.push(modNum);
     localStorage.setItem('ecg_done',JSON.stringify(done));
@@ -1710,6 +1743,17 @@ window.addEventListener('scroll',()=>{
         lb.className='lock-badge'; lb.innerHTML='🔒 Bloqueado';
         hdr.appendChild(lb);
       }
+    }
+  }
+  // Lock final quiz until gate6 passed
+  const fq = document.getElementById('final-quiz');
+  if(fq && localStorage.getItem('ecg_mod_6_pass')!=='1'){
+    fq.classList.add('locked-final');
+    if(!fq.querySelector('.lock-badge-final')){
+      const lb=document.createElement('div');
+      lb.className='lock-badge-final';
+      lb.innerHTML='🔒 Completa el Módulo 6 y pasa la evaluación de acceso para habilitar la Evaluación Final.';
+      fq.insertBefore(lb, fq.firstChild);
     }
   }
   // Restore done array completeness
