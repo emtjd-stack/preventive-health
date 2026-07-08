@@ -1,668 +1,1138 @@
 <!DOCTYPE html>
 <html lang="es" style="visibility:hidden">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<script>document.documentElement.style.visibility='hidden'</script>
-<script type="module" src="../../js/auth.js"></script>
-<title>Brigadas contra Incendios | Preventive Health</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brigadas de Emergencia — Preventive Health</title>
+<script src="../../js/auth.js" type="module"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1D51A3;--blue-dark:#163d7a;--blue-light:#e8eef8;--gold:#F0C319;--text:#1a2840;--muted:#5a6e8c;--bg:#f5f7fb;--white:#fff;--border:#dde4ef;--radius:10px;--shadow:0 2px 12px rgba(29,81,163,.10)}
-html{scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;font-size:16px}
-h1,h2,h3,h4{font-weight:700;line-height:1.2}
-a{color:var(--blue);text-decoration:none}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.anim-fadein{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
-.anim-fadein.visible{opacity:1;transform:none}
-nav{position:sticky;top:0;z-index:200;background:var(--blue);border-bottom:3px solid var(--gold);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{color:#fff;font-weight:700;font-size:18px}
-.nav-back{color:rgba(255,255,255,.8);font-size:13px;padding:5px 10px;border-radius:6px;transition:.15s}
-.nav-back:hover{color:#fff;background:rgba(255,255,255,.12)}
-.top-progress{height:4px;background:rgba(255,255,255,.2)}
-.top-progress-fill{height:100%;background:var(--gold);transition:width .4s;width:0%}
-.course-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px)}
-.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 18px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.sidebar-progress{padding:12px 18px;margin-bottom:4px}
-.prog-bar-bg{height:5px;background:var(--border);border-radius:3px;margin-top:4px}
-.prog-bar-fill{height:5px;background:var(--blue);border-radius:3px;transition:width .4s}
-.prog-pct{font-size:11px;color:var(--muted);margin-top:3px}
-.mod-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;border-left:3px solid transparent;transition:.18s;user-select:none}
-.mod-item:hover{background:var(--bg)}
-.mod-item.active{background:var(--blue-light);border-left-color:var(--blue)}
-.mod-num{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);transition:.2s}
-.mod-item.active .mod-num,.mod-item.done .mod-num{background:var(--blue);color:#fff}
-.mod-label{font-size:13px;font-weight:500;line-height:1.3}
-.mod-check{margin-left:auto;font-size:14px;opacity:0;transition:.2s}
-.mod-item.done .mod-check{opacity:1}
-.main{padding:36px 40px;max-width:820px}
-.module-panel{display:none;animation:fadeIn .3s ease}
-.module-panel.active{display:block}
-.module-header{margin-bottom:28px}
-.module-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:rgba(29,81,163,.1);padding:3px 12px;border-radius:20px;margin-bottom:10px}
-.module-title{font-size:clamp(1.5rem,3vw,2rem);color:var(--blue);margin-bottom:8px}
-.module-desc{font-size:1rem;color:var(--muted)}
-.content-section{margin-bottom:28px}
-.content-section h3{font-size:1.1rem;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold);display:inline-block}
-.content-section p{font-size:.95rem;color:var(--muted);margin-bottom:12px;line-height:1.75}
-.content-section ul,.content-section ol{padding-left:22px;color:var(--muted);font-size:.93rem;line-height:2}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
-.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue);transition:transform .2s}
-.info-card:hover{transform:translateY(-2px)}
-.info-card.gold{border-left-color:var(--gold)}.info-card.danger{border-left-color:#dc2626}.info-card.green{border-left-color:#16a34a}
-.info-card h4{font-size:13px;font-weight:700;margin-bottom:6px}.info-card p{font-size:13px;color:var(--muted);line-height:1.5}
-.alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);margin:16px 0;font-size:.92rem}
-.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.alert.important{background:#fef3c7;border:1px solid #f59e0b}.alert.danger{background:#fee2e2;border:1px solid #dc2626}
-.alert.info{background:var(--blue-light);border:1px solid var(--blue)}.alert.success{background:#dcfce7;border:1px solid #16a34a}
-.alert p{margin:0;color:var(--text);line-height:1.55}
-.steps{display:flex;flex-direction:column;gap:12px;margin:18px 0}
-.step{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:transform .2s}
-.step:hover{transform:translateX(4px)}
-.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-body h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}.step-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
-.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
-.concept-card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--blue);transition:transform .2s}
-.concept-card:hover{transform:translateY(-4px)}.concept-card .cc-icon{font-size:28px;margin-bottom:8px}
-.concept-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}.concept-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
-.abp-case{background:linear-gradient(135deg,#eef3ff,#e0eaff);border-radius:12px;padding:24px;margin:24px 0;border:2px solid rgba(29,81,163,.2)}
-.abp-label{background:var(--blue);color:#fff;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px}
-.abp-case h4{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px}
-.abp-case p{font-size:.92rem;color:#334;line-height:1.7;margin-bottom:10px}
-.abp-questions{background:rgba(255,255,255,.6);border-radius:8px;padding:14px;margin-top:12px}
-.abp-questions p{font-size:.88rem;margin:6px 0;color:var(--blue);font-weight:600}
-.norm-ref{background:var(--white);border-left:3px solid var(--gold);padding:12px 16px;margin:12px 0;font-size:.84rem;color:var(--muted);border-radius:0 8px 8px 0;border:1px solid var(--border);border-left:3px solid var(--gold)}
-.norm-ref strong{color:var(--text)}
-.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
-.data-table th{background:var(--blue);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
-.data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
-.data-table tr:nth-child(even) td{background:var(--bg)}
-.svg-container{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
-.svg-container figcaption{font-size:.82rem;color:var(--muted);margin-top:10px}
-.quiz-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
-.quiz-title{font-size:1.05rem;font-weight:700;margin-bottom:6px}.quiz-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
-.quiz-question{margin-bottom:22px}.quiz-q{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:10px}
-.quiz-options{display:flex;flex-direction:column;gap:8px}
-.quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-size:.9rem;user-select:none}
-.quiz-opt:hover{border-color:var(--blue);background:var(--blue-light)}
-.quiz-opt.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d}
-.quiz-opt.wrong{border-color:#dc2626!important;background:#fee2e2!important;color:#b91c1c}
-.quiz-opt input[type=radio]{accent-color:var(--blue)}
-.quiz-submit{margin-top:8px;padding:11px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
-.quiz-submit:hover{background:var(--blue-dark)}
-.quiz-result{margin-top:16px;padding:16px;border-radius:var(--radius);display:none;text-align:center}
-.quiz-result.pass{background:#dcfce7;border:1px solid #16a34a;color:#15803d}
-.quiz-result.fail{background:#fee2e2;border:1px solid #dc2626;color:#b91c1c}
-.module-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border)}
-.btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:.18s}
-.btn-prev{background:var(--white);border:1.5px solid var(--border);color:var(--muted)}.btn-prev:hover{border-color:var(--blue);color:var(--blue)}
-.btn-next{background:var(--blue);color:#fff}.btn-next:hover{background:var(--blue-dark)}
-.completion-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:var(--radius);padding:40px;text-align:center;color:#fff;margin-top:32px;display:none;animation:fadeInUp .5s ease}
-.completion-card h2{font-size:1.8rem;margin-bottom:12px}.completion-card p{color:rgba(255,255,255,.85);margin-bottom:16px}
-.cert-icon{font-size:64px;margin-bottom:16px}
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0}
-.mob-nav-inner{display:flex;overflow-x:auto;gap:4px;padding:0 12px;scrollbar-width:none}
-.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;min-width:60px;transition:.15s;user-select:none}
-.mob-tab.active{background:var(--blue-light)}.mob-tab-icon{font-size:18px}
-.mob-tab-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}.mob-tab.active .mob-tab-label{color:var(--blue)}
-@media(max-width:768px){.course-layout{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px 16px 100px}.mob-nav{display:block}.info-grid,.concept-grid{grid-template-columns:1fr}}
+:root{
+  --blue:#1D51A3;--blue-dark:#163d7a;--gold:#F0C319;
+  --bg:#f0f4fa;--card:#fff;--text:#1a2840;--muted:#2e4060;
+  --radius:14px;--shadow:0 4px 20px rgba(29,81,163,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.7}
+a{color:var(--blue)}
+.shell{display:flex;min-height:100vh}
+nav{width:260px;background:var(--blue-dark);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;padding:24px 0}
+nav .brand{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:12px}
+nav .brand img{height:36px;filter:brightness(0) invert(1)}
+nav .brand p{font-size:.72rem;opacity:.7;margin-top:4px}
+nav ul{list-style:none}
+nav ul li a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.82);text-decoration:none;font-size:.88rem;border-left:3px solid transparent;transition:.2s}
+nav ul li a:hover,nav ul li a.active{color:#fff;background:rgba(255,255,255,.1);border-left-color:var(--gold)}
+nav .prog-wrap{padding:16px 20px 0;font-size:.75rem;opacity:.7}
+nav .prog-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:6px}
+nav .prog-fill{height:5px;background:var(--gold);border-radius:3px;transition:.4s}
+main{flex:1;padding:32px 40px;max-width:960px}
+.page-hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;border-radius:var(--radius);padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden}
+.page-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:rgba(240,195,25,.12);border-radius:50%}
+.page-hero h1{font-size:2rem;font-weight:800}
+.page-hero p{opacity:.85;margin-top:8px;font-size:1.05rem}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:600}
+.badge.gold{background:var(--gold);color:#1a2840;border-color:var(--gold)}
+.mod-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:28px;overflow:hidden}
+.mod-header{background:linear-gradient(90deg,var(--blue),#2d6fd4);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+.mod-num{background:var(--gold);color:#1a2840;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0}
+.mod-header h2{font-size:1.15rem;font-weight:700}
+.mod-body{padding:24px}
+.mod-body p{margin-bottom:12px;color:var(--text)}
+.mod-body h3{font-size:1rem;font-weight:700;color:var(--blue-dark);margin:20px 0 8px;border-left:4px solid var(--gold);padding-left:10px}
+.mod-body ul{padding-left:20px;margin-bottom:12px;color:var(--text)}
+.mod-body ul li{margin-bottom:6px}
+.info-box{border-left:4px solid var(--blue);background:#e8f0fb;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.warn-box{border-left:4px solid #e05c2d;background:#fdf0eb;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.tip-box{border-left:4px solid #22a86b;background:#e6f9f1;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text)}
+.vid-wrap{position:relative;padding-bottom:56.25%;border-radius:10px;overflow:hidden;margin:18px 0;background:#000}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-label{font-size:.8rem;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.diagram-wrap{background:#fff;border:1.5px solid #d8e4f5;border-radius:12px;padding:16px;margin:20px 0;overflow:visible}
+.diagram-title{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.quiz-section{background:linear-gradient(135deg,#f0f4fa,#e2ecfd);border:1.5px solid #c5d9f5;border-radius:12px;padding:22px;margin-top:24px}
+.quiz-section h4{color:var(--blue-dark);font-size:1rem;font-weight:700;margin-bottom:14px}
+.quiz-q{margin-bottom:14px}
+.quiz-q p{font-size:.95rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.quiz-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid #c5d9f5;border-radius:8px;cursor:pointer;margin-bottom:5px;font-size:.9rem;color:var(--text);background:#fff;transition:.15s}
+.quiz-opt:hover{border-color:var(--blue);background:#eef3fd}
+.quiz-opt.correct{border-color:#22a86b!important;background:#e6f9f1!important;color:#166a45}
+.quiz-opt.wrong{border-color:#e05c2d!important;background:#fdf0eb!important;color:#b63b1b}
+.quiz-btn,.sim-btn,.final-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:10px;transition:.2s}
+.quiz-btn:hover,.sim-btn:hover,.final-btn:hover{background:var(--blue-dark)}
+.quiz-result,.sim-result{display:none;margin-top:12px;padding:12px 16px;border-radius:8px;font-weight:700;font-size:.95rem}
+.pass{background:#e6f9f1;color:#166a45;border:1.5px solid #22a86b}
+.fail{background:#fdf0eb;color:#b63b1b;border:1.5px solid #e05c2d}
+.sim-section{background:linear-gradient(135deg,#1a2840,#1D51A3);border-radius:14px;padding:28px;margin:28px 0;color:#fff}
+.sim-badge{background:var(--gold);color:#1a2840;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px;letter-spacing:.04em;text-transform:uppercase}
+.sim-section h4{font-size:1.05rem;font-weight:700;margin-bottom:16px}
+.sim-q{margin-bottom:18px}
+.sim-q p{font-size:.93rem;font-weight:600;margin-bottom:8px;color:rgba(255,255,255,.92)}
+.sim-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;margin-bottom:6px;color:rgba(255,255,255,.88);font-size:.88rem;transition:.15s}
+.sim-opt:hover{border-color:rgba(240,195,25,.6);background:rgba(255,255,255,.07)}
+.sim-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.2)!important;color:#4ade80}
+.sim-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.2)!important;color:#f87171}
+.sim-opt input{accent-color:var(--gold)}
+.final-section{background:linear-gradient(135deg,#1a2840,#163d7a);border-radius:14px;padding:32px;margin-top:36px;color:#fff}
+.final-section h3{font-size:1.25rem;font-weight:800;margin-bottom:6px}
+.final-section p.sub{opacity:.7;font-size:.88rem;margin-bottom:20px}
+.final-q{margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:16px}
+.final-q p{font-weight:600;margin-bottom:8px;font-size:.92rem}
+.final-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;margin-bottom:5px;cursor:pointer;font-size:.88rem;color:rgba(255,255,255,.85)}
+.final-opt:hover{border-color:var(--gold);background:rgba(255,255,255,.07)}
+.final-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.15)!important;color:#4ade80}
+.final-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.15)!important;color:#f87171}
+.final-result{display:none;padding:20px;border-radius:10px;font-size:1.05rem;font-weight:700;margin-top:16px;text-align:center}
+.anim-fadein{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.anim-fadein.visible{opacity:1;transform:translateY(0)}
+.steps{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}
+.step{flex:1 1 140px;background:linear-gradient(135deg,var(--blue),#3a7bdc);color:#fff;border-radius:10px;padding:16px 14px;text-align:center}
+.step .num{font-size:1.6rem;font-weight:900;line-height:1;color:var(--gold)}
+.step p{font-size:.8rem;margin-top:6px;opacity:.9}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
+th{background:var(--blue);color:#fff;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid #d8e4f5;color:var(--text)}
+tr:nth-child(even) td{background:#f4f8fe}
 </style>
 </head>
 <body>
+<div class="shell">
 <nav>
-  <a class="nav-logo" href="../../index.html">Preventive Health</a>
-  <a class="nav-back" href="../index.html">← Catálogo</a>
+  <div class="brand">
+    <img src="../../assets/logo.png" alt="Preventive Health">
+    <p>Brigadas de Emergencia</p>
+  </div>
+  <ul>
+    <li><a href="#m1" class="active">📋 M1 · Marco Legal</a></li>
+    <li><a href="#m2">🔥 M2 · Química del Fuego</a></li>
+    <li><a href="#m3">🧯 M3 · Extintores</a></li>
+    <li><a href="#m4">💧 M4 · Sistemas Fijos</a></li>
+    <li><a href="#m5">🚪 M5 · Evacuación</a></li>
+    <li><a href="#m6">📊 M6 · MESERI</a></li>
+    <li><a href="#final">📝 Evaluación Final</a></li>
+  </ul>
+  <div class="prog-wrap">
+    Progreso del curso
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
 </nav>
-<div class="top-progress"><div class="top-progress-fill" id="topProg"></div></div>
-<div class="course-layout">
-<aside class="sidebar">
-  <div class="sidebar-title">Brigadas contra Incendios</div>
-  <div class="sidebar-progress">
-    <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:600">Progreso</span><span class="prog-pct" id="progPct">0%</span></div>
-    <div class="prog-bar-bg"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
-  </div>
-  <div class="mod-item active" data-mod="1" onclick="showModule(1)"><div class="mod-num">1</div><div class="mod-label">Marco Legal y Normativa NFPA</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="2" onclick="showModule(2)"><div class="mod-num">2</div><div class="mod-label">Química del Fuego — Tetraedro</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="3" onclick="showModule(3)"><div class="mod-num">3</div><div class="mod-label">Extintores Portátiles — PASS</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="4" onclick="showModule(4)"><div class="mod-num">4</div><div class="mod-label">Sistemas Fijos de Detección</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="5" onclick="showModule(5)"><div class="mod-num">5</div><div class="mod-label">Evacuación ante Incendios</div><div class="mod-check">✓</div></div>
-  <div class="mod-item" data-mod="6" onclick="showModule(6)"><div class="mod-num">6</div><div class="mod-label">Plan Contraincendios y MESERI</div><div class="mod-check">✓</div></div>
-</aside>
-<main class="main" id="mainContent">
 
-<!-- ===== MÓDULO 1 ===== -->
-<div class="module-panel active" id="mod-1">
-  <div class="module-header">
-    <span class="module-tag">Módulo 1 de 6</span>
-    <h1 class="module-title">Marco Legal y Normativa NFPA</h1>
-    <p class="module-desc">Obligaciones legales del empleador en prevención de incendios, conformación de brigadas y estándares NFPA aplicables en Ecuador.</p>
+<main>
+<div class="page-hero anim-fadein">
+  <h1>Brigadas de Emergencia</h1>
+  <p>Formación integral para la prevención y control de incendios, evacuación y gestión de riesgos laborales conforme al marco legal ecuatoriano.</p>
+  <div class="badges">
+    <span class="badge">6 Módulos</span>
+    <span class="badge">Decreto 2393 · NFPA</span>
+    <span class="badge gold">Certificación Incluida</span>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> Decreto 2393 Arts. 153-163 · Acuerdo MDT-2020-077 · NFPA 10 · NFPA 72 · NFPA 101 · NTE INEN 731</div>
-  <div class="content-section">
-    <h3>Obligaciones del Empleador — Decreto 2393</h3>
-    <p>El <strong>Decreto 2393, Arts. 153-163</strong> establece los requisitos mínimos para la prevención y extinción de incendios en establecimientos laborales. Toda empresa con más de 25 trabajadores está obligada a conformar una Brigada Contraincendios debidamente capacitada y equipada.</p>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Conformar la brigada</h4><p>Mínimo 1 brigadista por cada 25 trabajadores por turno. Personal voluntario, capacitado anualmente.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Registrar ante el MDT</h4><p>Presentar Plan de Autoprotección con nómina de brigada, equipos disponibles y cronograma de simulacros.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Dotar de equipos</h4><p>Extintores tipo y cantidad según NFPA 10, señalización INEN 731, sistema de alarma NFPA 72.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Realizar simulacros</h4><p>Mínimo 1 simulacro anual con informe al MDT. Evaluar tiempo de evacuación y eficacia de la brigada.</p></div></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Roles de la Brigada Contraincendios</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <rect x="220" y="10" width="160" height="50" rx="8" fill="#1D51A3"/>
-        <text x="300" y="32" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">JEFE DE BRIGADA</text>
-        <text x="300" y="48" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.8)">Coordinación general</text>
-        <line x1="200" y1="60" x2="120" y2="100" stroke="#F0C319" stroke-width="2"/>
-        <line x1="300" y1="60" x2="300" y2="100" stroke="#F0C319" stroke-width="2"/>
-        <line x1="400" y1="60" x2="480" y2="100" stroke="#F0C319" stroke-width="2"/>
-        <rect x="30" y="100" width="160" height="55" rx="8" fill="#163d7a"/>
-        <text x="110" y="122" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Atacante</text>
-        <text x="110" y="138" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.8)">Usa extintor / manguera</text>
-        <text x="110" y="150" text-anchor="middle" font-size="9" fill="#F0C319">Casco rojo</text>
-        <rect x="220" y="100" width="160" height="55" rx="8" fill="#163d7a"/>
-        <text x="300" y="122" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Apoyo</text>
-        <text x="300" y="138" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.8)">Abastece agua/agente</text>
-        <text x="300" y="150" text-anchor="middle" font-size="9" fill="#F0C319">Casco amarillo</text>
-        <rect x="410" y="100" width="160" height="55" rx="8" fill="#163d7a"/>
-        <text x="490" y="122" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Evacuación</text>
-        <text x="490" y="138" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.8)">Guía y conteo personal</text>
-        <text x="490" y="150" text-anchor="middle" font-size="9" fill="#F0C319">Casco verde</text>
-      </svg>
-      <figcaption>Estructura organizacional de la Brigada Contraincendios — roles y responsabilidades</figcaption>
-    </div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Fábrica textil sin simulacros en Guayaquil</h4>
-    <p>Una fábrica textil con 80 trabajadores y maquinaria de costura y planchado nunca ha realizado un simulacro. El jefe de seguridad tiene una lista de 6 voluntarios como "brigada" pero sin capacitación formal. El Cuerpo de Bomberos los visita de sorpresa y detecta extintores vencidos y sin señalización.</p>
-    <div class="abp-questions">
-      <p>❓ ¿Cuántos brigadistas mínimos exige la ley y cómo deberían distribuirse en los 2 turnos?</p>
-      <p>❓ ¿Qué sanciones pueden aplicar el MDT y el Cuerpo de Bomberos simultáneamente?</p>
-      <p>❓ Diseña un plan de 60 días para regularizar la situación ante las autoridades.</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/_RqdVXMRLW4" title="Brigada Prevención y Combate Incendios" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 1</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">1. ¿Cuál es el número mínimo de trabajadores para que una empresa esté obligada a tener brigada contraincendios?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 10</label><label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 25</label><label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 50</label><label class="quiz-opt"><input type="radio" name="q1a" value="d"> d) 100</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">2. ¿Qué norma NFPA regula los extintores portátiles?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) NFPA 72</label><label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) NFPA 101</label><label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) NFPA 10</label><label class="quiz-opt"><input type="radio" name="q1b" value="d"> d) NFPA 13</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod1',{'q1a':'b','q1b':'c'})">Verificar</button>
-    <div class="quiz-result" id="mod1-result"></div>
-  </div>
-  <div class="module-nav"><span></span><button class="btn-nav btn-next" onclick="nextModule(1)">Siguiente: Química del Fuego →</button></div>
 </div>
 
-<!-- ===== MÓDULO 2 ===== -->
-<div class="module-panel" id="mod-2">
-  <div class="module-header">
-    <span class="module-tag">Módulo 2 de 6</span>
-    <h1 class="module-title">Química del Fuego — Tetraedro y Clases</h1>
-    <p class="module-desc">Fundamentos científicos del fuego, el tetraedro de combustión y clasificación de incendios según NFPA para seleccionar el agente extintor correcto.</p>
+<!-- ====== MÓDULO 1 ====== -->
+<div class="mod-card anim-fadein" id="m1">
+  <div class="mod-header">
+    <div class="mod-num">1</div>
+    <div><h2>Marco Legal: Decreto Ejecutivo 2393 y NFPA</h2>
+    <small style="opacity:.8">Base normativa de la seguridad contra incendios en Ecuador</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> NFPA 10 (Clasificación fuegos) · NTE INEN 2-067 · Decreto 2393 Art. 159</div>
-  <div class="content-section">
-    <h3>Del Triángulo al Tetraedro del Fuego</h3>
-    <p>El modelo clásico del <strong>triángulo del fuego</strong> (combustible, comburente, calor) fue actualizado al <strong>tetraedro</strong> al descubrirse que la reacción en cadena es un cuarto elemento independiente. Este cuarto vértice explica por qué los agentes halogenados (FM-200, Novec 1230) pueden extinguir el fuego sin enfriarlo ni sofocar el oxígeno.</p>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <polygon points="100,220 280,40 460,220" fill="none" stroke="#1D51A3" stroke-width="3"/>
-        <line x1="100" y1="220" x2="280" y2="160" stroke="#F0C319" stroke-width="2" stroke-dasharray="6,3"/>
-        <line x1="460" y1="220" x2="280" y2="160" stroke="#F0C319" stroke-width="2" stroke-dasharray="6,3"/>
-        <line x1="280" y1="40" x2="280" y2="160" stroke="#F0C319" stroke-width="2" stroke-dasharray="6,3"/>
-        <circle cx="100" cy="220" r="22" fill="#dc2626"/><text x="100" y="225" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Calor</text>
-        <circle cx="460" cy="220" r="28" fill="#1D51A3"/><text x="460" y="217" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Combu-</text><text x="460" y="229" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">rente O₂</text>
-        <circle cx="280" cy="40" r="30" fill="#163d7a"/><text x="280" y="36" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Combus-</text><text x="280" y="48" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">tible</text>
-        <circle cx="280" cy="160" r="34" fill="#F0C319" stroke="#163d7a" stroke-width="2"/><text x="280" y="156" text-anchor="middle" font-size="9" fill="#1a2840" font-weight="bold">Reacción</text><text x="280" y="168" text-anchor="middle" font-size="9" fill="#1a2840" font-weight="bold">en Cadena</text>
-        <text x="30" y="180" font-size="10" fill="#dc2626">→ Enfriar</text>
-        <text x="462" y="180" font-size="10" fill="#1D51A3">→ Sofocar</text>
-        <text x="220" y="20" font-size="10" fill="#163d7a">→ Diluir</text>
-        <text x="315" y="200" font-size="10" fill="#92400e">→ Inhibir</text>
+  <div class="mod-body">
+    <p>El <strong>Decreto Ejecutivo 2393</strong> — Reglamento de Seguridad y Salud de los Trabajadores y Mejoramiento del Medio Ambiente de Trabajo — es la norma de referencia en Ecuador para la prevención de riesgos laborales. Complementariamente, la <strong>Asociación Nacional de Protección contra el Fuego (NFPA, por sus siglas en inglés)</strong> proporciona estándares técnicos internacionalmente reconocidos para la prevención y control de incendios.</p>
+
+    <h3>Obligaciones del Empleador (Art. 160-164 D.E. 2393)</h3>
+    <ul>
+      <li>Conformar y capacitar las <strong>Brigadas de Emergencia (BE)</strong> en toda empresa con más de 25 trabajadores.</li>
+      <li>Mantener equipos de extinción en buen estado, señalizados y accesibles.</li>
+      <li>Elaborar y difundir el <strong>Plan de Emergencia y Contingencia (PEC)</strong>.</li>
+      <li>Realizar al menos un simulacro anual documentado.</li>
+      <li>Registrar todas las emergencias ante el <strong>Ministerio del Trabajo (MT)</strong>.</li>
+    </ul>
+
+    <!-- SVG Estructura brigada -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Organigrama típico de una Brigada de Emergencia</div>
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#163d7a"/><stop offset="100%" stop-color="#1D51A3"/></linearGradient>
+          <linearGradient id="gb1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="gb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="gb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+          <linearGradient id="gb4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e7490"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+        </defs>
+        <!-- Jefe -->
+        <rect x="240" y="10" width="220" height="50" rx="10" fill="url(#g0)"/>
+        <text x="350" y="31" text-anchor="middle" fill="#F0C319" font-size="11" font-weight="800">JEFE DE BRIGADA</text>
+        <text x="350" y="48" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9">Coordinación general · Contacto SEM</text>
+        <!-- Lines -->
+        <line x1="350" y1="60" x2="350" y2="90" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="90" y1="90" x2="610" y2="90" stroke="#1D51A3" stroke-width="2"/>
+        <line x1="90" y1="90" x2="90" y2="110" stroke="#e05c2d" stroke-width="2"/>
+        <line x1="243" y1="90" x2="243" y2="110" stroke="#22a86b" stroke-width="2"/>
+        <line x1="457" y1="90" x2="457" y2="110" stroke="#7c3aed" stroke-width="2"/>
+        <line x1="610" y1="90" x2="610" y2="110" stroke="#0e7490" stroke-width="2"/>
+        <!-- Sub-brigadas -->
+        <rect x="20" y="110" width="140" height="65" rx="9" fill="url(#gb1)"/>
+        <text x="90" y="130" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Brigada Contra</text>
+        <text x="90" y="144" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Incendios</text>
+        <text x="90" y="162" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">Extinción · Confinamiento</text>
+
+        <rect x="173" y="110" width="140" height="65" rx="9" fill="url(#gb2)"/>
+        <text x="243" y="130" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Brigada de</text>
+        <text x="243" y="144" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Primeros Auxilios</text>
+        <text x="243" y="162" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">Atención · Triage</text>
+
+        <rect x="387" y="110" width="140" height="65" rx="9" fill="url(#gb3)"/>
+        <text x="457" y="130" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Brigada de</text>
+        <text x="457" y="144" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Evacuación</text>
+        <text x="457" y="162" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">Rutas · Control masas</text>
+
+        <rect x="540" y="110" width="140" height="65" rx="9" fill="url(#gb4)"/>
+        <text x="610" y="130" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Brigada de</text>
+        <text x="610" y="144" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Comunicación</text>
+        <text x="610" y="162" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">Alertas · Registro</text>
+
+        <!-- NFPA label -->
+        <rect x="20" y="205" width="660" height="40" rx="8" fill="#f0f4fa" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="350" y="222" text-anchor="middle" fill="#1D51A3" font-size="10" font-weight="700">Normas NFPA de referencia:</text>
+        <text x="350" y="237" text-anchor="middle" fill="#2e4060" font-size="9">NFPA 1: Código de Incendios · NFPA 10: Extintores · NFPA 13: Rociadores · NFPA 72: Alarmas</text>
       </svg>
-      <figcaption>Tetraedro del fuego — 4 elementos y sus métodos de extinción correspondientes</figcaption>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Clasificación de Fuegos — NFPA</h3>
-    <table class="data-table">
-      <thead><tr><th>Clase</th><th>Combustible</th><th>Ejemplo</th><th>Agentes indicados</th><th>NO usar</th></tr></thead>
-      <tbody>
-        <tr><td><strong>A</strong></td><td>Sólidos combustibles</td><td>Madera, papel, plástico, tela</td><td>Agua, PQS ABC, espuma</td><td>CO₂ (poco eficaz)</td></tr>
-        <tr><td><strong>B</strong></td><td>Líquidos inflamables</td><td>Gasolina, aceite, solventes</td><td>PQS BC/ABC, CO₂, espuma, Halotron</td><td>Agua (expande el fuego)</td></tr>
-        <tr><td><strong>C</strong></td><td>Equipos eléctricos energizados</td><td>Tableros, motores, computadoras</td><td>CO₂, PQS BC, Halotron</td><td>Agua, espuma (conductores)</td></tr>
-        <tr><td><strong>D</strong></td><td>Metales combustibles</td><td>Magnesio, titanio, litio, sodio</td><td>Polvo Clase D específico</td><td>Agua, CO₂, PQS (reacciones violentas)</td></tr>
-        <tr><td><strong>K</strong></td><td>Grasas y aceites de cocina</td><td>Aceite vegetal, grasa animal caliente</td><td>Agente húmedo (wet chemical)</td><td>Agua (salpicaduras)</td></tr>
-      </tbody>
+
+    <h3>Normas NFPA Aplicables</h3>
+    <table>
+      <tr><th>Norma</th><th>Contenido</th><th>Aplicación en Ecuador</th></tr>
+      <tr><td><strong>NFPA 1</strong></td><td>Código de Protección contra el Fuego</td><td>Código de referencia general</td></tr>
+      <tr><td><strong>NFPA 10</strong></td><td>Extintores portátiles</td><td>Selección, distribución, mantenimiento</td></tr>
+      <tr><td><strong>NFPA 13</strong></td><td>Sistemas de rociadores automáticos</td><td>Edificios > 3 plantas o riesgo alto</td></tr>
+      <tr><td><strong>NFPA 72</strong></td><td>Código nacional de alarmas de incendio</td><td>Detectores, sirenas, paneles</td></tr>
+      <tr><td><strong>NFPA 101</strong></td><td>Código de Seguridad Humana</td><td>Rutas de evacuación y salidas</td></tr>
     </table>
-    <div class="alert important"><div class="alert-icon">⚠️</div><p><strong>Regla crítica:</strong> Un extintor de agua en fuego clase B puede propagar el incendio. Un extintor de agua en fuego clase C (eléctrico) puede electrocutar al operador. La selección correcta del agente es vital.</p></div>
-  </div>
-  <div class="content-section">
-    <h3>Propagación del Fuego</h3>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">🌡️</div><h4>Conducción</h4><p>Transmisión por contacto directo entre sólidos. Vigas metálicas transmiten calor a paredes.</p></div>
-      <div class="concept-card"><div class="cc-icon">🌀</div><h4>Convección</h4><p>Movimiento de gases calientes hacia arriba. Principal causa de incendios en pisos superiores.</p></div>
-      <div class="concept-card"><div class="cc-icon">☀️</div><h4>Radiación</h4><p>Ondas electromagnéticas de calor. Puede ignitar materiales a distancia sin contacto físico.</p></div>
+
+    <div class="vid-label">Video — Normativa y Brigadas de Emergencia (NFPA)</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/_RqdVXMRLW4" allowfullscreen loading="lazy" title="Brigadas de Emergencia NFPA"></iframe>
+    </div>
+
+    <!-- SIMULATOR M1 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 1</span>
+      <h4>Escenarios: Marco Legal</h4>
+      <div class="sim-q">
+        <p>1. Una empresa con 30 trabajadores ¿está obligada a conformar una Brigada de Emergencia según el D.E. 2393?</p>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="a"> a) No, el umbral mínimo es 50 trabajadores</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="b"> b) Sí, el umbral es más de 25 trabajadores</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="c"> c) Solo si trabaja con materiales peligrosos</label>
+        <label class="sim-opt"><input type="radio" name="s1_1" value="d"> d) Solo industrias manufactureras</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿Con qué frecuencia mínima debe realizarse un simulacro documentado según la normativa?</p>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="a"> a) Cada 3 años</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="b"> b) Mensualmente</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="c"> c) Al menos una vez al año</label>
+        <label class="sim-opt"><input type="radio" name="s1_2" value="d"> d) Solo cuando hay una emergencia real</label>
+      </div>
+      <div class="sim-q">
+        <p>3. La norma que regula la selección y mantenimiento de extintores portátiles es:</p>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="a"> a) NFPA 72</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="b"> b) NFPA 10</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="c"> c) NFPA 13</label>
+        <label class="sim-opt"><input type="radio" name="s1_3" value="d"> d) NFPA 101</label>
+      </div>
+      <div class="sim-q">
+        <p>4. El Plan de Emergencia y Contingencia (PEC) debe ser elaborado y difundido por:</p>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="a"> a) Los trabajadores voluntariamente</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="b"> b) El Ministerio de Trabajo directamente</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="c"> c) El empleador como obligación legal</label>
+        <label class="sim-opt"><input type="radio" name="s1_4" value="d"> d) Solo empresas de más de 100 trabajadores</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Cuántas sub-brigadas componen típicamente una Brigada de Emergencia?</p>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="a"> a) 2 (incendios y evacuación)</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="b"> b) 4 (incendios, primeros auxilios, evacuación, comunicación)</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="c"> c) 6 sub-brigadas especializadas</label>
+        <label class="sim-opt"><input type="radio" name="s1_5" value="d"> d) Solo una brigada general</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s1',{s1_1:'b',s1_2:'c',s1_3:'b',s1_4:'c',s1_5:'b'})">Verificar Simulador</button>
+      <div id="s1-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 1</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué decreto regula las Brigadas de Emergencia en Ecuador?</p>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) Decreto 1040</label>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) Decreto Ejecutivo 2393</label>
+        <label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) Decreto 2393-A</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Cuál norma NFPA regula los sistemas de rociadores automáticos?</p>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) NFPA 10</label>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) NFPA 13</label>
+        <label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) NFPA 72</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq1',{q1a:'b',q1b:'b'})">Verificar</button>
+      <div id="mq1-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Incendio en bodega de solventes</h4>
-    <p>En una bodega de materiales de pintura se inicia un incendio donde hay: tolueno, acetona, alcohol isopropílico y cajas de cartón con materiales de embalaje. Un brigadista corre hacia el único extintor disponible: uno de agua de 10 litros. El jefe de planta dice "úsalo, agua apaga todo".</p>
-    <div class="abp-questions">
-      <p>❓ Clasifica el tipo de fuego presente (puede ser mixto). Justifica.</p>
-      <p>❓ ¿Es correcto el consejo del jefe? ¿Qué pasaría físicamente al usar agua en acetona ardiendo?</p>
-      <p>❓ ¿Qué extintores debería tener esta bodega según NFPA 10?</p>
-      <p>❓ ¿Cuál es la acción correcta del brigadista si no tiene el extintor adecuado?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/vaABzaTQprc" title="Prevención y lucha contra incendios" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 2</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">3. El cuarto elemento del tetraedro del fuego es:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Temperatura de ignición</label><label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Reacción en cadena</label><label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Propagación por radiación</label><label class="quiz-opt"><input type="radio" name="q2a" value="d"> d) Presión del gas</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">4. ¿Qué clase de fuego NFPA corresponde a un incendio en aceite de cocina caliente?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) Clase A</label><label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) Clase B</label><label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Clase C</label><label class="quiz-opt"><input type="radio" name="q2b" value="d"> d) Clase K</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod2',{'q2a':'b','q2b':'d'})">Verificar</button>
-    <div class="quiz-result" id="mod2-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(1)">← Módulo 1</button><button class="btn-nav btn-next" onclick="nextModule(2)">Siguiente: Extintores →</button></div>
 </div>
 
-<!-- ===== MÓDULO 3 ===== -->
-<div class="module-panel" id="mod-3">
-  <div class="module-header">
-    <span class="module-tag">Módulo 3 de 6</span>
-    <h1 class="module-title">Extintores Portátiles — Selección, Inspección y Método PASS</h1>
-    <p class="module-desc">Tipos de agentes extintores, criterios de selección según NFPA 10, inspección mensual y técnica correcta de uso mediante el método PASS.</p>
+<!-- ====== MÓDULO 2 ====== -->
+<div class="mod-card anim-fadein" id="m2">
+  <div class="mod-header">
+    <div class="mod-num">2</div>
+    <div><h2>Química del Fuego — Tetraedro del Fuego</h2>
+    <small style="opacity:.8">Combustión, clases de fuego y mecanismos de extinción</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> NFPA 10 (edición vigente) · NTE INEN 731 · Decreto 2393 Art. 159</div>
-  <div class="content-section">
+  <div class="mod-body">
+    <p>El fuego es una <strong>reacción de oxidación exotérmica</strong> (reacción química que libera calor y luz). Para que ocurra deben coexistir cuatro elementos que forman el <strong>Tetraedro del Fuego</strong>: combustible, comburente (oxígeno), calor y la reacción en cadena. Eliminar cualquiera de estos cuatro factores es el principio de toda extinción.</p>
+
+    <!-- SVG Tetraedro del Fuego -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Tetraedro del Fuego — Los 4 elementos</div>
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="tc1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="tc2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
+          <linearGradient id="tc3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="tc4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F0C319"/><stop offset="100%" stop-color="#f5d860"/></linearGradient>
+        </defs>
+        <!-- Tetrahedron simplified as 4 colored panels -->
+        <!-- Center flame -->
+        <polygon points="340,100 310,175 370,175" fill="#F0C319" opacity=".8"/>
+        <polygon points="340,80 315,140 365,140" fill="#e05c2d" opacity=".9"/>
+        <text x="340" y="165" text-anchor="middle" fill="#1a2840" font-size="10" font-weight="700">FUEGO</text>
+        <!-- 4 faces as rounded boxes -->
+        <rect x="20" y="60" width="170" height="80" rx="12" fill="url(#tc1)"/>
+        <text x="105" y="88" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">CALOR</text>
+        <text x="105" y="106" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Temperatura de ignición</text>
+        <text x="105" y="120" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">→ Eliminar: enfriamiento (agua)</text>
+
+        <rect x="490" y="60" width="170" height="80" rx="12" fill="url(#tc2)"/>
+        <text x="575" y="88" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">COMBURENTE</text>
+        <text x="575" y="106" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Oxígeno ≥ 16% necesario</text>
+        <text x="575" y="120" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">→ Eliminar: sofocación (CO₂, polvo)</text>
+
+        <rect x="20" y="175" width="170" height="80" rx="12" fill="url(#tc3)"/>
+        <text x="105" y="203" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">COMBUSTIBLE</text>
+        <text x="105" y="221" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Material que se oxida</text>
+        <text x="105" y="235" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">→ Eliminar: remoción del combustible</text>
+
+        <rect x="490" y="175" width="170" height="80" rx="12" fill="url(#tc4)"/>
+        <text x="575" y="203" text-anchor="middle" fill="#1a2840" font-size="11" font-weight="800">REACCIÓN</text>
+        <text x="575" y="218" text-anchor="middle" fill="#1a2840" font-size="11" font-weight="800">EN CADENA</text>
+        <text x="575" y="235" text-anchor="middle" fill="#78350f" font-size="8">→ Eliminar: inhibición química (halones)</text>
+        <!-- Arrows to center -->
+        <line x1="190" y1="100" x2="300" y2="130" stroke="#e05c2d" stroke-width="1.5" stroke-dasharray="5"/>
+        <line x1="490" y1="100" x2="380" y2="130" stroke="#1D51A3" stroke-width="1.5" stroke-dasharray="5"/>
+        <line x1="190" y1="215" x2="300" y2="155" stroke="#22a86b" stroke-width="1.5" stroke-dasharray="5"/>
+        <line x1="490" y1="215" x2="380" y2="155" stroke="#b45309" stroke-width="1.5" stroke-dasharray="5"/>
+      </svg>
+    </div>
+
+    <h3>Clases de Fuego (NFPA 10)</h3>
+    <table>
+      <tr><th>Clase</th><th>Combustible</th><th>Ejemplo</th><th>Agente extintor</th></tr>
+      <tr><td><strong>A</strong></td><td>Sólidos ordinarios</td><td>Madera, papel, tela</td><td>Agua, polvo ABC</td></tr>
+      <tr><td><strong>B</strong></td><td>Líquidos y gases inflamables</td><td>Gasolina, aceite, propano</td><td>Espuma, CO₂, polvo BC/ABC</td></tr>
+      <tr><td><strong>C</strong></td><td>Equipos eléctricos energizados</td><td>Tableros, motores</td><td>CO₂, polvo BC/ABC (no agua)</td></tr>
+      <tr><td><strong>D</strong></td><td>Metales combustibles</td><td>Magnesio, titanio</td><td>Polvo especial Clase D</td></tr>
+      <tr><td><strong>K</strong></td><td>Aceites de cocina</td><td>Fritura, aceite vegetal</td><td>Agente húmedo Clase K</td></tr>
+    </table>
+
+    <h3>Métodos de Extinción</h3>
+    <div class="steps">
+      <div class="step"><div class="num">💧</div><p><strong>Enfriamiento</strong><br>Reducir temperatura bajo el punto de ignición (agua)</p></div>
+      <div class="step"><div class="num">🫧</div><p><strong>Sofocación</strong><br>Reducir oxígeno por debajo del 16% (CO₂, espumas)</p></div>
+      <div class="step"><div class="num">🚧</div><p><strong>Dilución</strong><br>Separar o retirar el combustible de la zona</p></div>
+      <div class="step"><div class="num">⛓️</div><p><strong>Inhibición</strong><br>Romper la reacción en cadena química (halones, polvo)</p></div>
+    </div>
+
+    <div class="vid-label">Video — Química del Fuego y Clases</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/vaABzaTQprc" allowfullscreen loading="lazy" title="Química del Fuego"></iframe>
+    </div>
+
+    <!-- SIMULATOR M2 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 2</span>
+      <h4>Escenarios: Tetraedro del Fuego</h4>
+      <div class="sim-q">
+        <p>1. Se incendia un motor eléctrico en operación. ¿Qué clase de fuego es?</p>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="a"> a) Clase A</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="b"> b) Clase B</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="c"> c) Clase C</label>
+        <label class="sim-opt"><input type="radio" name="s2_1" value="d"> d) Clase K</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Al cerrar la tapa de una olla con aceite en llamas, ¿qué método de extinción aplicas?</p>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="a"> a) Enfriamiento</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="b"> b) Sofocación</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="c"> c) Inhibición</label>
+        <label class="sim-opt"><input type="radio" name="s2_2" value="d"> d) Dilución</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Un incendio de papel y cartón en una bodega corresponde a clase:</p>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="a"> a) Clase B</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="b"> b) Clase C</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="c"> c) Clase A</label>
+        <label class="sim-opt"><input type="radio" name="s2_3" value="d"> d) Clase D</label>
+      </div>
+      <div class="sim-q">
+        <p>4. El agente extintor que actúa por inhibición química de la reacción en cadena es:</p>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="a"> a) Agua</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="b"> b"> CO₂</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="c"> c) Polvo químico seco</label>
+        <label class="sim-opt"><input type="radio" name="s2_4" value="d"> d) Espuma</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Cuál es el porcentaje mínimo de oxígeno necesario para que el fuego continúe?</p>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="a"> a) 8%</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="b"> b) 16%</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="c"> c) 21%</label>
+        <label class="sim-opt"><input type="radio" name="s2_5" value="d"> d) 25%</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s2',{s2_1:'c',s2_2:'b',s2_3:'c',s2_4:'c',s2_5:'b'})">Verificar Simulador</button>
+      <div id="s2-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 2</h4>
+      <div class="quiz-q">
+        <p>1. ¿Cuántos elementos forma el Tetraedro del Fuego?</p>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) 3</label>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) 4</label>
+        <label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) 5</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué clase de fuego corresponde a gasolina y aceites?</p>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) Clase A</label>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) Clase B</label>
+        <label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Clase C</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq2',{q2a:'b',q2b:'b'})">Verificar</button>
+      <div id="mq2-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MÓDULO 3 ====== -->
+<div class="mod-card anim-fadein" id="m3">
+  <div class="mod-header">
+    <div class="mod-num">3</div>
+    <div><h2>Uso de Extintores — Método PASS</h2>
+    <small style="opacity:.8">Técnica de operación, tipos y mantenimiento</small></div>
+  </div>
+  <div class="mod-body">
+    <p>El extintor portátil es el equipo de primera intervención para controlar conatos de incendio. Su uso correcto requiere conocer el <strong>Método PASS</strong> (por sus iniciales en inglés: Pull, Aim, Squeeze, Sweep) y seleccionar el agente extintor adecuado para la clase de fuego.</p>
+
+    <!-- SVG PASS -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Método PASS — Pasos de operación del extintor</div>
+      <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <defs>
+          <linearGradient id="p1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="p2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
+          <linearGradient id="p3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="p4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+        </defs>
+        <rect x="5" y="10" width="160" height="100" rx="12" fill="url(#p1)"/>
+        <text x="85" y="42" text-anchor="middle" fill="#fff" font-size="26" font-weight="900">P</text>
+        <text x="85" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">PULL</text>
+        <text x="85" y="78" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Jalar el seguro</text>
+        <text x="85" y="92" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">pin de seguridad</text>
+
+        <rect x="178" y="10" width="160" height="100" rx="12" fill="url(#p2)"/>
+        <text x="258" y="42" text-anchor="middle" fill="#fff" font-size="26" font-weight="900">A</text>
+        <text x="258" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">AIM</text>
+        <text x="258" y="78" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Apuntar la manguera</text>
+        <text x="258" y="92" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">a la base del fuego</text>
+
+        <rect x="351" y="10" width="160" height="100" rx="12" fill="url(#p3)"/>
+        <text x="431" y="42" text-anchor="middle" fill="#fff" font-size="26" font-weight="900">S</text>
+        <text x="431" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">SQUEEZE</text>
+        <text x="431" y="78" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Apretar la palanca</text>
+        <text x="431" y="92" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">para liberar el agente</text>
+
+        <rect x="524" y="10" width="168" height="100" rx="12" fill="url(#p4)"/>
+        <text x="608" y="42" text-anchor="middle" fill="#fff" font-size="26" font-weight="900">S</text>
+        <text x="608" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">SWEEP</text>
+        <text x="608" y="78" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9">Barrer de lado a lado</text>
+        <text x="608" y="92" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8">cubriendo toda la base</text>
+      </svg>
+    </div>
+
     <h3>Tipos de Extintores y Agentes</h3>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">💧</div><h4>Agua (H₂O)</h4><p>Solo clase A. Enfría el combustible. Daña equipos. Nunca en B, C, D, K.</p></div>
-      <div class="concept-card"><div class="cc-icon">❄️</div><h4>CO₂</h4><p>Clases B y C. Sofoca el O₂. No deja residuo. Ideal salas eléctricas.</p></div>
-      <div class="concept-card"><div class="cc-icon">🧯</div><h4>PQS — ABC</h4><p>Polvo Químico Seco. Clases A, B, C. Inhibe reacción. El más versátil.</p></div>
-      <div class="concept-card"><div class="cc-icon">🫧</div><h4>Espuma AFFF</h4><p>Clases A y B. Sella la superficie de líquidos. No usar en C (conductor).</p></div>
-      <div class="concept-card"><div class="cc-icon">🌫️</div><h4>Halotron / FM-200</h4><p>Clases B y C. Inhibición química limpia. Salas de servidores, archivos.</p></div>
-      <div class="concept-card"><div class="cc-icon">⚗️</div><h4>Polvo Clase D</h4><p>Exclusivo metales combustibles. Nunca intercambiar con PQS convencional.</p></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Método PASS — Técnica Correcta de Uso</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <rect x="10" y="20" width="140" height="120" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="80" y="50" text-anchor="middle" font-size="32" font-weight="bold" fill="#1D51A3">P</text>
-        <text x="80" y="75" text-anchor="middle" font-size="12" fill="#163d7a" font-weight="bold">Pull</text>
-        <text x="80" y="92" text-anchor="middle" font-size="10" fill="#5a6e8c">Jalar el pin</text>
-        <text x="80" y="107" text-anchor="middle" font-size="10" fill="#5a6e8c">de seguridad</text>
-        <text x="80" y="122" text-anchor="middle" font-size="10" fill="#5a6e8c">(romper precinto)</text>
-        <polygon points="152,80 162,75 162,85" fill="#F0C319"/>
-        <rect x="165" y="20" width="140" height="120" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="235" y="50" text-anchor="middle" font-size="32" font-weight="bold" fill="#1D51A3">A</text>
-        <text x="235" y="75" text-anchor="middle" font-size="12" fill="#163d7a" font-weight="bold">Aim</text>
-        <text x="235" y="92" text-anchor="middle" font-size="10" fill="#5a6e8c">Apuntar la</text>
-        <text x="235" y="107" text-anchor="middle" font-size="10" fill="#5a6e8c">tobera a la</text>
-        <text x="235" y="122" text-anchor="middle" font-size="10" fill="#5a6e8c">BASE del fuego</text>
-        <polygon points="307,80 317,75 317,85" fill="#F0C319"/>
-        <rect x="320" y="20" width="140" height="120" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="390" y="50" text-anchor="middle" font-size="32" font-weight="bold" fill="#1D51A3">S</text>
-        <text x="390" y="75" text-anchor="middle" font-size="12" fill="#163d7a" font-weight="bold">Squeeze</text>
-        <text x="390" y="92" text-anchor="middle" font-size="10" fill="#5a6e8c">Apretar la</text>
-        <text x="390" y="107" text-anchor="middle" font-size="10" fill="#5a6e8c">palanca de</text>
-        <text x="390" y="122" text-anchor="middle" font-size="10" fill="#5a6e8c">disparo</text>
-        <polygon points="462,80 472,75 472,85" fill="#F0C319"/>
-        <rect x="475" y="20" width="140" height="120" rx="10" fill="#eef3ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="545" y="50" text-anchor="middle" font-size="32" font-weight="bold" fill="#1D51A3">S</text>
-        <text x="545" y="75" text-anchor="middle" font-size="12" fill="#163d7a" font-weight="bold">Sweep</text>
-        <text x="545" y="92" text-anchor="middle" font-size="10" fill="#5a6e8c">Barrer de</text>
-        <text x="545" y="107" text-anchor="middle" font-size="10" fill="#5a6e8c">lado a lado</text>
-        <text x="545" y="122" text-anchor="middle" font-size="10" fill="#5a6e8c">hasta apagar</text>
-      </svg>
-      <figcaption>Método PASS — Secuencia obligatoria de uso del extintor portátil (NFPA 10)</figcaption>
-    </div>
-    <div class="alert info"><div class="alert-icon">📏</div><p><strong>Distancia de ataque:</strong> Aproximarse al fuego desde 3-4 metros. El viento debe estar a tu espalda. Un extintor CO₂ puede causar quemaduras por frío si se usa demasiado cerca.</p></div>
-  </div>
-  <div class="content-section">
-    <h3>Inspección Mensual y Anual — NFPA 10</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">👁️</div><div class="step-body"><h4>Verificación visual mensual</h4><p>Accesible y visible, sello/precinto intacto, manómetro en zona verde, etiqueta de inspección vigente, sin daños físicos.</p></div></div>
-      <div class="step"><div class="step-num">📋</div><div class="step-body"><h4>Inspección anual certificada</h4><p>Por técnico certificado: verificar peso, presión, agente, fecha de carga, estado del cilindro, boquilla despejada. Registrar con etiqueta.</p></div></div>
-      <div class="step"><div class="step-num">🔄</div><div class="step-body"><h4>Recarga y prueba hidrostática</h4><p>Recarga tras uso parcial o total. Prueba hidrostática cada 5-12 años según tipo per NFPA 10.</p></div></div>
-    </div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Auditoría de extintores en empresa manufacturera</h4>
-    <p>Durante una auditoría interna se encuentran: (1) Extintor CO₂ 5lb sin etiqueta de inspección desde hace 18 meses; (2) PQS 10lb con manómetro en zona roja; (3) Halotron 2.5lb con sello de seguridad roto; (4) Extintor de agua 9L correctamente inspeccionado hace 3 meses, ubicado en el cuarto eléctrico.</p>
-    <div class="abp-questions">
-      <p>❓ ¿Cuál(es) de los 4 extintores están en condición apta para uso? Justifica cada uno.</p>
-      <p>❓ ¿El extintor (4) está bien ubicado según NFPA? ¿Por qué es un riesgo?</p>
-      <p>❓ ¿Cuál es la no conformidad más grave? ¿Qué acción correctiva es inmediata?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/9E3x9F2FdQM" title="Capacitación Certificada Manejo de Extintores" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 3</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">5. En el método PASS, la "A" significa apuntar la tobera a:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) La cima de las llamas</label><label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) La base del fuego</label><label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) El centro del incendio</label><label class="quiz-opt"><input type="radio" name="q3a" value="d"> d) El material combustible</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">6. ¿Qué extintor NO puede usarse en un incendio de equipos eléctricos energizados?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) CO₂</label><label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) PQS BC</label><label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Halotron</label><label class="quiz-opt"><input type="radio" name="q3b" value="d"> d) Agua</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod3',{'q3a':'b','q3b':'d'})">Verificar</button>
-    <div class="quiz-result" id="mod3-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(2)">← Módulo 2</button><button class="btn-nav btn-next" onclick="nextModule(3)">Siguiente: Sistemas Fijos →</button></div>
-</div>
-
-<!-- ===== MÓDULO 4 ===== -->
-<div class="module-panel" id="mod-4">
-  <div class="module-header">
-    <span class="module-tag">Módulo 4 de 6</span>
-    <h1 class="module-title">Sistemas Fijos de Detección y Supresión</h1>
-    <p class="module-desc">Rociadores automáticos, detectores de incendio, paneles de control y sistemas especiales para áreas de alto riesgo.</p>
-  </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> NFPA 13 (rociadores) · NFPA 72 (alarmas) · NFPA 750 (agua nebulizada) · NFPA 2001 (agentes limpios)</div>
-  <div class="content-section">
-    <h3>Rociadores Automáticos (Sprinklers) — NFPA 13</h3>
-    <p>Los rociadores automáticos se activan individualmente por temperatura — <strong>no todos al mismo tiempo</strong> como en el cine. Cada bulbo de vidrio tiene un color que indica su temperatura de activación:</p>
-    <table class="data-table">
-      <thead><tr><th>Color bulbo</th><th>Temperatura activación</th><th>Aplicación típica</th></tr></thead>
-      <tbody>
-        <tr><td>🟠 Naranja</td><td>57°C</td><td>Ambientes muy calientes (> 38°C ambiente)</td></tr>
-        <tr><td>🔴 Rojo</td><td>68°C</td><td>Uso general — oficinas, bodegas, industria</td></tr>
-        <tr><td>🟡 Amarillo</td><td>79°C</td><td>Ambientes cálidos</td></tr>
-        <tr><td>🟢 Verde</td><td>93°C</td><td>Áreas de pintura, secadores</td></tr>
-        <tr><td>🔵 Azul</td><td>141°C</td><td>Saunas, hornos, áreas de alta temperatura</td></tr>
-      </tbody>
+    <table>
+      <tr><th>Tipo</th><th>Agente</th><th>Clases</th><th>Distancia eficaz</th></tr>
+      <tr><td>Agua presurizada</td><td>Agua</td><td>A</td><td>3-5 m</td></tr>
+      <tr><td>Polvo Químico Seco (PQS)</td><td>Bicarbonato sodio/potasio</td><td>ABC / BC</td><td>3-5 m</td></tr>
+      <tr><td>Dióxido de carbono (CO₂)</td><td>CO₂ gas</td><td>B, C</td><td>1-2 m</td></tr>
+      <tr><td>Espuma AFFF</td><td>Espuma acuosa filmógena</td><td>A, B</td><td>4-6 m</td></tr>
+      <tr><td>Agente limpio (Halon sustituto)</td><td>FM-200, Novec 1230</td><td>A, B, C</td><td>1.5-3 m</td></tr>
     </table>
-  </div>
-  <div class="content-section">
-    <h3>Tipos de Detectores Automáticos</h3>
-    <div class="concept-grid anim-fadein">
-      <div class="concept-card"><div class="cc-icon">⚛️</div><h4>Ionización</h4><p>Detecta humo invisible de fuegos rápidos/llameantes. Sensible a combustión sin humo visible.</p></div>
-      <div class="concept-card"><div class="cc-icon">🔦</div><h4>Óptico/Fotoeléctrico</h4><p>Detecta humo visible de fuegos lentos/humeantes. Tecnología de dispersión de luz. Menos falsas alarmas.</p></div>
-      <div class="concept-card"><div class="cc-icon">🌡️</div><h4>Térmico</h4><p>Activa por temperatura fija (58°C) o tasa de cambio (>8°C/min). Cocinas, garajes. No detecta humo.</p></div>
-      <div class="concept-card"><div class="cc-icon">🔥</div><h4>Detector de Llama</h4><p>Detecta radiación UV/IR de llamas. Reacción en milisegundos. Industria petroquímica, aviación.</p></div>
+
+    <div class="warn-box"><strong>Regla de los 3 metros:</strong> Nunca usar un extintor a más de 3 metros del fuego (excepto espuma). Acercarse de lado, con el viento a favor. Mantener siempre una vía de escape detrás de ti.</div>
+
+    <h3>Inspección Mensual (NFPA 10)</h3>
+    <ul>
+      <li>Verificar que el manómetro esté en zona verde (operativo)</li>
+      <li>Comprobar que el seguro y el precinto estén intactos</li>
+      <li>Revisar que la manguera no presente grietas ni obstrucciones</li>
+      <li>Confirmar que la etiqueta de inspección esté al día</li>
+      <li>Asegurarse de que el extintor esté en su soporte visible y accesible</li>
+    </ul>
+
+    <div class="vid-label">Video — Uso Correcto de Extintores</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/9E3x9F2FdQM" allowfullscreen loading="lazy" title="Uso de Extintores PASS"></iframe>
+    </div>
+
+    <!-- SIMULATOR M3 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 3</span>
+      <h4>Escenarios: Extintores</h4>
+      <div class="sim-q">
+        <p>1. Hay un incendio de gasolina derramada en el taller. ¿Qué extintor NO debes usar?</p>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="a"> a) CO₂</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="b"> b) Polvo ABC</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="c"> c) Agua presurizada</label>
+        <label class="sim-opt"><input type="radio" name="s3_1" value="d"> d) Espuma AFFF</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Al aplicar el extintor, ¿hacia dónde apuntas la descarga?</p>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="a"> a) A las llamas más altas</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="b"> b) A la base del fuego</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="c"> c) En el aire para enfriar el ambiente</label>
+        <label class="sim-opt"><input type="radio" name="s3_2" value="d"> d) Directamente al humo</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Cuál es el primer paso del método PASS:</p>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="a"> a) Apuntar la manguera</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="b"> b) Jalar el seguro (pin)</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="c"> c) Apretar la palanca</label>
+        <label class="sim-opt"><input type="radio" name="s3_3" value="d"> d) Barrer horizontalmente</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Al inspeccionar un extintor ves que el manómetro está en zona roja. ¿Qué significa?</p>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="a"> a) Está cargado y listo</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="b"> b) Está despresurizado o sobrepresurizado — no es operativo</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="c"> c) Necesita recarga de agente únicamente</label>
+        <label class="sim-opt"><input type="radio" name="s3_4" value="d"> d) Es normal en extintores de CO₂</label>
+      </div>
+      <div class="sim-q">
+        <p>5. Para un incendio de equipo eléctrico energizado, ¿cuál es el agente más adecuado?</p>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="a"> a) Agua</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="b"> b) Espuma AFFF</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="c"> c) CO₂ o Polvo BC/ABC</label>
+        <label class="sim-opt"><input type="radio" name="s3_5" value="d"> d) Arena húmeda</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s3',{s3_1:'c',s3_2:'b',s3_3:'b',s3_4:'b',s3_5:'c'})">Verificar Simulador</button>
+      <div id="s3-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 3</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué significan las siglas PASS?</p>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Pulsar, Apuntar, Soltar, Subir</label>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Pull, Aim, Squeeze, Sweep</label>
+        <label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Presionar, Apretar, Soltar, Salir</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué extintor NO usar en fuego clase C (eléctrico)?</p>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) CO₂</label>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) Agua</label>
+        <label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Polvo ABC</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq3',{q3a:'b',q3b:'b'})">Verificar</button>
+      <div id="mq3-result" class="quiz-result"></div>
     </div>
   </div>
-  <div class="content-section">
-    <h3>Sistemas Especiales para Áreas de Alto Riesgo</h3>
-    <div class="alert danger"><div class="alert-icon">🖥️</div><p><strong>Salas de servidores y cuartos eléctricos:</strong> Los sprinklers de agua están CONTRAINDICADOS por daño a equipos y riesgo de electrocución. Se usan agentes limpios: <strong>FM-200 (HFC-227ea)</strong> o <strong>Novec 1230 (FK-5-1-12)</strong> — extinguen por inhibición química y absorción de calor sin dejar residuo.</p></div>
-    <div class="alert info"><div class="alert-icon">💨</div><p><strong>CO₂ total flooding:</strong> Sistema de saturación total con CO₂. Altamente eficaz pero peligroso para personas — requiere sistemas de alarma prevacuación mínimo 30 segundos antes de la descarga (NFPA 12).</p></div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Sala de servidores bancaria con sprinklers de agua</h4>
-    <p>Un banco instaló sprinklers convencionales de agua en su sala de servidores (40 servidores críticos, $3M en equipos) para economizar. Durante una prueba de alarma, un técnico activa accidentalmente un rociador. El agua daña 12 servidores, causando pérdidas de $450,000 y 6 horas de interrupción bancaria.</p>
-    <div class="abp-questions">
-      <p>❓ ¿Qué norma NFPA fue incumplida al instalar sprinklers de agua en esa sala?</p>
-      <p>❓ ¿Qué sistema debió instalarse? Compara FM-200 vs Novec 1230 en términos de costo e impacto ambiental.</p>
-      <p>❓ ¿Qué tipo de detector es más apropiado para una sala de servidores?</p>
-      <p>❓ ¿Quién tiene responsabilidad legal: el banco, el instalador o el proveedor del sistema?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/b-AL6y0KKdM" title="Selección de Extintores NFPA 10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 4</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">7. ¿Qué color de bulbo de vidrio indica activación a 68°C (uso general)?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) Naranja</label><label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) Rojo</label><label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) Verde</label><label class="quiz-opt"><input type="radio" name="q4a" value="d"> d) Azul</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">8. ¿Cuál es el sistema correcto para proteger una sala de servidores?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) Sprinklers de agua de respuesta rápida</label><label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) Agente limpio FM-200 o Novec 1230</label><label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) Espuma AFFF</label><label class="quiz-opt"><input type="radio" name="q4b" value="d"> d) CO₂ sin alarma previa</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod4',{'q4a':'b','q4b':'b'})">Verificar</button>
-    <div class="quiz-result" id="mod4-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(3)">← Módulo 3</button><button class="btn-nav btn-next" onclick="nextModule(4)">Siguiente: Evacuación →</button></div>
 </div>
 
-<!-- ===== MÓDULO 5 ===== -->
-<div class="module-panel" id="mod-5">
-  <div class="module-header">
-    <span class="module-tag">Módulo 5 de 6</span>
-    <h1 class="module-title">Evacuación ante Incendios — Protocolos y Rutas</h1>
-    <p class="module-desc">Planificación de rutas de evacuación, señalización según NFPA 101 y protocolos para poblaciones con movilidad reducida.</p>
+<!-- ====== MÓDULO 4 ====== -->
+<div class="mod-card anim-fadein" id="m4">
+  <div class="mod-header">
+    <div class="mod-num">4</div>
+    <div><h2>Sistemas Fijos de Extinción</h2>
+    <small style="opacity:.8">Rociadores, gabinetes y detección automática</small></div>
   </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> NFPA 101 (Código de Seguridad Humana) · Decreto 2393 Art. 160 · NTE INEN-ISO 7010 · Acuerdo MDT-2020-077</div>
-  <div class="content-section">
-    <h3>Principios de Evacuación Segura</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Alarma y notificación</h4><p>Activar la alarma inmediatamente al detectar humo o fuego. No confirmar antes de activar — cada segundo cuenta.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Cierre de puertas</h4><p>Cerrar (no trabar) puertas al salir. Una puerta cerrada puede resistir el fuego hasta 30-60 minutos, protegiendo las vías de escape.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Ruta primaria y alternativa</h4><p>Usar la ruta más corta al punto de reunión. Si hay humo: agáchese (el humo sube) y use la ruta alternativa.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Nunca use el ascensor</h4><p>Los ascensores pueden fallar por el calor o el corte eléctrico. Los pozos actúan como chimeneas. Use siempre las escaleras de emergencia.</p></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Conteo en el punto de reunión</h4><p>El brigadista verifica la lista nominal. Informar al coordinador si alguien falta. Nunca regrese al edificio sin autorización de Bomberos.</p></div></div>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Planta de Evacuación — Ejemplo</h3>
-    <div class="svg-container anim-fadein">
-      <svg viewBox="0 0 580 180" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
-        <rect x="20" y="20" width="540" height="140" rx="6" fill="#f0f4fa" stroke="#1D51A3" stroke-width="2"/>
-        <rect x="30" y="30" width="160" height="120" rx="4" fill="#dbeafe" stroke="#1D51A3" stroke-width="1"/>
-        <text x="110" y="90" text-anchor="middle" font-size="11" fill="#163d7a">Sala A</text>
-        <rect x="200" y="30" width="160" height="120" rx="4" fill="#dbeafe" stroke="#1D51A3" stroke-width="1"/>
-        <text x="280" y="90" text-anchor="middle" font-size="11" fill="#163d7a">Sala B</text>
-        <rect x="370" y="30" width="80" height="120" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-        <text x="410" y="85" text-anchor="middle" font-size="10" fill="#15803d" font-weight="bold">🚪</text>
-        <text x="410" y="100" text-anchor="middle" font-size="9" fill="#15803d">Escalera</text>
-        <text x="410" y="113" text-anchor="middle" font-size="9" fill="#15803d">emergencia</text>
-        <rect x="460" y="30" width="90" height="120" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-        <text x="505" y="85" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">EXIT</text>
-        <text x="505" y="100" text-anchor="middle" font-size="9" fill="#92400e">Salida</text>
-        <text x="505" y="113" text-anchor="middle" font-size="9" fill="#92400e">principal</text>
-        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker></defs>
-        <path d="M110 90 L365 90" stroke="#16a34a" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arr)"/>
-        <path d="M280 90 L365 90" stroke="#16a34a" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arr)"/>
-        <text x="280" y="170" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="bold">★ Punto de reunión — mínimo 20m al exterior</text>
+  <div class="mod-body">
+    <p>Los <strong>Sistemas Fijos de Extinción (SFE)</strong> son instalaciones permanentes diseñadas para detectar y suprimir incendios automáticamente o mediante maniobra manual. Son complementarios a los extintores portátiles y obligatorios en edificaciones de riesgo alto según la <strong>NFPA 13</strong> y el <strong>Código de Trabajo (CT)</strong> ecuatoriano.</p>
+
+    <h3>Tipos de Sistemas Fijos</h3>
+    <!-- SVG comparativo -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Sistemas Fijos de Extinción — Comparativa</div>
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <rect x="5" y="10" width="160" height="140" rx="12" fill="#e8f0fb" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="85" y="40" text-anchor="middle" fill="#163d7a" font-size="11" font-weight="700">ROCIADORES</text>
+        <text x="85" y="56" text-anchor="middle" fill="#163d7a" font-size="10" font-weight="600">Sprinklers</text>
+        <text x="85" y="78" text-anchor="middle" fill="#2e4060" font-size="8">Activación automática</text>
+        <text x="85" y="92" text-anchor="middle" fill="#2e4060" font-size="8">68-93°C fusible</text>
+        <text x="85" y="106" text-anchor="middle" fill="#2e4060" font-size="8">Agua / espuma</text>
+        <text x="85" y="130" text-anchor="middle" fill="#1D51A3" font-size="8" font-weight="600">NFPA 13</text>
+
+        <rect x="177" y="10" width="160" height="140" rx="12" fill="#e6f9f1" stroke="#22a86b" stroke-width="1.5"/>
+        <text x="257" y="40" text-anchor="middle" fill="#166a45" font-size="11" font-weight="700">GABINETES</text>
+        <text x="257" y="56" text-anchor="middle" fill="#166a45" font-size="10" font-weight="600">Mangueras BIE</text>
+        <text x="257" y="78" text-anchor="middle" fill="#166a45" font-size="8">Operación manual</text>
+        <text x="257" y="92" text-anchor="middle" fill="#166a45" font-size="8">25 m de alcance</text>
+        <text x="257" y="106" text-anchor="middle" fill="#166a45" font-size="8">Agua red hidráulica</text>
+        <text x="257" y="130" text-anchor="middle" fill="#22a86b" font-size="8" font-weight="600">NFPA 14</text>
+
+        <rect x="349" y="10" width="160" height="140" rx="12" fill="#fff0f5" stroke="#e05c2d" stroke-width="1.5"/>
+        <text x="429" y="40" text-anchor="middle" fill="#b91c1c" font-size="11" font-weight="700">DILUVIO</text>
+        <text x="429" y="56" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="600">Deluge System</text>
+        <text x="429" y="78" text-anchor="middle" fill="#b91c1c" font-size="8">Todos activan juntos</text>
+        <text x="429" y="92" text-anchor="middle" fill="#b91c1c" font-size="8">Alto riesgo: petroquímica</text>
+        <text x="429" y="106" text-anchor="middle" fill="#b91c1c" font-size="8">Alta descarga agua</text>
+        <text x="429" y="130" text-anchor="middle" fill="#e05c2d" font-size="8" font-weight="600">NFPA 15</text>
+
+        <rect x="521" y="10" width="170" height="140" rx="12" fill="#f5f0ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="606" y="40" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700">AGENTES</text>
+        <text x="606" y="56" text-anchor="middle" fill="#5b21b6" font-size="10" font-weight="600">Limpios / CO₂</text>
+        <text x="606" y="78" text-anchor="middle" fill="#5b21b6" font-size="8">Salas de servidores</text>
+        <text x="606" y="92" text-anchor="middle" fill="#5b21b6" font-size="8">No daña equipos</text>
+        <text x="606" y="106" text-anchor="middle" fill="#5b21b6" font-size="8">FM-200, Novec 1230</text>
+        <text x="606" y="130" text-anchor="middle" fill="#7c3aed" font-size="8" font-weight="600">NFPA 2001</text>
       </svg>
-      <figcaption>Planta de evacuación con rutas primaria, escalera de emergencia y punto de reunión</figcaption>
     </div>
-  </div>
-  <div class="content-section">
-    <h3>Personas con Movilidad Reducida</h3>
-    <div class="info-grid anim-fadein">
-      <div class="info-card gold"><h4>Áreas de Refugio</h4><p>Zona protegida con resistencia al fuego (mínimo 1 hora) donde las personas esperan asistencia. Obligatorias en edificios >4 pisos.</p></div>
-      <div class="info-card green"><h4>Silla de Evacuación</h4><p>Dispositivo para bajar personas por escaleras. El brigadista debe estar entrenado específicamente en su uso. 1 silla por piso recomendado.</p></div>
-      <div class="info-card"><h4>Comunicación</h4><p>El área de refugio debe tener comunicación bidireccional con el panel de control. El brigadista confirmará la ubicación al coordinador.</p></div>
-    </div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Evacuación fallida en edificio de 8 pisos</h4>
-    <p>A las 10h15, se activa la alarma en un edificio de 8 pisos con 320 personas. Resultados: tiempo de evacuación 22 minutos (objetivo: 5 min); 18 personas del piso 6 no evacuaron ("siempre son falsas alarmas"); 4 personas usaron el ascensor; 1 persona en silla de ruedas fue dejada en el piso 5 sin asistencia; el brigadista del piso 3 no tenía lista de personal.</p>
-    <div class="abp-questions">
-      <p>❓ Identifica mínimo 5 fallas y clasifica su gravedad (crítica/seria/menor).</p>
-      <p>❓ ¿Cuál es la falla de mayor riesgo legal para la empresa? Justifica.</p>
-      <p>❓ Diseña el protocolo correcto para el piso 6 (resistencia cultural a evacuar).</p>
-      <p>❓ ¿Qué debería hacer el brigadista del piso 5 con la persona en silla de ruedas?</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/bpZX1YKR28I" title="Capacitación Plan de Actuación y Evacuación" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
-  <div class="quiz-section">
-    <div class="quiz-title">Verificación — Módulo 5</div><div class="quiz-sub">Seleccione la respuesta correcta.</div>
-    <div class="quiz-question"><div class="quiz-q">9. ¿Por qué está prohibido usar el ascensor durante una evacuación por incendio?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) Porque va lento</label><label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) Porque el pozo actúa como chimenea y puede fallar por calor/corte eléctrico</label><label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) Porque genera estampidas</label><label class="quiz-opt"><input type="radio" name="q5a" value="d"> d) Porque el brigadista no puede acompañar</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">10. El brigadista NO puede regresar al edificio hasta:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) Haber contado a todo el personal en el punto de reunión</label><label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) Recibir autorización del Cuerpo de Bomberos</label><label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) Que la alarma se apague automáticamente</label><label class="quiz-opt"><input type="radio" name="q5b" value="d"> d) Que el gerente lo autorice</label></div></div>
-    <button class="quiz-submit" onclick="checkMiniQuiz('mod5',{'q5a':'b','q5b':'b'})">Verificar</button>
-    <div class="quiz-result" id="mod5-result"></div>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(4)">← Módulo 4</button><button class="btn-nav btn-next" onclick="nextModule(5)">Siguiente: Plan Contraincendios →</button></div>
-</div>
 
-<!-- ===== MÓDULO 6 ===== -->
-<div class="module-panel" id="mod-6">
-  <div class="module-header">
-    <span class="module-tag">Módulo 6 de 6</span>
-    <h1 class="module-title">Plan Institucional Contraincendios y Método MESERI</h1>
-    <p class="module-desc">Estructuración del plan, evaluación de riesgo mediante MESERI y gestión de simulacros con informe al Ministerio del Trabajo.</p>
-  </div>
-  <div class="norm-ref"><strong>Base normativa:</strong> Decreto 2393 · Acuerdo MDT-2020-077 · NFPA 1 (Código de Incendios) · Método MESERI (Mapfre Seguros)</div>
-  <div class="content-section">
-    <h3>Método MESERI — Evaluación de Riesgo de Incendio</h3>
-    <p>MESERI evalúa el riesgo mediante dos grupos de factores: los propios de la instalación (X) y los de protección (Y), obteniendo un índice P.</p>
-    <div class="alert info"><div class="alert-icon">📊</div><p><strong>Fórmula:</strong> P = 5X/129 + 5Y/26 — donde X = suma factores propios y Y = suma factores protección. Resultado: Muy malo (0-2), Malo (2.1-4), Bueno (4.1-6), Muy bueno (6.1-10). Riesgo aceptable: P ≥ 5.</p></div>
-    <table class="data-table">
-      <thead><tr><th>Factores propios (X) — aumentan el riesgo</th><th>Ejemplos de puntuación</th></tr></thead>
-      <tbody>
-        <tr><td>Altura del edificio</td><td>Menor de 6m: 3pts / Mayor de 30m: 0pts</td></tr>
-        <tr><td>Superficie mayor sector incendio</td><td>&lt;500m²: 5pts / &gt;10,000m²: 0pts</td></tr>
-        <tr><td>Resistencia al fuego de la estructura</td><td>Hormigón: 10pts / Madera: 0pts</td></tr>
-        <tr><td>Carga de fuego (combustibles)</td><td>Baja &lt;100 Mcal/m²: 10pts / Alta: 0pts</td></tr>
-        <tr><td>Accesibilidad para bomberos</td><td>Buena: 5pts / Muy mala: 0pts</td></tr>
-      </tbody>
+    <h3>Sistema de Detección de Incendio (NFPA 72)</h3>
+    <table>
+      <tr><th>Detector</th><th>Principio</th><th>Aplicación típica</th></tr>
+      <tr><td>Iónico (humo)</td><td>Perturbación de campo ionizado</td><td>Productos de combustión invisible</td></tr>
+      <tr><td>Fotoeléctrico (humo)</td><td>Dispersión de luz</td><td>Humo visible, incendios lentos</td></tr>
+      <tr><td>Temperatura fija</td><td>Fusible o bimetálico</td><td>Cocinas, cuartos de máquinas</td></tr>
+      <tr><td>Llama (UV/IR)</td><td>Detección de radiación</td><td>Hangares, industria petroquímica</td></tr>
+      <tr><td>Aspiración (VESDA)</td><td>Muestreo de aire activo</td><td>Data centers, salas limpias</td></tr>
     </table>
-  </div>
-  <div class="content-section">
-    <h3>Estructura del Plan Contraincendios</h3>
-    <div class="steps anim-fadein">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Diagnóstico y análisis de riesgos</h4><p>Aplicar MESERI. Identificar cargas de fuego por área. Mapeo de instalaciones eléctricas y almacenamiento de combustibles.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Organización de la brigada</h4><p>Nómina actualizada con roles. Horarios de cobertura por turno. Plan de formación anual. Dotación de equipos (EPP, extintores, radio).</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Procedimientos operativos (PON)</h4><p>Secuencia de acciones por escenario: incendio eléctrico, bodega, área producción. Cada PON incluye quién actúa, cómo, con qué y cuándo.</p></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Programa de mantenimiento</h4><p>Calendario de inspecciones: extintores (mensual/anual), detectores (semestral), rociadores (anual). Registro documental obligatorio.</p></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Simulacros y evaluación</h4><p>Mínimo 1 anual. Tipos: avisado (primer año), sorpresivo (evaluación real). Informe al MDT en 10 días hábiles post-simulacro.</p></div></div>
-    </div>
-  </div>
-  <div class="abp-case anim-fadein">
-    <span class="abp-label">CASO DE ESTUDIO — ABP</span>
-    <h4>Escenario: Plan desactualizado en empresa manufacturera</h4>
-    <p>Una empresa con 200 trabajadores presentó su Plan Contraincendios al MDT hace 4 años. Desde entonces: no realizaron ningún simulacro, rotaron el 65% de la brigada sin reentrenamiento, instalaron un nuevo almacén de pinturas sin actualizarlo en el plan, y compraron 8 extintores nuevos no registrados. El MDT programa una inspección.</p>
-    <div class="abp-questions">
-      <p>❓ Lista las 4 no conformidades identificadas y clasifica su gravedad según el Decreto 2393.</p>
-      <p>❓ ¿Cuál es la multa máxima aplicable? (3-10 SBU según gravedad en Ecuador)</p>
-      <p>❓ Aplica MESERI al nuevo almacén de pinturas: ¿cómo cambiaría el índice P del plan original?</p>
-      <p>❓ Diseña un plan de acción correctivo de 90 días para regularizar todas las no conformidades.</p>
-    </div>
-  </div>
-  <div class="content-section">
-    <h3>Video de Referencia</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/-w64n11loW0" title="Curso Brigadas Contra Incendios" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px;margin:12px 0"></iframe>
-  </div>
 
-  <!-- QUIZ FINAL -->
-  <div class="quiz-section" id="finalQuizSection">
-    <div class="quiz-title">✅ Evaluación Final — Brigadas contra Incendios</div>
-    <div class="quiz-sub">Responda todas las preguntas. Mínimo 6/8 correctas para aprobar.</div>
-    <div class="quiz-question"><div class="quiz-q">1. ¿Cuántos trabajadores mínimos exige el Decreto 2393 para conformar brigada contraincendios?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq1" value="a"> a) 10</label><label class="quiz-opt"><input type="radio" name="fq1" value="b"> b) 25</label><label class="quiz-opt"><input type="radio" name="fq1" value="c"> c) 50</label><label class="quiz-opt"><input type="radio" name="fq1" value="d"> d) 100</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">2. ¿Cuántas clases de fuego define la NFPA?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq2" value="a"> a) 3 (A, B, C)</label><label class="quiz-opt"><input type="radio" name="fq2" value="b"> b) 5 (A, B, C, D, K)</label><label class="quiz-opt"><input type="radio" name="fq2" value="c"> c) 4 (A, B, C, D)</label><label class="quiz-opt"><input type="radio" name="fq2" value="d"> d) 6 (A-F)</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">3. En el método PASS, la "P" significa:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq3" value="a"> a) Pull — jalar el pin de seguridad</label><label class="quiz-opt"><input type="radio" name="fq3" value="b"> b) Push — empujar la palanca</label><label class="quiz-opt"><input type="radio" name="fq3" value="c"> c) Protect — proteger el área</label><label class="quiz-opt"><input type="radio" name="fq3" value="d"> d) Position — posicionarse</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">4. ¿Qué extintor NO debe usarse en fuegos clase C (equipos eléctricos energizados)?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq4" value="a"> a) CO₂</label><label class="quiz-opt"><input type="radio" name="fq4" value="b"> b) PQS BC</label><label class="quiz-opt"><input type="radio" name="fq4" value="c"> c) Halotron</label><label class="quiz-opt"><input type="radio" name="fq4" value="d"> d) Agua</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">5. Los rociadores automáticos (sprinklers) se activan por:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq5" value="a"> a) Detección de humo</label><label class="quiz-opt"><input type="radio" name="fq5" value="b"> b) Temperatura que rompe el bulbo de vidrio</label><label class="quiz-opt"><input type="radio" name="fq5" value="c"> c) Señal del panel de control</label><label class="quiz-opt"><input type="radio" name="fq5" value="d"> d) Activación manual del brigadista</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">6. ¿Qué norma NFPA regula los sistemas de alarma de incendio?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq6" value="a"> a) NFPA 10</label><label class="quiz-opt"><input type="radio" name="fq6" value="b"> b) NFPA 13</label><label class="quiz-opt"><input type="radio" name="fq6" value="c"> c) NFPA 72</label><label class="quiz-opt"><input type="radio" name="fq6" value="d"> d) NFPA 101</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">7. El método MESERI evalúa el riesgo de incendio mediante:</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq7" value="a"> a) Factores propios de la instalación y factores de protección</label><label class="quiz-opt"><input type="radio" name="fq7" value="b"> b) Solo la carga de fuego por metro cuadrado</label><label class="quiz-opt"><input type="radio" name="fq7" value="c"> c) El número de extintores disponibles</label><label class="quiz-opt"><input type="radio" name="fq7" value="d"> d) El tiempo de respuesta de los bomberos</label></div></div>
-    <div class="quiz-question"><div class="quiz-q">8. ¿A qué distancia mínima del edificio debe ubicarse el punto de reunión?</div>
-    <div class="quiz-options"><label class="quiz-opt"><input type="radio" name="fq8" value="a"> a) 5 metros</label><label class="quiz-opt"><input type="radio" name="fq8" value="b"> b) 20 metros</label><label class="quiz-opt"><input type="radio" name="fq8" value="c"> c) 10 metros</label><label class="quiz-opt"><input type="radio" name="fq8" value="d"> d) 50 metros</label></div></div>
-    <button class="quiz-submit" onclick="submitFinalQuiz()" style="margin-top:16px;font-size:15px;padding:13px 32px">Enviar evaluación final</button>
-    <div class="quiz-result" id="finalResult"></div>
+    <div class="info-box"><strong>Gabinetes Contra Incendio (BIE):</strong> Las Bocas de Incendio Equipadas deben ubicarse de modo que cada punto del área protegida quede a no más de 25 metros de una manguera. Requieren inspección trimestral según NFPA 25.</div>
+
+    <div class="vid-label">Video — Sistemas Fijos de Extinción</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/b-AL6y0KKdM" allowfullscreen loading="lazy" title="Sistemas Fijos de Extinción"></iframe>
+    </div>
+
+    <!-- SIMULATOR M4 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 4</span>
+      <h4>Escenarios: Sistemas Fijos</h4>
+      <div class="sim-q">
+        <p>1. Una sala de servidores necesita protección sin dañar equipos. ¿Qué sistema se recomienda?</p>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="a"> a) Rociadores de agua</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="b"> b) Agente limpio FM-200 o Novec</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="c"> c) Gabinete BIE con manguera</label>
+        <label class="sim-opt"><input type="radio" name="s4_1" value="d"> d) Sistema de diluvio</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿A qué temperatura típica se activa un rociador automático estándar?</p>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="a"> a"> 30-40°C</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="b"> b) 68-93°C</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="c"> c) 120-150°C</label>
+        <label class="sim-opt"><input type="radio" name="s4_2" value="d"> d) 200°C</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Cuál es la distancia máxima de cobertura de un gabinete BIE?</p>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="a"> a) 10 metros</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="b"> b) 50 metros</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="c"> c) 25 metros</label>
+        <label class="sim-opt"><input type="radio" name="s4_3" value="d"> d) 5 metros</label>
+      </div>
+      <div class="sim-q">
+        <p>4. ¿Qué norma NFPA regula la inspección de sistemas de mangueras y gabinetes?</p>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="a"> a) NFPA 10</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="b"> b) NFPA 25</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="c"> c) NFPA 72</label>
+        <label class="sim-opt"><input type="radio" name="s4_4" value="d"> d) NFPA 13</label>
+      </div>
+      <div class="sim-q">
+        <p>5. El detector VESDA opera por principio de:</p>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="a"> a) Temperatura fija bimetálica</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="b"> b) Detección de llama UV</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="c"> c) Muestreo activo de aire (aspiración)</label>
+        <label class="sim-opt"><input type="radio" name="s4_5" value="d"> d) Ionización de humo</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s4',{s4_1:'b',s4_2:'b',s4_3:'c',s4_4:'b',s4_5:'c'})">Verificar Simulador</button>
+      <div id="s4-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 4</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué norma NFPA regula los sistemas de rociadores?</p>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) NFPA 10</label>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) NFPA 13</label>
+        <label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) NFPA 101</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Cuántos metros cubre como máximo un gabinete BIE?</p>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) 10</label>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) 25</label>
+        <label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) 50</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq4',{q4a:'b',q4b:'b'})">Verificar</button>
+      <div id="mq4-result" class="quiz-result"></div>
+    </div>
   </div>
-  <div class="completion-card" id="completionCard">
-    <div class="cert-icon">🏅</div>
-    <h2>¡Brigadas contra Incendios Aprobado!</h2>
-    <p>Has completado con éxito el curso de <strong>Brigadas contra Incendios</strong> de Preventive Health.</p>
-    <p style="font-size:.9rem;opacity:.8">Certificado conforme al Decreto 2393, Acuerdo MDT-2020-077 y estándares NFPA 10/72/101. Comuníquese con Preventive Health para el certificado firmado por instructor.</p>
-  </div>
-  <div class="module-nav"><button class="btn-nav btn-prev" onclick="showModule(5)">← Módulo 5</button><span></span></div>
 </div>
 
+<!-- ====== MÓDULO 5 ====== -->
+<div class="mod-card anim-fadein" id="m5">
+  <div class="mod-header">
+    <div class="mod-num">5</div>
+    <div><h2>Planes de Evacuación</h2>
+    <small style="opacity:.8">Diseño, señalización y conducción de evacuaciones (NFPA 101)</small></div>
+  </div>
+  <div class="mod-body">
+    <p>Un <strong>Plan de Evacuación (PE)</strong> es el conjunto de procedimientos que permiten desplazar a las personas desde una zona de peligro hasta un lugar seguro, de forma ordenada y en el menor tiempo posible. Debe estar documentado, publicado y practicado mediante simulacros periódicos.</p>
+
+    <h3>Componentes del Plan de Evacuación</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><p>Análisis de riesgo y identificación de amenazas</p></div>
+      <div class="step"><div class="num">2</div><p>Mapa de evacuación con rutas primarias y alternas</p></div>
+      <div class="step"><div class="num">3</div><p>Puntos de encuentro (mínimo 50 m del edificio)</p></div>
+      <div class="step"><div class="num">4</div><p>Señalización fotoluminiscente conforme INEN 439</p></div>
+      <div class="step"><div class="num">5</div><p>Roles y responsabilidades de la brigada</p></div>
+      <div class="step"><div class="num">6</div><p>Simulacro anual documentado y evaluado</p></div>
+    </div>
+
+    <!-- SVG Plano evacuación -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Plano tipo de evacuación — Planta de un piso</div>
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- Building outline -->
+        <rect x="50" y="20" width="600" height="160" rx="6" fill="none" stroke="#1D51A3" stroke-width="2.5"/>
+        <!-- Interior walls -->
+        <line x1="250" y1="20" x2="250" y2="120" stroke="#1D51A3" stroke-width="1.5"/>
+        <line x1="450" y1="20" x2="450" y2="120" stroke="#1D51A3" stroke-width="1.5"/>
+        <line x1="50" y1="120" x2="650" y2="120" stroke="#1D51A3" stroke-width="1.5"/>
+        <!-- Rooms -->
+        <text x="150" y="70" text-anchor="middle" fill="#2e4060" font-size="9" font-weight="600">Oficina A</text>
+        <text x="350" y="70" text-anchor="middle" fill="#2e4060" font-size="9" font-weight="600">Sala Reuniones</text>
+        <text x="550" y="70" text-anchor="middle" fill="#2e4060" font-size="9" font-weight="600">Oficina B</text>
+        <text x="200" y="155" text-anchor="middle" fill="#2e4060" font-size="9" font-weight="600">Recepción</text>
+        <text x="500" y="155" text-anchor="middle" fill="#2e4060" font-size="9" font-weight="600">Bodega</text>
+        <!-- Exits -->
+        <rect x="50" y="150" width="40" height="30" rx="4" fill="#22a86b"/>
+        <text x="70" y="162" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">EXIT</text>
+        <text x="70" y="173" text-anchor="middle" fill="#fff" font-size="7">→ Sur</text>
+
+        <rect x="620" y="65" width="30" height="50" rx="4" fill="#22a86b"/>
+        <text x="635" y="85" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">EXIT</text>
+        <text x="635" y="98" text-anchor="middle" fill="#fff" font-size="7">→ Este</text>
+
+        <rect x="310" y="20" width="80" height="20" rx="4" fill="#F0C319"/>
+        <text x="350" y="34" text-anchor="middle" fill="#1a2840" font-size="7" font-weight="700">SALIDA EMERG.</text>
+
+        <!-- Arrows -->
+        <path d="M150,90 L80,150" fill="none" stroke="#e05c2d" stroke-width="2" stroke-dasharray="5" marker-end="url(#arEvac1)"/>
+        <path d="M350,90 L350,30" fill="none" stroke="#e05c2d" stroke-width="2" stroke-dasharray="5" marker-end="url(#arEvac2)"/>
+        <path d="M550,90 L635,90" fill="none" stroke="#e05c2d" stroke-width="2" stroke-dasharray="5" marker-end="url(#arEvac3)"/>
+        <path d="M200,140 L80,165" fill="none" stroke="#e05c2d" stroke-width="2" stroke-dasharray="5"/>
+        <defs>
+          <marker id="arEvac1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e05c2d"/></marker>
+          <marker id="arEvac2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e05c2d"/></marker>
+          <marker id="arEvac3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e05c2d"/></marker>
+        </defs>
+        <!-- Punto encuentro -->
+        <ellipse cx="350" cy="205" rx="60" ry="12" fill="#F0C319" opacity=".8"/>
+        <text x="350" y="209" text-anchor="middle" fill="#1a2840" font-size="8" font-weight="700">PUNTO DE ENCUENTRO</text>
+        <!-- Extintor -->
+        <rect x="240" y="30" width="10" height="16" rx="2" fill="#e05c2d"/>
+        <text x="245" y="55" text-anchor="middle" fill="#e05c2d" font-size="7">Extint.</text>
+      </svg>
+    </div>
+
+    <h3>Parámetros NFPA 101 para Salidas</h3>
+    <table>
+      <tr><th>Parámetro</th><th>Requisito</th></tr>
+      <tr><td>Ancho mínimo de pasillo</td><td>≥ 1.12 m (44 pulgadas)</td></tr>
+      <tr><td>Ancho mínimo de puerta de salida</td><td>≥ 0.81 m (32 pulgadas)</td></tr>
+      <tr><td>Señalización fotoluminiscente</td><td>Visible a 30 m; activa al corte de luz</td></tr>
+      <tr><td>Distancia máxima a salida</td><td>≤ 60 m en riesgo ordinario</td></tr>
+      <tr><td>Puertas de emergencia</td><td>Abren en dirección de evacuación; sin llaves</td></tr>
+    </table>
+
+    <div class="vid-label">Video — Planes de Evacuación</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/bpZX1YKR28I" allowfullscreen loading="lazy" title="Planes de Evacuación"></iframe>
+    </div>
+
+    <!-- SIMULATOR M5 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 5</span>
+      <h4>Escenarios: Evacuación</h4>
+      <div class="sim-q">
+        <p>1. Durante la evacuación, una trabajadora cae y bloquea el pasillo. Como brigadista de evacuación, ¿qué haces?</p>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="a"> a) Gritar para que todos retrocedan</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="b"> b) Asistirla con ayuda de un compañero y activar la ruta alterna</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="c"> c) Continuar la evacuación sin atenderla</label>
+        <label class="sim-opt"><input type="radio" name="s5_1" value="d"> d) Detener la evacuación y esperar al SEM</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿A qué distancia mínima del edificio debe ubicarse el punto de encuentro?</p>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="a"> a) 10 metros</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="b"> b) 50 metros</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="c"> c) 20 metros</label>
+        <label class="sim-opt"><input type="radio" name="s5_2" value="d"> d) 5 metros</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Según NFPA 101, el ancho mínimo de un pasillo de evacuación es:</p>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="a"> a) 0.60 m</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="b"> b) 1.12 m</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="c"> c) 2 m</label>
+        <label class="sim-opt"><input type="radio" name="s5_3" value="d"> d) 0.80 m</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Las puertas de emergencia deben abrirse:</p>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="a"> a) Hacia adentro, con llave</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="b"> b) En la dirección del flujo de evacuación (hacia afuera), sin llaves</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="c"> c) Con código de acceso electrónico</label>
+        <label class="sim-opt"><input type="radio" name="s5_4" value="d"> d) Solo con autorización del jefe de brigada</label>
+      </div>
+      <div class="sim-q">
+        <p>5. La señalización fotoluminiscente debe ser visible a una distancia mínima de:</p>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="a"> a) 10 metros</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="b"> b"> 30 metros</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="c"> c) 50 metros</label>
+        <label class="sim-opt"><input type="radio" name="s5_5" value="d"> d) 5 metros</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s5',{s5_1:'b',s5_2:'b',s5_3:'b',s5_4:'b',s5_5:'b'})">Verificar Simulador</button>
+      <div id="s5-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 5</h4>
+      <div class="quiz-q">
+        <p>1. ¿Cuál norma regula las rutas y salidas de evacuación?</p>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) NFPA 10</label>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) NFPA 101</label>
+        <label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) NFPA 13</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Cuántos metros de distancia al edificio necesita el punto de encuentro?</p>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) 10 m</label>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) 50 m</label>
+        <label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) 100 m</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq5',{q5a:'b',q5b:'b'})">Verificar</button>
+      <div id="mq5-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MÓDULO 6 ====== -->
+<div class="mod-card anim-fadein" id="m6">
+  <div class="mod-header">
+    <div class="mod-num">6</div>
+    <div><h2>Evaluación de Riesgos — Método MESERI</h2>
+    <small style="opacity:.8">Metodología Simplificada de Evaluación del Riesgo de Incendio</small></div>
+  </div>
+  <div class="mod-body">
+    <p>El <strong>Método MESERI</strong> (Método Simplificado de Evaluación del Riesgo de Incendio) es una herramienta cuantitativa desarrollada por el Mapa de Riesgo de la Industria Española para valorar el riesgo de incendio en instalaciones industriales. Su resultado determina si la empresa necesita mejoras en protección pasiva o activa.</p>
+
+    <h3>Factores del Método MESERI</h3>
+    <!-- SVG Factores -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Estructura del Método MESERI</div>
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <!-- Header -->
+        <rect x="200" y="5" width="300" height="36" rx="10" fill="#163d7a"/>
+        <text x="350" y="28" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">MÉTODO MESERI</text>
+        <line x1="350" y1="41" x2="350" y2="60" stroke="#163d7a" stroke-width="2"/>
+        <line x1="100" y1="60" x2="600" y2="60" stroke="#163d7a" stroke-width="2"/>
+        <!-- Left block - Propios -->
+        <line x1="100" y1="60" x2="100" y2="80" stroke="#e05c2d" stroke-width="2"/>
+        <rect x="20" y="80" width="160" height="110" rx="10" fill="#fdf0eb" stroke="#e05c2d" stroke-width="1.5"/>
+        <text x="100" y="102" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">FACTORES PROPIOS</text>
+        <text x="100" y="118" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="600">DE LA INSTALACIÓN (X)</text>
+        <text x="100" y="136" text-anchor="middle" fill="#2e4060" font-size="8">Construcción</text>
+        <text x="100" y="150" text-anchor="middle" fill="#2e4060" font-size="8">Situación</text>
+        <text x="100" y="164" text-anchor="middle" fill="#2e4060" font-size="8">Procesos y valores</text>
+        <text x="100" y="178" text-anchor="middle" fill="#2e4060" font-size="8">Concentración de personas</text>
+
+        <!-- Right block - Protección -->
+        <line x1="600" y1="60" x2="600" y2="80" stroke="#22a86b" stroke-width="2"/>
+        <rect x="520" y="80" width="160" height="110" rx="10" fill="#e6f9f1" stroke="#22a86b" stroke-width="1.5"/>
+        <text x="600" y="102" text-anchor="middle" fill="#166a45" font-size="10" font-weight="700">FACTORES DE</text>
+        <text x="600" y="118" text-anchor="middle" fill="#166a45" font-size="9" font-weight="600">PROTECCIÓN (Y)</text>
+        <text x="600" y="136" text-anchor="middle" fill="#2e4060" font-size="8">Extintores</text>
+        <text x="600" y="150" text-anchor="middle" fill="#2e4060" font-size="8">Bocas de incendio</text>
+        <text x="600" y="164" text-anchor="middle" fill="#2e4060" font-size="8">Detectores</text>
+        <text x="600" y="178" text-anchor="middle" fill="#2e4060" font-size="8">Brigada / bomberos</text>
+
+        <!-- Center formula -->
+        <line x1="350" y1="60" x2="350" y2="80" stroke="#1D51A3" stroke-width="2"/>
+        <rect x="250" y="80" width="200" height="60" rx="10" fill="#e8f0fb" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="350" y="104" text-anchor="middle" fill="#163d7a" font-size="10" font-weight="700">FÓRMULA:</text>
+        <text x="350" y="124" text-anchor="middle" fill="#163d7a" font-size="11" font-weight="900">P = 5X/129 + 5Y/26</text>
+
+        <!-- Result bar -->
+        <rect x="100" y="160" width="500" height="32" rx="8" fill="none" stroke="#1D51A3" stroke-width="1.5"/>
+        <rect x="100" y="160" width="166" height="32" rx="4" fill="#e05c2d" opacity=".8"/>
+        <rect x="266" y="160" width="167" height="32" fill="#F0C319" opacity=".9"/>
+        <rect x="433" y="160" width="167" height="32" rx="4" fill="#22a86b" opacity=".8"/>
+        <text x="183" y="181" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">P &lt; 5 · Riesgo ALTO</text>
+        <text x="349" y="181" text-anchor="middle" fill="#1a2840" font-size="9" font-weight="700">5-8 · Riesgo MEDIO</text>
+        <text x="516" y="181" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">P &gt; 8 · Riesgo BAJO</text>
+      </svg>
+    </div>
+
+    <h3>Tabla de Factores de Propios (X) — Selección</h3>
+    <table>
+      <tr><th>Factor</th><th>Descripción</th><th>Puntos</th></tr>
+      <tr><td>Nº de pisos</td><td>1 o 2 pisos</td><td>3</td></tr>
+      <tr><td>Nº de pisos</td><td>3 a 5 pisos</td><td>2</td></tr>
+      <tr><td>Área del sector</td><td>Menor a 500 m²</td><td>5</td></tr>
+      <tr><td>Área del sector</td><td>Mayor a 2500 m²</td><td>0</td></tr>
+      <tr><td>Carga de fuego</td><td>Baja (&lt;200 Mcal/m²)</td><td>10</td></tr>
+      <tr><td>Carga de fuego</td><td>Alta (&gt;800 Mcal/m²)</td><td>0</td></tr>
+    </table>
+
+    <h3>Interpretación del Resultado P</h3>
+    <table>
+      <tr><th>Valor de P</th><th>Calificación</th><th>Acción</th></tr>
+      <tr><td>0 – 2</td><td>Riesgo muy alto</td><td>Mejoras urgentes en protección</td></tr>
+      <tr><td>3 – 5</td><td>Riesgo alto</td><td>Plan de mejoras a corto plazo</td></tr>
+      <tr><td>6 – 8</td><td>Riesgo medio</td><td>Mantenimiento preventivo</td></tr>
+      <tr><td>Más de 8</td><td>Riesgo aceptable</td><td>Monitoreo periódico</td></tr>
+    </table>
+
+    <div class="vid-label">Video — Evaluación de Riesgo de Incendio MESERI</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/-w64n11loW0" allowfullscreen loading="lazy" title="Método MESERI"></iframe>
+    </div>
+
+    <!-- SIMULATOR M6 -->
+    <div class="sim-section">
+      <span class="sim-badge">Simulador · Módulo 6</span>
+      <h4>Escenarios: MESERI</h4>
+      <div class="sim-q">
+        <p>1. Una empresa obtiene P = 3.5 en MESERI. ¿Cuál es su nivel de riesgo?</p>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="a"> a) Riesgo bajo — sin acción necesaria</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="b"> b) Riesgo alto — plan de mejoras a corto plazo</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="c"> c) Riesgo muy alto — mejoras urgentes</label>
+        <label class="sim-opt"><input type="radio" name="s6_1" value="d"> d) Riesgo medio — monitoreo</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Los factores "Y" en MESERI corresponden a:</p>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="a"> a) Características propias del edificio</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="b"> b"> Medidas de protección activa y pasiva instaladas</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="c"> c) Actividades productivas de la empresa</label>
+        <label class="sim-opt"><input type="radio" name="s6_2" value="d"> d) Personal de seguridad externo</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Instalar detectores automáticos de humo en una empresa mejora el valor MESERI porque:</p>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="a"> a) Aumenta los factores X</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="b"> b) Aumenta los factores Y (protección)</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="c"> c) No afecta el resultado</label>
+        <label class="sim-opt"><input type="radio" name="s6_3" value="d"> d) Disminuye P significativamente en X</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Un edificio de 8 pisos con gran concentración de personas obtiene puntaje X:</p>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="a"> a) Alto (muchos puntos)</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="b"> b) Bajo (pocos puntos) — mayor riesgo</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="c"> c) Neutro</label>
+        <label class="sim-opt"><input type="radio" name="s6_4" value="d"> d) No aplica a edificios de más de 5 pisos</label>
+      </div>
+      <div class="sim-q">
+        <p>5. ¿Cuál resultado de P indica riesgo aceptable en MESERI?</p>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="a"> a) P menor a 2</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="b"> b) P entre 3 y 5</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="c"> c) P mayor a 8</label>
+        <label class="sim-opt"><input type="radio" name="s6_5" value="d"> d) P igual a 0</label>
+      </div>
+      <button class="sim-btn" onclick="runSim('s6',{s6_1:'b',s6_2:'b',s6_3:'b',s6_4:'b',s6_5:'c'})">Verificar Simulador</button>
+      <div id="s6-result" class="sim-result"></div>
+    </div>
+
+    <div class="quiz-section">
+      <h4>✅ Mini-quiz — Módulo 6</h4>
+      <div class="quiz-q">
+        <p>1. ¿Qué fórmula usa el Método MESERI?</p>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="a"> a) P = X + Y</label>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="b"> b) P = 5X/129 + 5Y/26</label>
+        <label class="quiz-opt"><input type="radio" name="q6a" value="c"> c) P = X × Y / 10</label>
+      </div>
+      <div class="quiz-q">
+        <p>2. ¿Qué riesgo indica P = 1.5?</p>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="a"> a) Riesgo bajo</label>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="b"> b) Riesgo muy alto</label>
+        <label class="quiz-opt"><input type="radio" name="q6b" value="c"> c) Riesgo medio</label>
+      </div>
+      <button class="quiz-btn" onclick="checkMiniQuiz('mq6',{q6a:'b',q6b:'b'})">Verificar</button>
+      <div id="mq6-result" class="quiz-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== EVALUACIÓN FINAL ====== -->
+<div class="final-section anim-fadein" id="final">
+  <h3>Evaluación Final — Brigadas de Emergencia</h3>
+  <p class="sub">Responde las 8 preguntas. Necesitas 6/8 correctas para aprobar y recibir tu certificado.</p>
+
+  <div class="final-q">
+    <p>1. ¿Cuántos trabajadores activa la obligación de conformar una Brigada de Emergencia según el D.E. 2393?</p>
+    <label class="final-opt"><input type="radio" name="fq1" value="a"> a) 10</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="b"> b) Más de 25</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="c"> c) 50</label>
+    <label class="final-opt"><input type="radio" name="fq1" value="d"> d) 100</label>
+  </div>
+  <div class="final-q">
+    <p>2. ¿Cuántos elementos forman el Tetraedro del Fuego?</p>
+    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) 3</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) 4</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) 5</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) 2</label>
+  </div>
+  <div class="final-q">
+    <p>3. Un incendio de gasolina corresponde a clase de fuego:</p>
+    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) Clase A</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="b"> b) Clase B</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) Clase C</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) Clase D</label>
+  </div>
+  <div class="final-q">
+    <p>4. El primer paso del método PASS es:</p>
+    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) Apretar la palanca</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="b"> b"> Jalar el pin de seguridad</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) Apuntar a la base</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) Barrer horizontalmente</label>
+  </div>
+  <div class="final-q">
+    <p>5. El sistema de extinción recomendado para sala de servidores es:</p>
+    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) Rociadores de agua</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="b"> b"> Agente limpio FM-200 o Novec</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) Manguera BIE</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) Extintor de polvo ABC</label>
+  </div>
+  <div class="final-q">
+    <p>6. El ancho mínimo de pasillo de evacuación según NFPA 101 es:</p>
+    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) 0.60 m</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) 1.12 m</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) 2 m</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) 0.90 m</label>
+  </div>
+  <div class="final-q">
+    <p>7. En el método MESERI, P = 9 indica:</p>
+    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) Riesgo muy alto</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="b"> b"> Riesgo aceptable</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) Riesgo medio</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) Riesgo alto</label>
+  </div>
+  <div class="final-q">
+    <p>8. ¿Qué norma NFPA regula la detección y alarmas de incendio?</p>
+    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) NFPA 10</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) NFPA 72</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) NFPA 13</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) NFPA 101</label>
+  </div>
+
+  <button class="final-btn" onclick="submitFinalQuiz()">Enviar Evaluación Final</button>
+  <div id="final-result" class="final-result"></div>
+</div>
 </main>
 </div>
-<div class="mob-nav"><div class="mob-nav-inner">
-  <div class="mob-tab active" data-mod="1" onclick="showModule(1)"><div class="mob-tab-icon">⚖️</div><div class="mob-tab-label">Legal</div></div>
-  <div class="mob-tab" data-mod="2" onclick="showModule(2)"><div class="mob-tab-icon">🔥</div><div class="mob-tab-label">Química</div></div>
-  <div class="mob-tab" data-mod="3" onclick="showModule(3)"><div class="mob-tab-icon">🧯</div><div class="mob-tab-label">Extintores</div></div>
-  <div class="mob-tab" data-mod="4" onclick="showModule(4)"><div class="mob-tab-icon">⚙️</div><div class="mob-tab-label">Sistemas</div></div>
-  <div class="mob-tab" data-mod="5" onclick="showModule(5)"><div class="mob-tab-icon">🚪</div><div class="mob-tab-label">Evacuación</div></div>
-  <div class="mob-tab" data-mod="6" onclick="showModule(6)"><div class="mob-tab-icon">📋</div><div class="mob-tab-label">Plan</div></div>
-</div></div>
+
 <script>
-const STORAGE_KEY='brigadas_done';
-let done=new Set(JSON.parse(localStorage.getItem('brigadas_progress')||'[]'));
-function saveDone(){localStorage.setItem('brigadas_progress',JSON.stringify([...done]))}
-function updateProgress(){
-  const pct=Math.round(done.size/6*100);
-  document.getElementById('progBar').style.width=pct+'%';
-  document.getElementById('progPct').textContent=pct+'%';
-  document.getElementById('topProg').style.width=pct+'%';
-  document.querySelectorAll('.mod-item').forEach(el=>el.classList.toggle('done',done.has(+el.dataset.mod)));
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible') }), {threshold:.12});
+document.querySelectorAll('.anim-fadein').forEach(el => io.observe(el));
+
+(function initProg(){
+  const done = JSON.parse(localStorage.getItem('brigadas_progress')||'{}');
+  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const pct = Math.round(Object.keys(done).length / keys.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+})();
+
+function saveProg(key){
+  const d = JSON.parse(localStorage.getItem('brigadas_progress')||'{}');
+  d[key]=1;
+  localStorage.setItem('brigadas_progress', JSON.stringify(d));
+  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const pct = Math.round(Object.keys(d).length / keys.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
 }
-function showModule(n){
-  document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('mod-'+n).classList.add('active');
-  document.querySelectorAll('.mod-item,.mob-tab').forEach(el=>el.classList.toggle('active',+el.dataset.mod===n));
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(()=>{document.querySelectorAll('#mod-'+n+' .anim-fadein').forEach((el,i)=>setTimeout(()=>el.classList.add('visible'),i*120))},50);
-}
-function nextModule(c){done.add(c);saveDone();updateProgress();showModule(c+1)}
-function checkMiniQuiz(id,answers){
-  const r=document.getElementById(id+'-result');
-  let ok=0;
-  Object.entries(answers).forEach(([n,a])=>{
-    const s=document.querySelector(`input[name="${n}"]:checked`);
-    if(!s)return;
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
-      const l=i.closest('.quiz-opt');
-      if(i.value===a)l.classList.add('correct');
-      else if(i===s&&i.value!==a)l.classList.add('wrong');
+
+function checkMiniQuiz(id, correct){
+  let ok=0, all=true;
+  Object.entries(correct).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.quiz-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
       i.disabled=true;
     });
-    if(s.value===a)ok++;
+    if(s.value===a) ok++;
   });
-  r.style.display='block';r.className='quiz-result '+(ok===Object.keys(answers).length?'pass':'fail');
-  r.textContent=ok===Object.keys(answers).length?'✅ ¡Correcto!':'⚠️ '+ok+'/'+Object.keys(answers).length+' correctas. Revisa el módulo.';
-}
-function submitFinalQuiz(){
-  const answers={fq1:'b',fq2:'b',fq3:'a',fq4:'d',fq5:'b',fq6:'c',fq7:'a',fq8:'b'};
-  let ok=0,all=true;
-  Object.entries(answers).forEach(([n,a])=>{
-    const s=document.querySelector(`input[name="${n}"]:checked`);
-    if(!s){all=false;return;}
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i=>{
-      const l=i.closest('.quiz-opt');
-      if(i.value===a)l.classList.add('correct');
-      else if(i===s&&i.value!==a)l.classList.add('wrong');
-      i.disabled=true;
-    });
-    if(s.value===a)ok++;
-  });
-  if(!all){alert('Por favor responda todas las preguntas.');return;}
-  const r=document.getElementById('finalResult');
+  if(!all){ alert('Responde todas las preguntas.'); return; }
+  const r = document.getElementById(id+'-result');
   r.style.display='block';
-  const passed=ok>=6;
-  r.className='quiz-result '+(passed?'pass':'fail');
-  r.innerHTML=passed?`<strong>🎉 Aprobado! ${ok}/8 correctas.</strong><br>Puede solicitar su certificado a Preventive Health.`:`<strong>❌ ${ok}/8 correctas. Se requieren mínimo 6.</strong><br>Revise los módulos y vuelva a intentarlo.`;
-  if(passed){localStorage.setItem(STORAGE_KEY,'true');done.add(6);saveDone();updateProgress();setTimeout(()=>{document.getElementById('completionCard').style.display='block'},400);document.querySelector('#finalQuizSection .quiz-submit').disabled=true;}
+  const total = Object.keys(correct).length;
+  r.className = 'quiz-result ' + (ok>=total?'pass':'fail');
+  r.textContent = ok===total ? `✅ ${ok}/${total} — ¡Correcto!` : `⚠️ ${ok}/${total} — Revisa el módulo`;
+  if(ok===total) saveProg(id);
 }
-const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1});
-document.querySelectorAll('.anim-fadein').forEach(el=>io.observe(el));
-updateProgress();showModule(1);
+
+function runSim(simId, answers){
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.sim-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas del simulador.'); return; }
+  const r = document.getElementById(simId+'-result');
+  r.style.display='block';
+  r.className = 'sim-result ' + (ok>=4?'pass':'fail');
+  r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
+}
+
+function submitFinalQuiz(){
+  const answers = {fq1:'b',fq2:'b',fq3:'b',fq4:'b',fq5:'b',fq6:'b',fq7:'b',fq8:'b'};
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.final-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
+  const r = document.getElementById('final-result');
+  r.style.display='block';
+  if(ok>=6){
+    r.className='final-result pass';
+    r.innerHTML=`🎉 ¡Aprobado! ${ok}/8 correctas<br><small>Certificado disponible en tu perfil</small>`;
+    localStorage.setItem('brigadas_done','1');
+    saveProg('final');
+  } else {
+    r.className='final-result fail';
+    r.innerHTML=`❌ ${ok}/8 — Necesitas 6 para aprobar. Revisa los módulos e intenta nuevamente.`;
+  }
+}
+
+const sections = document.querySelectorAll('[id^="m"],[id="final"]');
+const navLinks = document.querySelectorAll('nav ul li a');
+window.addEventListener('scroll', () => {
+  let cur='';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+}, {passive:true});
 </script>
 </body>
 </html>
