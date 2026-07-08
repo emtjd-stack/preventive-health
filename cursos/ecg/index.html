@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Electrocardiografía Básica – Preventive Health</title>
+<style>
+:root{
+  --blue:#1D51A3;--blue-dark:#163d7a;--gold:#F0C319;
+  --text:#1a2840;--muted:#2e4060;
+  --bg:#f4f6fb;--card:#fff;--radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.65}
+a{color:var(--blue)}
+
+/* ── SHELL ── */
+.shell{display:flex;min-height:100vh}
+.sidebar{width:260px;flex-shrink:0;background:var(--blue-dark);color:#fff;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar .logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.15);font-size:1.1rem;font-weight:700;letter-spacing:.5px}
+.sidebar .logo span{color:var(--gold)}
+.sidebar nav{flex:1;padding:12px 0}
+.sidebar nav a{display:block;padding:10px 20px;color:rgba(255,255,255,.8);text-decoration:none;font-size:.88rem;border-left:3px solid transparent;transition:.2s}
+.sidebar nav a:hover,.sidebar nav a.active{color:#fff;border-left-color:var(--gold);background:rgba(255,255,255,.08)}
+.sidebar .progress-wrap{padding:16px 20px;border-top:1px solid rgba(255,255,255,.15)}
+.sidebar .progress-label{font-size:.75rem;color:rgba(255,255,255,.6);margin-bottom:6px}
+.progress-bar{height:6px;background:rgba(255,255,255,.2);border-radius:3px}
+.progress-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .4s}
+.sidebar .back-link{padding:12px 20px;font-size:.8rem}
+.sidebar .back-link a{color:rgba(255,255,255,.6);text-decoration:none}
+.sidebar .back-link a:hover{color:#fff}
+
+main{flex:1;padding:36px 40px;max-width:960px}
+h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-bottom:6px}
+.course-meta{color:var(--muted);font-size:.9rem;margin-bottom:32px}
+
+/* ── MODULE CARD ── */
+.mod-card{background:var(--card);border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:36px;overflow:hidden}
+.mod-header{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;padding:20px 28px;display:flex;align-items:center;gap:14px}
+.mod-num{background:var(--gold);color:#1a2840;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0}
+.mod-header h2{font-size:1.1rem;font-weight:700}
+.mod-body{padding:28px}
+
+/* ── CONTENT ── */
+.content-block{margin-bottom:22px}
+.content-block h3{font-size:1rem;font-weight:700;color:var(--blue-dark);margin-bottom:10px}
+.content-block p{color:var(--muted);margin-bottom:10px}
+.content-block ul{color:var(--muted);padding-left:20px}
+.content-block ul li{margin-bottom:6px}
+
+/* info box */
+.info-box{background:#e8f0fb;border-left:4px solid var(--blue);border-radius:8px;padding:14px 18px;margin:16px 0;color:var(--text);font-size:.92rem}
+.warn-box{background:#fff8e1;border-left:4px solid var(--gold);border-radius:8px;padding:14px 18px;margin:16px 0;color:var(--text);font-size:.92rem}
+
+/* ── SVG DIAGRAM ── */
+.svg-wrap{background:#fff;border:1px solid #e0e6f0;border-radius:10px;padding:20px;margin:20px 0;text-align:center;overflow-x:auto}
+.svg-wrap svg{max-width:100%;height:auto}
+
+/* ── VIDEO ── */
+.video-wrap{margin:20px 0;border-radius:10px;overflow:hidden;position:relative;padding-top:56.25%}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.video-label{font-size:.78rem;color:var(--muted);margin-top:6px;text-align:center}
+
+/* ── MINI-QUIZ ── */
+.mini-quiz{background:#f0f4fb;border-radius:10px;padding:20px;margin:22px 0}
+.mini-quiz p{font-weight:600;color:var(--blue-dark);margin-bottom:12px;font-size:.95rem}
+.mq-opt{display:flex;align-items:center;gap:10px;padding:9px 14px;border:1.5px solid #d0d8ea;border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:.88rem;color:var(--text);background:#fff;transition:.2s}
+.mq-opt:hover{border-color:var(--blue);background:#e8f0fb}
+.mq-opt input{accent-color:var(--blue)}
+.mq-feedback{font-size:.88rem;margin-top:10px;padding:8px 14px;border-radius:6px;display:none}
+.mq-feedback.correct{background:#d1fae5;color:#065f46;display:block}
+.mq-feedback.wrong{background:#fee2e2;color:#991b1b;display:block}
+.btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:.88rem;font-weight:600;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--blue-dark)}
+.btn-gold{background:var(--gold);color:#1a2840}
+.btn-gold:hover{background:#d4a800}
+
+/* ── SIMULATOR ── */
+.sim-section{background:linear-gradient(135deg,#1a2840,#1D51A3);border-radius:14px;padding:28px;margin:28px 0;color:#fff}
+.sim-badge{background:var(--gold);color:#1a2840;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:12px}
+.sim-section h3{font-size:1rem;font-weight:700;margin-bottom:18px;color:#fff}
+.sim-q{margin-bottom:18px}
+.sim-q p{font-size:.9rem;margin-bottom:10px;color:rgba(255,255,255,.95)}
+.sim-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;margin-bottom:6px;color:rgba(255,255,255,.88);font-size:.88rem;transition:.2s}
+.sim-opt:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.08)}
+.sim-opt input{accent-color:var(--gold)}
+.sim-opt.correct{border-color:#4ade80!important;background:rgba(74,222,128,.2)!important;color:#4ade80}
+.sim-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.2)!important;color:#f87171}
+.sim-result{display:none;margin-top:14px;padding:12px 18px;border-radius:8px;font-weight:700;font-size:.95rem}
+.sim-result.pass{background:rgba(74,222,128,.2);color:#4ade80;border:1.5px solid #4ade80}
+.sim-result.fail{background:rgba(248,113,113,.15);color:#f87171;border:1.5px solid #f87171}
+
+/* ── FINAL QUIZ ── */
+.final-quiz{background:linear-gradient(135deg,#0f1f3a,#1D51A3);border-radius:14px;padding:32px;margin-top:40px;color:#fff}
+.final-quiz h2{font-size:1.25rem;font-weight:800;margin-bottom:6px;color:var(--gold)}
+.final-quiz .subtitle{font-size:.88rem;color:rgba(255,255,255,.7);margin-bottom:24px}
+.fq-item{margin-bottom:22px}
+.fq-item p{font-size:.92rem;font-weight:600;margin-bottom:10px;color:#fff}
+.fq-opt{display:flex;align-items:center;gap:10px;padding:9px 14px;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;margin-bottom:5px;cursor:pointer;font-size:.87rem;color:rgba(255,255,255,.85);background:rgba(255,255,255,.05);transition:.2s}
+.fq-opt:hover{border-color:var(--gold);background:rgba(240,195,25,.1)}
+.fq-opt input{accent-color:var(--gold)}
+#fq-result{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;font-weight:700;font-size:1rem}
+#fq-result.pass{background:rgba(74,222,128,.2);color:#4ade80;border:1.5px solid #4ade80}
+#fq-result.fail{background:rgba(248,113,113,.15);color:#f87171;border:1.5px solid #f87171}
+
+/* ── COMPLETION ── */
+.completion-banner{display:none;background:linear-gradient(135deg,#065f46,#059669);border-radius:14px;padding:28px;margin-top:24px;text-align:center;color:#fff}
+.completion-banner h3{font-size:1.3rem;font-weight:800;margin-bottom:8px}
+.completion-banner p{opacity:.9;font-size:.92rem}
+
+/* ── ANIMATIONS ── */
+.anim-fadein{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
+.anim-fadein.visible{opacity:1;transform:none}
+
+@media(max-width:768px){
+  .shell{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative}
+  main{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ════ SIDEBAR ════ -->
+<aside class="sidebar">
+  <div class="logo">Preventive <span>Health</span></div>
+  <nav>
+    <a href="#m1" class="active">M1 · Electrofisiología Cardíaca</a>
+    <a href="#m2">M2 · Papel Milimetrado</a>
+    <a href="#m3">M3 · Derivaciones ECG</a>
+    <a href="#m4">M4 · Ritmo Sinusal Normal</a>
+    <a href="#m5">M5 · Ritmos Críticos</a>
+    <a href="#m6">M6 · Farmacología ACLS</a>
+    <a href="#final-quiz">Evaluación Final</a>
+  </nav>
+  <div class="progress-wrap">
+    <div class="progress-label">Progreso del curso</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div style="font-size:.75rem;color:rgba(255,255,255,.5);margin-top:6px" id="progressTxt">0 / 6 módulos</div>
+  </div>
+  <div class="back-link"><a href="../index.html">← Todos los cursos</a></div>
+</aside>
+
+<!-- ════ MAIN ════ -->
+<main>
+<h1 class="course-title">Electrocardiografía Básica</h1>
+<p class="course-meta">6 módulos · Evaluación final 8 preguntas · Umbral de aprobación 6/8</p>
+
+<!-- ══════════════════════════════════════════
+     MÓDULO 1 · ELECTROFISIOLOGÍA CARDÍACA
+══════════════════════════════════════════ -->
+<div class="mod-card anim-fadein" id="m1">
+  <div class="mod-header">
+    <div class="mod-num">1</div>
+    <h2>Electrofisiología Cardíaca y Ondas del Electrocardiograma (ECG)</h2>
+  </div>
+  <div class="mod-body">
+    <div class="content-block">
+      <h3>¿Qué es el Electrocardiograma (ECG)?</h3>
+      <p>El Electrocardiograma (ECG) es el registro gráfico de la actividad eléctrica del corazón a lo largo del tiempo. Cada latido cardíaco genera corrientes eléctricas que se propagan por el tejido miocárdico; los electrodos colocados en la piel captan esas diferencias de potencial y las traducen en curvas características.</p>
+      <div class="info-box">El Electrocardiograma (ECG) es la herramienta diagnóstica más rápida, barata y universalmente disponible en medicina de urgencias. Su correcta interpretación puede determinar si un paciente recibe o no desfibrilación.</div>
+    </div>
+
+    <div class="content-block">
+      <h3>Ondas del ECG: P, Q, R, S, T</h3>
+      <p>Cada componente de la traza representa un evento eléctrico específico:</p>
+      <ul>
+        <li><strong>Onda P</strong> — Despolarización auricular. Pequeña, positiva en derivaciones I y II. Duración normal: 80–120 ms.</li>
+        <li><strong>Complejo QRS</strong> — Despolarización ventricular: onda Q (deflexión negativa inicial), R (primera positiva) y S (negativa después de R). Duración normal: 60–100 ms.</li>
+        <li><strong>Onda T</strong> — Repolarización ventricular. Normalmente positiva y concordante con QRS.</li>
+        <li><strong>Intervalo PR</strong> — Desde inicio de P hasta inicio de QRS. Refleja conducción auriculoventricular (AV). Normal: 120–200 ms.</li>
+        <li><strong>Intervalo QT</strong> — Desde inicio de QRS hasta fin de T. Refleja la sístole eléctrica ventricular. QTc normal: &lt;440 ms (hombres), &lt;460 ms (mujeres).</li>
+        <li><strong>Segmento ST</strong> — Línea isoeléctrica entre S y T. Elevado en infarto agudo; deprimido en isquemia subendocárdica.</li>
+      </ul>
+    </div>
+
+    <!-- SVG Ondas ECG -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" aria-label="Ondas del ECG: P, QRS, T con etiquetas">
+        <defs>
+          <linearGradient id="ecgBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8f0fb"/>
+            <stop offset="100%" stop-color="#f4f6fb"/>
+          </linearGradient>
+          <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1D51A3"/>
+            <stop offset="100%" stop-color="#F0C319"/>
+          </linearGradient>
+        </defs>
+        <rect width="700" height="260" rx="10" fill="url(#ecgBg)"/>
+        <!-- grid lines -->
+        <g stroke="#c8d4ea" stroke-width=".6">
+          <line x1="0" y1="65" x2="700" y2="65"/>
+          <line x1="0" y1="130" x2="700" y2="130"/>
+          <line x1="0" y1="195" x2="700" y2="195"/>
+          <line x1="100" y1="0" x2="100" y2="260"/>
+          <line x1="200" y1="0" x2="200" y2="260"/>
+          <line x1="300" y1="0" x2="300" y2="260"/>
+          <line x1="400" y1="0" x2="400" y2="260"/>
+          <line x1="500" y1="0" x2="500" y2="260"/>
+          <line x1="600" y1="0" x2="600" y2="260"/>
+        </g>
+        <!-- baseline -->
+        <line x1="30" y1="160" x2="670" y2="160" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- ECG wave path -->
+        <path d="M30,160 L80,160 Q90,160 95,150 Q100,140 105,150 Q110,160 120,160
+                 L170,160 L180,160
+                 L185,157 L188,120 L192,200 L196,60 L200,175 L204,160
+                 L260,160
+                 Q270,160 275,145 Q280,130 285,145 Q290,160 300,160
+                 L450,160 L670,160"
+              fill="none" stroke="url(#waveGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- P wave label -->
+        <text x="97" y="138" font-size="13" font-weight="700" fill="#1D51A3" text-anchor="middle">P</text>
+        <line x1="97" y1="142" x2="97" y2="152" stroke="#1D51A3" stroke-width="1.5"/>
+        <!-- Q label -->
+        <text x="185" y="120" font-size="11" font-weight="700" fill="#e05010" text-anchor="middle">Q</text>
+        <!-- R label -->
+        <text x="196" y="50" font-size="13" font-weight="700" fill="#1D51A3" text-anchor="middle">R</text>
+        <!-- S label -->
+        <text x="204" y="218" font-size="11" font-weight="700" fill="#e05010" text-anchor="middle">S</text>
+        <!-- T wave label -->
+        <text x="281" y="124" font-size="13" font-weight="700" fill="#059669" text-anchor="middle">T</text>
+        <line x1="281" y1="128" x2="281" y2="145" stroke="#059669" stroke-width="1.5"/>
+        <!-- interval brackets -->
+        <line x1="80" y1="220" x2="170" y2="220" stroke="#1D51A3" stroke-width="1.5"/>
+        <text x="125" y="236" font-size="11" fill="#1D51A3" text-anchor="middle">Intervalo PR</text>
+        <line x1="180" y1="228" x2="310" y2="228" stroke="#059669" stroke-width="1.5"/>
+        <text x="245" y="244" font-size="11" fill="#059669" text-anchor="middle">Intervalo QT</text>
+        <!-- ST segment label -->
+        <text x="235" y="153" font-size="10" fill="#888">Segmento ST</text>
+        <!-- title -->
+        <text x="350" y="20" font-size="13" font-weight="700" fill="#163d7a" text-anchor="middle">Ondas del ECG – Ciclo Cardíaco Completo</text>
+      </svg>
+    </div>
+
+    <div class="content-block">
+      <h3>El Nodo Sinusal y el Sistema de Conducción</h3>
+      <p>El impulso eléctrico normal nace en el Nodo Sinoauricular (NSA) ubicado en la aurícula derecha, viaja por las aurículas (genera la onda P), llega al Nodo Auriculoventricular (NAV) que lo retrasa (genera el intervalo PR), luego desciende por el Haz de His y las ramas de Purkinje para despolarizar los ventrículos (genera el complejo QRS).</p>
+    </div>
+
+    <!-- VIDEO M1 -->
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/mqlRBuZkuAo" title="Electrofisiología cardíaca y ondas ECG" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-label">Video: Electrofisiología cardíaca y ondas del ECG</p>
+
+    <!-- MINI-QUIZ M1 -->
+    <div class="mini-quiz">
+      <p>¿Qué evento cardíaco representa la onda P en el Electrocardiograma (ECG)?</p>
+      <label class="mq-opt"><input type="radio" name="mq1" value="a"> Despolarización ventricular</label>
+      <label class="mq-opt"><input type="radio" name="mq1" value="b"> Repolarización ventricular</label>
+      <label class="mq-opt"><input type="radio" name="mq1" value="c"> Despolarización auricular</label>
+      <button class="btn" onclick="checkMiniQuiz('mq1','c')">Verificar</button>
+      <div class="mq-feedback" id="mq1-fb"></div>
+    </div>
+    <div class="mini-quiz">
+      <p>¿Cuál es la duración normal del complejo QRS?</p>
+      <label class="mq-opt"><input type="radio" name="mq1b" value="a"> 200–300 ms</label>
+      <label class="mq-opt"><input type="radio" name="mq1b" value="b"> 60–100 ms</label>
+      <label class="mq-opt"><input type="radio" name="mq1b" value="c"> 400–440 ms</label>
+      <button class="btn" onclick="checkMiniQuiz('mq1b','b')">Verificar</button>
+      <div class="mq-feedback" id="mq1b-fb"></div>
+    </div>
+
+    <!-- SIMULATOR M1 -->
+    <div class="sim-section">
+      <span class="sim-badge">SIMULADOR</span>
+      <h3>Escenario clínico: Identificación de ondas</h3>
+      <div class="sim-q">
+        <p>1. Un operario ingresa a urgencias con palpitaciones. El ECG muestra que el intervalo PR mide 280 ms. ¿Qué indica este hallazgo?</p>
+        <label class="sim-opt"><input type="radio" name="s1q1" value="a"> Conducción auriculoventricular (AV) acelerada</label>
+        <label class="sim-opt"><input type="radio" name="s1q1" value="b"> Bloqueo auriculoventricular (AV) de primer grado</label>
+        <label class="sim-opt"><input type="radio" name="s1q1" value="c"> Fibrilación Ventricular (FV)</label>
+      </div>
+      <div class="sim-q">
+        <p>2. ¿Cuál onda del Electrocardiograma (ECG) representa la repolarización ventricular?</p>
+        <label class="sim-opt"><input type="radio" name="s1q2" value="a"> Onda P</label>
+        <label class="sim-opt"><input type="radio" name="s1q2" value="b"> Complejo QRS</label>
+        <label class="sim-opt"><input type="radio" name="s1q2" value="c"> Onda T</label>
+      </div>
+      <div class="sim-q">
+        <p>3. El Nodo Sinoauricular (NSA) no genera impulso eléctrico. ¿Qué estructura puede asumir la función de marcapasos subsidiario?</p>
+        <label class="sim-opt"><input type="radio" name="s1q3" value="a"> Válvula mitral</label>
+        <label class="sim-opt"><input type="radio" name="s1q3" value="b"> Nodo Auriculoventricular (NAV)</label>
+        <label class="sim-opt"><input type="radio" name="s1q3" value="c"> Arteria coronaria derecha</label>
+      </div>
+      <div class="sim-q">
+        <p>4. Un segmento ST elevado ≥2 mm en derivaciones contiguas sugiere:</p>
+        <label class="sim-opt"><input type="radio" name="s1q4" value="a"> Bloqueo de rama derecha</label>
+        <label class="sim-opt"><input type="radio" name="s1q4" value="b"> Infarto Agudo de Miocardio (IAM) con elevación del ST</label>
+        <label class="sim-opt"><input type="radio" name="s1q4" value="c"> Ritmo sinusal normal</label>
+      </div>
+      <div class="sim-q">
+        <p>5. El intervalo QT corregido (QTc) prolongado (&gt;440 ms) se asocia con riesgo de:</p>
+        <label class="sim-opt"><input type="radio" name="s1q5" value="a"> Bradicardia sinusal</label>
+        <label class="sim-opt"><input type="radio" name="s1q5" value="b"> Taquicardia Ventricular (TV) polimórfica (Torsades de Pointes)</label>
+        <label class="sim-opt"><input type="radio" name="s1q5" value="c"> Fibrilación auricular</label>
+      </div>
+      <button class="btn btn-gold" onclick="runSim('s1',{s1q1:'b',s1q2:'c',s1q3:'b',s1q4:'b',s1q5:'b'})">Evaluar simulador</button>
+      <div class="sim-result" id="s1-result"></div>
+    </div>
+
+    <button class="btn" onclick="markDone(1)">Marcar módulo completado ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MÓDULO 2 · PAPEL MILIMETRADO
+══════════════════════════════════════════ -->
+<div class="mod-card anim-fadein" id="m2">
+  <div class="mod-header">
+    <div class="mod-num">2</div>
+    <h2>Papel Milimetrado: Cómo Graficar e Interpretar un ECG</h2>
+  </div>
+  <div class="mod-body">
+    <div class="content-block">
+      <h3>La cuadrícula del ECG</h3>
+      <p>El Electrocardiograma (ECG) estándar se registra en papel milimetrado a velocidad de 25 mm/s. La cuadrícula tiene dos niveles:</p>
+      <ul>
+        <li><strong>Cuadro pequeño (1 mm)</strong>: 0,04 s en el eje horizontal / 0,1 mV en el eje vertical.</li>
+        <li><strong>Cuadro grande (5 mm × 5 cuadros pequeños)</strong>: 0,20 s en el eje horizontal / 0,5 mV en el eje vertical.</li>
+      </ul>
+      <div class="info-box"><strong>Regla de los 300:</strong> para calcular la Frecuencia Cardíaca (FC) divida 300 entre el número de cuadros grandes entre dos ondas R consecutivas. Ejemplo: 4 cuadros grandes → FC = 300 ÷ 4 = 75 lpm.</div>
+    </div>
+
+    <div class="content-block">
+      <h3>Calibración estándar</h3>
+      <ul>
+        <li>Señal de calibración: 1 mV = 10 mm de altura (2 cuadros grandes verticales).</li>
+        <li>Velocidad estándar: 25 mm/s. A 50 mm/s los intervalos se duplican visualmente.</li>
+        <li>Papel térmico: la curva se imprime sin tinta; la temperatura del cabezal quema la capa sensible.</li>
+      </ul>
+    </div>
+
+    <!-- SVG papel milimetrado -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" aria-label="Papel milimetrado ECG con cuadros pequeños y grandes">
+        <defs>
+          <linearGradient id="paperGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fef9f0"/>
+            <stop offset="100%" stop-color="#fdf4e3"/>
+          </linearGradient>
+        </defs>
+        <rect width="620" height="300" rx="8" fill="url(#paperGrad)" stroke="#e0c880" stroke-width="1.5"/>
+        <!-- small grid 1mm -->
+        <g stroke="#f0d8a0" stroke-width=".5">
+          <line x1="20" y1="20" x2="600" y2="20"/>
+          <line x1="20" y1="40" x2="600" y2="40"/>
+          <line x1="20" y1="60" x2="600" y2="60"/>
+          <line x1="20" y1="80" x2="600" y2="80"/>
+          <line x1="20" y1="120" x2="600" y2="120"/>
+          <line x1="20" y1="140" x2="600" y2="140"/>
+          <line x1="20" y1="160" x2="600" y2="160"/>
+          <line x1="20" y1="180" x2="600" y2="180"/>
+          <line x1="20" y1="220" x2="600" y2="220"/>
+          <line x1="20" y1="240" x2="600" y2="240"/>
+          <line x1="20" y1="260" x2="600" y2="260"/>
+          <line x1="20" y1="280" x2="600" y2="280"/>
+          <line x1="60" y1="20" x2="60" y2="280"/>
+          <line x1="80" y1="20" x2="80" y2="280"/>
+          <line x1="120" y1="20" x2="120" y2="280"/>
+          <line x1="140" y1="20" x2="140" y2="280"/>
+          <line x1="160" y1="20" x2="160" y2="280"/>
+          <line x1="180" y1="20" x2="180" y2="280"/>
+          <line x1="220" y1="20" x2="220" y2="280"/>
+          <line x1="240" y1="20" x2="240" y2="280"/>
+          <line x1="260" y1="20" x2="260" y2="280"/>
+          <line x1="280" y1="20" x2="280" y2="280"/>
+          <line x1="320" y1="20" x2="320" y2="280"/>
+          <line x1="340" y1="20" x2="340" y2="280"/>
+          <line x1="360" y1="20" x2="360" y2="280"/>
+          <line x1="380" y1="20" x2="380" y2="280"/>
+          <line x1="420" y1="20" x2="420" y2="280"/>
+          <line x1="440" y1="20" x2="440" y2="280"/>
+          <line x1="460" y1="20" x2="460" y2="280"/>
+          <line x1="480" y1="20" x2="480" y2="280"/>
+          <line x1="520" y1="20" x2="520" y2="280"/>
+          <line x1="540" y1="20" x2="540" y2="280"/>
+          <line x1="560" y1="20" x2="560" y2="280"/>
+          <line x1="580" y1="20" x2="580" y2="280"/>
+        </g>
+        <!-- big grid 5mm -->
+        <g stroke="#d4a820" stroke-width="1">
+          <line x1="20" y1="20" x2="600" y2="20"/>
+          <line x1="20" y1="100" x2="600" y2="100"/>
+          <line x1="20" y1="200" x2="600" y2="200"/>
+          <line x1="20" y1="280" x2="600" y2="280"/>
+          <line x1="20" y1="20" x2="20" y2="280"/>
+          <line x1="100" y1="20" x2="100" y2="280"/>
+          <line x1="200" y1="20" x2="200" y2="280"/>
+          <line x1="300" y1="20" x2="300" y2="280"/>
+          <line x1="400" y1="20" x2="400" y2="280"/>
+          <line x1="500" y1="20" x2="500" y2="280"/>
+          <line x1="600" y1="20" x2="600" y2="280"/>
+        </g>
+        <!-- ECG trace -->
+        <path d="M20,160 L90,160 Q100,160 105,148 Q110,136 115,148 Q120,160 130,160
+                 L145,160 L148,155 L151,115 L155,200 L159,70 L163,175 L167,160
+                 L220,160 Q228,160 233,144 Q238,128 243,144 Q248,160 260,160
+                 L370,160 L373,155 L376,115 L380,200 L384,70 L388,175 L392,160
+                 L450,160 Q458,160 463,144 Q468,128 473,144 Q478,160 490,160
+                 L600,160"
+              fill="none" stroke="#1D51A3" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- annotations -->
+        <text x="50" y="295" font-size="10" fill="#8B6914" text-anchor="middle">0,04 s</text>
+        <line x1="20" y1="290" x2="100" y2="290" stroke="#8B6914" stroke-width="1"/>
+        <line x1="20" y1="287" x2="20" y2="293" stroke="#8B6914" stroke-width="1"/>
+        <line x1="100" y1="287" x2="100" y2="293" stroke="#8B6914" stroke-width="1"/>
+        <text x="150" y="295" font-size="10" fill="#c47a00" text-anchor="middle" font-weight="700">0,20 s</text>
+        <line x1="100" y1="290" x2="200" y2="290" stroke="#c47a00" stroke-width="1.5"/>
+        <text x="12" y="160" font-size="9" fill="#8B6914" text-anchor="middle">0,1 mV</text>
+        <text x="12" y="100" font-size="9" fill="#c47a00" text-anchor="middle" font-weight="700">0,5 mV</text>
+        <!-- calibration pulse -->
+        <path d="M590,130 L590,100 L600,100 L600,130" fill="none" stroke="#F0C319" stroke-width="2"/>
+        <text x="590" y="96" font-size="9" fill="#c47a00" text-anchor="middle">1 mV</text>
+        <!-- title -->
+        <text x="310" y="14" font-size="12" font-weight="700" fill="#163d7a" text-anchor="middle">Papel Milimetrado ECG – Velocidad 25 mm/s</text>
+      </svg>
+    </div>
+
+    <div class="content-block">
+      <h3>Método para calcular la Frecuencia Cardíaca (FC)</h3>
+      <ul>
+        <li><strong>Método 300:</strong> 300 ÷ cuadros grandes entre R-R.</li>
+        <li><strong>Método 1500:</strong> 1500 ÷ cuadros pequeños entre R-R (más preciso).</li>
+        <li><strong>Regla de 6 segundos:</strong> contar complejos QRS en 30 cuadros grandes × 10.</li>
+      </ul>
+    </div>
+
+    <!-- VIDEO M2 -->
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/GYgCOsXph2U" title="Cómo leer el papel milimetrado del ECG" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-label">Video: Lectura del papel milimetrado y cálculo de frecuencia cardíaca</p>
+
+    <!-- MINI-QUIZ M2 -->
+    <div class="mini-quiz">
+      <p>¿Cuántos milisegundos equivale un cuadro grande (5 mm) en el papel milimetrado del Electrocardiograma (ECG) a 25 mm/s?</p>
+      <label class="mq-opt"><input type="radio" name="mq2" value="a"> 40 ms (0,04 s)</label>
+      <label class="mq-opt"><input type="radio" name="mq2" value="b"> 200 ms (0,20 s)</label>
+      <label class="mq-opt"><input type="radio" name="mq2" value="c"> 500 ms (0,50 s)</label>
+      <button class="btn" onclick="checkMiniQuiz('mq2','b')">Verificar</button>
+      <div class="mq-feedback" id="mq2-fb"></div>
+    </div>
+    <div class="mini-quiz">
+      <p>Si hay 5 cuadros grandes entre dos ondas R consecutivas, ¿cuál es la Frecuencia Cardíaca (FC)?</p>
+      <label class="mq-opt"><input type="radio" name="mq2b" value="a"> 100 lpm</label>
+      <label class="mq-opt"><input type="radio" name="mq2b" value="b"> 75 lpm</label>
+      <label class="mq-opt"><input type="radio" name="mq2b" value="c"> 60 lpm</label>
+      <button class="btn" onclick="checkMiniQuiz('mq2b','c')">Verificar</button>
+      <div class="mq-feedback" id="mq2b-fb"></div>
+    </div>
+
+    <!-- SIMULATOR M2 -->
+    <div class="sim-section">
+      <span class="sim-badge">SIMULADOR</span>
+      <h3>Escenario: Lectura del papel milimetrado</h3>
+      <div class="sim-q">
+        <p>1. Un brigadista mide 3 cuadros grandes entre ondas R. Usando la regla de los 300, ¿cuál es la Frecuencia Cardíaca (FC)?</p>
+        <label class="sim-opt"><input type="radio" name="s2q1" value="a"> 75 lpm</label>
+        <label class="sim-opt"><input type="radio" name="s2q1" value="b"> 100 lpm</label>
+        <label class="sim-opt"><input type="radio" name="s2q1" value="c"> 150 lpm</label>
+      </div>
+      <div class="sim-q">
+        <p>2. La señal de calibración estándar de 1 mV debe representarse como:</p>
+        <label class="sim-opt"><input type="radio" name="s2q2" value="a"> 5 mm de altura</label>
+        <label class="sim-opt"><input type="radio" name="s2q2" value="b"> 10 mm de altura</label>
+        <label class="sim-opt"><input type="radio" name="s2q2" value="c"> 20 mm de altura</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Cuántos cuadros pequeños equivale 1 cuadro grande?</p>
+        <label class="sim-opt"><input type="radio" name="s2q3" value="a"> 3</label>
+        <label class="sim-opt"><input type="radio" name="s2q3" value="b"> 5</label>
+        <label class="sim-opt"><input type="radio" name="s2q3" value="c"> 10</label>
+      </div>
+      <div class="sim-q">
+        <p>4. A velocidad de 50 mm/s (doble de lo estándar), los intervalos del ECG se ven:</p>
+        <label class="sim-opt"><input type="radio" name="s2q4" value="a"> Más cortos</label>
+        <label class="sim-opt"><input type="radio" name="s2q4" value="b"> Más largos (el doble)</label>
+        <label class="sim-opt"><input type="radio" name="s2q4" value="c"> Iguales</label>
+      </div>
+      <div class="sim-q">
+        <p>5. Para calcular la Frecuencia Cardíaca (FC) con el "método 1500", ¿qué se divide entre 1500?</p>
+        <label class="sim-opt"><input type="radio" name="s2q5" value="a"> Número de cuadros grandes entre R-R</label>
+        <label class="sim-opt"><input type="radio" name="s2q5" value="b"> Número de cuadros pequeños entre R-R</label>
+        <label class="sim-opt"><input type="radio" name="s2q5" value="c"> Duración del complejo QRS en ms</label>
+      </div>
+      <button class="btn btn-gold" onclick="runSim('s2',{s2q1:'b',s2q2:'b',s2q3:'b',s2q4:'b',s2q5:'b'})">Evaluar simulador</button>
+      <div class="sim-result" id="s2-result"></div>
+    </div>
+
+    <button class="btn" onclick="markDone(2)">Marcar módulo completado ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MÓDULO 3 · DERIVACIONES
+══════════════════════════════════════════ -->
+<div class="mod-card anim-fadein" id="m3">
+  <div class="mod-header">
+    <div class="mod-num">3</div>
+    <h2>Colocación de Derivaciones: Las 12 Derivaciones Estándar</h2>
+  </div>
+  <div class="mod-body">
+    <div class="content-block">
+      <h3>¿Qué es una derivación?</h3>
+      <p>Una derivación es una "cámara fotográfica eléctrica" que registra la actividad cardíaca desde un ángulo determinado. El Electrocardiograma (ECG) estándar de 12 derivaciones ofrece 12 perspectivas distintas del corazón utilizando solo 10 electrodos.</p>
+    </div>
+    <div class="content-block">
+      <h3>Derivaciones de extremidades (bipolares y unipolares)</h3>
+      <ul>
+        <li><strong>I, II, III</strong> — Derivaciones bipolares de Einthoven. El triángulo de Einthoven coloca electrodos en brazo derecho (BD), brazo izquierdo (BI) y pierna izquierda (PI).</li>
+        <li><strong>aVR, aVL, aVF</strong> — Derivaciones aumentadas unipolares de Goldberger. Miran desde el eje de cada extremidad.</li>
+      </ul>
+      <div class="warn-box">La derivación aVR está orientada hacia la cavidad cardíaca. Sus ondas están invertidas respecto al resto; un QRS positivo en aVR indica inversión de los electrodos de extremidades.</div>
+    </div>
+    <div class="content-block">
+      <h3>Derivaciones precordiales (V1 – V6)</h3>
+      <ul>
+        <li><strong>V1</strong> — 4.° espacio intercostal, borde esternal derecho.</li>
+        <li><strong>V2</strong> — 4.° espacio intercostal, borde esternal izquierdo.</li>
+        <li><strong>V3</strong> — Entre V2 y V4.</li>
+        <li><strong>V4</strong> — 5.° espacio intercostal, línea medioclavicular.</li>
+        <li><strong>V5</strong> — 5.° espacio intercostal, línea axilar anterior.</li>
+        <li><strong>V6</strong> — 5.° espacio intercostal, línea axilar media.</li>
+      </ul>
+    </div>
+
+    <!-- SVG colocación derivaciones -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" aria-label="Colocación de las 12 derivaciones del ECG">
+        <defs>
+          <linearGradient id="bodyBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8f0fb"/>
+            <stop offset="100%" stop-color="#f4f8ff"/>
+          </linearGradient>
+          <radialGradient id="heartGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f87171"/>
+            <stop offset="100%" stop-color="#b91c1c"/>
+          </radialGradient>
+        </defs>
+        <rect width="680" height="340" rx="10" fill="url(#bodyBg)"/>
+        <text x="340" y="20" font-size="13" font-weight="700" fill="#163d7a" text-anchor="middle">12 Derivaciones del ECG – Posición de electrodos</text>
+        <!-- torso outline -->
+        <path d="M260,40 Q290,30 340,30 Q390,30 420,40 L440,120 Q450,180 420,260 Q400,300 340,310 Q280,300 260,260 Q230,180 240,120 Z" fill="#fde8d8" stroke="#c0856a" stroke-width="2"/>
+        <!-- neck -->
+        <path d="M310,40 Q325,25 340,22 Q355,25 370,40" fill="#fde8d8" stroke="#c0856a" stroke-width="1.5"/>
+        <!-- heart -->
+        <path d="M325,140 Q320,125 335,120 Q348,118 348,132 Q348,118 362,120 Q377,125 372,140 Q366,158 348,168 Q330,158 325,140 Z" fill="url(#heartGrad)" opacity=".8"/>
+        <!-- V1-V6 electrodes -->
+        <circle cx="348" cy="115" r="7" fill="#1D51A3"/><text x="348" y="103" font-size="10" fill="#1D51A3" text-anchor="middle" font-weight="700">V1</text>
+        <circle cx="334" cy="115" r="7" fill="#1D51A3"/><text x="325" y="103" font-size="10" fill="#1D51A3" text-anchor="middle" font-weight="700">V2</text>
+        <circle cx="320" cy="130" r="7" fill="#2563eb"/><text x="308" y="127" font-size="10" fill="#2563eb" text-anchor="middle" font-weight="700">V3</text>
+        <circle cx="310" cy="150" r="7" fill="#059669"/><text x="296" y="150" font-size="10" fill="#059669" text-anchor="middle" font-weight="700">V4</text>
+        <circle cx="302" cy="165" r="7" fill="#d97706"/><text x="288" y="168" font-size="10" fill="#d97706" text-anchor="middle" font-weight="700">V5</text>
+        <circle cx="290" cy="178" r="7" fill="#7c3aed"/><text x="274" y="181" font-size="10" fill="#7c3aed" text-anchor="middle" font-weight="700">V6</text>
+        <!-- limb electrode labels -->
+        <circle cx="180" cy="90" r="9" fill="#F0C319" stroke="#163d7a" stroke-width="1.5"/>
+        <text x="155" y="88" font-size="11" fill="#163d7a" text-anchor="middle" font-weight="700">BD</text>
+        <line x1="189" y1="90" x2="240" y2="110" stroke="#F0C319" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="500" cy="90" r="9" fill="#F0C319" stroke="#163d7a" stroke-width="1.5"/>
+        <text x="525" y="88" font-size="11" fill="#163d7a" text-anchor="middle" font-weight="700">BI</text>
+        <line x1="491" y1="90" x2="440" y2="110" stroke="#F0C319" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="180" cy="290" r="9" fill="#4ade80" stroke="#163d7a" stroke-width="1.5"/>
+        <text x="150" y="290" font-size="11" fill="#163d7a" text-anchor="middle" font-weight="700">PI</text>
+        <line x1="189" y1="290" x2="260" y2="270" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="500" cy="290" r="9" fill="#94a3b8" stroke="#163d7a" stroke-width="1.5"/>
+        <text x="528" y="290" font-size="11" fill="#163d7a" text-anchor="middle" font-weight="700">PD (tierra)</text>
+        <line x1="491" y1="290" x2="420" y2="270" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- legend -->
+        <rect x="30" y="200" width="200" height="120" rx="8" fill="white" stroke="#e0e6f0" stroke-width="1"/>
+        <text x="130" y="218" font-size="11" font-weight="700" fill="#163d7a" text-anchor="middle">Derivaciones periféricas</text>
+        <text x="55" y="236" font-size="10" fill="#555">I = BI – BD</text>
+        <text x="55" y="252" font-size="10" fill="#555">II = PI – BD</text>
+        <text x="55" y="268" font-size="10" fill="#555">III = PI – BI</text>
+        <text x="55" y="284" font-size="10" fill="#555">aVR → brazo derecho</text>
+        <text x="55" y="300" font-size="10" fill="#555">aVL → brazo izquierdo</text>
+        <text x="55" y="315" font-size="10" fill="#555">aVF → pierna izquierda</text>
+      </svg>
+    </div>
+
+    <!-- VIDEO M3 -->
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/TGPF8iYyqxA" title="Colocación de electrodos ECG 12 derivaciones" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-label">Video: Técnica correcta de colocación de electrodos – 12 derivaciones</p>
+
+    <!-- MINI-QUIZ M3 -->
+    <div class="mini-quiz">
+      <p>¿En qué espacio intercostal y línea se coloca el electrodo V4 en el Electrocardiograma (ECG) de 12 derivaciones?</p>
+      <label class="mq-opt"><input type="radio" name="mq3" value="a"> 4.° espacio intercostal, borde esternal derecho</label>
+      <label class="mq-opt"><input type="radio" name="mq3" value="b"> 5.° espacio intercostal, línea medioclavicular</label>
+      <label class="mq-opt"><input type="radio" name="mq3" value="c"> 5.° espacio intercostal, línea axilar media</label>
+      <button class="btn" onclick="checkMiniQuiz('mq3','b')">Verificar</button>
+      <div class="mq-feedback" id="mq3-fb"></div>
+    </div>
+    <div class="mini-quiz">
+      <p>¿Cuántos electrodos físicos se utilizan para obtener un Electrocardiograma (ECG) de 12 derivaciones?</p>
+      <label class="mq-opt"><input type="radio" name="mq3b" value="a"> 12 electrodos</label>
+      <label class="mq-opt"><input type="radio" name="mq3b" value="b"> 10 electrodos</label>
+      <label class="mq-opt"><input type="radio" name="mq3b" value="c"> 6 electrodos</label>
+      <button class="btn" onclick="checkMiniQuiz('mq3b','b')">Verificar</button>
+      <div class="mq-feedback" id="mq3b-fb"></div>
+    </div>
+
+    <!-- SIMULATOR M3 -->
+    <div class="sim-section">
+      <span class="sim-badge">SIMULADOR</span>
+      <h3>Escenario: Colocación de derivaciones en campo</h3>
+      <div class="sim-q">
+        <p>1. Al monitorizar a un trabajador, nota que aVR muestra un QRS completamente positivo. ¿Qué error más probable cometió?</p>
+        <label class="sim-opt"><input type="radio" name="s3q1" value="a"> Electrodos precordiales invertidos</label>
+        <label class="sim-opt"><input type="radio" name="s3q1" value="b"> Inversión de electrodos de extremidades (BD y BI cambiados)</label>
+        <label class="sim-opt"><input type="radio" name="s3q1" value="c"> Cable de tierra desconectado</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Las derivaciones II, III y aVF exploran la cara _____ del corazón:</p>
+        <label class="sim-opt"><input type="radio" name="s3q2" value="a"> Lateral</label>
+        <label class="sim-opt"><input type="radio" name="s3q2" value="b"> Anterior</label>
+        <label class="sim-opt"><input type="radio" name="s3q2" value="c"> Inferior</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Cuáles derivaciones exploran la cara lateral alta del ventrículo izquierdo?</p>
+        <label class="sim-opt"><input type="radio" name="s3q3" value="a"> V1 y V2</label>
+        <label class="sim-opt"><input type="radio" name="s3q3" value="b"> I y aVL</label>
+        <label class="sim-opt"><input type="radio" name="s3q3" value="c"> II y III</label>
+      </div>
+      <div class="sim-q">
+        <p>4. En el campo, el único electrodo disponible para monitoreo continuo es la derivación:</p>
+        <label class="sim-opt"><input type="radio" name="s3q4" value="a"> V6</label>
+        <label class="sim-opt"><input type="radio" name="s3q4" value="b"> II (por visibilidad óptima de onda P)</label>
+        <label class="sim-opt"><input type="radio" name="s3q4" value="c"> aVR</label>
+      </div>
+      <div class="sim-q">
+        <p>5. Las derivaciones V1–V4 evalúan predominantemente la cara _____ del corazón:</p>
+        <label class="sim-opt"><input type="radio" name="s3q5" value="a"> Inferior</label>
+        <label class="sim-opt"><input type="radio" name="s3q5" value="b"> Anterior (septal y anterior)</label>
+        <label class="sim-opt"><input type="radio" name="s3q5" value="c"> Posterior</label>
+      </div>
+      <button class="btn btn-gold" onclick="runSim('s3',{s3q1:'b',s3q2:'c',s3q3:'b',s3q4:'b',s3q5:'b'})">Evaluar simulador</button>
+      <div class="sim-result" id="s3-result"></div>
+    </div>
+
+    <button class="btn" onclick="markDone(3)">Marcar módulo completado ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MÓDULO 4 · RITMO SINUSAL NORMAL
+══════════════════════════════════════════ -->
+<div class="mod-card anim-fadein" id="m4">
+  <div class="mod-header">
+    <div class="mod-num">4</div>
+    <h2>Ritmo Sinusal Normal: Interpretación Sistemática del ECG</h2>
+  </div>
+  <div class="mod-body">
+    <div class="content-block">
+      <h3>Criterios del Ritmo Sinusal Normal (RSN)</h3>
+      <ul>
+        <li>Frecuencia Cardíaca (FC): 60–100 lpm.</li>
+        <li>Onda P positiva y uniforme en DII, precediendo cada QRS.</li>
+        <li>Intervalo PR regular: 120–200 ms.</li>
+        <li>Complejo QRS estrecho: &lt;100 ms (sin bloqueo de rama).</li>
+        <li>Ritmo regular: variación R-R &lt;160 ms.</li>
+      </ul>
+      <div class="info-box">El Ritmo Sinusal Normal (RSN) es el patrón de referencia. Todo desvío respecto a él debe ser interpretado sistemáticamente: Frecuencia → Ritmo → Eje → Ondas P → PR → QRS → ST-T.</div>
+    </div>
+    <div class="content-block">
+      <h3>Variantes normales</h3>
+      <ul>
+        <li><strong>Bradicardia sinusal</strong>: RSN con FC &lt;60 lpm. Fisiológica en atletas.</li>
+        <li><strong>Taquicardia sinusal</strong>: RSN con FC &gt;100 lpm. Respuesta a fiebre, dolor, anemia, etc.</li>
+        <li><strong>Arritmia sinusal respiratoria</strong>: leve variación del R-R con la respiración, normal en jóvenes.</li>
+      </ul>
+    </div>
+
+    <!-- SVG Ritmo sinusal -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" aria-label="Tira de ritmo sinusal normal con tres complejos QRS">
+        <defs>
+          <linearGradient id="rsBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fef9f0"/>
+            <stop offset="100%" stop-color="#fdf4e3"/>
+          </linearGradient>
+        </defs>
+        <rect width="700" height="200" rx="8" fill="url(#rsBg)" stroke="#e0c880" stroke-width="1.5"/>
+        <!-- grid -->
+        <g stroke="#f0d8a0" stroke-width=".5">
+          <line x1="0" y1="40" x2="700" y2="40"/><line x1="0" y1="80" x2="700" y2="80"/>
+          <line x1="0" y1="120" x2="700" y2="120"/><line x1="0" y1="160" x2="700" y2="160"/>
+          <line x1="100" y1="0" x2="100" y2="200"/><line x1="200" y1="0" x2="200" y2="200"/>
+          <line x1="300" y1="0" x2="300" y2="200"/><line x1="400" y1="0" x2="400" y2="200"/>
+          <line x1="500" y1="0" x2="500" y2="200"/><line x1="600" y1="0" x2="600" y2="200"/>
+        </g>
+        <!-- baseline -->
+        <line x1="10" y1="120" x2="690" y2="120" stroke="#bbb" stroke-width=".8" stroke-dasharray="3,3"/>
+        <!-- Cycle 1 -->
+        <path d="M30,120 L80,120 Q88,120 92,110 Q96,100 100,110 Q104,120 112,120
+                 L118,117 L121,90 L125,148 L129,40 L133,130 L136,120
+                 L185,120 Q192,120 196,108 Q200,96 204,108 Q208,120 220,120 L250,120"
+              fill="none" stroke="#1D51A3" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Cycle 2 -->
+        <path d="M250,120 L280,120 Q288,120 292,110 Q296,100 300,110 Q304,120 312,120
+                 L318,117 L321,90 L325,148 L329,40 L333,130 L336,120
+                 L385,120 Q392,120 396,108 Q400,96 404,108 Q408,120 420,120 L450,120"
+              fill="none" stroke="#1D51A3" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Cycle 3 -->
+        <path d="M450,120 L480,120 Q488,120 492,110 Q496,100 500,110 Q504,120 512,120
+                 L518,117 L521,90 L525,148 L529,40 L533,130 L536,120
+                 L585,120 Q592,120 596,108 Q600,96 604,108 Q608,120 620,120 L690,120"
+              fill="none" stroke="#1D51A3" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Labels -->
+        <text x="97" y="95" font-size="11" font-weight="700" fill="#059669">P</text>
+        <text x="129" y="33" font-size="11" font-weight="700" fill="#1D51A3">R</text>
+        <text x="200" y="90" font-size="11" font-weight="700" fill="#059669">T</text>
+        <!-- FC label -->
+        <text x="350" y="185" font-size="12" font-weight="700" fill="#163d7a" text-anchor="middle">Ritmo Sinusal Normal – FC ≈ 75 lpm – PR 160 ms – QRS 80 ms</text>
+      </svg>
+    </div>
+
+    <div class="content-block">
+      <h3>Método de lectura sistemática del ECG</h3>
+      <ol style="padding-left:20px;color:var(--muted)">
+        <li style="margin-bottom:6px"><strong>Frecuencia Cardíaca (FC)</strong>: aplicar regla de los 300.</li>
+        <li style="margin-bottom:6px"><strong>Ritmo</strong>: ¿regular o irregular? ¿Hay ondas P antes de cada QRS?</li>
+        <li style="margin-bottom:6px"><strong>Eje eléctrico</strong>: positivo en I y aVF → eje normal (0° a +90°).</li>
+        <li style="margin-bottom:6px"><strong>Intervalo PR</strong>: corto (&lt;120 ms) = Síndrome de Wolff-Parkinson-White (WPW); largo (&gt;200 ms) = bloqueo AV.</li>
+        <li style="margin-bottom:6px"><strong>Complejo QRS</strong>: ancho (&gt;120 ms) = bloqueo de rama o conducción aberrante.</li>
+        <li style="margin-bottom:6px"><strong>Segmento ST y onda T</strong>: elevación → Infarto Agudo de Miocardio (IAM); depresión → isquemia.</li>
+      </ol>
+    </div>
+
+    <!-- VIDEO M4 -->
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/cL0gHFfP9W0" title="Interpretación del ritmo sinusal normal ECG" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-label">Video: Lectura sistemática del ECG – Ritmo sinusal normal</p>
+
+    <!-- MINI-QUIZ M4 -->
+    <div class="mini-quiz">
+      <p>¿Cuál es el rango de Frecuencia Cardíaca (FC) que define el Ritmo Sinusal Normal (RSN)?</p>
+      <label class="mq-opt"><input type="radio" name="mq4" value="a"> 40–80 lpm</label>
+      <label class="mq-opt"><input type="radio" name="mq4" value="b"> 60–100 lpm</label>
+      <label class="mq-opt"><input type="radio" name="mq4" value="c"> 80–120 lpm</label>
+      <button class="btn" onclick="checkMiniQuiz('mq4','b')">Verificar</button>
+      <div class="mq-feedback" id="mq4-fb"></div>
+    </div>
+    <div class="mini-quiz">
+      <p>Un intervalo PR de 240 ms en el Electrocardiograma (ECG) indica:</p>
+      <label class="mq-opt"><input type="radio" name="mq4b" value="a"> Conducción auriculoventricular (AV) normal</label>
+      <label class="mq-opt"><input type="radio" name="mq4b" value="b"> Bloqueo auriculoventricular (AV) de primer grado</label>
+      <label class="mq-opt"><input type="radio" name="mq4b" value="c"> Síndrome de Wolff-Parkinson-White (WPW)</label>
+      <button class="btn" onclick="checkMiniQuiz('mq4b','b')">Verificar</button>
+      <div class="mq-feedback" id="mq4b-fb"></div>
+    </div>
+
+    <!-- SIMULATOR M4 -->
+    <div class="sim-section">
+      <span class="sim-badge">SIMULADOR</span>
+      <h3>Escenario: Interpretación de tira de ritmo</h3>
+      <div class="sim-q">
+        <p>1. Tira de ritmo: ondas P regulares, FC 55 lpm, PR 160 ms, QRS 80 ms. ¿Diagnóstico?</p>
+        <label class="sim-opt"><input type="radio" name="s4q1" value="a"> Taquicardia sinusal</label>
+        <label class="sim-opt"><input type="radio" name="s4q1" value="b"> Bradicardia sinusal</label>
+        <label class="sim-opt"><input type="radio" name="s4q1" value="c"> Fibrilación auricular</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Un QRS con duración de 140 ms sugiere:</p>
+        <label class="sim-opt"><input type="radio" name="s4q2" value="a"> Conducción ventricular normal</label>
+        <label class="sim-opt"><input type="radio" name="s4q2" value="b"> Bloqueo de rama (conducción aberrante)</label>
+        <label class="sim-opt"><input type="radio" name="s4q2" value="c"> Hipertrofia auricular</label>
+      </div>
+      <div class="sim-q">
+        <p>3. Para el Ritmo Sinusal Normal (RSN), ¿cuál afirmación es correcta?</p>
+        <label class="sim-opt"><input type="radio" name="s4q3" value="a"> Puede no haber onda P antes de cada QRS</label>
+        <label class="sim-opt"><input type="radio" name="s4q3" value="b"> Cada QRS debe estar precedido de una onda P positiva en DII</label>
+        <label class="sim-opt"><input type="radio" name="s4q3" value="c"> El PR varía significativamente entre latidos</label>
+      </div>
+      <div class="sim-q">
+        <p>4. En un trabajador deportista de 28 años, el Electrocardiograma (ECG) en reposo muestra FC 48 lpm, RSN. ¿Acción?</p>
+        <label class="sim-opt"><input type="radio" name="s4q4" value="a"> Aplicar atropina de inmediato</label>
+        <label class="sim-opt"><input type="radio" name="s4q4" value="b"> Considerar hallazgo fisiológico normal</label>
+        <label class="sim-opt"><input type="radio" name="s4q4" value="c"> Iniciar compresiones torácicas</label>
+      </div>
+      <div class="sim-q">
+        <p>5. El eje eléctrico normal se define cuando DI y aVF son:</p>
+        <label class="sim-opt"><input type="radio" name="s4q5" value="a"> Ambas negativas</label>
+        <label class="sim-opt"><input type="radio" name="s4q5" value="b"> Ambas positivas</label>
+        <label class="sim-opt"><input type="radio" name="s4q5" value="c"> DI negativa y aVF positiva</label>
+      </div>
+      <button class="btn btn-gold" onclick="runSim('s4',{s4q1:'b',s4q2:'b',s4q3:'b',s4q4:'b',s4q5:'b'})">Evaluar simulador</button>
+      <div class="sim-result" id="s4-result"></div>
+    </div>
+
+    <button class="btn" onclick="markDone(4)">Marcar módulo completado ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MÓDULO 5 · RITMOS CRÍTICOS
+══════════════════════════════════════════ -->
+<div class="mod-card anim-fadein" id="m5">
+  <div class="mod-header">
+    <div class="mod-num">5</div>
+    <h2>Ritmos Críticos: Shockables y No-Shockables</h2>
+  </div>
+  <div class="mod-body">
+    <div class="content-block">
+      <h3>Clasificación de los ritmos de Paro Cardiorrespiratorio (PCR)</h3>
+      <p>En el contexto del Paro Cardiorrespiratorio (PCR), los ritmos se clasifican en dos categorías que determinan el tratamiento inmediato:</p>
+    </div>
+
+    <!-- SVG Clasificación ritmos críticos -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" aria-label="Clasificación ritmos shockables y no-shockables">
+        <defs>
+          <linearGradient id="shockGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fef3c7"/>
+            <stop offset="100%" stop-color="#fff"/>
+          </linearGradient>
+          <linearGradient id="noshockGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fee2e2"/>
+            <stop offset="100%" stop-color="#fff"/>
+          </linearGradient>
+        </defs>
+        <rect width="700" height="320" rx="10" fill="#f8faff"/>
+        <text x="350" y="22" font-size="14" font-weight="800" fill="#163d7a" text-anchor="middle">Ritmos en Paro Cardiorrespiratorio (PCR)</text>
+        <!-- PCR box -->
+        <rect x="275" y="30" width="150" height="36" rx="8" fill="#1D51A3"/>
+        <text x="350" y="53" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Paro Cardiorrespiratorio</text>
+        <!-- arrows down -->
+        <line x1="290" y1="66" x2="195" y2="90" stroke="#1D51A3" stroke-width="2"/>
+        <polygon points="192,85 192,96 202,90" fill="#1D51A3"/>
+        <line x1="410" y1="66" x2="505" y2="90" stroke="#c0392b" stroke-width="2"/>
+        <polygon points="498,85 498,96 508,90" fill="#c0392b"/>
+        <!-- SHOCKABLE -->
+        <rect x="30" y="90" width="300" height="200" rx="10" fill="url(#shockGrad)" stroke="#d97706" stroke-width="2"/>
+        <text x="180" y="112" font-size="13" font-weight="800" fill="#92400e" text-anchor="middle">⚡ SHOCKABLES</text>
+        <!-- FV mini trace -->
+        <text x="60" y="132" font-size="11" font-weight="700" fill="#b45309">Fibrilación Ventricular (FV)</text>
+        <path d="M50,155 L60,155 L62,140 L65,170 L67,130 L70,165 L72,145 L75,175 L77,135 L80,160 L83,148 L86,168 L88,138 L91,163 L94,150 L97,173 L100,140 L103,162 L106,148 L109,170 L112,138 L115,165 L118,150 L120,155 L130,155" fill="none" stroke="#d97706" stroke-width="2"/>
+        <text x="60" y="185" font-size="11" font-weight="700" fill="#b45309">Taquicardia Ventricular (TV) sin pulso</text>
+        <path d="M50,208 L65,208 L68,203 L71,180 L75,235 L79,170 L83,218 L87,208 L100,208 L103,203 L106,180 L110,235 L114,170 L118,218 L122,208 L135,208" fill="none" stroke="#d97706" stroke-width="2"/>
+        <text x="75" y="240" font-size="10" fill="#92400e" text-anchor="middle">Tratamiento: RCP + Desfibrilación (DEA)</text>
+        <text x="75" y="255" font-size="10" fill="#92400e" text-anchor="middle">+ Adrenalina + Amiodarona</text>
+        <text x="75" y="273" font-size="10" fill="#6b7280" text-anchor="middle">(ver Módulo 6 – Farmacología ACLS)</text>
+        <!-- NO SHOCKABLE -->
+        <rect x="370" y="90" width="300" height="200" rx="10" fill="url(#noshockGrad)" stroke="#b91c1c" stroke-width="2"/>
+        <text x="520" y="112" font-size="13" font-weight="800" fill="#7f1d1d" text-anchor="middle">⛔ NO SHOCKABLES</text>
+        <text x="395" y="132" font-size="11" font-weight="700" fill="#991b1b">Actividad Eléctrica Sin Pulso (AESP)</text>
+        <path d="M380,155 L400,155 Q408,155 412,145 Q416,135 420,145 Q424,155 428,155 L434,152 L437,130 L441,178 L445,112 L449,162 L452,155 L480,155 L500,155 Q508,155 512,145 Q516,135 520,145 Q524,155 528,155 L534,152 L537,130 L541,178 L545,112 L549,162 L552,155 L580,155 L600,155" fill="none" stroke="#dc2626" stroke-width="2"/>
+        <text x="490" y="178" font-size="9" fill="#6b7280" text-anchor="middle">ECG "normal" pero sin pulso palpable</text>
+        <text x="395" y="200" font-size="11" font-weight="700" fill="#991b1b">Asistolia</text>
+        <path d="M380,215 L600,215" stroke="#dc2626" stroke-width="2"/>
+        <text x="490" y="228" font-size="9" fill="#6b7280" text-anchor="middle">Línea isoeléctrica (sin actividad eléctrica)</text>
+        <text x="490" y="248" font-size="10" fill="#7f1d1d" text-anchor="middle">Tratamiento: RCP + Adrenalina</text>
+        <text x="490" y="263" font-size="10" fill="#7f1d1d" text-anchor="middle">Identificar causas reversibles (4H/4T)</text>
+        <text x="490" y="278" font-size="10" fill="#6b7280" text-anchor="middle">NO se desfibri la – NO hay shock</text>
+      </svg>
+    </div>
+
+    <div class="content-block">
+      <h3>Fibrilación Ventricular (FV)</h3>
+      <p>La Fibrilación Ventricular (FV) es un ritmo caótico sin complejos QRS organizados. Los ventrículos tiemblan sin bombear sangre. Es el ritmo más frecuente en el paro súbito cardiaco del adulto. Requiere desfibrilación inmediata con el Desfibrilador Externo Automático (DEA) o manual.</p>
+    </div>
+    <div class="content-block">
+      <h3>Taquicardia Ventricular (TV) sin pulso</h3>
+      <p>La Taquicardia Ventricular (TV) sin pulso muestra complejos QRS anchos y regulares a FC &gt;150 lpm pero sin gasto cardíaco efectivo. Se trata igual que la Fibrilación Ventricular (FV): Reanimación Cardiopulmonar (RCP) + desfibrilación.</p>
+    </div>
+    <div class="content-block">
+      <h3>Actividad Eléctrica Sin Pulso (AESP) y Asistolia</h3>
+      <p>La Actividad Eléctrica Sin Pulso (AESP) presenta actividad eléctrica organizada en el Electrocardiograma (ECG) pero sin pulso palpable. La asistolia es la ausencia total de actividad eléctrica (línea plana). Ambas son ritmos no-shockables. El tratamiento es Reanimación Cardiopulmonar (RCP) + adrenalina y búsqueda de causas reversibles: las "4H" (Hipoxia, Hipovolemia, Hipotermia, H⁺/acidosis) y "4T" (Trombosis coronaria, Tromboembolismo pulmonar, Taponamiento cardíaco, Tensión-neumotórax).</p>
+      <div class="warn-box"><strong>Regla crítica:</strong> No desfibrilar la asistolia ni la Actividad Eléctrica Sin Pulso (AESP). El shock eléctrico en línea plana no tiene efecto terapéutico y puede agravar el pronóstico.</div>
+    </div>
+
+    <!-- VIDEO M5 -->
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/m_Jmn2OLUXA" title="Ritmos shockables y no shockables ECG" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-label">Video: Identificación de ritmos de paro – FV, TV sin pulso, AESP, Asistolia</p>
+
+    <!-- MINI-QUIZ M5 -->
+    <div class="mini-quiz">
+      <p>¿Cuáles son los dos ritmos shockables en el contexto del Paro Cardiorrespiratorio (PCR)?</p>
+      <label class="mq-opt"><input type="radio" name="mq5" value="a"> Asistolia y bradicardia sinusal</label>
+      <label class="mq-opt"><input type="radio" name="mq5" value="b"> Fibrilación Ventricular (FV) y Taquicardia Ventricular (TV) sin pulso</label>
+      <label class="mq-opt"><input type="radio" name="mq5" value="c"> Fibrilación auricular y flutter auricular</label>
+      <button class="btn" onclick="checkMiniQuiz('mq5','b')">Verificar</button>
+      <div class="mq-feedback" id="mq5-fb"></div>
+    </div>
+    <div class="mini-quiz">
+      <p>La Actividad Eléctrica Sin Pulso (AESP) se caracteriza por:</p>
+      <label class="mq-opt"><input type="radio" name="mq5b" value="a"> Línea plana en el Electrocardiograma (ECG)</label>
+      <label class="mq-opt"><input type="radio" name="mq5b" value="b"> Actividad eléctrica organizada en el ECG sin pulso palpable</label>
+      <label class="mq-opt"><input type="radio" name="mq5b" value="c"> Complejos QRS chaóticos y desorganizados</label>
+      <button class="btn" onclick="checkMiniQuiz('mq5b','b')">Verificar</button>
+      <div class="mq-feedback" id="mq5b-fb"></div>
+    </div>
+
+    <!-- SIMULATOR M5 -->
+    <div class="sim-section">
+      <span class="sim-badge">SIMULADOR</span>
+      <h3>Escenario: Reconocimiento y acción ante ritmo crítico</h3>
+      <div class="sim-q">
+        <p>1. El monitor muestra trazado caótico sin QRS identificables. El trabajador está inconsciente, sin pulso. ¿Diagnóstico y acción?</p>
+        <label class="sim-opt"><input type="radio" name="s5q1" value="a"> Asistolia – Iniciar RCP y adrenalina</label>
+        <label class="sim-opt"><input type="radio" name="s5q1" value="b"> Fibrilación Ventricular (FV) – Desfibrilar con Desfibrilador Externo Automático (DEA)</label>
+        <label class="sim-opt"><input type="radio" name="s5q1" value="c"> Bradicardia sinusal – Administrar atropina</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Monitor muestra línea completamente plana. El paciente no responde, sin pulso. ¿Cuál es el tratamiento?</p>
+        <label class="sim-opt"><input type="radio" name="s5q2" value="a"> Desfibrilar inmediatamente</label>
+        <label class="sim-opt"><input type="radio" name="s5q2" value="b"> Reanimación Cardiopulmonar (RCP) + adrenalina; NO desfibrilar</label>
+        <label class="sim-opt"><input type="radio" name="s5q2" value="c"> Marfapace externo inmediato</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Cuál de las siguientes es una causa reversible "4H" de la Actividad Eléctrica Sin Pulso (AESP)?</p>
+        <label class="sim-opt"><input type="radio" name="s5q3" value="a"> Taponamiento cardíaco</label>
+        <label class="sim-opt"><input type="radio" name="s5q3" value="b"> Hipovolemia</label>
+        <label class="sim-opt"><input type="radio" name="s5q3" value="c"> Tromboembolismo Pulmonar (TEP)</label>
+      </div>
+      <div class="sim-q">
+        <p>4. La Taquicardia Ventricular (TV) sin pulso se diferencia de la Fibrilación Ventricular (FV) en el ECG porque:</p>
+        <label class="sim-opt"><input type="radio" name="s5q4" value="a"> La TV tiene complejos QRS anchos y regulares; la FV es caótica sin QRS identificables</label>
+        <label class="sim-opt"><input type="radio" name="s5q4" value="b"> La TV es no-shockable; la FV es shockable</label>
+        <label class="sim-opt"><input type="radio" name="s5q4" value="c"> La TV muestra línea plana; la FV muestra trazado caótico</label>
+      </div>
+      <div class="sim-q">
+        <p>5. En el protocolo de Soporte Vital Cardiovascular Avanzado (ACLS), ¿cada cuántos minutos se administra adrenalina en paro no-shockable?</p>
+        <label class="sim-opt"><input type="radio" name="s5q5" value="a"> Cada 1 minuto</label>
+        <label class="sim-opt"><input type="radio" name="s5q5" value="b"> Cada 3–5 minutos</label>
+        <label class="sim-opt"><input type="radio" name="s5q5" value="c"> Una sola dosis</label>
+      </div>
+      <button class="btn btn-gold" onclick="runSim('s5',{s5q1:'b',s5q2:'b',s5q3:'b',s5q4:'b',s5q5:'b'})">Evaluar simulador</button>
+      <div class="sim-result" id="s5-result"></div>
+    </div>
+
+    <button class="btn" onclick="markDone(5)">Marcar módulo completado ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MÓDULO 6 · FARMACOLOGÍA ACLS
+══════════════════════════════════════════ -->
+<div class="mod-card anim-fadein" id="m6">
+  <div class="mod-header">
+    <div class="mod-num">6</div>
+    <h2>Farmacología en Soporte Vital Cardiovascular Avanzado (ACLS)</h2>
+  </div>
+  <div class="mod-body">
+    <div class="content-block">
+      <h3>¿Qué es el Soporte Vital Cardiovascular Avanzado (ACLS)?</h3>
+      <p>El Soporte Vital Cardiovascular Avanzado (ACLS) es el conjunto de protocolos de la American Heart Association (AHA) para el manejo del paro cardiorrespiratorio, arritmias y síndrome coronario agudo. Incluye Reanimación Cardiopulmonar (RCP) de alta calidad, desfibrilación y farmacología específica.</p>
+    </div>
+
+    <!-- SVG farmacología ACLS -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa de farmacología ACLS: adrenalina, amiodarona, atropina y soluciones">
+        <defs>
+          <linearGradient id="drugBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f0f4ff"/>
+            <stop offset="100%" stop-color="#fafbff"/>
+          </linearGradient>
+        </defs>
+        <rect width="700" height="380" rx="10" fill="url(#drugBg)"/>
+        <text x="350" y="24" font-size="14" font-weight="800" fill="#163d7a" text-anchor="middle">Farmacología ACLS – Fármacos Principales</text>
+        <!-- ACLS center -->
+        <circle cx="350" cy="185" r="46" fill="#1D51A3"/>
+        <text x="350" y="181" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">Soporte Vital</text>
+        <text x="350" y="196" font-size="11" font-weight="800" fill="#F0C319" text-anchor="middle">Cardiovascular</text>
+        <text x="350" y="211" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">Avanzado (ACLS)</text>
+        <!-- Adrenalina -->
+        <rect x="20" y="60" width="220" height="115" rx="10" fill="#fff3cd" stroke="#d97706" stroke-width="2"/>
+        <text x="130" y="82" font-size="12" font-weight="800" fill="#92400e" text-anchor="middle">💉 Adrenalina</text>
+        <text x="130" y="98" font-size="10" fill="#78350f" text-anchor="middle">(Epinefrina)</text>
+        <text x="40" y="116" font-size="10" fill="#555">Dosis: 1 mg IV cada 3–5 min</text>
+        <text x="40" y="130" font-size="10" fill="#555">Indicación: FV, TV sin pulso,</text>
+        <text x="40" y="144" font-size="10" fill="#555">AESP, Asistolia</text>
+        <text x="40" y="160" font-size="10" fill="#555">Mecanismo: vasoconstrictor α/β</text>
+        <line x1="240" y1="120" x2="304" y2="165" stroke="#d97706" stroke-width="2"/>
+        <!-- Amiodarona -->
+        <rect x="460" y="60" width="220" height="115" rx="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+        <text x="570" y="82" font-size="12" font-weight="800" fill="#0c4a6e" text-anchor="middle">💊 Amiodarona</text>
+        <text x="490" y="100" font-size="10" fill="#075985">Dosis: 300 mg IV (1.a dosis)</text>
+        <text x="490" y="114" font-size="10" fill="#075985">150 mg IV (2.a dosis)</text>
+        <text x="490" y="128" font-size="10" fill="#555">Indicación: FV/TV refractaria</text>
+        <text x="490" y="142" font-size="10" fill="#555">a ≥2 descargas</text>
+        <text x="490" y="158" font-size="10" fill="#555">Antiarrítmico clase III</text>
+        <line x1="460" y1="120" x2="396" y2="165" stroke="#0369a1" stroke-width="2"/>
+        <!-- Atropina -->
+        <rect x="20" y="230" width="220" height="115" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="130" y="252" font-size="12" font-weight="800" fill="#14532d" text-anchor="middle">🫀 Atropina</text>
+        <text x="40" y="270" font-size="10" fill="#166534">Dosis: 0,5 mg IV (rep. hasta 3 mg)</text>
+        <text x="40" y="284" font-size="10" fill="#166534">Indicación: Bradicardia sinusal</text>
+        <text x="40" y="298" font-size="10" fill="#555">sintomática / bloqueo AV</text>
+        <text x="40" y="312" font-size="10" fill="#555">Mecanismo: anticolinérgico</text>
+        <text x="40" y="326" font-size="10" fill="#888">(No útil en asistolia)</text>
+        <line x1="240" y1="248" x2="304" y2="205" stroke="#16a34a" stroke-width="2"/>
+        <!-- Soluciones -->
+        <rect x="460" y="230" width="220" height="130" rx="10" fill="#fdf4ff" stroke="#7c3aed" stroke-width="2"/>
+        <text x="570" y="252" font-size="12" font-weight="800" fill="#4c1d95" text-anchor="middle">🧪 Soluciones IV</text>
+        <text x="480" y="270" font-size="10" fill="#5b21b6" font-weight="700">Cristaloides:</text>
+        <text x="480" y="284" font-size="10" fill="#555">SSN 0,9%, Lactato Ringer</text>
+        <text x="480" y="298" font-size="10" fill="#555">→ Reposición de volumen</text>
+        <text x="480" y="314" font-size="10" fill="#5b21b6" font-weight="700">Coloides:</text>
+        <text x="480" y="328" font-size="10" fill="#555">Albúmina, Dextrano</text>
+        <text x="480" y="342" font-size="10" fill="#555">→ Expansión oncótica</text>
+        <text x="480" y="356" font-size="9" fill="#888">(Uso restringido por evidencia)</text>
+        <line x1="460" y1="248" x2="396" y2="205" stroke="#7c3aed" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="content-block">
+      <h3>Adrenalina (Epinefrina)</h3>
+      <ul>
+        <li><strong>Dosis estándar</strong>: 1 mg intravenoso (IV) o intraóseo (IO) cada 3–5 minutos.</li>
+        <li><strong>Mecanismo</strong>: agonista α y β-adrenérgico. Aumenta la presión de perfusión coronaria y cerebral durante la Reanimación Cardiopulmonar (RCP).</li>
+        <li><strong>Indicaciones</strong>: Fibrilación Ventricular (FV), Taquicardia Ventricular (TV) sin pulso, Actividad Eléctrica Sin Pulso (AESP), asistolia. En FV/TV: se administra tras la 2.ª descarga.</li>
+      </ul>
+    </div>
+    <div class="content-block">
+      <h3>Amiodarona</h3>
+      <ul>
+        <li><strong>Dosis</strong>: Primera dosis 300 mg IV; segunda dosis 150 mg IV si persiste el ritmo shockable.</li>
+        <li><strong>Mecanismo</strong>: Antiarrítmico clase III. Prolonga el potencial de acción y el período refractario.</li>
+        <li><strong>Indicación</strong>: Fibrilación Ventricular (FV) / Taquicardia Ventricular (TV) refractaria a ≥2 descargas eléctricas.</li>
+      </ul>
+    </div>
+    <div class="content-block">
+      <h3>Atropina</h3>
+      <ul>
+        <li><strong>Dosis</strong>: 0,5 mg IV repetible cada 3–5 minutos hasta máximo 3 mg.</li>
+        <li><strong>Indicación</strong>: Bradicardia sinusal sintomática y bloqueos auriculoventriculares (AV) de bajo grado con inestabilidad hemodinámica.</li>
+        <li><strong>Importante</strong>: No está indicada en asistolia ni en Actividad Eléctrica Sin Pulso (AESP) según las guías actuales del Soporte Vital Cardiovascular Avanzado (ACLS).</li>
+      </ul>
+    </div>
+    <div class="content-block">
+      <h3>Soluciones intravenosas: cristaloides vs. coloides</h3>
+      <ul>
+        <li><strong>Cristaloides</strong>: Solución Salina Normal (SSN) al 0,9%, Lactato Ringer. Expansión de volumen intravascular. Son la primera línea para reponer volumen en Actividad Eléctrica Sin Pulso (AESP) por hipovolemia.</li>
+        <li><strong>Coloides</strong>: Albúmina al 5%/25%, Dextrano, Hidroxietilalmidón (HEA). Mayor poder de expansión oncótica. Uso restringido en cuidados críticos por evidencia limitada.</li>
+      </ul>
+      <div class="info-box">En la mayoría de los escenarios de Soporte Vital Cardiovascular Avanzado (ACLS), los cristaloides son suficientes y preferibles a los coloides por costo, disponibilidad y seguridad.</div>
+    </div>
+
+    <!-- VIDEO M6 -->
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/c3p9hFXYbdU" title="Farmacología ACLS adrenalina amiodarona atropina" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="video-label">Video: Farmacología en Soporte Vital Cardiovascular Avanzado (ACLS) – Fármacos esenciales</p>
+
+    <!-- MINI-QUIZ M6 -->
+    <div class="mini-quiz">
+      <p>¿Cuál es la dosis estándar de adrenalina en el protocolo de Soporte Vital Cardiovascular Avanzado (ACLS)?</p>
+      <label class="mq-opt"><input type="radio" name="mq6" value="a"> 0,5 mg IV cada 5–10 minutos</label>
+      <label class="mq-opt"><input type="radio" name="mq6" value="b"> 1 mg IV cada 3–5 minutos</label>
+      <label class="mq-opt"><input type="radio" name="mq6" value="c"> 300 mg IV en bolo único</label>
+      <button class="btn" onclick="checkMiniQuiz('mq6','b')">Verificar</button>
+      <div class="mq-feedback" id="mq6-fb"></div>
+    </div>
+    <div class="mini-quiz">
+      <p>¿Cuál solución intravenosa es la primera línea para reponer volumen en la Actividad Eléctrica Sin Pulso (AESP) por hipovolemia?</p>
+      <label class="mq-opt"><input type="radio" name="mq6b" value="a"> Albúmina al 25%</label>
+      <label class="mq-opt"><input type="radio" name="mq6b" value="b"> Solución Salina Normal (SSN) al 0,9% (cristaloide)</label>
+      <label class="mq-opt"><input type="radio" name="mq6b" value="c"> Dextrano</label>
+      <button class="btn" onclick="checkMiniQuiz('mq6b','b')">Verificar</button>
+      <div class="mq-feedback" id="mq6b-fb"></div>
+    </div>
+
+    <!-- SIMULATOR M6 -->
+    <div class="sim-section">
+      <span class="sim-badge">SIMULADOR</span>
+      <h3>Escenario: Decisión farmacológica en paro cardíaco</h3>
+      <div class="sim-q">
+        <p>1. Paciente con Fibrilación Ventricular (FV) refractaria tras 3 descargas eléctricas. ¿Qué fármaco antiarrítmico del Soporte Vital Cardiovascular Avanzado (ACLS) está indicado?</p>
+        <label class="sim-opt"><input type="radio" name="s6q1" value="a"> Atropina 0,5 mg IV</label>
+        <label class="sim-opt"><input type="radio" name="s6q1" value="b"> Amiodarona 300 mg IV</label>
+        <label class="sim-opt"><input type="radio" name="s6q1" value="c"> Solución Salina Normal (SSN) 500 mL en bolo</label>
+      </div>
+      <div class="sim-q">
+        <p>2. Un trabajador presenta bradicardia sintomática (FC 38 lpm, hipotensión, síncope). ¿Primer fármaco indicado según Soporte Vital Cardiovascular Avanzado (ACLS)?</p>
+        <label class="sim-opt"><input type="radio" name="s6q2" value="a"> Amiodarona 300 mg IV</label>
+        <label class="sim-opt"><input type="radio" name="s6q2" value="b"> Atropina 0,5 mg IV</label>
+        <label class="sim-opt"><input type="radio" name="s6q2" value="c"> Adrenalina 1 mg IV</label>
+      </div>
+      <div class="sim-q">
+        <p>3. ¿Cuál es la principal diferencia entre cristaloides y coloides?</p>
+        <label class="sim-opt"><input type="radio" name="s6q3" value="a"> Los cristaloides son antiarrítmicos; los coloides son vasoconstrictores</label>
+        <label class="sim-opt"><input type="radio" name="s6q3" value="b"> Los cristaloides reponen volumen con moléculas pequeñas; los coloides aportan presión oncótica con moléculas grandes</label>
+        <label class="sim-opt"><input type="radio" name="s6q3" value="c"> Los coloides son primera línea en todos los paros cardíacos</label>
+      </div>
+      <div class="sim-q">
+        <p>4. La adrenalina en el paro cardíaco aumenta principalmente la presión de perfusión:</p>
+        <label class="sim-opt"><input type="radio" name="s6q4" value="a"> Renal y hepática</label>
+        <label class="sim-opt"><input type="radio" name="s6q4" value="b"> Coronaria y cerebral</label>
+        <label class="sim-opt"><input type="radio" name="s6q4" value="c"> Pulmonar y esplácnica</label>
+      </div>
+      <div class="sim-q">
+        <p>5. En paro por Actividad Eléctrica Sin Pulso (AESP) con sospecha de hipovolemia grave (politraumatismo), la acción más inmediata junto con Reanimación Cardiopulmonar (RCP) es:</p>
+        <label class="sim-opt"><input type="radio" name="s6q5" value="a"> Administrar amiodarona 300 mg IV</label>
+        <label class="sim-opt"><input type="radio" name="s6q5" value="b"> Reponer volumen con cristaloides y controlar la hemorragia</label>
+        <label class="sim-opt"><input type="radio" name="s6q5" value="c"> Desfibrilar con Desfibrilador Externo Automático (DEA) a 200 J</label>
+      </div>
+      <button class="btn btn-gold" onclick="runSim('s6',{s6q1:'b',s6q2:'b',s6q3:'b',s6q4:'b',s6q5:'b'})">Evaluar simulador</button>
+      <div class="sim-result" id="s6-result"></div>
+    </div>
+
+    <button class="btn" onclick="markDone(6)">Marcar módulo completado ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     EVALUACIÓN FINAL
+══════════════════════════════════════════ -->
+<div class="final-quiz" id="final-quiz">
+  <h2>Evaluación Final</h2>
+  <p class="subtitle">Electrocardiografía Básica · 8 preguntas · Aprobación: 6/8</p>
+
+  <div class="fq-item">
+    <p>1. ¿Qué onda del Electrocardiograma (ECG) representa la despolarización auricular?</p>
+    <label class="fq-opt"><input type="radio" name="fq1" value="a"> Onda T</label>
+    <label class="fq-opt"><input type="radio" name="fq1" value="b"> Onda P</label>
+    <label class="fq-opt"><input type="radio" name="fq1" value="c"> Complejo QRS</label>
+  </div>
+  <div class="fq-item">
+    <p>2. En el papel milimetrado a 25 mm/s, un cuadro grande equivale a:</p>
+    <label class="fq-opt"><input type="radio" name="fq2" value="a"> 0,04 s</label>
+    <label class="fq-opt"><input type="radio" name="fq2" value="b"> 0,20 s</label>
+    <label class="fq-opt"><input type="radio" name="fq2" value="c"> 0,40 s</label>
+  </div>
+  <div class="fq-item">
+    <p>3. ¿Cuántos electrodos físicos se necesitan para el Electrocardiograma (ECG) de 12 derivaciones?</p>
+    <label class="fq-opt"><input type="radio" name="fq3" value="a"> 12</label>
+    <label class="fq-opt"><input type="radio" name="fq3" value="b"> 10</label>
+    <label class="fq-opt"><input type="radio" name="fq3" value="c"> 6</label>
+  </div>
+  <div class="fq-item">
+    <p>4. El Ritmo Sinusal Normal (RSN) requiere una Frecuencia Cardíaca (FC) entre:</p>
+    <label class="fq-opt"><input type="radio" name="fq4" value="a"> 40–80 lpm</label>
+    <label class="fq-opt"><input type="radio" name="fq4" value="b"> 60–100 lpm</label>
+    <label class="fq-opt"><input type="radio" name="fq4" value="c"> 100–150 lpm</label>
+  </div>
+  <div class="fq-item">
+    <p>5. ¿Cuál ritmo del Paro Cardiorrespiratorio (PCR) NO se desfibri la?</p>
+    <label class="fq-opt"><input type="radio" name="fq5" value="a"> Fibrilación Ventricular (FV)</label>
+    <label class="fq-opt"><input type="radio" name="fq5" value="b"> Taquicardia Ventricular (TV) sin pulso</label>
+    <label class="fq-opt"><input type="radio" name="fq5" value="c"> Asistolia</label>
+  </div>
+  <div class="fq-item">
+    <p>6. En el Soporte Vital Cardiovascular Avanzado (ACLS), la dosis de adrenalina en paro cardíaco es:</p>
+    <label class="fq-opt"><input type="radio" name="fq6" value="a"> 0,5 mg IV cada 10 minutos</label>
+    <label class="fq-opt"><input type="radio" name="fq6" value="b"> 1 mg IV cada 3–5 minutos</label>
+    <label class="fq-opt"><input type="radio" name="fq6" value="c"> 300 mg IV en dosis única</label>
+  </div>
+  <div class="fq-item">
+    <p>7. La Actividad Eléctrica Sin Pulso (AESP) se define como:</p>
+    <label class="fq-opt"><input type="radio" name="fq7" value="a"> Línea plana en el Electrocardiograma (ECG)</label>
+    <label class="fq-opt"><input type="radio" name="fq7" value="b"> Actividad eléctrica organizada en el ECG sin pulso palpable</label>
+    <label class="fq-opt"><input type="radio" name="fq7" value="c"> Trazado caótico sin complejos QRS identificables</label>
+  </div>
+  <div class="fq-item">
+    <p>8. Para Fibrilación Ventricular (FV) refractaria a dos descargas eléctricas, el antiarrítmico indicado según el Soporte Vital Cardiovascular Avanzado (ACLS) es:</p>
+    <label class="fq-opt"><input type="radio" name="fq8" value="a"> Atropina 0,5 mg IV</label>
+    <label class="fq-opt"><input type="radio" name="fq8" value="b"> Amiodarona 300 mg IV</label>
+    <label class="fq-opt"><input type="radio" name="fq8" value="c"> Lactato Ringer 500 mL IV</label>
+  </div>
+
+  <br>
+  <button class="btn btn-gold" onclick="submitFinalQuiz()">Enviar evaluación final</button>
+  <div id="fq-result"></div>
+  <div class="completion-banner" id="completion-banner">
+    <h3>🎓 Curso aprobado</h3>
+    <p>Ha completado el curso de Electrocardiografía Básica con éxito. Su certificado de aprobación ha sido registrado.</p>
+  </div>
+</div>
+
+</main>
+</div><!-- /shell -->
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+// Auth guard (optional – same pattern as other courses)
+</script>
+
+<script>
+// ── PROGRESS ──
+const TOTAL = 6;
+let done = JSON.parse(localStorage.getItem('ecg_done')||'[]');
+let progress = JSON.parse(localStorage.getItem('ecg_progress')||'[]');
+
+function updateProgress(){
+  const pct = Math.round(done.length/TOTAL*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressTxt').textContent = done.length+' / '+TOTAL+' módulos';
+}
+
+function markDone(n){
+  if(!done.includes(n)) done.push(n);
+  localStorage.setItem('ecg_done', JSON.stringify(done));
+  updateProgress();
+  const btn = event.target;
+  btn.textContent = '✅ Módulo completado';
+  btn.disabled = true;
+  btn.style.background = '#059669';
+}
+
+// ── MINI QUIZ ──
+function checkMiniQuiz(name, correct){
+  const sel = document.querySelector(`input[name="${name}"]:checked`);
+  const fb = document.getElementById(name+'-fb');
+  if(!sel){ alert('Selecciona una opción.'); return; }
+  if(sel.value === correct){
+    fb.className = 'mq-feedback correct';
+    fb.textContent = '✅ ¡Correcto!';
+  } else {
+    fb.className = 'mq-feedback wrong';
+    fb.textContent = '❌ Incorrecto. Revisa el contenido del módulo.';
+  }
+}
+window.checkMiniQuiz = checkMiniQuiz;
+
+// ── SIMULATOR ──
+function runSim(simId, answers){
+  let ok=0, all=true;
+  Object.entries(answers).forEach(([n,a]) => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
+      const l = i.closest('.sim-opt');
+      if(i.value===a) l.classList.add('correct');
+      else if(i===s && i.value!==a) l.classList.add('wrong');
+      i.disabled=true;
+    });
+    if(s.value===a) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas del simulador.'); return; }
+  const r = document.getElementById(simId+'-result');
+  r.style.display='block';
+  r.className = 'sim-result ' + (ok>=4?'pass':'fail');
+  r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
+}
+window.runSim = runSim;
+
+// ── FINAL QUIZ ──
+function submitFinalQuiz(){
+  const answers = {fq1:'b',fq2:'b',fq3:'b',fq4:'b',fq5:'c',fq6:'b',fq7:'b',fq8:'b'};
+  let ok=0, all=true;
+  Object.keys(answers).forEach(n => {
+    const s = document.querySelector(`input[name="${n}"]:checked`);
+    if(!s){ all=false; return; }
+    if(s.value===answers[n]) ok++;
+  });
+  if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
+  const r = document.getElementById('fq-result');
+  r.style.display='block';
+  const pass = ok>=6;
+  r.className = 'sim-result '+(pass?'pass':'fail');
+  r.textContent = pass
+    ? `✅ ${ok}/8 — Aprobado. Excelente manejo de Electrocardiografía Básica.`
+    : `⚠️ ${ok}/8 — No aprobado. Puntaje mínimo: 6/8. Revise los módulos e intente nuevamente.`;
+  if(pass){
+    localStorage.setItem('ecg_done', JSON.stringify([1,2,3,4,5,6]));
+    localStorage.setItem('ecg_progress','100');
+    updateProgress();
+    document.getElementById('completion-banner').style.display='block';
+  }
+}
+window.submitFinalQuiz = submitFinalQuiz;
+
+// ── ANIMATIONS ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.08});
+document.querySelectorAll('.anim-fadein').forEach(el => obs.observe(el));
+
+// ── SIDEBAR ACTIVE ──
+const navLinks = document.querySelectorAll('.sidebar nav a');
+const sections = [...document.querySelectorAll('[id^="m"]'), document.getElementById('final-quiz')];
+window.addEventListener('scroll',()=>{
+  let cur = '';
+  sections.forEach(s=>{ if(s && window.scrollY >= s.offsetTop-120) cur=s.id; });
+  navLinks.forEach(a=>{ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+});
+
+// init
+updateProgress();
+</script>
+</body>
+</html>
