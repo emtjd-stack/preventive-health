@@ -306,7 +306,10 @@ section { padding: 80px 24px; }
 .cert-badge-icon { font-size: 22px; }
 .cert-badge-text strong { display: block; font-size: 13px; color: var(--gold); }
 .cert-badge-text span { font-size: 11px; color: rgba(255,255,255,.55); }
-.courses-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; margin-top: 48px; }
+.courses-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; margin-top: 24px; }
+.area-divider { display:flex; align-items:center; gap:14px; margin-top:40px; margin-bottom:8px; }
+.area-divider::before,.area-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.12); }
+.area-pill { background:rgba(240,195,25,.15); color:var(--gold); border:1px solid rgba(240,195,25,.3); padding:5px 18px; border-radius:20px; font-size:.78rem; font-weight:700; letter-spacing:.07em; white-space:nowrap; }
 .course-card {
   background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.13);
   border-radius: var(--radius); padding: 26px 24px;
@@ -559,6 +562,11 @@ footer {
     <span class="section-label">Plataforma de cursos</span>
     <h2 class="section-title">Aprende a tu propio ritmo</h2>
     <p class="section-sub">Accede a nuestros cursos online con certificación oficial. Contenido estructurado en módulos con evaluaciones prácticas.</p>
+
+    <!-- ÁREA SALUD -->
+    <div class="area-divider">
+      <span class="area-pill">🩺 SALUD</span>
+    </div>
     <div class="courses-grid">
       <div class="course-card">
         <div class="course-card-icon">🩹</div>
@@ -589,11 +597,30 @@ footer {
         <a href="cursos/emergencia/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px">Solicitar acceso →</a>
       </div>
       <div class="course-card">
+        <div class="course-card-icon">🫀</div>
+        <h3>Electrocardiografía Básica</h3>
+        <p>Ondas P/Q/R/S/T, papel milimetrado, derivaciones 12-lead, ritmo sinusal normal, ritmos de paro (FV, TV, AESP, Asistolia) y farmacología ACLS.</p>
+        <div class="course-card-tags">
+          <span class="ctag ctag-guide">ACLS · AHA</span>
+          <span class="ctag ctag-cert">Certificado oficial</span>
+        </div>
+        <a href="cursos/ecg/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px">Solicitar acceso →</a>
+      </div>
+    </div>
+
+    <!-- ÁREA AMBIENTAL Y GEOCIENCIAS -->
+    <div class="area-divider" style="margin-top:42px">
+      <span class="area-pill" style="background:rgba(16,185,129,.15);color:#10b981;border-color:rgba(16,185,129,.3)">🌿 AMBIENTAL Y GEOCIENCIAS</span>
+    </div>
+    <div class="courses-grid" style="grid-template-columns:repeat(2,1fr);max-width:560px">
+      <div class="course-card">
         <div class="course-card-icon">🚁</div>
-        <h3>Pilotaje de Drones</h3>
+        <h3>Pilotaje Profesional de Drones</h3>
         <p>Regulaciones DGAC Ecuador, tipos de aeronaves no tripuladas, pre-vuelo, técnicas de pilotaje, fotogrametría y análisis geoespacial.</p>
-        <div class="course-card-tags"></div>
-        <a href="cursos/drones/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px">Solicitar acceso →</a>
+        <div class="course-card-tags">
+          <span class="ctag ctag-cert">DGAC 2024</span>
+        </div>
+        <a href="cursos/drones/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px;background:#065f46">Solicitar acceso →</a>
       </div>
     </div>
   </div>

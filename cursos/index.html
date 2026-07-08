@@ -35,6 +35,10 @@ nav{background:#1D51A3;padding:0 24px;height:64px;display:flex;align-items:cente
 .meta-chip{background:#f1f5f9;color:#475569;padding:4px 10px;border-radius:20px;font-size:.78rem}
 .card-btn{display:inline-block;padding:11px 24px;border-radius:8px;color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;transition:opacity .2s}
 .card-btn:hover{opacity:.9}
+.area-hd{display:flex;align-items:center;gap:14px;margin:36px 0 20px}
+.area-hd::before,.area-hd::after{content:'';flex:1;height:1px;background:#e2e8f0}
+.area-pill{background:#dbeafe;color:#1e3a8a;border:1px solid #bfdbfe;padding:5px 18px;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.07em;white-space:nowrap}
+.area-pill.green{background:#d1fae5;color:#065f46;border-color:#a7f3d0}
 @media(max-width:640px){
   .course-card{grid-template-columns:1fr}
   .card-img-wrap{height:160px}.card-img-wrap img{height:160px}
@@ -147,5 +151,36 @@ nav{background:#1D51A3;padding:0 24px;height:64px;display:flex;align-items:cente
   </div>
 </article>
 </div>
+<script>
+(function(){
+  const catalog = document.querySelector('.catalog');
+  if(!catalog) return;
+
+  // Insert SALUD heading before first article
+  const firstCard = catalog.querySelector('article.course-card');
+  if(firstCard){
+    const hdSalud = document.createElement('div');
+    hdSalud.className = 'area-hd';
+    hdSalud.innerHTML = '<span class="area-pill">🩺 SALUD</span>';
+    catalog.insertBefore(hdSalud, firstCard);
+  }
+
+  // Move Drones card to after ECG, insert AMBIENTAL heading before Drones
+  const allCards = [...catalog.querySelectorAll('article.course-card')];
+  const dronesCard = allCards.find(a => a.querySelector('a[href="drones/index.html"]'));
+  const ecgCard = allCards.find(a => a.querySelector('a[href="ecg/index.html"]'));
+  if(dronesCard){
+    const hdAmbiental = document.createElement('div');
+    hdAmbiental.className = 'area-hd';
+    hdAmbiental.innerHTML = '<span class="area-pill green">🌿 AMBIENTAL Y GEOCIENCIAS</span>';
+    // Insert ambiental heading before drones (which may already be after ECG)
+    catalog.insertBefore(hdAmbiental, dronesCard);
+    // Ensure drones is after ECG
+    if(ecgCard && dronesCard !== ecgCard.nextElementSibling){
+      catalog.insertBefore(hdAmbiental, dronesCard);
+    }
+  }
+})();
+</script>
 </body>
 </html>
