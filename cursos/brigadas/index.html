@@ -25,6 +25,9 @@ nav ul li a:hover,nav ul li a.active{color:#fff;background:rgba(255,255,255,.1);
 nav .prog-wrap{padding:16px 20px 0;font-size:.75rem;opacity:.7}
 nav .prog-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:6px}
 nav .prog-fill{height:5px;background:var(--gold);border-radius:3px;transition:.4s}
+nav .nav-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.12);margin-top:12px}
+nav .nav-footer a{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.65);text-decoration:none;font-size:.8rem;padding:6px 0;transition:.2s}
+nav .nav-footer a:hover{color:#fff}
 main{flex:1;padding:32px 40px;max-width:960px}
 .page-hero{background:linear-gradient(135deg,rgba(22,61,122,.92),rgba(29,81,163,.85)),url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80') center/cover no-repeat;color:#fff;border-radius:var(--radius);padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden}
 .page-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:rgba(240,195,25,.12);border-radius:50%}
@@ -97,6 +100,56 @@ table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
 th{background:var(--blue);color:#fff;padding:10px 12px;text-align:left}
 td{padding:9px 12px;border-bottom:1px solid #d8e4f5;color:var(--text)}
 tr:nth-child(even) td{background:#f4f8fe}
+/* ── Quiz Game ── */
+.quiz-game{background:linear-gradient(135deg,#1a2840,#1D51A3);border-radius:14px;padding:24px;margin-top:20px;color:#fff}
+.qg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.qg-score{font-size:1.1rem;font-weight:700}
+.qg-streak{font-size:1.3rem;min-width:60px;text-align:center}
+.qg-progress{font-size:.85rem;opacity:.7}
+.qg-q-num{font-size:.78rem;opacity:.6;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.qg-question{font-size:1.05rem;font-weight:600;margin-bottom:16px;line-height:1.5}
+.qg-opts{display:grid;gap:8px}
+.qg-opt{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:.92rem;transition:.2s;text-align:left;color:#fff;width:100%}
+.qg-opt:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5)}
+.qg-opt.correct{background:#22a86b!important;border-color:#22a86b!important}
+.qg-opt.wrong{background:#e05c2d!important;border-color:#e05c2d!important}
+.qg-feedback{margin-top:14px;padding:10px 14px;border-radius:8px;font-weight:700;font-size:.95rem;min-height:42px}
+.qg-feedback.ok{background:rgba(34,168,107,.25);color:#7eefc0}
+.qg-feedback.err{background:rgba(224,92,45,.25);color:#ffb49a}
+.qg-result-final{text-align:center;padding:20px 0}
+.qg-result-final .big-score{font-size:3rem;font-weight:900;color:#F0C319}
+.qg-result-final p{margin-top:8px;opacity:.85}
+.qg-next-btn{background:#F0C319;color:#1a2840;border:none;border-radius:10px;padding:10px 24px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:14px;transition:.2s}
+.qg-next-btn:hover{opacity:.85}
+@keyframes correctPop{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* ── Fire Tetrahedron Simulator ── */
+@keyframes flamePulse{0%,100%{opacity:.7;filter:brightness(1)}50%{opacity:1;filter:brightness(1.3)}}
+.tetra-face{animation:flamePulse 2.4s ease-in-out infinite}
+.tetra-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tetra-card{border-radius:10px;padding:14px;color:#fff;font-size:.9rem;line-height:1.5}
+/* ── Sprinkler Simulator ── */
+.sprinkler-sim{margin:18px 0}
+.sprinkler-sim svg{display:block;width:100%;border-radius:10px;background:#e8f0fb}
+.sprinkler-btns{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.sp-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:.88rem;font-weight:700;cursor:pointer;transition:.2s}
+.sp-btn:hover{background:var(--blue-dark)}
+.sp-info-strip{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.sp-card{flex:1 1 140px;background:linear-gradient(135deg,#1a2840,#1D51A3);color:#fff;border-radius:10px;padding:14px;font-size:.82rem;line-height:1.5}
+.sp-card .sp-icon{font-size:1.5rem;margin-bottom:6px}
+/* ── MESERI Widget ── */
+.meseri-widget{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(29,81,163,.15);padding:24px;margin:18px 0}
+.meseri-widget h4{color:var(--blue-dark);font-size:1.05rem;font-weight:800;margin-bottom:16px}
+.meseri-row{margin-bottom:14px}
+.meseri-row label{display:block;font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:5px}
+.meseri-row select{width:100%;padding:9px 12px;border:1.5px solid #c5d9f5;border-radius:8px;font-size:.88rem;color:var(--text);background:#f8faff}
+.meseri-calc-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:11px 28px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px;transition:.2s}
+.meseri-calc-btn:hover{background:var(--blue-dark)}
+.meseri-result{margin-top:16px;padding:16px;border-radius:10px;display:none}
+.meseri-bar-wrap{background:#e0e8f5;border-radius:8px;height:18px;margin-top:10px;overflow:hidden}
+.meseri-bar-fill{height:18px;border-radius:8px;transition:width .6s ease}
+/* ── References ── */
+.ref-list li{margin-bottom:10px;font-size:.88rem;line-height:1.6;color:var(--text)}
 </style>
 </head>
 <body>
@@ -119,6 +172,10 @@ tr:nth-child(even) td{background:#f4f8fe}
     Progreso del curso
     <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
   </div>
+  <div class="nav-footer">
+    <a href="../index.html">📚 Catálogo de cursos</a>
+    <a href="../../index.html">🏠 Página principal</a>
+  </div>
 </nav>
 
 <main>
@@ -128,7 +185,7 @@ tr:nth-child(even) td{background:#f4f8fe}
   <div class="badges">
     <span class="badge">6 Módulos</span>
     <span class="badge">Decreto 2393 · NFPA</span>
-    <span class="badge gold">Certificación Incluida</span>
+    <span class="badge gold">🏛️ Certificación Ministerial</span>
   </div>
 </div>
 
@@ -216,9 +273,14 @@ tr:nth-child(even) td{background:#f4f8fe}
       <iframe src="https://www.youtube.com/embed/_RqdVXMRLW4" allowfullscreen loading="lazy" title="Brigadas de Emergencia NFPA"></iframe>
     </div>
 
+    <div class="vid-label">Video — Brigadas contra Incendios: Organización y Protocolos</div>
+    <div class="vid-wrap">
+      <iframe src="https://www.youtube.com/embed/dZpl_i2xWUk" allowfullscreen loading="lazy" title="Brigadas contra Incendios"></iframe>
+    </div>
+
     <!-- SIMULATOR M1 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 1</span>
+      <span class="sim-badge">Evaluación · Módulo 1</span>
       <h4>Escenarios: Marco Legal</h4>
       <div class="sim-q">
         <p>1. Una empresa con 30 trabajadores ¿está obligada a conformar una Brigada de Emergencia según el D.E. 2393?</p>
@@ -259,23 +321,7 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div id="s1-result" class="sim-result"></div>
     </div>
 
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 1</h4>
-      <div class="quiz-q">
-        <p>1. ¿Qué decreto regula las Brigadas de Emergencia en Ecuador?</p>
-        <label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) Decreto 1040</label>
-        <label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) Decreto Ejecutivo 2393</label>
-        <label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) Decreto 2393-A</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Cuál norma NFPA regula los sistemas de rociadores automáticos?</p>
-        <label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) NFPA 10</label>
-        <label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) NFPA 13</label>
-        <label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) NFPA 72</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq1',{q1a:'b',q1b:'b'})">Verificar</button>
-      <div id="mq1-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg1"></div>
   </div>
 </div>
 
@@ -350,14 +396,83 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div class="step"><div class="num">⛓️</div><p><strong>Inhibición</strong><br>Romper la reacción en cadena química (halones, polvo)</p></div>
     </div>
 
-    <div class="vid-label">Video — Química del Fuego y Clases</div>
-    <div class="vid-wrap">
-      <iframe src="https://www.youtube.com/embed/vaABzaTQprc" allowfullscreen loading="lazy" title="Química del Fuego"></iframe>
+    <!-- Tetraedro del Fuego — Simulador animado -->
+    <div class="diagram-wrap">
+      <div class="diagram-title">Simulador — Tetraedro del Fuego (animación secuencial)</div>
+      <svg width="500" height="380" viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;max-width:100%">
+        <defs>
+          <radialGradient id="tgFuel" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#c2410c"/></radialGradient>
+          <radialGradient id="tgOxy" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1e40af"/></radialGradient>
+          <radialGradient id="tgHeat" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#991b1b"/></radialGradient>
+          <radialGradient id="tgChain" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#6b21a8"/></radialGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Background -->
+        <rect width="500" height="380" fill="#0f172a" rx="12"/>
+        <!-- Center flame icon -->
+        <g transform="translate(250,160)">
+          <ellipse cx="0" cy="18" rx="22" ry="8" fill="#f97316" opacity=".4"/>
+          <path d="M0,-30 C8,-18 20,-10 14,6 C10,16 4,20 0,22 C-4,20 -10,16 -14,6 C-20,-10 -8,-18 0,-30Z" fill="#F0C319" filter="url(#glow)"/>
+          <path d="M0,-14 C4,-8 10,-4 7,4 C5,9 2,11 0,12 C-2,11 -5,9 -7,4 C-10,-4 -4,-8 0,-14Z" fill="#fff" opacity=".7"/>
+          <text y="38" text-anchor="middle" fill="#F0C319" font-size="11" font-weight="800" font-family="Segoe UI,sans-serif">FUEGO</text>
+        </g>
+        <!-- Top triangle: COMBUSTIBLE (fuel) — orange -->
+        <polygon points="250,30 155,165 345,165" fill="url(#tgFuel)" opacity=".85" class="tetra-face" style="animation-delay:0s"/>
+        <text x="250" y="100" text-anchor="middle" fill="#fff" font-size="15" font-weight="800" font-family="Segoe UI,sans-serif">COMBUSTIBLE</text>
+        <text x="250" y="118" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="10" font-family="Segoe UI,sans-serif">Material que se oxida</text>
+        <text x="250" y="134" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="Segoe UI,sans-serif">→ Eliminar: sofocación / remoción</text>
+        <!-- Left triangle: COMBURENTE (oxygen) — blue -->
+        <polygon points="30,310 250,165 140,310" fill="url(#tgOxy)" opacity=".85" class="tetra-face" style="animation-delay:.8s"/>
+        <text x="140" y="250" text-anchor="middle" fill="#fff" font-size="14" font-weight="800" font-family="Segoe UI,sans-serif">COMBURENTE</text>
+        <text x="140" y="267" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="10" font-family="Segoe UI,sans-serif">Oxígeno ≥ 16%</text>
+        <text x="140" y="282" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="Segoe UI,sans-serif">→ Sofocación (CO₂, espuma)</text>
+        <!-- Right triangle: ENERGÍA (heat) — red -->
+        <polygon points="470,310 250,165 360,310" fill="url(#tgHeat)" opacity=".85" class="tetra-face" style="animation-delay:1.6s"/>
+        <text x="362" y="250" text-anchor="middle" fill="#fff" font-size="13" font-weight="800" font-family="Segoe UI,sans-serif">ENERGÍA</text>
+        <text x="362" y="266" text-anchor="middle" fill="#fff" font-size="12" font-weight="800" font-family="Segoe UI,sans-serif">DE ACTIVACIÓN</text>
+        <text x="362" y="282" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9" font-family="Segoe UI,sans-serif">→ Enfriamiento (agua)</text>
+        <!-- Bottom center triangle: REACCIÓN EN CADENA — purple -->
+        <polygon points="140,310 360,310 250,165" fill="url(#tgChain)" opacity=".5" class="tetra-face" style="animation-delay:2.4s"/>
+        <text x="250" y="295" text-anchor="middle" fill="#fff" font-size="13" font-weight="800" font-family="Segoe UI,sans-serif">REACCIÓN EN CADENA</text>
+        <text x="250" y="310" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="Segoe UI,sans-serif">→ Inhibición química (polvo seco)</text>
+        <!-- Outline edges -->
+        <polygon points="250,30 155,165 345,165" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <polygon points="30,310 250,165 140,310" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <polygon points="470,310 250,165 360,310" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <polygon points="140,310 360,310 250,165" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+        <!-- Corner labels -->
+        <text x="250" y="22" text-anchor="middle" fill="#f97316" font-size="10" font-weight="700" font-family="Segoe UI,sans-serif">▲ COMBUSTIBLE</text>
+        <text x="30" y="326" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700" font-family="Segoe UI,sans-serif">◀ COMBURENTE</text>
+        <text x="470" y="326" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700" font-family="Segoe UI,sans-serif">CALOR ▶</text>
+      </svg>
+    </div>
+    <!-- 4 info cards -->
+    <div class="tetra-cards">
+      <div class="tetra-card" style="background:linear-gradient(135deg,#c2410c,#f97316)">
+        <strong>🪵 Combustible</strong><br>
+        Cualquier material capaz de oxidarse: madera, papel, gasolina, gas.<br>
+        <em>Extinción: eliminación o sofocación — retirar el material o cubrirlo.</em>
+      </div>
+      <div class="tetra-card" style="background:linear-gradient(135deg,#1e40af,#3b82f6)">
+        <strong>🌬️ Comburente (Oxígeno)</strong><br>
+        El fuego necesita O₂ ≥ 16%. El aire contiene ~21%.<br>
+        <em>Extinción: sofocación con CO₂, espuma AFFF o mantas ignífugas.</em>
+      </div>
+      <div class="tetra-card" style="background:linear-gradient(135deg,#991b1b,#ef4444)">
+        <strong>🌡️ Energía de Activación (Calor)</strong><br>
+        Temperatura necesaria para iniciar y mantener la combustión.<br>
+        <em>Extinción: enfriamiento con agua hasta bajar de la temperatura de ignición.</em>
+      </div>
+      <div class="tetra-card" style="background:linear-gradient(135deg,#6b21a8,#a855f7)">
+        <strong>⛓️ Reacción en Cadena</strong><br>
+        Proceso autosostenido que perpetúa la combustión a nivel molecular.<br>
+        <em>Extinción: inhibición química con polvo químico seco (PKS) o halones.</em>
+      </div>
     </div>
 
     <!-- SIMULATOR M2 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 2</span>
+      <span class="sim-badge">Evaluación · Módulo 2</span>
       <h4>Escenarios: Tetraedro del Fuego</h4>
       <div class="sim-q">
         <p>1. Se incendia un motor eléctrico en operación. ¿Qué clase de fuego es?</p>
@@ -398,23 +513,7 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div id="s2-result" class="sim-result"></div>
     </div>
 
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 2</h4>
-      <div class="quiz-q">
-        <p>1. ¿Cuántos elementos forma el Tetraedro del Fuego?</p>
-        <label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) 3</label>
-        <label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) 4</label>
-        <label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) 5</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Qué clase de fuego corresponde a gasolina y aceites?</p>
-        <label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) Clase A</label>
-        <label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) Clase B</label>
-        <label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Clase C</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq2',{q2a:'b',q2b:'b'})">Verificar</button>
-      <div id="mq2-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg2"></div>
   </div>
 </div>
 
@@ -492,7 +591,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M3 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 3</span>
+      <span class="sim-badge">Evaluación · Módulo 3</span>
       <h4>Escenarios: Extintores</h4>
       <div class="sim-q">
         <p>1. Hay un incendio de gasolina derramada en el taller. ¿Qué extintor NO debes usar?</p>
@@ -533,23 +632,7 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div id="s3-result" class="sim-result"></div>
     </div>
 
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 3</h4>
-      <div class="quiz-q">
-        <p>1. ¿Qué significan las siglas PASS?</p>
-        <label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Pulsar, Apuntar, Soltar, Subir</label>
-        <label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Pull, Aim, Squeeze, Sweep</label>
-        <label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Presionar, Apretar, Soltar, Salir</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Qué extintor NO usar en fuego clase C (eléctrico)?</p>
-        <label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) CO₂</label>
-        <label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) Agua</label>
-        <label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) Polvo ABC</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq3',{q3a:'b',q3b:'b'})">Verificar</button>
-      <div id="mq3-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg3"></div>
   </div>
 </div>
 
@@ -614,14 +697,102 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <div class="info-box"><strong>Gabinetes Contra Incendio (BIE):</strong> Las Bocas de Incendio Equipadas deben ubicarse de modo que cada punto del área protegida quede a no más de 25 metros de una manguera. Requieren inspección trimestral según NFPA 25.</div>
 
-    <div class="vid-label">Video — Sistemas Fijos de Extinción</div>
-    <div class="vid-wrap">
-      <iframe src="https://www.youtube.com/embed/b-AL6y0KKdM" allowfullscreen loading="lazy" title="Sistemas Fijos de Extinción"></iframe>
+    <!-- Simulador Rociadores — Secuencia de activación -->
+    <div class="sprinkler-sim">
+      <div class="diagram-title" style="margin-bottom:10px">Simulador — Activación de Sistema de Rociadores (Sprinklers)</div>
+      <svg id="spkSvg" viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px;background:#e8f0fb;width:100%">
+        <!-- Room walls -->
+        <rect x="10" y="10" width="640" height="270" rx="8" fill="#dce8f8" stroke="#1D51A3" stroke-width="2"/>
+        <!-- Ceiling pipe -->
+        <rect x="30" y="55" width="600" height="10" rx="4" fill="#6b7280"/>
+        <!-- Sprinkler 1 (left, near fire) -->
+        <g id="spk1">
+          <circle cx="130" cy="65" r="10" fill="#9ca3af" stroke="#4b5563" stroke-width="2" id="spk1head"/>
+          <line x1="120" y1="65" x2="140" y2="65" stroke="#374151" stroke-width="3"/>
+          <line x1="130" y1="55" x2="130" y2="75" stroke="#374151" stroke-width="3"/>
+          <!-- water drops (hidden initially) -->
+          <g id="spk1drops" style="display:none">
+            <circle cx="118" cy="85" r="4" fill="#60a5fa" opacity=".9"><animate attributeName="cy" from="80" to="270" dur="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to="0" dur="1.2s" repeatCount="indefinite"/></circle>
+            <circle cx="130" cy="95" r="4" fill="#3b82f6" opacity=".9"><animate attributeName="cy" from="90" to="270" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to="0" dur="1.4s" repeatCount="indefinite"/></circle>
+            <circle cx="142" cy="80" r="4" fill="#60a5fa" opacity=".9"><animate attributeName="cy" from="75" to="270" dur="1.0s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to="0" dur="1.0s" repeatCount="indefinite"/></circle>
+            <circle cx="110" cy="100" r="3" fill="#93c5fd" opacity=".8"><animate attributeName="cy" from="95" to="270" dur="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" from=".8" to="0" dur="1.6s" repeatCount="indefinite"/></circle>
+            <circle cx="150" cy="90" r="3" fill="#93c5fd" opacity=".8"><animate attributeName="cy" from="85" to="270" dur="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" from=".8" to="0" dur="1.3s" repeatCount="indefinite"/></circle>
+          </g>
+        </g>
+        <!-- Sprinkler 2 (center) -->
+        <g id="spk2">
+          <circle cx="330" cy="65" r="10" fill="#9ca3af" stroke="#4b5563" stroke-width="2"/>
+          <line x1="320" y1="65" x2="340" y2="65" stroke="#374151" stroke-width="3"/>
+          <line x1="330" y1="55" x2="330" y2="75" stroke="#374151" stroke-width="3"/>
+        </g>
+        <!-- Sprinkler 3 (right) -->
+        <g id="spk3">
+          <circle cx="530" cy="65" r="10" fill="#9ca3af" stroke="#4b5563" stroke-width="2"/>
+          <line x1="520" y1="65" x2="540" y2="65" stroke="#374151" stroke-width="3"/>
+          <line x1="530" y1="55" x2="530" y2="75" stroke="#374151" stroke-width="3"/>
+        </g>
+        <!-- Floor -->
+        <rect x="10" y="260" width="640" height="20" rx="0" fill="#b0bec5"/>
+        <!-- Fire source (hidden at step 0) -->
+        <g id="spkFire" style="display:none">
+          <ellipse cx="130" cy="262" rx="28" ry="8" fill="#f97316" opacity=".4"/>
+          <path id="flame1" d="M130,260 C138,240 150,230 142,215 C138,230 120,235 124,248 C116,238 110,225 114,210 C106,228 118,250 130,260Z" fill="#f97316">
+            <animate attributeName="d" dur=".6s" repeatCount="indefinite"
+              values="M130,260 C138,240 150,230 142,215 C138,230 120,235 124,248 C116,238 110,225 114,210 C106,228 118,250 130,260Z;
+                      M130,260 C140,238 152,225 144,210 C140,226 122,232 126,246 C118,235 112,222 116,208 C108,226 120,248 130,260Z;
+                      M130,260 C138,240 150,230 142,215 C138,230 120,235 124,248 C116,238 110,225 114,210 C106,228 118,250 130,260Z"/>
+          </path>
+          <path d="M130,258 C135,244 142,238 138,226 C135,238 124,241 126,250 C122,243 118,234 120,224 C115,236 122,250 130,258Z" fill="#fbbf24" opacity=".9">
+            <animate attributeName="opacity" values=".9;.6;.9" dur=".5s" repeatCount="indefinite"/>
+          </path>
+          <!-- Smoke -->
+          <g id="spkSmoke" opacity=".5">
+            <circle cx="128" cy="200" r="12" fill="#6b7280"><animate attributeName="cy" from="210" to="80" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from=".5" to="0" dur="2s" repeatCount="indefinite"/><animate attributeName="r" from="8" to="20" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="136" cy="195" r="10" fill="#9ca3af"><animate attributeName="cy" from="215" to="75" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" from=".4" to="0" dur="2.4s" repeatCount="indefinite"/><animate attributeName="r" from="6" to="18" dur="2.4s" repeatCount="indefinite"/></circle>
+          </g>
+        </g>
+        <!-- Status label -->
+        <rect x="200" y="130" width="260" height="50" rx="8" fill="rgba(255,255,255,.85)"/>
+        <text id="spkStatusLabel" x="330" y="152" text-anchor="middle" fill="#1a2840" font-size="13" font-weight="700" font-family="Segoe UI,sans-serif">Sistema en reposo</text>
+        <text id="spkStatusSub" x="330" y="170" text-anchor="middle" fill="#2e4060" font-size="10" font-family="Segoe UI,sans-serif">Haz clic en "Simular activación"</text>
+        <!-- Room labels -->
+        <text x="330" y="35" text-anchor="middle" fill="#374151" font-size="11" font-weight="600" font-family="Segoe UI,sans-serif">TUBERÍAS DE AGUA — Sistema de Rociadores</text>
+        <text x="90" y="285" text-anchor="middle" fill="#374151" font-size="9" font-family="Segoe UI,sans-serif">Zona de fuego</text>
+        <text x="330" y="285" text-anchor="middle" fill="#374151" font-size="9" font-family="Segoe UI,sans-serif">Pasillo central</text>
+        <text x="530" y="285" text-anchor="middle" fill="#374151" font-size="9" font-family="Segoe UI,sans-serif">Zona segura</text>
+      </svg>
+      <div class="sprinkler-btns">
+        <button class="sp-btn" onclick="runSprinklerSim()">▶ Simular activación</button>
+        <button class="sp-btn" style="background:#6b7280" onclick="resetSprinklerSim()">↺ Reiniciar</button>
+      </div>
+    </div>
+    <!-- 4-card info strip -->
+    <div class="sp-info-strip">
+      <div class="sp-card">
+        <div class="sp-icon">🚿</div>
+        <strong>Rociadores automáticos</strong><br>
+        Se activan a 57–93°C. Solo el sprinkler más cercano al fuego abre. Norma: NFPA 13.
+      </div>
+      <div class="sp-card">
+        <div class="sp-icon">💨</div>
+        <strong>CO₂</strong><br>
+        Inertización del oxígeno sin residuos. Ideal para salas de servidores y equipos eléctricos.
+      </div>
+      <div class="sp-card">
+        <div class="sp-icon">🧴</div>
+        <strong>Espuma (AFFF)</strong><br>
+        Forma película sobre líquidos inflamables. Clase B. Usado en hangares y refinadoras.
+      </div>
+      <div class="sp-card">
+        <div class="sp-icon">🧪</div>
+        <strong>Polvo Químico Seco (PKS)</strong><br>
+        Acción multipropósito clases A, B y C. Interrumpe la reacción en cadena química.
+      </div>
     </div>
 
     <!-- SIMULATOR M4 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 4</span>
+      <span class="sim-badge">Evaluación · Módulo 4</span>
       <h4>Escenarios: Sistemas Fijos</h4>
       <div class="sim-q">
         <p>1. Una sala de servidores necesita protección sin dañar equipos. ¿Qué sistema se recomienda?</p>
@@ -662,23 +833,7 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div id="s4-result" class="sim-result"></div>
     </div>
 
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 4</h4>
-      <div class="quiz-q">
-        <p>1. ¿Qué norma NFPA regula los sistemas de rociadores?</p>
-        <label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) NFPA 10</label>
-        <label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) NFPA 13</label>
-        <label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) NFPA 101</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Cuántos metros cubre como máximo un gabinete BIE?</p>
-        <label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) 10</label>
-        <label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) 25</label>
-        <label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) 50</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq4',{q4a:'b',q4b:'b'})">Verificar</button>
-      <div id="mq4-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg4"></div>
   </div>
 </div>
 
@@ -766,7 +921,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M5 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 5</span>
+      <span class="sim-badge">Evaluación · Módulo 5</span>
       <h4>Escenarios: Evacuación</h4>
       <div class="sim-q">
         <p>1. Durante la evacuación, una trabajadora cae y bloquea el pasillo. Como brigadista de evacuación, ¿qué haces?</p>
@@ -807,23 +962,7 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div id="s5-result" class="sim-result"></div>
     </div>
 
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 5</h4>
-      <div class="quiz-q">
-        <p>1. ¿Cuál norma regula las rutas y salidas de evacuación?</p>
-        <label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) NFPA 10</label>
-        <label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) NFPA 101</label>
-        <label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) NFPA 13</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Cuántos metros de distancia al edificio necesita el punto de encuentro?</p>
-        <label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) 10 m</label>
-        <label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) 50 m</label>
-        <label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) 100 m</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq5',{q5a:'b',q5b:'b'})">Verificar</button>
-      <div id="mq5-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg5"></div>
   </div>
 </div>
 
@@ -904,14 +1043,90 @@ tr:nth-child(even) td{background:#f4f8fe}
       <tr><td>Más de 8</td><td>Riesgo aceptable</td><td>Monitoreo periódico</td></tr>
     </table>
 
-    <div class="vid-label">Video — Evaluación de Riesgo de Incendio MESERI</div>
-    <div class="vid-wrap">
-      <iframe src="https://www.youtube.com/embed/-w64n11loW0" allowfullscreen loading="lazy" title="Método MESERI"></iframe>
+    <!-- Calculadora MESERI interactiva -->
+    <div class="meseri-widget">
+      <h4>🧮 Calculadora MESERI — Índice de Riesgo de Incendio</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="meseri-row">
+          <label>Altura del edificio</label>
+          <select id="mf1">
+            <option value="3">1 piso (3 pts)</option>
+            <option value="2">2–4 pisos (2 pts)</option>
+            <option value="1">5–8 pisos (1 pt)</option>
+            <option value="0">Más de 8 pisos (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Superficie del mayor sector</label>
+          <select id="mf2">
+            <option value="5">Menos de 500 m² (5 pts)</option>
+            <option value="4">500–1 500 m² (4 pts)</option>
+            <option value="3">1 501–2 500 m² (3 pts)</option>
+            <option value="2">2 501–3 500 m² (2 pts)</option>
+            <option value="1">3 501–4 500 m² (1 pt)</option>
+            <option value="0">Más de 4 500 m² (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Resistencia al fuego de la estructura</label>
+          <select id="mf3">
+            <option value="10">No combustible (10 pts)</option>
+            <option value="5">No combustible con falso techo (5 pts)</option>
+            <option value="0">Combustible (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Inflamabilidad de los contenidos</label>
+          <select id="mf4">
+            <option value="10">Bajo (10 pts)</option>
+            <option value="5">Medio (5 pts)</option>
+            <option value="0">Alto (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Distancia al cuerpo de bomberos</label>
+          <select id="mf5">
+            <option value="10">Menos de 5 min (10 pts)</option>
+            <option value="8">5–10 min (8 pts)</option>
+            <option value="6">10–15 min (6 pts)</option>
+            <option value="0">Más de 15 min (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Extintores portátiles</label>
+          <select id="mf6">
+            <option value="4">Sí, bien distribuidos (4 pts)</option>
+            <option value="2">Sí, mal distribuidos (2 pts)</option>
+            <option value="0">No hay extintores (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Bocas de incendio equipadas (BIE)</label>
+          <select id="mf7">
+            <option value="4">Sí (4 pts)</option>
+            <option value="0">No (0 pts)</option>
+          </select>
+        </div>
+        <div class="meseri-row">
+          <label>Detección automática de incendio</label>
+          <select id="mf8">
+            <option value="4">Sí (4 pts)</option>
+            <option value="0">No (0 pts)</option>
+          </select>
+        </div>
+      </div>
+      <button class="meseri-calc-btn" onclick="calcMeseri()">Calcular Riesgo MESERI</button>
+      <div id="meseriResult" class="meseri-result">
+        <div id="meseriLabel" style="font-size:1.1rem;font-weight:800;margin-bottom:8px"></div>
+        <div id="meseriScore" style="font-size:.9rem;margin-bottom:8px;color:var(--muted)"></div>
+        <div class="meseri-bar-wrap"><div id="meseriBarFill" class="meseri-bar-fill" style="width:0%"></div></div>
+        <div id="meseriAction" style="margin-top:10px;font-size:.88rem;color:var(--text)"></div>
+      </div>
     </div>
 
     <!-- SIMULATOR M6 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 6</span>
+      <span class="sim-badge">Evaluación · Módulo 6</span>
       <h4>Escenarios: MESERI</h4>
       <div class="sim-q">
         <p>1. Una empresa obtiene P = 3.5 en MESERI. ¿Cuál es su nivel de riesgo?</p>
@@ -952,101 +1167,203 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div id="s6-result" class="sim-result"></div>
     </div>
 
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 6</h4>
-      <div class="quiz-q">
-        <p>1. ¿Qué fórmula usa el Método MESERI?</p>
-        <label class="quiz-opt"><input type="radio" name="q6a" value="a"> a) P = X + Y</label>
-        <label class="quiz-opt"><input type="radio" name="q6a" value="b"> b) P = 5X/129 + 5Y/26</label>
-        <label class="quiz-opt"><input type="radio" name="q6a" value="c"> c) P = X × Y / 10</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Qué riesgo indica P = 1.5?</p>
-        <label class="quiz-opt"><input type="radio" name="q6b" value="a"> a) Riesgo bajo</label>
-        <label class="quiz-opt"><input type="radio" name="q6b" value="b"> b) Riesgo muy alto</label>
-        <label class="quiz-opt"><input type="radio" name="q6b" value="c"> c) Riesgo medio</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq6',{q6a:'b',q6b:'b'})">Verificar</button>
-      <div id="mq6-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg6"></div>
   </div>
 </div>
 
 <!-- ====== EVALUACIÓN FINAL ====== -->
 <div class="final-section anim-fadein" id="final">
   <h3>Evaluación Final — Brigadas de Emergencia</h3>
-  <p class="sub">Responde las 8 preguntas. Necesitas 6/8 correctas para aprobar y recibir tu certificado.</p>
+  <p class="sub">Responde las 20 preguntas. Necesitas 14/20 correctas (70%) para aprobar y recibir tu certificado.</p>
 
+  <!-- M1: Marco Legal (preguntas 1-3) -->
   <div class="final-q">
-    <p>1. ¿Cuántos trabajadores activa la obligación de conformar una Brigada de Emergencia según el D.E. 2393?</p>
+    <p>1. [M1] ¿Cuántos trabajadores activa la obligación de conformar una Brigada de Emergencia según el D.E. 2393?</p>
     <label class="final-opt"><input type="radio" name="fq1" value="a"> a) 10</label>
     <label class="final-opt"><input type="radio" name="fq1" value="b"> b) Más de 25</label>
     <label class="final-opt"><input type="radio" name="fq1" value="c"> c) 50</label>
     <label class="final-opt"><input type="radio" name="fq1" value="d"> d) 100</label>
   </div>
   <div class="final-q">
-    <p>2. ¿Cuántos elementos forman el Tetraedro del Fuego?</p>
-    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) 3</label>
-    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) 4</label>
-    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) 5</label>
-    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) 2</label>
+    <p>2. [M1] ¿Ante qué institución deben registrarse todas las emergencias laborales según el marco legal ecuatoriano?</p>
+    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) IESS — Instituto Ecuatoriano de Seguridad Social</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) Ministerio del Trabajo</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) Cuerpo de Bomberos</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) SART — Sistema de Auditoría de Riesgos del Trabajo</label>
   </div>
   <div class="final-q">
-    <p>3. Un incendio de gasolina corresponde a clase de fuego:</p>
-    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) Clase A</label>
-    <label class="final-opt"><input type="radio" name="fq3" value="b"> b) Clase B</label>
-    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) Clase C</label>
-    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) Clase D</label>
+    <p>3. [M1] ¿Qué norma NFPA regula la detección y alarmas de incendio?</p>
+    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) NFPA 10</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="b"> b) NFPA 72</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) NFPA 13</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) NFPA 101</label>
+  </div>
+
+  <!-- M2: Química del Fuego (preguntas 4-7) -->
+  <div class="final-q">
+    <p>4. [M2] ¿Cuántos elementos forman el Tetraedro del Fuego?</p>
+    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) 3</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="b"> b) 4</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) 5</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) 2</label>
   </div>
   <div class="final-q">
-    <p>4. El primer paso del método PASS es:</p>
-    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) Apretar la palanca</label>
-    <label class="final-opt"><input type="radio" name="fq4" value="b"> b"> Jalar el pin de seguridad</label>
-    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) Apuntar a la base</label>
-    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) Barrer horizontalmente</label>
+    <p>5. [M2] Un incendio de gasolina derramada corresponde a clase de fuego:</p>
+    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) Clase A</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="b"> b) Clase B</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) Clase C</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) Clase D</label>
   </div>
   <div class="final-q">
-    <p>5. El sistema de extinción recomendado para sala de servidores es:</p>
-    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) Rociadores de agua</label>
-    <label class="final-opt"><input type="radio" name="fq5" value="b"> b"> Agente limpio FM-200 o Novec</label>
-    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) Manguera BIE</label>
-    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) Extintor de polvo ABC</label>
+    <p>6. [M2] El método de extinción que actúa reduciendo el oxígeno por debajo del 16% se denomina:</p>
+    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) Enfriamiento</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) Dilución</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) Sofocación</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) Inhibición</label>
   </div>
   <div class="final-q">
-    <p>6. El ancho mínimo de pasillo de evacuación según NFPA 101 es:</p>
-    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) 0.60 m</label>
-    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) 1.12 m</label>
-    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) 2 m</label>
-    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) 0.90 m</label>
+    <p>7. [M2] Un incendio en una freidora industrial con aceite vegetal corresponde a clase de fuego:</p>
+    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) Clase B</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="b"> b) Clase A</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) Clase K</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) Clase C</label>
+  </div>
+
+  <!-- M3: Extintores (preguntas 8-10) -->
+  <div class="final-q">
+    <p>8. [M3] El primer paso del método PASS es:</p>
+    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) Apretar la palanca</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) Jalar el pin de seguridad (Pull)</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) Apuntar a la base del fuego</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) Barrer horizontalmente</label>
   </div>
   <div class="final-q">
-    <p>7. En el método MESERI, P = 9 indica:</p>
-    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) Riesgo muy alto</label>
-    <label class="final-opt"><input type="radio" name="fq7" value="b"> b"> Riesgo aceptable</label>
-    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) Riesgo medio</label>
-    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) Riesgo alto</label>
+    <p>9. [M3] ¿Qué extintor es el más adecuado para un incendio de equipo eléctrico energizado?</p>
+    <label class="final-opt"><input type="radio" name="fq9" value="a"> a) Agua presurizada</label>
+    <label class="final-opt"><input type="radio" name="fq9" value="b"> b) Espuma AFFF</label>
+    <label class="final-opt"><input type="radio" name="fq9" value="c"> c) CO₂ o Polvo BC/ABC</label>
+    <label class="final-opt"><input type="radio" name="fq9" value="d"> d) Extintor Clase K</label>
   </div>
   <div class="final-q">
-    <p>8. ¿Qué norma NFPA regula la detección y alarmas de incendio?</p>
-    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) NFPA 10</label>
-    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) NFPA 72</label>
-    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) NFPA 13</label>
-    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) NFPA 101</label>
+    <p>10. [M3] Según NFPA 10, ¿con qué frecuencia mínima debe inspeccionarse visualmente un extintor portátil?</p>
+    <label class="final-opt"><input type="radio" name="fq10" value="a"> a) Anualmente</label>
+    <label class="final-opt"><input type="radio" name="fq10" value="b"> b) Mensualmente</label>
+    <label class="final-opt"><input type="radio" name="fq10" value="c"> c) Cada 5 años</label>
+    <label class="final-opt"><input type="radio" name="fq10" value="d"> d) Solo después de usarlo</label>
+  </div>
+
+  <!-- M4: Sistemas Fijos (preguntas 11-13) -->
+  <div class="final-q">
+    <p>11. [M4] El sistema de extinción recomendado para una sala de servidores es:</p>
+    <label class="final-opt"><input type="radio" name="fq11" value="a"> a) Rociadores de agua</label>
+    <label class="final-opt"><input type="radio" name="fq11" value="b"> b) Agente limpio FM-200 o Novec 1230</label>
+    <label class="final-opt"><input type="radio" name="fq11" value="c"> c) Manguera BIE</label>
+    <label class="final-opt"><input type="radio" name="fq11" value="d"> d) Sistema de diluvio</label>
+  </div>
+  <div class="final-q">
+    <p>12. [M4] ¿A qué temperatura típica se activa un rociador automático estándar?</p>
+    <label class="final-opt"><input type="radio" name="fq12" value="a"> a) 30–40 °C</label>
+    <label class="final-opt"><input type="radio" name="fq12" value="b"> b) 68–93 °C</label>
+    <label class="final-opt"><input type="radio" name="fq12" value="c"> c) 120–150 °C</label>
+    <label class="final-opt"><input type="radio" name="fq12" value="d"> d) 200 °C</label>
+  </div>
+  <div class="final-q">
+    <p>13. [M4] ¿Cuál es la distancia máxima de cobertura de un gabinete BIE (Boca de Incendio Equipada)?</p>
+    <label class="final-opt"><input type="radio" name="fq13" value="a"> a) 10 metros</label>
+    <label class="final-opt"><input type="radio" name="fq13" value="b"> b) 50 metros</label>
+    <label class="final-opt"><input type="radio" name="fq13" value="c"> c) 25 metros</label>
+    <label class="final-opt"><input type="radio" name="fq13" value="d"> d) 5 metros</label>
+  </div>
+
+  <!-- M5: Evacuación (preguntas 14-17) -->
+  <div class="final-q">
+    <p>14. [M5] El ancho mínimo de pasillo de evacuación según NFPA 101 es:</p>
+    <label class="final-opt"><input type="radio" name="fq14" value="a"> a) 0.60 m</label>
+    <label class="final-opt"><input type="radio" name="fq14" value="b"> b) 1.12 m</label>
+    <label class="final-opt"><input type="radio" name="fq14" value="c"> c) 2 m</label>
+    <label class="final-opt"><input type="radio" name="fq14" value="d"> d) 0.90 m</label>
+  </div>
+  <div class="final-q">
+    <p>15. [M5] ¿A qué distancia mínima del edificio debe ubicarse el punto de encuentro?</p>
+    <label class="final-opt"><input type="radio" name="fq15" value="a"> a) 10 metros</label>
+    <label class="final-opt"><input type="radio" name="fq15" value="b"> b) 50 metros</label>
+    <label class="final-opt"><input type="radio" name="fq15" value="c"> c) 20 metros</label>
+    <label class="final-opt"><input type="radio" name="fq15" value="d"> d) 5 metros</label>
+  </div>
+  <div class="final-q">
+    <p>16. [M5] Las puertas de emergencia deben abrirse:</p>
+    <label class="final-opt"><input type="radio" name="fq16" value="a"> a) Hacia adentro, con llave</label>
+    <label class="final-opt"><input type="radio" name="fq16" value="b"> b) En la dirección del flujo de evacuación, sin llaves</label>
+    <label class="final-opt"><input type="radio" name="fq16" value="c"> c) Con código de acceso electrónico</label>
+    <label class="final-opt"><input type="radio" name="fq16" value="d"> d) Solo con autorización del jefe de brigada</label>
+  </div>
+  <div class="final-q">
+    <p>17. [M5] ¿Cuál es la responsabilidad principal del brigadista de evacuación durante una emergencia?</p>
+    <label class="final-opt"><input type="radio" name="fq17" value="a"> a) Combatir el incendio con extintores</label>
+    <label class="final-opt"><input type="radio" name="fq17" value="b"> b) Guiar y controlar el flujo de personas hacia las salidas</label>
+    <label class="final-opt"><input type="radio" name="fq17" value="c"> c) Llamar a los bomberos</label>
+    <label class="final-opt"><input type="radio" name="fq17" value="d"> d) Realizar el conteo de personal en el punto de encuentro</label>
+  </div>
+
+  <!-- M6: MESERI (preguntas 18-20) -->
+  <div class="final-q">
+    <p>18. [M6] En el método MESERI, P = 9 indica:</p>
+    <label class="final-opt"><input type="radio" name="fq18" value="a"> a) Riesgo muy alto</label>
+    <label class="final-opt"><input type="radio" name="fq18" value="b"> b) Riesgo aceptable</label>
+    <label class="final-opt"><input type="radio" name="fq18" value="c"> c) Riesgo medio</label>
+    <label class="final-opt"><input type="radio" name="fq18" value="d"> d) Riesgo alto</label>
+  </div>
+  <div class="final-q">
+    <p>19. [M6] Los factores "Y" en el método MESERI corresponden a:</p>
+    <label class="final-opt"><input type="radio" name="fq19" value="a"> a) Características constructivas del edificio</label>
+    <label class="final-opt"><input type="radio" name="fq19" value="b"> b) Medidas de protección activa y pasiva instaladas</label>
+    <label class="final-opt"><input type="radio" name="fq19" value="c"> c) Procesos productivos de la empresa</label>
+    <label class="final-opt"><input type="radio" name="fq19" value="d"> d) Personal de seguridad externo contratado</label>
+  </div>
+  <div class="final-q">
+    <p>20. [M6] ¿Qué acción se recomienda cuando el resultado MESERI es P entre 0 y 3?</p>
+    <label class="final-opt"><input type="radio" name="fq20" value="a"> a) Monitoreo periódico sin cambios</label>
+    <label class="final-opt"><input type="radio" name="fq20" value="b"> b) Mejoras urgentes — riesgo MUY ALTO</label>
+    <label class="final-opt"><input type="radio" name="fq20" value="c"> c) Mantenimiento preventivo estándar</label>
+    <label class="final-opt"><input type="radio" name="fq20" value="d"> d) Plan de mejoras a mediano plazo</label>
   </div>
 
   <button class="final-btn" onclick="submitFinalQuiz()">Enviar Evaluación Final</button>
   <div id="final-result" class="final-result"></div>
 </div>
+<!-- ====== REFERENCIAS ====== -->
+<div class="mod-card" id="referencias">
+  <div class="mod-header" style="background:linear-gradient(90deg,#1a2840,#2d6fd4)">
+    <div class="mod-num">📚</div><h2>Referencias Bibliográficas</h2>
+  </div>
+  <div class="mod-body">
+    <p style="margin-bottom:16px">Contenido basado en las siguientes fuentes académicas y normativas (formato APA 7.ª edición):</p>
+    <ol class="ref-list" style="padding-left:22px;line-height:2.2">
+      <li>National Fire Protection Association. (2022). <em>NFPA 10: Standard for Portable Fire Extinguishers</em> (edición 2022). NFPA.</li>
+      <li>National Fire Protection Association. (2022). <em>NFPA 13: Standard for the Installation of Sprinkler Systems</em> (edición 2022). NFPA.</li>
+      <li>National Fire Protection Association. (2022). <em>NFPA 72: National Fire Alarm and Signaling Code</em> (edición 2022). NFPA.</li>
+      <li>National Fire Protection Association. (2021). <em>NFPA 101: Life Safety Code</em> (edición 2021). NFPA.</li>
+      <li>National Fire Protection Association. (2021). <em>NFPA 1: Fire Code</em> (edición 2021). NFPA.</li>
+      <li>Ecuador. Decreto Ejecutivo N.º 2393. (1986, 17 de noviembre). <em>Reglamento de Seguridad y Salud de los Trabajadores y Mejoramiento del Medio Ambiente de Trabajo</em>. Registro Oficial N.º 565. Presidencia de la República del Ecuador.</li>
+      <li>Ministerio del Trabajo del Ecuador. (2017). <em>Resolución MDT-2017-0135: Normativa para la organización y funcionamiento de brigadas de emergencia</em>. Ministerio del Trabajo.</li>
+      <li>Instituto Ecuatoriano de Normalización. (2014). <em>NTE INEN 439: Colores, señales y símbolos de seguridad</em> (2.ª ed.). INEN.</li>
+      <li>Mapfre. (2019). <em>Manual de protección contra incendios: Método MESERI para la evaluación simplificada del riesgo de incendio</em>. Fundación Mapfre.</li>
+      <li>Cuerpo de Bomberos del Distrito Metropolitano de Quito. (2020). <em>Guía técnica para la conformación y capacitación de brigadas de emergencia empresariales</em>. CBDMQ.</li>
+    </ol>
+  </div>
+</div>
 </main>
 </div>
 
 <script>
+// ── Fade-in observer ────────────────────────────────────────────────
 const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible') }), {threshold:.12});
 document.querySelectorAll('.anim-fadein').forEach(el => io.observe(el));
 
+// ── Progress tracking ───────────────────────────────────────────────
 (function initProg(){
   const done = JSON.parse(localStorage.getItem('brigadas_progress')||'{}');
-  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const keys = ['qg1','qg2','qg3','qg4','qg5','qg6','final'];
   const pct = Math.round(Object.keys(done).length / keys.length * 100);
   document.getElementById('progFill').style.width = pct + '%';
 })();
@@ -1055,33 +1372,12 @@ function saveProg(key){
   const d = JSON.parse(localStorage.getItem('brigadas_progress')||'{}');
   d[key]=1;
   localStorage.setItem('brigadas_progress', JSON.stringify(d));
-  const keys = ['mq1','mq2','mq3','mq4','mq5','mq6','final'];
+  const keys = ['qg1','qg2','qg3','qg4','qg5','qg6','final'];
   const pct = Math.round(Object.keys(d).length / keys.length * 100);
   document.getElementById('progFill').style.width = pct + '%';
 }
 
-function checkMiniQuiz(id, correct){
-  let ok=0, all=true;
-  Object.entries(correct).forEach(([n,a]) => {
-    const s = document.querySelector(`input[name="${n}"]:checked`);
-    if(!s){ all=false; return; }
-    document.querySelectorAll(`input[name="${n}"]`).forEach(i => {
-      const l = i.closest('.quiz-opt');
-      if(i.value===a) l.classList.add('correct');
-      else if(i===s && i.value!==a) l.classList.add('wrong');
-      i.disabled=true;
-    });
-    if(s.value===a) ok++;
-  });
-  if(!all){ alert('Responde todas las preguntas.'); return; }
-  const r = document.getElementById(id+'-result');
-  r.style.display='block';
-  const total = Object.keys(correct).length;
-  r.className = 'quiz-result ' + (ok>=total?'pass':'fail');
-  r.textContent = ok===total ? `✅ ${ok}/${total} — ¡Correcto!` : `⚠️ ${ok}/${total} — Revisa el módulo`;
-  if(ok===total) saveProg(id);
-}
-
+// ── Simulator evaluations (preserved) ──────────────────────────────
 function runSim(simId, answers){
   let ok=0, all=true;
   Object.entries(answers).forEach(([n,a]) => {
@@ -1102,8 +1398,16 @@ function runSim(simId, answers){
   r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
 }
 
+// ── Final exam — 20 questions, pass = 14/20 ─────────────────────────
 function submitFinalQuiz(){
-  const answers = {fq1:'b',fq2:'b',fq3:'b',fq4:'b',fq5:'b',fq6:'b',fq7:'b',fq8:'b'};
+  const answers = {
+    fq1:'b', fq2:'b', fq3:'b',           // M1
+    fq4:'b', fq5:'b', fq6:'c', fq7:'c',  // M2
+    fq8:'b', fq9:'c', fq10:'b',           // M3
+    fq11:'b', fq12:'b', fq13:'c',         // M4
+    fq14:'b', fq15:'b', fq16:'b', fq17:'b', // M5
+    fq18:'b', fq19:'b', fq20:'b'          // M6
+  };
   let ok=0, all=true;
   Object.entries(answers).forEach(([n,a]) => {
     const s = document.querySelector(`input[name="${n}"]:checked`);
@@ -1116,20 +1420,22 @@ function submitFinalQuiz(){
     });
     if(s.value===a) ok++;
   });
-  if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
+  if(!all){ alert('Responde todas las 20 preguntas antes de enviar.'); return; }
   const r = document.getElementById('final-result');
   r.style.display='block';
-  if(ok>=6){
+  const pct = Math.round(ok/20*100);
+  if(ok>=14){
     r.className='final-result pass';
-    r.innerHTML=`🎉 ¡Aprobado! ${ok}/8 correctas<br><small>Certificado disponible en tu perfil</small>`;
+    r.innerHTML=`🎉 ¡Aprobado! ${ok}/20 correctas (${pct}%)<br><small>Certificado disponible en tu perfil</small>`;
     localStorage.setItem('brigadas_done','1');
     saveProg('final');
   } else {
     r.className='final-result fail';
-    r.innerHTML=`❌ ${ok}/8 — Necesitas 6 para aprobar. Revisa los módulos e intenta nuevamente.`;
+    r.innerHTML=`❌ ${ok}/20 (${pct}%) — Necesitas 14/20 para aprobar. Revisa los módulos e intenta nuevamente.`;
   }
 }
 
+// ── Nav scroll highlight ────────────────────────────────────────────
 const sections = document.querySelectorAll('[id^="m"],[id="final"]');
 const navLinks = document.querySelectorAll('nav ul li a');
 window.addEventListener('scroll', () => {
@@ -1138,7 +1444,210 @@ window.addEventListener('scroll', () => {
   navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
 }, {passive:true});
 
-// ── Module Locking ──────────────────────────────────────────────────
+// ── Sprinkler simulator ─────────────────────────────────────────────
+let spkStep = 0;
+function runSprinklerSim(){
+  if(spkStep===0){
+    // Step 1: fire appears
+    document.getElementById('spkFire').style.display='';
+    document.getElementById('spkStatusLabel').textContent='Incendio detectado';
+    document.getElementById('spkStatusSub').textContent='Humo y calor aumentan rápidamente…';
+    spkStep=1;
+    setTimeout(()=>{
+      // Step 2: nearest sprinkler activates
+      document.getElementById('spk1head').setAttribute('fill','#ef4444');
+      document.getElementById('spkStatusLabel').textContent='Rociador activado';
+      document.getElementById('spkStatusSub').textContent='Bulbo de vidrio fusible roto a ~68°C';
+      spkStep=2;
+      setTimeout(()=>{
+        // Step 3: water drops
+        document.getElementById('spk1drops').style.display='';
+        document.getElementById('spkStatusLabel').textContent='Agua descargando';
+        document.getElementById('spkStatusSub').textContent='Solo el rociador más cercano al fuego actúa (NFPA 13)';
+        spkStep=3;
+      },1000);
+    },1500);
+  }
+}
+function resetSprinklerSim(){
+  spkStep=0;
+  document.getElementById('spkFire').style.display='none';
+  document.getElementById('spk1drops').style.display='none';
+  document.getElementById('spk1head').setAttribute('fill','#9ca3af');
+  document.getElementById('spkStatusLabel').textContent='Sistema en reposo';
+  document.getElementById('spkStatusSub').textContent='Haz clic en "Simular activación"';
+}
+
+// ── MESERI calculator ───────────────────────────────────────────────
+function calcMeseri(){
+  const maxSum = 3+5+10+10+10+4+4+4; // = 50
+  const vals = ['mf1','mf2','mf3','mf4','mf5','mf6','mf7','mf8']
+    .map(id => parseInt(document.getElementById(id).value));
+  const sum = vals.reduce((a,b)=>a+b,0);
+  const P = (sum / maxSum) * 10;
+  const Pf = P.toFixed(1);
+  const res = document.getElementById('meseriResult');
+  const lbl = document.getElementById('meseriLabel');
+  const scr = document.getElementById('meseriScore');
+  const bar = document.getElementById('meseriBarFill');
+  const act = document.getElementById('meseriAction');
+  res.style.display='block';
+  scr.textContent = `Puntuación obtenida: ${sum}/${maxSum} puntos → P = ${Pf} / 10`;
+  bar.style.width = (P*10)+'%';
+  if(P<=3){
+    res.style.background='#fdf0eb'; lbl.style.color='#b91c1c';
+    lbl.textContent='🔴 Riesgo MUY ALTO';
+    bar.style.background='#ef4444';
+    act.textContent='Acción inmediata requerida: mejoras urgentes en protección activa y pasiva.';
+  } else if(P<=5){
+    res.style.background='#fff7ed'; lbl.style.color='#c2410c';
+    lbl.textContent='🟠 Riesgo ALTO';
+    bar.style.background='#f97316';
+    act.textContent='Mejoras urgentes: revisar extintores, detección y estructura en el corto plazo.';
+  } else if(P<=7.5){
+    res.style.background='#fefce8'; lbl.style.color='#854d0e';
+    lbl.textContent='🟡 Riesgo MEDIO';
+    bar.style.background='#eab308';
+    act.textContent='Mejoras recomendadas: optimizar medios de protección y capacitación de brigadas.';
+  } else {
+    res.style.background='#e6f9f1'; lbl.style.color='#166a45';
+    lbl.textContent='🟢 Riesgo ACEPTABLE';
+    bar.style.background='#22a86b';
+    act.textContent='Mantener las medidas actuales y realizar revisiones periódicas según NFPA.';
+  }
+}
+
+// ── Quiz Game Engine ────────────────────────────────────────────────
+function shuffle(arr){ return arr.slice().sort(()=>Math.random()-.5); }
+
+function initQuizGame(containerId, questions){
+  const qs = shuffle(questions);
+  let idx=0, score=0, streak=0;
+  const el = document.getElementById(containerId);
+  const modNum = containerId.replace('qg','');
+
+  function render(){
+    if(idx>=qs.length){ showResult(); return; }
+    const q = qs[idx];
+    const streakTxt = streak>=2 ? `🔥×${streak}` : (streak===1?'✅':'');
+    el.innerHTML = `
+      <div class="qg-header">
+        <span class="qg-score">⭐ ${score} pts</span>
+        <span class="qg-streak">${streakTxt}</span>
+        <span class="qg-progress">Pregunta ${idx+1} / ${qs.length}</span>
+      </div>
+      <div class="qg-q-num">Módulo ${modNum} — Pregunta ${idx+1}</div>
+      <div class="qg-question">${q.q}</div>
+      <div class="qg-opts">
+        ${q.opts.map((o,i)=>`<button class="qg-opt" onclick="qgAnswer('${containerId}',${i})">${o}</button>`).join('')}
+      </div>
+      <div class="qg-feedback" id="${containerId}-fb"></div>`;
+  }
+
+  window[containerId+'_state'] = { qs, idx:()=>idx, score:()=>score, streak:()=>streak,
+    answer(chosen){
+      const q = qs[idx];
+      const opts = el.querySelectorAll('.qg-opt');
+      opts.forEach((b,i)=>{ b.disabled=true; if(i===q.correct) b.classList.add('correct'); });
+      const fb = document.getElementById(containerId+'-fb');
+      if(chosen===q.correct){
+        opts[chosen].style.animation='correctPop .3s ease';
+        score++; streak++;
+        fb.className='qg-feedback ok';
+        fb.textContent='✅ ' + (q.exp||'¡Correcto!');
+      } else {
+        opts[chosen].classList.add('wrong');
+        streak=0;
+        fb.className='qg-feedback err';
+        fb.textContent='❌ ' + (q.exp||'Incorrecto. Revisa el módulo.');
+      }
+      const nb = document.createElement('button');
+      nb.className='qg-next-btn';
+      nb.textContent = idx+1<qs.length ? 'Siguiente →' : 'Ver resultado';
+      nb.onclick=()=>{ idx++; render(); };
+      fb.after(nb);
+    }
+  };
+
+  function showResult(){
+    const pct = Math.round(score/qs.length*100);
+    const emoji = pct>=80?'🏆':pct>=60?'👍':pct>=40?'📖':'💪';
+    el.innerHTML = `<div class="qg-result-final">
+      <div style="font-size:2.5rem">${emoji}</div>
+      <div class="big-score">${score}/${qs.length}</div>
+      <p>${pct}% — ${pct>=80?'¡Excelente dominio!':pct>=60?'Bien hecho, sigue practicando.':'Repasa el módulo para reforzar.'}</p>
+      <button class="qg-next-btn" onclick="initQuizGame('${containerId}',${JSON.stringify(questions)})">↺ Repetir quiz</button>
+    </div>`;
+    if(score>=Math.ceil(qs.length*0.8)) saveProg(containerId);
+  }
+
+  render();
+}
+
+function qgAnswer(id, chosen){
+  window[id+'_state'].answer(chosen);
+}
+
+// ── Quiz questions per module ───────────────────────────────────────
+const questions_m1 = [
+  {q:'¿Qué Decreto Ejecutivo regula las Brigadas de Emergencia en Ecuador?', opts:['Decreto 1040','Decreto Ejecutivo 2393','Decreto 2393-A','Código del Trabajo Art. 410'], correct:1, exp:'El D.E. 2393 es el Reglamento de Seguridad y Salud de los Trabajadores en Ecuador.'},
+  {q:'¿Cuántos trabajadores activan la obligación de conformar una Brigada de Emergencia?', opts:['Más de 10','Más de 25','Más de 50','Más de 100'], correct:1, exp:'El Art. 160 del D.E. 2393 establece el umbral en más de 25 trabajadores.'},
+  {q:'¿Cuál norma NFPA regula específicamente los sistemas de rociadores automáticos?', opts:['NFPA 10','NFPA 72','NFPA 13','NFPA 101'], correct:2, exp:'NFPA 13 es el estándar para instalación de sistemas de rociadores (sprinklers).'},
+  {q:'¿Ante qué institución deben registrarse las emergencias laborales en Ecuador?', opts:['IESS','Cuerpo de Bomberos','Ministerio del Trabajo','SART'], correct:2, exp:'El Ministerio del Trabajo (MT) es el ente receptor del registro de emergencias laborales.'},
+  {q:'¿Cuántos simulacros documentados exige la normativa ecuatoriana como mínimo por año?', opts:['Ninguno','Al menos uno','Dos','Cuatro'], correct:1, exp:'El D.E. 2393 exige al menos un simulacro anual documentado por empresa.'}
+];
+
+const questions_m2 = [
+  {q:'¿Cuántos elementos componen el Tetraedro del Fuego?', opts:['2','3','4','5'], correct:2, exp:'Los 4 elementos son: combustible, comburente (O₂), calor y reacción en cadena.'},
+  {q:'Un incendio de gasolina derramada corresponde a clase:', opts:['Clase A','Clase B','Clase C','Clase D'], correct:1, exp:'Clase B: líquidos y gases inflamables (gasolina, aceite, propano).'},
+  {q:'El método de extinción que rompe la reacción química en cadena se llama:', opts:['Enfriamiento','Sofocación','Dilución','Inhibición'], correct:3, exp:'La inhibición química interrumpe la cadena de radicales libres (polvo seco, halones).'},
+  {q:'¿Qué porcentaje mínimo de oxígeno necesita el fuego para continuar?', opts:['8%','16%','21%','25%'], correct:1, exp:'El fuego se extingue cuando el O₂ baja por debajo del 16% (sofocación).'},
+  {q:'Un incendio de aceite en una freidora industrial corresponde a clase:', opts:['Clase A','Clase B','Clase C','Clase K'], correct:3, exp:'Clase K: aceites y grasas de cocina. Requiere agente húmedo especial Clase K.'}
+];
+
+const questions_m3 = [
+  {q:'¿Qué significan las siglas PASS en el método de extinción?', opts:['Pulsar, Apuntar, Soltar, Subir','Pull, Aim, Squeeze, Sweep','Presionar, Activar, Soltar, Salir','Punto, Ángulo, Seguro, Sweep'], correct:1, exp:'PASS: Pull (jalar pin), Aim (apuntar a la base), Squeeze (apretar palanca), Sweep (barrer).'},
+  {q:'¿Qué extintor NO se debe usar en un incendio de equipo eléctrico energizado?', opts:['CO₂','Polvo ABC','Agua presurizada','Agente limpio FM-200'], correct:2, exp:'El agua conduce electricidad y puede electrocutar al operador. Nunca en fuego Clase C.'},
+  {q:'Al aplicar el extintor, ¿hacia dónde debe apuntarse la descarga?', opts:['A las llamas más altas','Al humo','A la base del fuego','Al techo para crear cortina'], correct:2, exp:'La base del fuego es donde está el combustible. Apuntar arriba solo enfría las llamas sin extinguir.'},
+  {q:'Según NFPA 10, ¿cada cuánto tiempo debe inspeccionarse visualmente un extintor?', opts:['Diariamente','Mensualmente','Anualmente','Cada 5 años'], correct:1, exp:'NFPA 10 exige inspección visual mensual y mantenimiento anual por técnico certificado.'},
+  {q:'¿Qué indica el manómetro de un extintor en zona roja?', opts:['Está cargado y listo','Necesita solo revisión del agente','Está despresurizado o sobrepresurizado — no operativo','Es normal en extintores de CO₂'], correct:2, exp:'Zona roja = fuera del rango operativo. El extintor debe retirarse de servicio inmediatamente.'}
+];
+
+const questions_m4 = [
+  {q:'¿Qué sistema fijo se recomienda para proteger una sala de servidores sin dañar equipos?', opts:['Rociadores de agua','Sistema de diluvio','Agente limpio FM-200 o Novec 1230','Gabinete BIE con manguera'], correct:2, exp:'Los agentes limpios se evaporan sin residuos, protegiendo equipos electrónicos sensibles.'},
+  {q:'¿A qué temperatura típica se activa el bulbo fusible de un rociador estándar?', opts:['30–40 °C','68–93 °C','120–150 °C','200 °C'], correct:1, exp:'El bulbo de vidrio del rociador estándar se rompe entre 68–93°C activando el sistema.'},
+  {q:'¿Cuál es la distancia máxima de cobertura de un gabinete BIE?', opts:['10 m','15 m','25 m','50 m'], correct:2, exp:'Cada punto del área protegida debe estar a no más de 25 m de una manguera BIE (NFPA 25).'},
+  {q:'¿Cuántos rociadores típicamente se activan en un incendio ordinario?', opts:['Todos a la vez','Solo el más cercano al fuego (1–2)','Al menos 10','Depende del panel de control'], correct:1, exp:'Solo el rociador cuyo bulbo alcanza la temperatura de activación se abre — no todo el sistema.'},
+  {q:'¿Qué norma NFPA regula la inspección de sistemas de mangueras y gabinetes BIE?', opts:['NFPA 10','NFPA 13','NFPA 25','NFPA 72'], correct:2, exp:'NFPA 25 regula la inspección, prueba y mantenimiento de sistemas de protección contra incendios.'}
+];
+
+const questions_m5 = [
+  {q:'¿Cuál norma NFPA regula las rutas de evacuación y salidas de emergencia?', opts:['NFPA 10','NFPA 13','NFPA 72','NFPA 101'], correct:3, exp:'NFPA 101 — Código de Seguridad Humana — establece todos los requisitos de evacuación.'},
+  {q:'¿A qué distancia mínima del edificio debe ubicarse el punto de encuentro?', opts:['10 m','20 m','50 m','100 m'], correct:2, exp:'El punto de encuentro debe estar a mínimo 50 m del edificio para garantizar la seguridad.'},
+  {q:'¿Cuál es el ancho mínimo de un pasillo de evacuación según NFPA 101?', opts:['0.60 m','0.90 m','1.12 m','2.00 m'], correct:2, exp:'NFPA 101 exige un ancho mínimo de 1.12 m (44 pulgadas) para pasillos de evacuación.'},
+  {q:'Las puertas de emergencia deben abrirse:', opts:['Hacia adentro con llave','En dirección del flujo de evacuación, sin llaves','Con código electrónico','Solo con autorización del jefe de brigada'], correct:1, exp:'Las puertas de emergencia abren en la dirección de la evacuación y no requieren llaves (barra antipánico).'},
+  {q:'¿Cuál es la responsabilidad principal del brigadista de evacuación?', opts:['Combatir el incendio','Llamar a los bomberos','Guiar y controlar el flujo de personas hacia las salidas','Realizar el triage de heridos'], correct:2, exp:'El brigadista de evacuación guía, controla y verifica que todas las personas lleguen al punto de encuentro.'}
+];
+
+const questions_m6 = [
+  {q:'¿Cuál es la fórmula del Método MESERI?', opts:['P = X + Y','P = X × Y / 10','P = 5X/129 + 5Y/26','P = (X − Y) / 10'], correct:2, exp:'La fórmula oficial MESERI pondera factores propios (X) y de protección (Y) para obtener P (0–10).'},
+  {q:'Un resultado P = 1.5 en MESERI indica:', opts:['Riesgo bajo — sin acción','Riesgo medio — mantenimiento','Riesgo muy alto — acción inmediata','Riesgo aceptable'], correct:2, exp:'P entre 0–3 = Riesgo MUY ALTO. Requiere mejoras urgentes en protección activa y pasiva.'},
+  {q:'Los factores "Y" en MESERI representan:', opts:['Características del edificio','Procesos productivos','Medidas de protección activa y pasiva instaladas','Personal de seguridad externo'], correct:2, exp:'Los factores Y incluyen extintores, BIEs, detectores y presencia de brigada o bomberos cercanos.'},
+  {q:'Instalar detectores automáticos de humo en un edificio sin protección mejora MESERI porque:', opts:['Aumenta los factores X','Disminuye los factores X','Aumenta los factores Y (protección)','No afecta el resultado P'], correct:2, exp:'Los detectores son medidas de protección activa (Y), lo que aumenta P y reduce el nivel de riesgo.'},
+  {q:'¿Qué valor de P indica riesgo ACEPTABLE en MESERI?', opts:['P < 2','P entre 3 y 5','P entre 5 y 8','P > 8'], correct:3, exp:'P > 8 corresponde a riesgo aceptable. La empresa debe mantener sus medidas y hacer revisiones periódicas.'}
+];
+
+// ── Initialize all quiz games ───────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function(){
+  initQuizGame('qg1', questions_m1);
+  initQuizGame('qg2', questions_m2);
+  initQuizGame('qg3', questions_m3);
+  initQuizGame('qg4', questions_m4);
+  initQuizGame('qg5', questions_m5);
+  initQuizGame('qg6', questions_m6);
+});
+
+// ── Module Locking (preserved) ──────────────────────────────────────
 const COURSE_KEY = 'brigadas';
 function isModUnlocked(n){ return n<=1 || localStorage.getItem(COURSE_KEY+'_mod_'+(n-1)+'_pass')==='1'; }
 function unlockMod(n){
@@ -1147,7 +1656,7 @@ function unlockMod(n){
   card.classList.remove('locked'); card.style.animation='unlockPop .5s ease';
   const lb=card.querySelector('.lock-badge'); if(lb) lb.remove();
 }
-const _origRunSim = window.runSim || runSim;
+const _origRunSim = runSim;
 window.runSim = function(simId, answers){
   _origRunSim(simId, answers);
   if(sessionStorage.getItem('ph_admin')==='1') return;

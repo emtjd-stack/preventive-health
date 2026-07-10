@@ -27,6 +27,9 @@ nav ul li a:hover,nav ul li a.active{color:#fff;background:rgba(255,255,255,.1);
 nav .prog-wrap{padding:16px 20px 0;font-size:.75rem;opacity:.7}
 nav .prog-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:6px}
 nav .prog-fill{height:5px;background:var(--gold);border-radius:3px;transition:.4s}
+nav .nav-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.12);margin-top:12px}
+nav .nav-footer a{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.65);text-decoration:none;font-size:.8rem;padding:6px 0;transition:.2s}
+nav .nav-footer a:hover{color:#fff}
 
 main{flex:1;padding:32px 40px;max-width:960px}
 .page-hero{background:linear-gradient(135deg,rgba(22,61,122,.92),rgba(29,81,163,.85)),url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=1200&q=80') center/cover no-repeat;color:#fff;border-radius:var(--radius);padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden}
@@ -120,6 +123,62 @@ table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
 th{background:var(--blue);color:#fff;padding:10px 12px;text-align:left}
 td{padding:9px 12px;border-bottom:1px solid #d8e4f5;color:var(--text)}
 tr:nth-child(even) td{background:#f4f8fe}
+
+/* Chain of Survival animation */
+@keyframes chainPulse{0%,100%{filter:drop-shadow(0 0 0px transparent)}50%{filter:drop-shadow(0 0 10px currentColor)}}
+.chain-link-1{animation:chainPulse 4s ease-in-out 0s infinite}
+.chain-link-2{animation:chainPulse 4s ease-in-out 1s infinite}
+.chain-link-3{animation:chainPulse 4s ease-in-out 2s infinite}
+.chain-link-4{animation:chainPulse 4s ease-in-out 3s infinite}
+
+/* Interactive trauma cards (M5) */
+.trauma-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:20px 0}
+.trauma-card{border-radius:12px;padding:16px;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;min-height:160px}
+.trauma-card:hover,.trauma-card:focus{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.trauma-card .tc-icon{font-size:2rem;display:block;margin-bottom:8px}
+.trauma-card .tc-title{font-size:1rem;font-weight:800;margin-bottom:6px}
+.trauma-card .tc-short{font-size:.85rem;opacity:.9;margin-bottom:8px}
+.trauma-card .tc-detail{font-size:.8rem;max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .4s ease;opacity:0;line-height:1.55}
+.trauma-card:hover .tc-detail,.trauma-card:focus .tc-detail{max-height:200px;opacity:1}
+.trauma-card.tc-fractura{background:linear-gradient(135deg,#1D51A3,#2d6fd4);color:#fff}
+.trauma-card.tc-luxacion{background:linear-gradient(135deg,#e05c2d,#f09040);color:#fff}
+.trauma-card.tc-esguince{background:linear-gradient(135deg,#22a86b,#2fd886);color:#fff}
+.trauma-card.tc-contusion{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
+
+/* Immobilization vertical timeline (M5) */
+.immo-timeline{position:relative;padding-left:52px;margin:24px 0}
+.immo-timeline::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--blue),var(--gold));border-radius:2px}
+.immo-step{position:relative;margin-bottom:28px}
+.immo-step:last-child{margin-bottom:0}
+.immo-num{position:absolute;left:-52px;top:0;width:38px;height:38px;border-radius:50%;background:var(--gold);color:#1a2840;font-weight:900;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(240,195,25,.4)}
+.immo-step h4{font-size:1rem;font-weight:700;color:var(--blue-dark);margin-bottom:4px}
+.immo-step p{font-size:.9rem;color:var(--text);line-height:1.55;margin:0}
+.immo-icon{font-size:1.1rem;margin-right:4px}
+
+/* Mini-game quiz */
+.quiz-game{background:linear-gradient(135deg,#1a2840,#1D51A3);border-radius:14px;padding:24px;margin-top:20px;color:#fff}
+.qg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.qg-score{font-size:1.1rem;font-weight:700}
+.qg-streak{font-size:1.3rem;min-width:60px;text-align:center}
+.qg-progress{font-size:.85rem;opacity:.7}
+.qg-q-num{font-size:.78rem;opacity:.6;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.qg-question{font-size:1.05rem;font-weight:600;margin-bottom:16px;line-height:1.5}
+.qg-opts{display:grid;gap:8px}
+.qg-opt{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:.92rem;transition:.2s;text-align:left;color:#fff;width:100%}
+.qg-opt:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5)}
+.qg-opt.correct{background:#22a86b!important;border-color:#22a86b!important;animation:correctPop .4s}
+.qg-opt.wrong{background:#e05c2d!important;border-color:#e05c2d!important;animation:wrongShake .4s}
+.qg-opt:disabled{cursor:default}
+.qg-feedback{margin-top:14px;padding:10px 14px;border-radius:8px;font-weight:700;font-size:.95rem;min-height:42px}
+.qg-feedback.ok{background:rgba(34,168,107,.25);color:#7eefc0}
+.qg-feedback.err{background:rgba(224,92,45,.25);color:#ffb49a}
+.qg-result-final{text-align:center;padding:20px 0}
+.qg-result-final .big-score{font-size:3rem;font-weight:900;color:var(--gold,#F0C319)}
+.qg-result-final p{margin-top:8px;opacity:.85}
+.qg-next-btn{background:var(--gold,#F0C319);color:#1a2840;border:none;border-radius:10px;padding:10px 24px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:14px;transition:.2s}
+.qg-next-btn:hover{opacity:.85}
+@keyframes correctPop{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 </style>
 </head>
 <body>
@@ -138,10 +197,15 @@ tr:nth-child(even) td{background:#f4f8fe}
     <li><a href="#m5">🦴 M5 · Trauma Osteoarticular</a></li>
     <li><a href="#m6">❤️ M6 · RCP y DEA</a></li>
     <li><a href="#final">📝 Evaluación Final</a></li>
+    <li><a href="#referencias">📚 Referencias</a></li>
   </ul>
   <div class="prog-wrap">
     Progreso del curso
     <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+  <div class="nav-footer">
+    <a href="../index.html">📚 Catálogo de cursos</a>
+    <a href="../../index.html">🏠 Página principal</a>
   </div>
 </nav>
 
@@ -153,7 +217,7 @@ tr:nth-child(even) td{background:#f4f8fe}
   <div class="badges">
     <span class="badge">6 Módulos</span>
     <span class="badge">AHA / ILCOR 2020</span>
-    <span class="badge gold">Certificación Incluida</span>
+    <span class="badge gold">🎓 Certificado Preventive Health</span>
   </div>
 </div>
 
@@ -179,47 +243,68 @@ tr:nth-child(even) td{background:#f4f8fe}
       <div class="step"><div class="num">6</div><p>Recuperación y rehabilitación</p></div>
     </div>
 
-    <!-- SVG Cadena de Supervivencia -->
+    <!-- SVG Cadena de Supervivencia — animated chain links -->
     <div class="diagram-wrap">
-      <div class="diagram-title">Diagrama — Cadena de Supervivencia</div>
-      <svg viewBox="0 0 820 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+      <div class="diagram-title">Diagrama — Cadena de Supervivencia (AHA 2020)</div>
+      <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible">
         <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
-          <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
-          <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F0C319"/><stop offset="100%" stop-color="#f5d860"/></linearGradient>
-          <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
-          <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
-          <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0e7490"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+          <linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
+          <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
+          <linearGradient id="cg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d4a800"/><stop offset="100%" stop-color="#F0C319"/></linearGradient>
+          <linearGradient id="cg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
+          <linearGradient id="cg5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
+          <linearGradient id="cg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0e7490"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
         </defs>
-        <!-- Links -->
-        <rect x="2" y="30" width="110" height="60" rx="12" fill="url(#g1)"/>
-        <text x="57" y="56" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Reconocimiento</text>
-        <text x="57" y="70" text-anchor="middle" fill="#fff" font-size="9">SEM</text>
-        <polygon points="112,60 124,52 124,68" fill="url(#g1)"/>
 
-        <rect x="125" y="30" width="110" height="60" rx="12" fill="url(#g2)"/>
-        <text x="180" y="56" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">RCP Precoz</text>
-        <text x="180" y="70" text-anchor="middle" fill="#fff" font-size="9">Testigos</text>
-        <polygon points="235,60 247,52 247,68" fill="url(#g2)"/>
+        <!-- Link 1: Reconocimiento / SEM — orange -->
+        <g class="chain-link-1" color="#e05c2d" transform="translate(62,90)">
+          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg1)" stroke-width="16" transform="rotate(-38)"/>
+          <text y="-44" text-anchor="middle" fill="#e05c2d" font-size="11" font-weight="800">📞 Llamar 911</text>
+          <text y="-30" text-anchor="middle" fill="#a03020" font-size="9">Reconocimiento</text>
+        </g>
 
-        <rect x="248" y="30" width="110" height="60" rx="12" fill="url(#g3)"/>
-        <text x="303" y="56" text-anchor="middle" fill="#1a2840" font-size="10" font-weight="700">DEA Precoz</text>
-        <text x="303" y="70" text-anchor="middle" fill="#1a2840" font-size="9">Desfibrilación</text>
-        <polygon points="358,60 370,52 370,68" fill="url(#g3)"/>
+        <!-- Link 2: RCP Precoz — blue (overlaps link 1 at right) -->
+        <g class="chain-link-2" color="#1D51A3" transform="translate(182,90)">
+          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg2)" stroke-width="16" transform="rotate(38)"/>
+          <text y="-44" text-anchor="middle" fill="#1D51A3" font-size="11" font-weight="800">🤝 RCP Precoz</text>
+          <text y="-30" text-anchor="middle" fill="#163d7a" font-size="9">Por testigos</text>
+        </g>
 
-        <rect x="371" y="30" width="110" height="60" rx="12" fill="url(#g4)"/>
-        <text x="426" y="56" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">SVA</text>
-        <text x="426" y="70" text-anchor="middle" fill="#fff" font-size="9">Post-RCP</text>
-        <polygon points="481,60 493,52 493,68" fill="url(#g4)"/>
+        <!-- Link 3: DEA — gold -->
+        <g class="chain-link-3" color="#d4a800" transform="translate(302,90)">
+          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg3)" stroke-width="16" transform="rotate(-38)"/>
+          <text y="-44" text-anchor="middle" fill="#b45309" font-size="11" font-weight="800">⚡ Desfibrilación</text>
+          <text y="-30" text-anchor="middle" fill="#92400e" font-size="9">DEA Precoz</text>
+        </g>
 
-        <rect x="494" y="30" width="110" height="60" rx="12" fill="url(#g5)"/>
-        <text x="549" y="56" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Cuidados</text>
-        <text x="549" y="70" text-anchor="middle" fill="#fff" font-size="9">Intensivos</text>
-        <polygon points="604,60 616,52 616,68" fill="url(#g5)"/>
+        <!-- Link 4: SVA — green -->
+        <g class="chain-link-4" color="#22a86b" transform="translate(422,90)">
+          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg4)" stroke-width="16" transform="rotate(38)"/>
+          <text y="-44" text-anchor="middle" fill="#22a86b" font-size="11" font-weight="800">🏥 Soporte Vital</text>
+          <text y="-30" text-anchor="middle" fill="#166a45" font-size="9">SVA Avanzado</text>
+        </g>
 
-        <rect x="617" y="30" width="110" height="60" rx="12" fill="url(#g6)"/>
-        <text x="672" y="56" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Recuperación</text>
-        <text x="672" y="70" text-anchor="middle" fill="#fff" font-size="9">Rehabilitación</text>
+        <!-- Link 5: Cuidados Intensivos — purple (chain-link-1 reused timing offset) -->
+        <g style="animation:chainPulse 4s ease-in-out 0.5s infinite" color="#7c3aed" transform="translate(542,90)">
+          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg5)" stroke-width="16" transform="rotate(-38)"/>
+          <text y="-44" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="800">🫀 Cuidados</text>
+          <text y="-30" text-anchor="middle" fill="#6d28d9" font-size="9">Intensivos</text>
+        </g>
+
+        <!-- Link 6: Recuperación — teal -->
+        <g style="animation:chainPulse 4s ease-in-out 1.5s infinite" color="#0e7490" transform="translate(662,90)">
+          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg6)" stroke-width="16" transform="rotate(38)"/>
+          <text y="-44" text-anchor="middle" fill="#0e7490" font-size="11" font-weight="800">♻️ Recuperación</text>
+          <text y="-30" text-anchor="middle" fill="#155e75" font-size="9">Rehabilitación</text>
+        </g>
+
+        <!-- Step labels below -->
+        <text x="62"  y="148" text-anchor="middle" fill="#e05c2d" font-size="9.5" font-weight="700">Eslabón 1</text>
+        <text x="182" y="148" text-anchor="middle" fill="#1D51A3" font-size="9.5" font-weight="700">Eslabón 2</text>
+        <text x="302" y="148" text-anchor="middle" fill="#b45309" font-size="9.5" font-weight="700">Eslabón 3</text>
+        <text x="422" y="148" text-anchor="middle" fill="#22a86b" font-size="9.5" font-weight="700">Eslabón 4</text>
+        <text x="542" y="148" text-anchor="middle" fill="#7c3aed" font-size="9.5" font-weight="700">Eslabón 5</text>
+        <text x="662" y="148" text-anchor="middle" fill="#0e7490" font-size="9.5" font-weight="700">Eslabón 6</text>
       </svg>
     </div>
 
@@ -240,7 +325,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M1 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 1</span>
+      <span class="sim-badge">Evaluación · Módulo 1</span>
       <h4>Escenarios: Cadena de Supervivencia</h4>
       <div class="sim-q">
         <p>1. Llegas al lugar y un compañero está inconsciente en el suelo. ¿Cuál es TU primer paso?</p>
@@ -282,23 +367,7 @@ tr:nth-child(even) td{background:#f4f8fe}
     </div>
 
     <!-- MINI-QUIZ M1 -->
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 1</h4>
-      <div class="quiz-q">
-        <p>1. ¿Cuántos eslabones tiene la Cadena de Supervivencia (AHA 2020)?</p>
-        <label class="quiz-opt"><input type="radio" name="q1a" value="a"> a) 4</label>
-        <label class="quiz-opt"><input type="radio" name="q1a" value="b"> b) 6</label>
-        <label class="quiz-opt"><input type="radio" name="q1a" value="c"> c) 5</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Cuánto disminuye la supervivencia por cada minuto sin RCP?</p>
-        <label class="quiz-opt"><input type="radio" name="q1b" value="a"> a) 2-3%</label>
-        <label class="quiz-opt"><input type="radio" name="q1b" value="b"> b) 7-10%</label>
-        <label class="quiz-opt"><input type="radio" name="q1b" value="c"> c) 15-20%</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq1',{q1a:'b',q1b:'b'})">Verificar</button>
-      <div id="mq1-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg_m1"><div class="qg-loading" style="text-align:center;padding:20px;opacity:.6">Cargando mini-juego…</div></div>
   </div>
 </div>
 
@@ -376,7 +445,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M2 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 2</span>
+      <span class="sim-badge">Evaluación · Módulo 2</span>
       <h4>Escenarios: Valoración del Paciente</h4>
       <div class="sim-q">
         <p>1. Un operario cae al suelo. Según ABCDE, ¿qué verificas PRIMERO?</p>
@@ -418,23 +487,7 @@ tr:nth-child(even) td{background:#f4f8fe}
     </div>
 
     <!-- MINI-QUIZ M2 -->
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 2</h4>
-      <div class="quiz-q">
-        <p>1. ¿Qué significa la "D" en el protocolo ABCDE?</p>
-        <label class="quiz-opt"><input type="radio" name="q2a" value="a"> a) Desfibrilación</label>
-        <label class="quiz-opt"><input type="radio" name="q2a" value="b"> b) Disability (estado neurológico)</label>
-        <label class="quiz-opt"><input type="radio" name="q2a" value="c"> c) Dolor</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. En AVDI, "I" indica que el paciente:</p>
-        <label class="quiz-opt"><input type="radio" name="q2b" value="a"> a) Está irritable</label>
-        <label class="quiz-opt"><input type="radio" name="q2b" value="b"> b) No responde a ningún estímulo</label>
-        <label class="quiz-opt"><input type="radio" name="q2b" value="c"> c) Solo responde al dolor</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq2',{q2a:'b',q2b:'b'})">Verificar</button>
-      <div id="mq2-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg_m2"><div class="qg-loading" style="text-align:center;padding:20px;opacity:.6">Cargando mini-juego…</div></div>
   </div>
 </div>
 
@@ -509,7 +562,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M3 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 3</span>
+      <span class="sim-badge">Evaluación · Módulo 3</span>
       <h4>Escenarios: Control de Hemorragias</h4>
       <div class="sim-q">
         <p>1. Un trabajador tiene una laceración profunda en el antebrazo con sangre rojo brillante y pulsátil. ¿Tipo de hemorragia?</p>
@@ -551,23 +604,7 @@ tr:nth-child(even) td{background:#f4f8fe}
     </div>
 
     <!-- MINI-QUIZ M3 -->
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 3</h4>
-      <div class="quiz-q">
-        <p>1. ¿Cuál hemorragia es de color rojo oscuro y flujo continuo?</p>
-        <label class="quiz-opt"><input type="radio" name="q3a" value="a"> a) Arterial</label>
-        <label class="quiz-opt"><input type="radio" name="q3a" value="b"> b) Venosa</label>
-        <label class="quiz-opt"><input type="radio" name="q3a" value="c"> c) Capilar</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Cuál es el tiempo máximo recomendado de un torniquete sin reevaluación médica?</p>
-        <label class="quiz-opt"><input type="radio" name="q3b" value="a"> a) 30 minutos</label>
-        <label class="quiz-opt"><input type="radio" name="q3b" value="b"> b) 2 horas</label>
-        <label class="quiz-opt"><input type="radio" name="q3b" value="c"> c) 4 horas</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq3',{q3a:'b',q3b:'b'})">Verificar</button>
-      <div id="mq3-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg_m3"><div class="qg-loading" style="text-align:center;padding:20px;opacity:.6">Cargando mini-juego…</div></div>
   </div>
 </div>
 
@@ -651,7 +688,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M4 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 4</span>
+      <span class="sim-badge">Evaluación · Módulo 4</span>
       <h4>Escenarios: Quemaduras</h4>
       <div class="sim-q">
         <p>1. Un soldador recibe una salpicadura en el antebrazo: piel rosada, ampollas, muy dolorosa. ¿Grado?</p>
@@ -693,23 +730,7 @@ tr:nth-child(even) td{background:#f4f8fe}
     </div>
 
     <!-- MINI-QUIZ M4 -->
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 4</h4>
-      <div class="quiz-q">
-        <p>1. ¿Cuánto tiempo se enfría una quemadura con agua fresca?</p>
-        <label class="quiz-opt"><input type="radio" name="q4a" value="a"> a) 5 minutos</label>
-        <label class="quiz-opt"><input type="radio" name="q4a" value="b"> b) 20 minutos</label>
-        <label class="quiz-opt"><input type="radio" name="q4a" value="c"> c) 1 hora</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Qué se debe hacer con las ampollas de una quemadura de 2do grado?</p>
-        <label class="quiz-opt"><input type="radio" name="q4b" value="a"> a) Reventarlas con aguja estéril</label>
-        <label class="quiz-opt"><input type="radio" name="q4b" value="b"> b) No reventarlas; cubrir con apósito estéril húmedo</label>
-        <label class="quiz-opt"><input type="radio" name="q4b" value="c"> c) Aplicar crema antibiótica directamente</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq4',{q4a:'b',q4b:'b'})">Verificar</button>
-      <div id="mq4-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg_m4"><div class="qg-loading" style="text-align:center;padding:20px;opacity:.6">Cargando mini-juego…</div></div>
   </div>
 </div>
 
@@ -726,48 +747,84 @@ tr:nth-child(even) td{background:#f4f8fe}
     <p>El <strong>trauma osteoarticular</strong> abarca las lesiones del sistema musculoesquelético: fracturas, esguinces, luxaciones y contusiones. En el entorno laboral, el mecanismo de lesión más frecuente es la caída desde altura, el atrapamiento y los golpes directos.</p>
 
     <h3>Diferenciación de Lesiones Osteoarticulares</h3>
-    <!-- SVG tabla comparativa -->
-    <div class="diagram-wrap">
-      <div class="diagram-title">Comparativa: Fractura · Esguince · Luxación</div>
-      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-        <!-- Fractura -->
-        <rect x="10" y="10" width="215" height="140" rx="12" fill="#f0f4ff" stroke="#1D51A3" stroke-width="2"/>
-        <text x="117" y="36" text-anchor="middle" fill="#163d7a" font-size="12" font-weight="800">FRACTURA</text>
-        <line x1="30" y1="70" x2="200" y2="70" stroke="#1D51A3" stroke-width="3"/>
-        <line x1="100" y1="70" x2="120" y2="50" stroke="#e05c2d" stroke-width="2.5" stroke-dasharray="5"/>
-        <text x="117" y="100" text-anchor="middle" fill="#163d7a" font-size="9">Solución de continuidad</text>
-        <text x="117" y="115" text-anchor="middle" fill="#163d7a" font-size="9">del hueso</text>
-        <text x="117" y="135" text-anchor="middle" fill="#163d7a" font-size="9">Crepitación · deformidad</text>
-
-        <!-- Esguince -->
-        <rect x="243" y="10" width="215" height="140" rx="12" fill="#f0fff4" stroke="#22a86b" stroke-width="2"/>
-        <text x="350" y="36" text-anchor="middle" fill="#166a45" font-size="12" font-weight="800">ESGUINCE</text>
-        <ellipse cx="350" cy="75" rx="35" ry="25" fill="none" stroke="#22a86b" stroke-width="2.5"/>
-        <line x1="320" y1="90" x2="350" y2="75" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"/>
-        <text x="350" y="100" text-anchor="middle" fill="#166a45" font-size="9">Lesión ligamentosa</text>
-        <text x="350" y="115" text-anchor="middle" fill="#166a45" font-size="9">sin pérdida articular</text>
-        <text x="350" y="135" text-anchor="middle" fill="#166a45" font-size="9">Dolor · edema · equimosis</text>
-
-        <!-- Luxación -->
-        <rect x="476" y="10" width="215" height="140" rx="12" fill="#fff5f5" stroke="#e05c2d" stroke-width="2"/>
-        <text x="583" y="36" text-anchor="middle" fill="#b91c1c" font-size="12" font-weight="800">LUXACIÓN</text>
-        <ellipse cx="583" cy="65" rx="35" ry="25" fill="none" stroke="#e05c2d" stroke-width="2.5"/>
-        <circle cx="610" cy="85" r="12" fill="#e05c2d" opacity=".3"/>
-        <text x="583" y="100" text-anchor="middle" fill="#b91c1c" font-size="9">Pérdida total de contacto</text>
-        <text x="583" y="115" text-anchor="middle" fill="#b91c1c" font-size="9">articular</text>
-        <text x="583" y="135" text-anchor="middle" fill="#b91c1c" font-size="9">Deformidad marcada · inmóvil</text>
-      </svg>
+    <p>Pasa el cursor sobre cada tarjeta para ver definición, signos clave y primera acción.</p>
+    <div class="trauma-cards">
+      <div class="trauma-card tc-fractura" tabindex="0">
+        <span class="tc-icon">🦴</span>
+        <div class="tc-title">FRACTURA</div>
+        <div class="tc-short">Rotura de la continuidad ósea</div>
+        <div class="tc-detail">
+          <strong>Signos:</strong> Dolor intenso, deformidad visible, crepitación al palpar, impotencia funcional, edema, hematoma.<br><br>
+          <strong>Tipos:</strong> Cerrada (piel intacta) · Abierta (hueso expuesto) · Completa · Incompleta<br><br>
+          <strong>Primera acción:</strong> Inmovilizar en posición encontrada, cubrir herida si abierta, NO reducir, trasladar.
+        </div>
+      </div>
+      <div class="trauma-card tc-luxacion" tabindex="0">
+        <span class="tc-icon">🔴</span>
+        <div class="tc-title">LUXACIÓN</div>
+        <div class="tc-short">Pérdida total del contacto articular</div>
+        <div class="tc-detail">
+          <strong>Signos:</strong> Deformidad marcada, articulación bloqueada, dolor agudo al mover, posición antiálgica forzada.<br><br>
+          <strong>Diferencia clave:</strong> No hay fragmento óseo roto — los extremos articulares se desplazan completamente.<br><br>
+          <strong>Primera acción:</strong> Inmovilizar en la posición encontrada. NUNCA intentar reducir en campo. Trasladar urgente.
+        </div>
+      </div>
+      <div class="trauma-card tc-esguince" tabindex="0">
+        <span class="tc-icon">🟡</span>
+        <div class="tc-title">ESGUINCE</div>
+        <div class="tc-short">Lesión ligamentosa sin pérdida articular</div>
+        <div class="tc-detail">
+          <strong>Signos:</strong> Dolor localizado, edema rápido, equimosis tardía, movilidad dolorosa conservada (parcialmente).<br><br>
+          <strong>Grados:</strong> I (distensión) · II (desgarro parcial) · III (rotura completa)<br><br>
+          <strong>Primera acción:</strong> Aplicar método RICE: Reposo, Hielo, Compresión, Elevación. Grado III requiere evaluación ortopédica.
+        </div>
+      </div>
+      <div class="trauma-card tc-contusion" tabindex="0">
+        <span class="tc-icon">💜</span>
+        <div class="tc-title">CONTUSIÓN</div>
+        <div class="tc-short">Trauma cerrado sin lesión estructural grave</div>
+        <div class="tc-detail">
+          <strong>Signos:</strong> Dolor a la palpación, edema leve, equimosis (moretón), movilidad conservada sin deformidad.<br><br>
+          <strong>Diferencia clave:</strong> No hay lesión ósea ni articular — solo daño en tejidos blandos superficiales.<br><br>
+          <strong>Primera acción:</strong> Frío local 20 min, reposo relativo, analgesia. Si el dolor aumenta, descartar fractura con Rx.
+        </div>
+      </div>
     </div>
 
     <h3>Protocolo de Inmovilización — Regla de Oro</h3>
     <div class="tip-box"><strong>Regla de oro:</strong> Inmovilizar la articulación por encima Y por debajo del foco de fractura. Nunca reducir fracturas o luxaciones en campo.</div>
 
-    <div class="steps">
-      <div class="step"><div class="num">1</div><p>Detener hemorragia asociada antes de inmovilizar</p></div>
-      <div class="step"><div class="num">2</div><p>Acolchar la férula para evitar puntos de presión</p></div>
-      <div class="step"><div class="num">3</div><p>Inmovilizar en posición encontrada (no forzar)</p></div>
-      <div class="step"><div class="num">4</div><p>Verificar pulso, sensibilidad y movilidad distal antes y después</p></div>
-      <div class="step"><div class="num">5</div><p>Aplicar hielo envuelto en tela (nunca directo)</p></div>
+    <div class="immo-timeline">
+      <div class="immo-step">
+        <div class="immo-num">1</div>
+        <h4><span class="immo-icon">🧤</span>Proteger la escena y al rescatador</h4>
+        <p>Usar guantes. Evaluar mecanismo de lesión y descartar riesgo vital antes de inmovilizar. Controlar cualquier hemorragia asociada aplicando presión directa.</p>
+      </div>
+      <div class="immo-step">
+        <div class="immo-num">2</div>
+        <h4><span class="immo-icon">📏</span>Seleccionar y preparar la férula</h4>
+        <p>Elegir férula rígida o improvisada (cartón, tablas, bastón) de longitud suficiente para abarcar las articulaciones proximal y distal al foco. Acolchar con tela o vendas para evitar puntos de presión.</p>
+      </div>
+      <div class="immo-step">
+        <div class="immo-num">3</div>
+        <h4><span class="immo-icon">🔒</span>Inmovilizar en posición encontrada</h4>
+        <p>Colocar la férula sin cambiar la posición del miembro lesionado. Fijar con vendas o tiras de tela — nunca directamente sobre la herida. No intentar alinear ni reducir.</p>
+      </div>
+      <div class="immo-step">
+        <div class="immo-num">4</div>
+        <h4><span class="immo-icon">🩺</span>Verificar perfusión distal (PSM)</h4>
+        <p>Antes y después de inmovilizar: comprobar <strong>Pulso</strong> distal (radial, pedio), <strong>Sensibilidad</strong> (¿siente el paciente?) y <strong>Movilidad</strong> de los dedos. Dedos fríos o azules = aflojar urgente.</p>
+      </div>
+      <div class="immo-step">
+        <div class="immo-num">5</div>
+        <h4><span class="immo-icon">🧊</span>Aplicar frío y elevar</h4>
+        <p>Hielo envuelto en tela sobre la zona lesionada, máximo 20 min. Elevar el miembro si no hay contraindicación (fractura de columna, pelvis). Reduce edema y dolor.</p>
+      </div>
+      <div class="immo-step">
+        <div class="immo-num">6</div>
+        <h4><span class="immo-icon">🚑</span>Trasladar y monitorear</h4>
+        <p>Trasladar al paciente con el miembro inmovilizado, evitando movimientos bruscos. Reevaluar PSM cada 10-15 minutos durante el traslado. Documentar hora y mecanismo de lesión para el equipo médico.</p>
+      </div>
     </div>
 
     <h3>Método RICE para Esguinces</h3>
@@ -790,7 +847,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M5 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 5</span>
+      <span class="sim-badge">Evaluación · Módulo 5</span>
       <h4>Escenarios: Trauma Osteoarticular</h4>
       <div class="sim-q">
         <p>1. Al palpar el antebrazo lesionado escuchas un crepitar. ¿Qué indica esto?</p>
@@ -832,23 +889,7 @@ tr:nth-child(even) td{background:#f4f8fe}
     </div>
 
     <!-- MINI-QUIZ M5 -->
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 5</h4>
-      <div class="quiz-q">
-        <p>1. ¿Qué articulaciones incluye la inmovilización de una fractura de fémur?</p>
-        <label class="quiz-opt"><input type="radio" name="q5a" value="a"> a) Solo la rodilla</label>
-        <label class="quiz-opt"><input type="radio" name="q5a" value="b"> b) Cadera y rodilla</label>
-        <label class="quiz-opt"><input type="radio" name="q5a" value="c"> c) Solo la cadera</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Qué significa la "C" en el método RICE?</p>
-        <label class="quiz-opt"><input type="radio" name="q5b" value="a"> a) Calor</label>
-        <label class="quiz-opt"><input type="radio" name="q5b" value="b"> b) Compresión</label>
-        <label class="quiz-opt"><input type="radio" name="q5b" value="c"> c) Circulación</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq5',{q5a:'b',q5b:'b'})">Verificar</button>
-      <div id="mq5-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg_m5"><div class="qg-loading" style="text-align:center;padding:20px;opacity:.6">Cargando mini-juego…</div></div>
   </div>
 </div>
 
@@ -969,7 +1010,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <!-- SIMULATOR M6 -->
     <div class="sim-section">
-      <span class="sim-badge">Simulador · Módulo 6</span>
+      <span class="sim-badge">Evaluación · Módulo 6</span>
       <h4>Escenarios: RCP y DEA</h4>
       <div class="sim-q">
         <p>1. Encuentras a alguien inconsciente en el suelo. ¿Con qué frecuencia realizas compresiones?</p>
@@ -1011,90 +1052,192 @@ tr:nth-child(even) td{background:#f4f8fe}
     </div>
 
     <!-- MINI-QUIZ M6 -->
-    <div class="quiz-section">
-      <h4>✅ Mini-quiz — Módulo 6</h4>
-      <div class="quiz-q">
-        <p>1. ¿Cuál es la relación compresiones:ventilaciones en RCP sin vía aérea avanzada?</p>
-        <label class="quiz-opt"><input type="radio" name="q6a" value="a"> a) 15:2</label>
-        <label class="quiz-opt"><input type="radio" name="q6a" value="b"> b) 30:2</label>
-        <label class="quiz-opt"><input type="radio" name="q6a" value="c"> c) 30:1</label>
-      </div>
-      <div class="quiz-q">
-        <p>2. ¿Qué se debe hacer ANTES de presionar el botón de choque en el DEA?</p>
-        <label class="quiz-opt"><input type="radio" name="q6b" value="a"> a) Nada especial</label>
-        <label class="quiz-opt"><input type="radio" name="q6b" value="b"> b) Asegurarse que nadie toca al paciente</label>
-        <label class="quiz-opt"><input type="radio" name="q6b" value="c"> c) Verificar que el paciente esté húmedo</label>
-      </div>
-      <button class="quiz-btn" onclick="checkMiniQuiz('mq6',{q6a:'b',q6b:'b'})">Verificar</button>
-      <div id="mq6-result" class="quiz-result"></div>
-    </div>
+    <div class="quiz-game" id="qg_m6"><div class="qg-loading" style="text-align:center;padding:20px;opacity:.6">Cargando mini-juego…</div></div>
   </div>
 </div>
 
 <!-- ====== EVALUACIÓN FINAL ====== -->
 <div class="final-section anim-fadein" id="final">
   <h3>Evaluación Final — PAB</h3>
-  <p class="sub">Responde las 8 preguntas. Necesitas 6/8 correctas para aprobar y recibir tu certificado.</p>
+  <p class="sub">Responde las 20 preguntas. Necesitas <strong>14/20 correctas mínimo</strong> (70%) para aprobar y recibir tu certificado.</p>
 
+  <!-- M1: Cadena de Supervivencia -->
   <div class="final-q">
-    <p>1. ¿Cuántos eslabones tiene la Cadena de Supervivencia (AHA 2020)?</p>
+    <p>1. ¿Cuántos eslabones tiene la Cadena de Supervivencia según AHA 2020?</p>
     <label class="final-opt"><input type="radio" name="fq1" value="a"> a) 4</label>
     <label class="final-opt"><input type="radio" name="fq1" value="b"> b) 6</label>
     <label class="final-opt"><input type="radio" name="fq1" value="c"> c) 5</label>
     <label class="final-opt"><input type="radio" name="fq1" value="d"> d) 3</label>
   </div>
   <div class="final-q">
-    <p>2. En el protocolo ABCDE, ¿qué evalúa la letra "B"?</p>
-    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) Sangrado</label>
-    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) Respiración</label>
-    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) Presión arterial</label>
-    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) Balance hídrico</label>
+    <p>2. ¿Cuánto disminuye la supervivencia por cada minuto sin RCP?</p>
+    <label class="final-opt"><input type="radio" name="fq2" value="a"> a) 2-3%</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="b"> b) 7-10%</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="c"> c) 15-20%</label>
+    <label class="final-opt"><input type="radio" name="fq2" value="d"> d) 1%</label>
   </div>
   <div class="final-q">
-    <p>3. Una hemorragia de color rojo brillante y flujo pulsátil corresponde a:</p>
-    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) Hemorragia venosa</label>
-    <label class="final-opt"><input type="radio" name="fq3" value="b"> b) Hemorragia capilar</label>
-    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) Hemorragia arterial</label>
-    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) Hemorragia interna</label>
+    <p>3. Al encontrar a una persona inconsciente, ¿cuál es el primer paso según la Cadena de Supervivencia?</p>
+    <label class="final-opt"><input type="radio" name="fq3" value="a"> a) Iniciar RCP inmediatamente</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="b"> b) Verificar seguridad de la escena y activar el SEM (911)</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="c"> c) Buscar el DEA</label>
+    <label class="final-opt"><input type="radio" name="fq3" value="d"> d) Revisar el pulso por 2 minutos</label>
   </div>
   <div class="final-q">
-    <p>4. Para una quemadura de 2do grado en el antebrazo, la primera acción es:</p>
-    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) Aplicar hielo directamente</label>
-    <label class="final-opt"><input type="radio" name="fq4" value="b"> b"> Enfriar con agua fresca 15-20°C por 20 minutos</label>
-    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) Reventar las ampollas y desinfectar</label>
-    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) Aplicar crema hidratante</label>
+    <p>4. El eslabón más frecuentemente fallido en comunidades sin capacitación es:</p>
+    <label class="final-opt"><input type="radio" name="fq4" value="a"> a) Cuidados intensivos hospitalarios</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="b"> b) RCP precoz por testigos</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="c"> c) Rehabilitación post-evento</label>
+    <label class="final-opt"><input type="radio" name="fq4" value="d"> d) Activación del SEM</label>
+  </div>
+
+  <!-- M2: Valoración del Paciente -->
+  <div class="final-q">
+    <p>5. En el protocolo ABCDE, ¿qué evalúa la letra "B"?</p>
+    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) Sangrado activo</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="b"> b) Breathing — respiración</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) Balance hídrico</label>
+    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) Bradicardia</label>
   </div>
   <div class="final-q">
-    <p>5. Al inmovilizar una fractura de radio, debes incluir:</p>
-    <label class="final-opt"><input type="radio" name="fq5" value="a"> a) Solo el codo</label>
-    <label class="final-opt"><input type="radio" name="fq5" value="b"> b) Codo y muñeca</label>
-    <label class="final-opt"><input type="radio" name="fq5" value="c"> c) Solo la muñeca</label>
-    <label class="final-opt"><input type="radio" name="fq5" value="d"> d) Todo el brazo sin articulaciones</label>
+    <p>6. Un paciente solo responde cuando le gritas su nombre. Su clasificación AVDI es:</p>
+    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) A — Alerta</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) V — Voz</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) D — Dolor</label>
+    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) I — Inconsciente</label>
   </div>
   <div class="final-q">
-    <p>6. La frecuencia correcta de compresiones torácicas en RCP adulto es:</p>
-    <label class="final-opt"><input type="radio" name="fq6" value="a"> a) 60-80/min</label>
-    <label class="final-opt"><input type="radio" name="fq6" value="b"> b) 100-120/min</label>
-    <label class="final-opt"><input type="radio" name="fq6" value="c"> c) 140-160/min</label>
-    <label class="final-opt"><input type="radio" name="fq6" value="d"> d) A criterio del rescatador</label>
+    <p>7. Durante "E" (Exposición) en un día frío, tras exponer al paciente la acción prioritaria es:</p>
+    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) Lavar la zona con agua fría</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="b"> b) Cubrirlo para prevenir hipotermia</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) Dejarlo descubierto para mejor observación</label>
+    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) Aplicar compresas frías</label>
+  </div>
+
+  <!-- M3: Control de Hemorragias -->
+  <div class="final-q">
+    <p>8. Una hemorragia de color rojo brillante y flujo pulsátil corresponde a:</p>
+    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) Hemorragia venosa</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) Hemorragia capilar</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) Hemorragia arterial</label>
+    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) Hemorragia interna</label>
   </div>
   <div class="final-q">
-    <p>7. ¿Qué acción es INCORRECTA al controlar una hemorragia con presión directa?</p>
-    <label class="final-opt"><input type="radio" name="fq7" value="a"> a) Mantener presión por 10 minutos</label>
-    <label class="final-opt"><input type="radio" name="fq7" value="b"> b) Retirar el apósito empapado y reemplazarlo</label>
-    <label class="final-opt"><input type="radio" name="fq7" value="c"> c) Agregar más gasas encima si empapa</label>
-    <label class="final-opt"><input type="radio" name="fq7" value="d"> d) Usar guantes como barrera</label>
+    <p>9. Al controlar hemorragia con presión directa y el apósito se empapa, ¿qué haces?</p>
+    <label class="final-opt"><input type="radio" name="fq9" value="a"> a) Retirar el apósito y reemplazarlo</label>
+    <label class="final-opt"><input type="radio" name="fq9" value="b"> b) Agregar más gasas encima sin retirar la primera</label>
+    <label class="final-opt"><input type="radio" name="fq9" value="c"> c) Aplicar agua oxigenada</label>
+    <label class="final-opt"><input type="radio" name="fq9" value="d"> d) Soltar la presión y evaluar</label>
   </div>
   <div class="final-q">
-    <p>8. El método RICE para esguinces incluye Reposo, Hielo, Compresión y:</p>
-    <label class="final-opt"><input type="radio" name="fq8" value="a"> a) Ejercicio progresivo</label>
-    <label class="final-opt"><input type="radio" name="fq8" value="b"> b) Elevación</label>
-    <label class="final-opt"><input type="radio" name="fq8" value="c"> c) Reducción</label>
-    <label class="final-opt"><input type="radio" name="fq8" value="d"> d) Relajación muscular</label>
+    <p>10. Al colocar un torniquete, ¿qué dato es obligatorio documentar?</p>
+    <label class="final-opt"><input type="radio" name="fq10" value="a"> a) Nombre del rescatador</label>
+    <label class="final-opt"><input type="radio" name="fq10" value="b"> b) Hora exacta de aplicación</label>
+    <label class="final-opt"><input type="radio" name="fq10" value="c"> c) Tipo de hemorragia</label>
+    <label class="final-opt"><input type="radio" name="fq10" value="d"> d) Frecuencia cardíaca del paciente</label>
+  </div>
+  <div class="final-q">
+    <p>11. ¿Cuánto tiempo mínimo debe mantenerse la presión directa sin levantar el apósito?</p>
+    <label class="final-opt"><input type="radio" name="fq11" value="a"> a) 2 minutos</label>
+    <label class="final-opt"><input type="radio" name="fq11" value="b"> b) 5 minutos</label>
+    <label class="final-opt"><input type="radio" name="fq11" value="c"> c) 10 minutos</label>
+    <label class="final-opt"><input type="radio" name="fq11" value="d"> d) 20 minutos</label>
+  </div>
+
+  <!-- M4: Quemaduras -->
+  <div class="final-q">
+    <p>12. Una quemadura con ampollas, piel rosada y dolor intenso corresponde a:</p>
+    <label class="final-opt"><input type="radio" name="fq12" value="a"> a) 1er grado</label>
+    <label class="final-opt"><input type="radio" name="fq12" value="b"> b) 2do grado</label>
+    <label class="final-opt"><input type="radio" name="fq12" value="c"> c) 3er grado</label>
+    <label class="final-opt"><input type="radio" name="fq12" value="d"> d) Quemadura química</label>
+  </div>
+  <div class="final-q">
+    <p>13. Para enfriar una quemadura, se usa agua a:</p>
+    <label class="final-opt"><input type="radio" name="fq13" value="a"> a) 0-5°C (con hielo)</label>
+    <label class="final-opt"><input type="radio" name="fq13" value="b"> b) 15-20°C (fresca) por 20 minutos</label>
+    <label class="final-opt"><input type="radio" name="fq13" value="c"> c) 35-40°C (tibia)</label>
+    <label class="final-opt"><input type="radio" name="fq13" value="d"> d) No se aplica agua</label>
+  </div>
+  <div class="final-q">
+    <p>14. Según la Regla de los 9 (Wallace), ¿qué porcentaje representa una pierna completa?</p>
+    <label class="final-opt"><input type="radio" name="fq14" value="a"> a) 9%</label>
+    <label class="final-opt"><input type="radio" name="fq14" value="b"> b) 18%</label>
+    <label class="final-opt"><input type="radio" name="fq14" value="c"> c) 12%</label>
+    <label class="final-opt"><input type="radio" name="fq14" value="d"> d) 25%</label>
+  </div>
+
+  <!-- M5: Trauma Osteoarticular -->
+  <div class="final-q">
+    <p>15. Al palpar un hueso lesionado y escuchar crepitación, esto indica:</p>
+    <label class="final-opt"><input type="radio" name="fq15" value="a"> a) Luxación</label>
+    <label class="final-opt"><input type="radio" name="fq15" value="b"> b) Esguince grado III</label>
+    <label class="final-opt"><input type="radio" name="fq15" value="c"> c) Fractura</label>
+    <label class="final-opt"><input type="radio" name="fq15" value="d"> d) Contusión simple</label>
+  </div>
+  <div class="final-q">
+    <p>16. Para inmovilizar una fractura de radio, debes incluir:</p>
+    <label class="final-opt"><input type="radio" name="fq16" value="a"> a) Solo el codo</label>
+    <label class="final-opt"><input type="radio" name="fq16" value="b"> b) Codo y muñeca</label>
+    <label class="final-opt"><input type="radio" name="fq16" value="c"> c) Solo la muñeca</label>
+    <label class="final-opt"><input type="radio" name="fq16" value="d"> d) Solo el foco de fractura</label>
+  </div>
+  <div class="final-q">
+    <p>17. El método RICE para esguinces incluye Reposo, Hielo, Compresión y:</p>
+    <label class="final-opt"><input type="radio" name="fq17" value="a"> a) Ejercicio progresivo</label>
+    <label class="final-opt"><input type="radio" name="fq17" value="b"> b) Elevación</label>
+    <label class="final-opt"><input type="radio" name="fq17" value="c"> c) Reducción manual</label>
+    <label class="final-opt"><input type="radio" name="fq17" value="d"> d) Relajación muscular</label>
+  </div>
+
+  <!-- M6: RCP y DEA -->
+  <div class="final-q">
+    <p>18. La frecuencia correcta de compresiones torácicas en RCP adulto (AHA 2020) es:</p>
+    <label class="final-opt"><input type="radio" name="fq18" value="a"> a) 60-80/min</label>
+    <label class="final-opt"><input type="radio" name="fq18" value="b"> b) 100-120/min</label>
+    <label class="final-opt"><input type="radio" name="fq18" value="c"> c) 140-160/min</label>
+    <label class="final-opt"><input type="radio" name="fq18" value="d"> d) A criterio del rescatador</label>
+  </div>
+  <div class="final-q">
+    <p>19. Después de dar el choque con el DEA, ¿qué debes hacer INMEDIATAMENTE?</p>
+    <label class="final-opt"><input type="radio" name="fq19" value="a"> a) Esperar 2 minutos para verificar ritmo</label>
+    <label class="final-opt"><input type="radio" name="fq19" value="b"> b) Reiniciar RCP inmediatamente (30:2)</label>
+    <label class="final-opt"><input type="radio" name="fq19" value="c"> c) Retirar los parches y reevaluar</label>
+    <label class="final-opt"><input type="radio" name="fq19" value="d"> d) Tomar el pulso por 1 minuto</label>
+  </div>
+  <div class="final-q">
+    <p>20. La relación compresiones:ventilaciones en RCP adulto sin vía aérea avanzada es:</p>
+    <label class="final-opt"><input type="radio" name="fq20" value="a"> a) 15:2</label>
+    <label class="final-opt"><input type="radio" name="fq20" value="b"> b) 30:2</label>
+    <label class="final-opt"><input type="radio" name="fq20" value="c"> c) 30:1</label>
+    <label class="final-opt"><input type="radio" name="fq20" value="d"> d) 20:2</label>
   </div>
 
   <button class="final-btn" onclick="submitFinalQuiz()">Enviar Evaluación Final</button>
   <div id="final-result" class="final-result"></div>
+</div>
+
+<!-- ====== REFERENCIAS BIBLIOGRÁFICAS ====== -->
+<div class="mod-card anim-fadein" id="referencias">
+  <div class="mod-header">
+    <div class="mod-num">📚</div>
+    <h2>Referencias Bibliográficas</h2>
+  </div>
+  <div class="mod-body">
+    <p>Las siguientes referencias sustentan el contenido académico de este curso, conforme a normas APA 7ª edición:</p>
+    <ol style="padding-left:20px;line-height:2.2;color:var(--text);font-size:.9rem">
+      <li>American Heart Association. (2020). <em>2020 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care</em>. Circulation, 142(16 Suppl 2), S337–S357. https://doi.org/10.1161/CIR.0000000000000916</li>
+      <li>Berg, R. A., Hemphill, R., Abella, B. S., Aufderheide, T. P., Cave, D. M., Hazinski, M. F., Lerner, E. B., Rea, T. D., Sayre, M. R., &amp; Swor, R. A. (2010). Part 5: Adult basic life support: 2010 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. <em>Circulation</em>, 122(18 Suppl 3), S685–S705. https://doi.org/10.1161/CIRCULATIONAHA.110.970939</li>
+      <li>Cruz Roja Ecuatoriana. (2019). <em>Manual de primeros auxilios para la comunidad</em> (3.ª ed.). Cruz Roja Ecuatoriana.</li>
+      <li>International Federation of Red Cross and Red Crescent Societies. (2016). <em>International first aid, resuscitation, and education guidelines 2016</em>. IFRC. https://www.ifrc.org/document/international-first-aid-and-resuscitation-guidelines-2016</li>
+      <li>Ministerio de Salud Pública del Ecuador. (2021). <em>Protocolo de atención prehospitalaria en emergencias</em>. MSP Ecuador. https://www.salud.gob.ec</li>
+      <li>National Association of Emergency Medical Technicians. (2020). <em>PHTLS: Prehospital trauma life support</em> (9th ed.). Jones &amp; Bartlett Learning.</li>
+      <li>Organización Mundial de la Salud. (2021). <em>WHO guidelines on basic emergency care: Prehospital management of acute illness and injury</em> (2nd ed.). World Health Organization. https://www.who.int/publications/i/item/9789240019980</li>
+      <li>Panchal, A. R., Bartos, J. A., Cabañas, J. G., Donnino, M. W., Drennan, I. R., Hirsch, K. G., Kudenchuk, P. J., Kurz, M. C., Link, M. S., Morley, P. T., O'Neil, B. J., Peberdy, M. A., Rittenberger, J. C., Rodriguez, A. J., Sawyer, K. N., &amp; Berg, K. M. (2020). Part 3: Adult basic and advanced life support: 2020 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. <em>Circulation</em>, 142(16 Suppl 2), S366–S468. https://doi.org/10.1161/CIR.0000000000000916</li>
+      <li>Pollak, A. N., &amp; American Academy of Orthopaedic Surgeons. (2017). <em>Emergency care and transportation of the sick and injured</em> (11th ed.). Jones &amp; Bartlett Learning.</li>
+      <li>Wallace, A. B. (1951). The exposure treatment of burns. <em>The Lancet</em>, 257(6653), 501–504. https://doi.org/10.1016/S0140-6736(51)91975-7</li>
+    </ol>
+  </div>
 </div>
 
 </main>
@@ -1166,9 +1309,16 @@ function runSim(simId, answers){
   r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
 }
 
-// ── Evaluación Final ──────────────────────────────────────────────
+// ── Evaluación Final (20 preguntas, umbral 14/20) ─────────────────
 function submitFinalQuiz(){
-  const answers = {fq1:'b',fq2:'b',fq3:'c',fq4:'b',fq5:'b',fq6:'b',fq7:'b',fq8:'b'};
+  const answers = {
+    fq1:'b', fq2:'b', fq3:'b', fq4:'b',
+    fq5:'b', fq6:'b', fq7:'b',
+    fq8:'c', fq9:'b', fq10:'b', fq11:'c',
+    fq12:'b', fq13:'b', fq14:'b',
+    fq15:'c', fq16:'b', fq17:'b',
+    fq18:'b', fq19:'b', fq20:'b'
+  };
   let ok=0, all=true;
   Object.entries(answers).forEach(([n,a]) => {
     const s = document.querySelector(`input[name="${n}"]:checked`);
@@ -1184,14 +1334,14 @@ function submitFinalQuiz(){
   if(!all){ alert('Responde todas las preguntas antes de enviar.'); return; }
   const r = document.getElementById('final-result');
   r.style.display='block';
-  if(ok>=6){
+  if(ok>=14){
     r.className='final-result pass';
-    r.innerHTML=`🎉 ¡Aprobado! ${ok}/8 correctas<br><small>Certificado disponible en tu perfil</small>`;
+    r.innerHTML=`🎉 ¡Aprobado! ${ok}/20 correctas<br><small>Certificado disponible en tu perfil · 14/20 correctas mínimo</small>`;
     localStorage.setItem('pab_done','1');
     saveProg('final');
   } else {
     r.className='final-result fail';
-    r.innerHTML=`❌ ${ok}/8 — Necesitas 6 para aprobar. Revisa los módulos e intenta nuevamente.`;
+    r.innerHTML=`❌ ${ok}/20 — Necesitas 14/20 para aprobar. Revisa los módulos e inténtalo nuevamente.`;
   }
 }
 
@@ -1357,6 +1507,161 @@ const blsSim = (() => {
   const wrap=document.getElementById('blsWrap');
   if(wrap) obs.observe(wrap);
 })();
+
+// ── Quiz Game Engine ──────────────────────────────────────────────
+function initQuizGame(containerId, questions) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // Shuffle
+  const qs = questions.slice().sort(() => Math.random() - 0.5);
+  let current = 0, score = 0, streak = 0, maxStreak = 0, answered = false;
+
+  function streakEmoji(s) {
+    if (s >= 5) return '🔥🔥🔥';
+    if (s >= 3) return '🔥🔥';
+    if (s >= 1) return '🔥';
+    return '💤';
+  }
+
+  function render() {
+    if (current >= qs.length) { showResult(); return; }
+    const q = qs[current];
+    const pct = Math.round((current / qs.length) * 100);
+    container.innerHTML = `
+      <div class="qg-header">
+        <span class="qg-score">⭐ ${score} pts</span>
+        <span class="qg-streak">${streakEmoji(streak)} ×${streak}</span>
+        <span class="qg-progress">${current + 1} / ${qs.length} · ${pct}%</span>
+      </div>
+      <div class="qg-q-num">Pregunta ${current + 1}</div>
+      <div class="qg-question">${q.q}</div>
+      <div class="qg-opts">
+        ${q.opts.map((o, i) => `<button class="qg-opt" data-idx="${i}" onclick="qgAnswer('${containerId}',${i})">${o}</button>`).join('')}
+      </div>
+      <div class="qg-feedback" id="${containerId}_fb"></div>`;
+  }
+
+  function showResult() {
+    const pct = Math.round((score / qs.length) * 100);
+    let emoji, msg;
+    if (pct === 100)      { emoji = '🏆'; msg = '¡Perfecto! Eres un experto'; }
+    else if (pct >= 80)   { emoji = '⭐'; msg = '¡Excelente! Muy buen trabajo'; }
+    else if (pct >= 60)   { emoji = '✅'; msg = '¡Bien! Sigue practicando'; }
+    else                  { emoji = '📚'; msg = 'Repasa el módulo e inténtalo de nuevo'; }
+    container.innerHTML = `
+      <div class="qg-result-final">
+        <div class="big-score">${score}/${qs.length}</div>
+        <p>${emoji} ${msg}</p>
+        <p style="font-size:.8rem;opacity:.6;margin-top:4px">Mejor racha: ${maxStreak} seguidas</p>
+        <button class="qg-next-btn" onclick="initQuizGame('${containerId}', window._qgData['${containerId}'])">↺ Intentar de nuevo</button>
+      </div>`;
+    if (score >= Math.ceil(qs.length * 0.6)) saveProg(containerId.replace('qg_', 'mq').replace('_m', ''));
+  }
+
+  // Expose state for answer handler
+  if (!window._qgState) window._qgState = {};
+  window._qgState[containerId] = { qs, getCurrentIdx: () => current, isAnswered: () => answered,
+    answer(idx) {
+      if (answered) return;
+      answered = true;
+      const q = qs[current];
+      const correct = idx === q.correct;
+      if (correct) { score++; streak++; if (streak > maxStreak) maxStreak = streak; }
+      else { streak = 0; }
+      // Style buttons
+      container.querySelectorAll('.qg-opt').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === idx && !correct) btn.classList.add('wrong');
+      });
+      const fb = document.getElementById(containerId + '_fb');
+      if (fb) {
+        fb.className = 'qg-feedback ' + (correct ? 'ok' : 'err');
+        fb.textContent = correct
+          ? ['¡Correcto! 🎯', '¡Exacto! ✅', '¡Muy bien! 💪', '¡Perfecto! 🏆'][Math.floor(Math.random()*4)]
+          : `Respuesta correcta: ${q.opts[q.correct]}`;
+      }
+      setTimeout(() => { current++; answered = false; render(); }, 1400);
+    }
+  };
+
+  render();
+}
+
+function qgAnswer(containerId, idx) {
+  if (window._qgState && window._qgState[containerId]) {
+    window._qgState[containerId].answer(idx);
+  }
+}
+
+// ── Question Banks ────────────────────────────────────────────────
+const questions_m1 = [
+  {q:'¿Cuántos eslabones tiene la Cadena de Supervivencia AHA 2020?', opts:['4 eslabones','5 eslabones','6 eslabones','8 eslabones'], correct:2},
+  {q:'¿Cuánto disminuye la supervivencia por cada minuto sin RCP?', opts:['1-2%','7-10%','20-30%','50%'], correct:1},
+  {q:'¿Cuál es el primer paso al encontrar una víctima inconsciente?', opts:['Iniciar RCP inmediatamente','Verificar seguridad de la escena y activar SEM','Buscar el DEA','Revisar el pulso por 2 minutos'], correct:1},
+  {q:'¿Cuál es el número de emergencias médicas en Ecuador?', opts:['119','911','100','102'], correct:1},
+  {q:'El eslabón más frecuentemente fallido en comunidades sin capacitación es:', opts:['Cuidados intensivos','RCP precoz por testigos','Rehabilitación','Activación del SEM'], correct:1}
+];
+
+const questions_m2 = [
+  {q:'En el protocolo ABCDE, "A" corresponde a:', opts:['Análisis de signos','Airway — vía aérea','Abdomen','Alerta neurológica'], correct:1},
+  {q:'¿Qué significa "V" en la escala AVDI?', opts:['Velocidad del pulso','Responde a la Voz','Vómito presente','Ventilación asistida'], correct:1},
+  {q:'En el ABCDE, la "C" evalúa:', opts:['Columna cervical','Circulación — hemorragias y pulso','Consciencia','Calor corporal'], correct:1},
+  {q:'Un paciente que solo responde a estímulo doloroso se clasifica como:', opts:['A — Alerta','V — Voz','D — Dolor','I — Inconsciente'], correct:2},
+  {q:'¿Cuál es el orden correcto del protocolo de valoración primaria?', opts:['DCBAE','ABCDE','CDABE','BADCE'], correct:1}
+];
+
+const questions_m3 = [
+  {q:'¿Qué tipo de hemorragia es de color rojo brillante y flujo pulsátil?', opts:['Capilar','Venosa','Arterial','Interna'], correct:2},
+  {q:'Al aplicar presión directa y el apósito se empapa, ¿qué haces?', opts:['Retirar y reemplazar el apósito','Agregar más gasas encima sin retirar la primera','Aplicar agua oxigenada','Soltar la presión y evaluar'], correct:1},
+  {q:'¿Cuánto tiempo mínimo debe mantenerse la presión directa?', opts:['2 minutos','5 minutos','10 minutos','30 minutos'], correct:2},
+  {q:'El torniquete está indicado en:', opts:['Hemorragias capilares','Hemorragias venosas leves','Amputaciones y hemorragias masivas de extremidades','Heridas en el tronco'], correct:2},
+  {q:'Al colocar un torniquete, ¿qué dato es OBLIGATORIO documentar?', opts:['Nombre del rescatador','Hora exacta de aplicación','Tipo de vendaje usado','Frecuencia respiratoria'], correct:1}
+];
+
+const questions_m4 = [
+  {q:'Una quemadura con eritema sin ampollas y sin destrucción dérmica es de:', opts:['1er grado','2do grado','3er grado','4to grado'], correct:0},
+  {q:'¿Con qué temperatura de agua se enfría una quemadura?', opts:['0-5°C con hielo','15-20°C agua fresca por 20 min','35-40°C agua tibia','No se aplica agua'], correct:1},
+  {q:'¿Qué se debe hacer con las ampollas de una quemadura de 2do grado?', opts:['Reventarlas con aguja estéril','No reventarlas; cubrir con apósito estéril húmedo','Aplicar crema antibiótica directamente','Cubrirlas con pasta de dientes'], correct:1},
+  {q:'Según la Regla de los 9 (Wallace), la cabeza y el cuello representan:', opts:['18%','1%','9%','12%'], correct:2},
+  {q:'En quemaduras químicas, la primera acción es:', opts:['Neutralizar con bicarbonato','Irrigar con agua abundante mínimo 20 minutos','Cubrir con paño seco','Aplicar hielo directamente'], correct:1}
+];
+
+const questions_m5 = [
+  {q:'¿Cuál signo es característico de una fractura al palpar?', opts:['Edema difuso sin dolor','Movilidad articular conservada','Crepitación ósea y deformidad','Equimosis tardía sin deformidad'], correct:2},
+  {q:'La diferencia principal entre luxación y fractura es:', opts:['La luxación siempre sangra','En la luxación se pierde el contacto articular sin rotura ósea directa','La fractura no duele','La luxación solo ocurre en dedos'], correct:1},
+  {q:'Para inmovilizar una fractura de tibia, las articulaciones que debes incluir son:', opts:['Solo el foco de fractura','Solo la rodilla','Rodilla Y tobillo (proximal y distal al foco)','Toda la pierna y la cadera'], correct:2},
+  {q:'¿Qué significa la "E" en el método RICE?', opts:['Ejercicio progresivo','Elevación del miembro','Enfriamiento prolongado','Examen radiológico'], correct:1},
+  {q:'Tras inmovilizar, verificas que los dedos del pie están fríos y sin sensibilidad. ¿Qué haces?', opts:['Es normal; continuar','Agregar más vendas','Aflojar la inmovilización y reevaluar la perfusión distal','Aplicar más hielo'], correct:2}
+];
+
+const questions_m6 = [
+  {q:'¿Cuál es la frecuencia correcta de compresiones en RCP adulto?', opts:['60 por minuto','80-90 por minuto','100-120 por minuto','150 por minuto'], correct:2},
+  {q:'¿Cuál es la profundidad correcta de compresiones en adulto?', opts:['1-2 cm','3-4 cm','5-6 cm','8-10 cm'], correct:2},
+  {q:'La relación compresiones:ventilaciones sin vía aérea avanzada es:', opts:['15:2','30:2','30:1','20:2'], correct:1},
+  {q:'Antes de presionar el botón de descarga del DEA, debes:', opts:['Verificar que el paciente esté húmedo','Asegurarte que NADIE toca al paciente','Reiniciar las compresiones','Retirar los parches'], correct:1},
+  {q:'La Maniobra de Heimlich en adulto consciente consiste en:', opts:['Solo golpes en la espalda','5 golpes interescapulares + 5 compresiones abdominales, alternando','Compresiones torácicas continuas','Ventilaciones de rescate'], correct:1}
+];
+
+// Register question banks for restart button
+if (!window._qgData) window._qgData = {};
+window._qgData['qg_m1'] = questions_m1;
+window._qgData['qg_m2'] = questions_m2;
+window._qgData['qg_m3'] = questions_m3;
+window._qgData['qg_m4'] = questions_m4;
+window._qgData['qg_m5'] = questions_m5;
+window._qgData['qg_m6'] = questions_m6;
+
+// Initialize all quiz games after DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+  initQuizGame('qg_m1', questions_m1);
+  initQuizGame('qg_m2', questions_m2);
+  initQuizGame('qg_m3', questions_m3);
+  initQuizGame('qg_m4', questions_m4);
+  initQuizGame('qg_m5', questions_m5);
+  initQuizGame('qg_m6', questions_m6);
+});
 
 // ── Nav active link ───────────────────────────────────────────────
 const sections = document.querySelectorAll('[id^="m"],[id="final"]');
