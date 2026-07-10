@@ -6,6 +6,13 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 const { data: { session } } = await sb.auth.getSession();
 
+// ── Correos con acceso Admin (sin bloqueos de módulo, sin verificar accesos) ──
+const ADMIN_EMAILS = [
+  'emtjdbenavides@gmail.com',
+  'nadia.bc100@gmail.com',
+  'juancaz17@hotmail.com',
+];
+
 function siteBase() {
   const h = window.location.href;
   const markers = ['/cursos/', '/herramientas/', '/login/', '/admin/'];
@@ -26,9 +33,17 @@ const base = siteBase();
 if (!session) {
   window.location.replace(base + '/login/?r=' + encodeURIComponent(window.location.href));
 } else {
+  const userEmail = (session.user.email || '').toLowerCase();
+  const isAdmin   = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail);
+
+  // Bandera accesible para los scripts de cada curso
+  window._isAdmin = isAdmin;
+  sessionStorage.setItem('ph_admin', isAdmin ? '1' : '0');
+
   const courseSlug = getCourseSlug();
 
-  if (courseSlug) {
+  if (courseSlug && !isAdmin) {
+    // Solo verificar accesos para cuentas de usuario regular
     const { data, error } = await sb
       .from('accesos')
       .select('activo')
@@ -50,6 +65,8 @@ if (!session) {
   style.textContent = `
     .nav-user { display:flex; align-items:center; gap:10px; margin-left:auto }
     .nav-user-name { color:rgba(255,255,255,.8); font-size:.82rem; }
+    .nav-admin-badge { background:#F0C319; color:#1a2840; font-size:.72rem; font-weight:800;
+      padding:3px 10px; border-radius:12px; letter-spacing:.03em; }
     .nav-logout { background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.35);
       padding:5px 13px; border-radius:6px; cursor:pointer; font-size:.82rem; font-family:inherit;
       transition:background .2s; }
@@ -62,11 +79,13 @@ if (!session) {
     const wrap = document.createElement('div');
     wrap.className = 'nav-user';
     const name = session.user.user_metadata?.full_name || session.user.email.split('@')[0];
-    wrap.innerHTML = `<span class="nav-user-name">👤 ${name}</span>
+    const adminBadge = isAdmin ? `<span class="nav-admin-badge">⚡ Admin</span>` : '';
+    wrap.innerHTML = `${adminBadge}<span class="nav-user-name">👤 ${name}</span>
       <button class="nav-logout" id="btnLogout">Salir</button>`;
     nav.appendChild(wrap);
     document.getElementById('btnLogout').onclick = async () => {
       await sb.auth.signOut();
+      sessionStorage.removeItem('ph_admin');
       window.location.replace(base + '/login/');
     };
   }

@@ -33,6 +33,13 @@ a{color:var(--blue)}
 main{flex:1;padding:36px 40px;max-width:960px}
 h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-bottom:6px}
 .course-meta{color:var(--muted);font-size:.9rem;margin-bottom:32px}
+.course-hero{background:linear-gradient(135deg,rgba(22,61,122,.93),rgba(29,81,163,.85)),url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&q=80') center/cover no-repeat;color:#fff;border-radius:var(--radius);padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden}
+.course-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:rgba(240,195,25,.1);border-radius:50%;pointer-events:none}
+.course-hero h1{font-size:2rem;font-weight:800;color:#fff;margin-bottom:6px}
+.course-hero p{opacity:.85;margin-top:6px;font-size:1rem}
+.course-hero .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.course-hero .badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:600}
+.course-hero .badge.gold{background:var(--gold);color:#1a2840;border-color:var(--gold)}
 
 /* ── MODULE CARD ── */
 .mod-card{background:var(--card);border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:36px;overflow:hidden}
@@ -183,8 +190,16 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
 
 <!-- ════ MAIN ════ -->
 <main>
-<h1 class="course-title">Electrocardiografía Básica</h1>
-<p class="course-meta">6 módulos · Evaluación final 8 preguntas · Umbral de aprobación 6/8</p>
+<div class="course-hero">
+  <h1>Electrocardiografía Básica</h1>
+  <p>Interpreta trazados ECG, identifica arritmias y domina los protocolos ACLS</p>
+  <div class="badges">
+    <span class="badge gold">🫀 ECG · ACLS</span>
+    <span class="badge">6 módulos</span>
+    <span class="badge">Evaluación final</span>
+    <span class="badge">Certificado digital</span>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════════
      MÓDULO 1 · ELECTROFISIOLOGÍA CARDÍACA
@@ -279,11 +294,22 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <p>El impulso eléctrico normal nace en el Nodo Sinoauricular (NSA) ubicado en la aurícula derecha, viaja por las aurículas (genera la onda P), llega al Nodo Auriculoventricular (NAV) que lo retrasa (genera el intervalo PR), luego desciende por el Haz de His y las ramas de Purkinje para despolarizar los ventrículos (genera el complejo QRS).</p>
     </div>
 
-    <!-- VIDEO M1 -->
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/mqlRBuZkuAo" title="Electrofisiología cardíaca y ondas ECG" allowfullscreen loading="lazy"></iframe>
+    <!-- SIMULADOR M1 — CICLO PQRST ANIMADO -->
+    <div style="background:#0a1628;border-radius:14px;overflow:hidden;margin:22px 0;border:2px solid #1e3a5f">
+      <div style="padding:10px 18px;background:#0d1f3a;border-bottom:1px solid #1e3a5f;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:#00e5ff;font-family:monospace;font-size:.82rem;font-weight:700">🫀 SIMULADOR — Ciclo Cardíaco PQRST</span>
+        <span id="pqrstPhaseLabel" style="color:#f0c319;font-family:monospace;font-size:.78rem">Iniciando...</span>
+      </div>
+      <canvas id="pqrstCanvas" width="680" height="200" style="display:block;width:100%;background:#000"></canvas>
+      <div style="display:flex;gap:0;border-top:1px solid #1e3a5f">
+        <div style="flex:1;padding:8px 10px;text-align:center;border-right:1px solid #1e3a5f"><div style="color:#60a5fa;font-size:.7rem;font-family:monospace;font-weight:700">P</div><div style="color:#94a3b8;font-size:.65rem">Despol. auricular</div></div>
+        <div style="flex:1;padding:8px 10px;text-align:center;border-right:1px solid #1e3a5f"><div style="color:#a78bfa;font-size:.7rem;font-family:monospace;font-weight:700">PR</div><div style="color:#94a3b8;font-size:.65rem">Conducción AV</div></div>
+        <div style="flex:1;padding:8px 10px;text-align:center;border-right:1px solid #1e3a5f"><div style="color:#4ade80;font-size:.7rem;font-family:monospace;font-weight:700">QRS</div><div style="color:#94a3b8;font-size:.65rem">Despol. ventricular</div></div>
+        <div style="flex:1;padding:8px 10px;text-align:center;border-right:1px solid #1e3a5f"><div style="color:#fbbf24;font-size:.7rem;font-family:monospace;font-weight:700">ST</div><div style="color:#94a3b8;font-size:.65rem">Sístole ventricular</div></div>
+        <div style="flex:1;padding:8px 10px;text-align:center"><div style="color:#f87171;font-size:.7rem;font-family:monospace;font-weight:700">T</div><div style="color:#94a3b8;font-size:.65rem">Repol. ventricular</div></div>
+      </div>
     </div>
-    <p class="video-label">Video: Electrofisiología cardíaca y ondas del ECG</p>
+    <p class="video-label">Simulador: Ciclo cardíaco y ondas del ECG — animación en tiempo real</p>
 
     <!-- MINI-QUIZ M1 -->
     <div class="mini-quiz">
@@ -495,11 +521,30 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       </ul>
     </div>
 
-    <!-- VIDEO M2 -->
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/GYgCOsXph2U" title="Cómo leer el papel milimetrado del ECG" allowfullscreen loading="lazy"></iframe>
+    <!-- SIMULADOR M2 — CALCULADORA FC EN PAPEL MILIMETRADO -->
+    <div style="background:#fff;border:2px solid #d8e4f5;border-radius:14px;overflow:hidden;margin:22px 0">
+      <div style="background:linear-gradient(90deg,#1D51A3,#2d6fd4);padding:12px 18px">
+        <span style="color:#fff;font-size:.85rem;font-weight:700">📏 Calculadora FC — Papel Milimetrado ECG (25 mm/s)</span>
+      </div>
+      <div style="display:flex;gap:20px;padding:18px;align-items:flex-start;flex-wrap:wrap">
+        <canvas id="gridCanvas" width="400" height="160" style="border:1.5px solid #c5d9f5;border-radius:8px;max-width:100%;flex-shrink:0"></canvas>
+        <div style="flex:1;min-width:200px">
+          <div style="font-size:.82rem;font-weight:700;color:#1a2840;margin-bottom:10px">Mueve el control para cambiar la distancia R-R:</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+            <input type="range" id="rrSlider" min="2" max="8" value="4" style="flex:1;accent-color:#1D51A3" oninput="calcFC(this.value)">
+            <span id="rrVal" style="font-weight:800;font-size:1.2rem;color:#1D51A3;min-width:24px;text-align:right">4</span>
+            <span style="font-size:.75rem;color:#64748b">cuadros</span>
+          </div>
+          <div style="background:#e8f0fb;border-radius:10px;padding:14px;text-align:center;margin-bottom:12px">
+            <div style="font-size:.75rem;color:#64748b;margin-bottom:4px">Método 300 ÷ cuadros grandes R-R</div>
+            <div id="fcResult" style="font-size:2.4rem;font-weight:900;color:#1D51A3;line-height:1">75</div>
+            <div style="font-size:.8rem;color:#64748b;margin-top:2px">lpm</div>
+          </div>
+          <div id="fcInterp" style="padding:10px 14px;border-radius:8px;font-size:.82rem;font-weight:700;text-align:center;background:#e6f9f1;color:#166a45;border:1.5px solid #22a86b">✅ RSN — Frecuencia normal (60–100 lpm)</div>
+        </div>
+      </div>
     </div>
-    <p class="video-label">Video: Lectura del papel milimetrado y cálculo de frecuencia cardíaca</p>
+    <p class="video-label">Simulador: Cálculo de Frecuencia Cardíaca (FC) en papel milimetrado — método 300</p>
 
     <!-- MINI-QUIZ M2 -->
     <div class="mini-quiz">
@@ -674,11 +719,44 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       </svg>
     </div>
 
-    <!-- VIDEO M3 -->
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/TGPF8iYyqxA" title="Colocación de electrodos ECG 12 derivaciones" allowfullscreen loading="lazy"></iframe>
+    <!-- SIMULADOR M3 — COLOCACIÓN ANIMADA DE ELECTRODOS -->
+    <div style="background:#fff;border:2px solid #d8e4f5;border-radius:14px;overflow:hidden;margin:22px 0">
+      <div style="background:linear-gradient(90deg,#1D51A3,#2d6fd4);padding:12px 18px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:#fff;font-size:.85rem;font-weight:700">🔌 Colocación de Electrodos — ECG 12 Derivaciones</span>
+        <button onclick="animElectrodes()" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-weight:600">▶ Animar</button>
+      </div>
+      <div style="display:flex;gap:0;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px;padding:16px;display:flex;justify-content:center">
+          <svg id="electrodeSVG" viewBox="0 0 220 380" width="200" style="max-height:340px">
+            <!-- Body outline -->
+            <ellipse cx="110" cy="54" rx="36" ry="44" fill="#fde8d8" stroke="#c4a082" stroke-width="1.5"/>
+            <rect x="74" y="94" width="72" height="130" rx="10" fill="#fde8d8" stroke="#c4a082" stroke-width="1.5"/>
+            <rect x="30" y="98" width="40" height="100" rx="10" fill="#fde8d8" stroke="#c4a082" stroke-width="1.5"/>
+            <rect x="150" y="98" width="40" height="100" rx="10" fill="#fde8d8" stroke="#c4a082" stroke-width="1.5"/>
+            <rect x="82" y="224" width="22" height="110" rx="8" fill="#fde8d8" stroke="#c4a082" stroke-width="1.5"/>
+            <rect x="116" y="224" width="22" height="110" rx="8" fill="#fde8d8" stroke="#c4a082" stroke-width="1.5"/>
+            <!-- Limb electrodes -->
+            <g id="el-RA" opacity="0"><circle cx="32" cy="112" r="9" fill="#f0c319" stroke="#b45309" stroke-width="1.5"/><text x="32" y="116" text-anchor="middle" font-size="7" font-weight="800" fill="#1a2840">RA</text></g>
+            <g id="el-LA" opacity="0"><circle cx="188" cy="112" r="9" fill="#f0c319" stroke="#b45309" stroke-width="1.5"/><text x="188" y="116" text-anchor="middle" font-size="7" font-weight="800" fill="#1a2840">LA</text></g>
+            <g id="el-RL" opacity="0"><circle cx="85" cy="328" r="9" fill="#6b7280" stroke="#374151" stroke-width="1.5"/><text x="85" y="332" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">RL</text></g>
+            <g id="el-LL" opacity="0"><circle cx="127" cy="328" r="9" fill="#6b7280" stroke="#374151" stroke-width="1.5"/><text x="127" y="332" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">LL</text></g>
+            <!-- Precordial V1-V6 -->
+            <g id="el-V1" opacity="0"><circle cx="98" cy="136" r="8" fill="#1D51A3" stroke="#163d7a" stroke-width="1.5"/><text x="98" y="140" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">V1</text></g>
+            <g id="el-V2" opacity="0"><circle cx="112" cy="134" r="8" fill="#1D51A3" stroke="#163d7a" stroke-width="1.5"/><text x="112" y="138" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">V2</text></g>
+            <g id="el-V3" opacity="0"><circle cx="122" cy="145" r="8" fill="#1D51A3" stroke="#163d7a" stroke-width="1.5"/><text x="122" y="149" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">V3</text></g>
+            <g id="el-V4" opacity="0"><circle cx="128" cy="158" r="8" fill="#1D51A3" stroke="#163d7a" stroke-width="1.5"/><text x="128" y="162" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">V4</text></g>
+            <g id="el-V5" opacity="0"><circle cx="138" cy="162" r="8" fill="#1D51A3" stroke="#163d7a" stroke-width="1.5"/><text x="138" y="166" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">V5</text></g>
+            <g id="el-V6" opacity="0"><circle cx="148" cy="165" r="8" fill="#1D51A3" stroke="#163d7a" stroke-width="1.5"/><text x="148" y="169" text-anchor="middle" font-size="7" font-weight="800" fill="#fff">V6</text></g>
+          </svg>
+        </div>
+        <div style="flex:1;min-width:200px;padding:16px;border-left:1px solid #e8f0fb">
+          <div id="electrodeLog" style="font-size:.78rem;line-height:1.9;color:#374151">
+            <div style="color:#64748b;font-style:italic">Presiona ▶ Animar para ver la colocación paso a paso</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="video-label">Video: Técnica correcta de colocación de electrodos – 12 derivaciones</p>
+    <p class="video-label">Simulador: Colocación de 10 electrodos para ECG de 12 derivaciones — animación interactiva</p>
 
     <!-- MINI-QUIZ M3 -->
     <div class="mini-quiz">
@@ -852,11 +930,23 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       </ol>
     </div>
 
-    <!-- VIDEO M4 -->
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/cL0gHFfP9W0" title="Interpretación del ritmo sinusal normal ECG" allowfullscreen loading="lazy"></iframe>
+    <!-- SIMULADOR M4 — TIRA RSN ANOTADA -->
+    <div style="background:#fff;border:2px solid #d8e4f5;border-radius:14px;overflow:hidden;margin:22px 0">
+      <div style="background:linear-gradient(90deg,#1D51A3,#2d6fd4);padding:12px 18px">
+        <span style="color:#fff;font-size:.85rem;font-weight:700">💚 Tira de Ritmo — Ritmo Sinusal Normal (RSN) Anotado</span>
+      </div>
+      <div style="padding:16px;background:#fafcff">
+        <canvas id="rsnCanvas" width="660" height="180" style="width:100%;border:1px solid #d8e4f5;border-radius:8px;background:#fffef8"></canvas>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center">
+          <span style="background:#dbeafe;color:#1e40af;border-radius:6px;padding:4px 12px;font-size:.75rem;font-weight:700">P — Despol. auricular (80 ms)</span>
+          <span style="background:#f3e8ff;color:#7c3aed;border-radius:6px;padding:4px 12px;font-size:.75rem;font-weight:700">PR — Conducción AV (120–200 ms)</span>
+          <span style="background:#dcfce7;color:#166a45;border-radius:6px;padding:4px 12px;font-size:.75rem;font-weight:700">QRS — Despol. ventricular (&lt;120 ms)</span>
+          <span style="background:#fef9c3;color:#854d0e;border-radius:6px;padding:4px 12px;font-size:.75rem;font-weight:700">ST — Sístole isoeléctrica</span>
+          <span style="background:#fee2e2;color:#991b1b;border-radius:6px;padding:4px 12px;font-size:.75rem;font-weight:700">T — Repol. ventricular</span>
+        </div>
+      </div>
     </div>
-    <p class="video-label">Video: Lectura sistemática del ECG – Ritmo sinusal normal</p>
+    <p class="video-label">Simulador: Lectura sistemática del Ritmo Sinusal Normal (RSN) con anotaciones en tiempo real</p>
 
     <!-- MINI-QUIZ M4 -->
     <div class="mini-quiz">
@@ -1022,11 +1112,64 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="warn-box"><strong>Regla crítica:</strong> No desfibrilar la asistolia ni la Actividad Eléctrica Sin Pulso (AESP). El shock eléctrico en línea plana no tiene efecto terapéutico y puede agravar el pronóstico.</div>
     </div>
 
-    <!-- VIDEO M5 -->
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/m_Jmn2OLUXA" title="Ritmos desfibrilables y no desfibrilables ECG" allowfullscreen loading="lazy"></iframe>
+    <!-- SIMULADOR M5 — COMPARATIVA RITMOS DE PARO -->
+    <div style="background:#0a1628;border-radius:14px;overflow:hidden;margin:22px 0;border:2px solid #1e3a5f">
+      <div style="padding:12px 18px;background:#0d1f3a;border-bottom:1px solid #1e3a5f">
+        <span style="color:#f0c319;font-family:monospace;font-size:.85rem;font-weight:700">⚡ Comparativa Visual — 4 Ritmos de Paro Cardíaco</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e3a5f">
+        <!-- FV -->
+        <div style="background:#0a1628;padding:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:#f87171;font-family:monospace;font-weight:700;font-size:.82rem">Fibrilación Ventricular (FV)</span>
+            <span style="background:#7f1d1d;color:#fca5a5;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px">⚡ DESFIBRILABLE</span>
+          </div>
+          <svg viewBox="0 0 260 60" style="width:100%;background:#000;border-radius:6px;border:1px solid #1e3a5f">
+            <polyline fill="none" stroke="#f87171" stroke-width="1.5"
+              points="0,30 8,25 12,38 16,18 20,42 24,22 30,35 36,19 40,44 44,21 50,32 56,17 60,45 64,23 70,30 76,16 80,43 84,24 90,35 96,18 100,42 104,22 110,30 116,19 120,44 124,21 130,32 136,17 140,43 144,24 150,35 156,18 160,45 164,22 170,30 176,16 180,42 184,24 190,35 196,19 200,44 204,21 210,32 216,17 220,43 224,24 230,35 236,18 240,42 244,22 250,30 256,19 260,35"/>
+          </svg>
+          <p style="color:#94a3b8;font-size:.7rem;margin-top:6px">Trazado caótico sin complejos QRS identificables. Actividad eléctrica desorganizada.</p>
+        </div>
+        <!-- TV -->
+        <div style="background:#0a1628;padding:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:#fb923c;font-family:monospace;font-weight:700;font-size:.82rem">Taquicardia Ventricular (TV)</span>
+            <span style="background:#7c2d12;color:#fdba74;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px">⚡ DESFIBRILABLE</span>
+          </div>
+          <svg viewBox="0 0 260 60" style="width:100%;background:#000;border-radius:6px;border:1px solid #1e3a5f">
+            <polyline fill="none" stroke="#fb923c" stroke-width="1.5"
+              points="0,30 8,30 10,20 14,10 16,2 18,10 20,48 22,30 30,30 38,30 40,20 44,10 46,2 48,10 50,48 52,30 60,30 68,30 70,20 74,10 76,2 78,10 80,48 82,30 90,30 98,30 100,20 104,10 106,2 108,10 110,48 112,30 120,30 128,30 130,20 134,10 136,2 138,10 140,48 142,30 150,30 158,30 160,20 164,10 166,2 168,10 170,48 172,30 180,30 188,30 190,20 194,10 196,2 198,10 200,48 202,30 210,30 218,30 220,20 224,10 226,2 228,10 230,48 232,30 240,30 248,30 250,20 254,10 256,2 258,10 260,48"/>
+          </svg>
+          <p style="color:#94a3b8;font-size:.7rem;margin-top:6px">Complejos QRS anchos y regulares &gt;180 lpm. Sin pulso palpable en TV sin pulso.</p>
+        </div>
+        <!-- AESP -->
+        <div style="background:#0a1628;padding:14px;border-top:1px solid #1e3a5f">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:#94a3b8;font-family:monospace;font-weight:700;font-size:.82rem">AESP</span>
+            <span style="background:#1e293b;color:#94a3b8;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px">✋ NO DESFIBRILABLE</span>
+          </div>
+          <svg viewBox="0 0 260 60" style="width:100%;background:#000;border-radius:6px;border:1px solid #1e3a5f">
+            <polyline fill="none" stroke="#64748b" stroke-width="1.5"
+              points="0,30 15,30 17,26 20,22 22,30 24,30 26,28 30,10 32,50 34,32 36,30 50,30 52,26 55,22 57,30 59,30 61,28 65,10 67,50 69,32 71,30 85,30 87,26 90,22 92,30 94,30 96,28 100,10 102,50 104,32 106,30 120,30 122,26 125,22 127,30 129,30 131,28 135,10 137,50 139,32 141,30 155,30 157,26 160,22 162,30 164,30 166,28 170,10 172,50 174,32 176,30 190,30 192,26 195,22 197,30 199,30 201,28 205,10 207,50 209,32 211,30 225,30 227,26 230,22 232,30 234,30 236,28 240,10 242,50 244,32 246,30 260,30"/>
+            <text x="130" y="56" font-size="7" fill="#475569" text-anchor="middle" font-family="monospace">SIN PULSO</text>
+          </svg>
+          <p style="color:#94a3b8;font-size:.7rem;margin-top:6px">Actividad eléctrica organizada en el ECG pero sin pulso palpable. RCP + causas reversibles.</p>
+        </div>
+        <!-- Asistolia -->
+        <div style="background:#0a1628;padding:14px;border-top:1px solid #1e3a5f">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:#64748b;font-family:monospace;font-weight:700;font-size:.82rem">Asistolia</span>
+            <span style="background:#1e293b;color:#64748b;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px">✋ NO DESFIBRILABLE</span>
+          </div>
+          <svg viewBox="0 0 260 60" style="width:100%;background:#000;border-radius:6px;border:1px solid #1e3a5f">
+            <line x1="0" y1="30" x2="260" y2="30" stroke="#374151" stroke-width="1.5" stroke-dasharray="2,4"/>
+            <line x1="0" y1="31" x2="260" y2="31" stroke="#1f2937" stroke-width="1"/>
+          </svg>
+          <p style="color:#94a3b8;font-size:.7rem;margin-top:6px">Línea plana o casi plana. Ausencia total de actividad eléctrica cardíaca. Peor pronóstico.</p>
+        </div>
+      </div>
     </div>
-    <p class="video-label">Video: Identificación de ritmos de paro – FV, TV sin pulso, AESP, Asistolia</p>
+    <p class="video-label">Simulador: Comparativa visual de los 4 ritmos de Paro Cardiorrespiratorio (PCR)</p>
 
     <!-- MONITOR DESFIBRILADOR SIMULADO -->
     <div class="monitor-wrap" id="monitorWrap">
@@ -1245,11 +1388,53 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
       <div class="info-box">En la mayoría de los escenarios de Soporte Vital Cardiovascular Avanzado (ACLS), los cristaloides son suficientes y preferibles a los coloides por costo, disponibilidad y seguridad.</div>
     </div>
 
-    <!-- VIDEO M6 -->
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/c3p9hFXYbdU" title="Farmacología ACLS adrenalina amiodarona atropina" allowfullscreen loading="lazy"></iframe>
+    <!-- SIMULADOR M6 — TARJETAS DE FÁRMACOS ACLS -->
+    <div style="background:linear-gradient(135deg,#0f1f3a,#163d7a);border-radius:14px;padding:20px;margin:22px 0;border:2px solid rgba(240,195,25,.3)">
+      <div style="color:#f0c319;font-weight:700;font-size:.9rem;margin-bottom:16px;text-align:center">💊 Referencia Rápida — Fármacos ACLS en Paro Cardíaco</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+        <!-- Adrenalina -->
+        <div style="background:rgba(248,113,113,.12);border:1.5px solid rgba(248,113,113,.4);border-radius:12px;padding:16px">
+          <div style="color:#f87171;font-weight:800;font-size:.95rem;margin-bottom:8px">⚡ Adrenalina</div>
+          <div style="color:#fca5a5;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Indicación</div>
+          <div style="color:rgba(255,255,255,.85);font-size:.8rem;margin-bottom:8px">PCR por cualquier ritmo (FV, TV, AESP, Asistolia)</div>
+          <div style="color:#fca5a5;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Dosis</div>
+          <div style="color:#f0c319;font-size:.88rem;font-weight:800">1 mg IV</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.75rem">cada 3–5 minutos</div>
+          <div style="color:rgba(255,255,255,.6);font-size:.7rem;margin-top:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px">Mecanismo: vasoconstrictor α₁ → ↑ perfusión coronaria y cerebral</div>
+        </div>
+        <!-- Amiodarona -->
+        <div style="background:rgba(251,191,36,.1);border:1.5px solid rgba(251,191,36,.35);border-radius:12px;padding:16px">
+          <div style="color:#fbbf24;font-weight:800;font-size:.95rem;margin-bottom:8px">🔋 Amiodarona</div>
+          <div style="color:#fde68a;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Indicación</div>
+          <div style="color:rgba(255,255,255,.85);font-size:.8rem;margin-bottom:8px">FV/TV sin pulso refractaria (tras 3er choque)</div>
+          <div style="color:#fde68a;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Dosis</div>
+          <div style="color:#f0c319;font-size:.88rem;font-weight:800">300 mg IV</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.75rem">bolo; 2.a dosis 150 mg</div>
+          <div style="color:rgba(255,255,255,.6);font-size:.7rem;margin-top:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px">Mecanismo: bloqueador canales K⁺, Na⁺, Ca²⁺ — antiarrítmico clase III</div>
+        </div>
+        <!-- Atropina -->
+        <div style="background:rgba(74,222,128,.1);border:1.5px solid rgba(74,222,128,.3);border-radius:12px;padding:16px">
+          <div style="color:#4ade80;font-weight:800;font-size:.95rem;margin-bottom:8px">💚 Atropina</div>
+          <div style="color:#86efac;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Indicación</div>
+          <div style="color:rgba(255,255,255,.85);font-size:.8rem;margin-bottom:8px">Bradicardia sintomática (NO en asistolia según ACLS 2020)</div>
+          <div style="color:#86efac;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Dosis</div>
+          <div style="color:#f0c319;font-size:.88rem;font-weight:800">0,5 mg IV</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.75rem">c/3–5 min, máx 3 mg</div>
+          <div style="color:rgba(255,255,255,.6);font-size:.7rem;margin-top:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px">Mecanismo: anticolinérgico → bloquea nervio vago → ↑ FC</div>
+        </div>
+        <!-- Bicarbonato -->
+        <div style="background:rgba(147,197,253,.1);border:1.5px solid rgba(147,197,253,.3);border-radius:12px;padding:16px">
+          <div style="color:#93c5fd;font-weight:800;font-size:.95rem;margin-bottom:8px">🧪 Bicarbonato sódico</div>
+          <div style="color:#bfdbfe;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Indicación</div>
+          <div style="color:rgba(255,255,255,.85);font-size:.8rem;margin-bottom:8px">Acidosis grave documentada, hiperpotasemia, sobredosis TCA</div>
+          <div style="color:#bfdbfe;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Dosis</div>
+          <div style="color:#f0c319;font-size:.88rem;font-weight:800">1 mEq/kg IV</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.75rem">guiado por gasometría</div>
+          <div style="color:rgba(255,255,255,.6);font-size:.7rem;margin-top:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px">Uso selectivo — no rutinario en PCR. Puede agravar hipercapnia.</div>
+        </div>
+      </div>
     </div>
-    <p class="video-label">Video: Farmacología en Soporte Vital Cardiovascular Avanzado (ACLS) – Fármacos esenciales</p>
+    <p class="video-label">Referencia: Farmacología en Soporte Vital Cardiovascular Avanzado (ACLS) — tarjetas interactivas</p>
 
     <!-- MINI-QUIZ M6 -->
     <div class="mini-quiz">
@@ -1729,8 +1914,216 @@ window.addEventListener('scroll',()=>{
   navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
 });
 
+// ══════════════════════════════════════
+// SIMULADORES EDUCATIVOS — CANVAS
+// ══════════════════════════════════════
+
+// ── M1: PQRST Cycle Animation ──
+(function initPQRST(){
+  const canvas = document.getElementById('pqrstCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height, mid=H/2;
+  const phases=[
+    {name:'P — Despolarización auricular',color:'#60a5fa',start:20,end:55},
+    {name:'PR — Conducción nodo AV',color:'#a78bfa',start:55,end:90},
+    {name:'QRS — Despolarización ventricular',color:'#4ade80',start:90,end:130},
+    {name:'ST — Sístole ventricular',color:'#fbbf24',start:130,end:170},
+    {name:'T — Repolarización ventricular',color:'#f87171',start:170,end:220},
+  ];
+  let t=0;
+  function pqrstY(x){
+    if(x<10||x>235) return mid;
+    if(x>=10&&x<50) return mid-12*Math.sin(((x-10)/40)*Math.PI);       // P
+    if(x>=50&&x<90) return mid;                                          // PR
+    if(x>=90&&x<96) return mid+8*((x-90)/6);                            // Q
+    if(x>=96&&x<108) return mid+8-70*Math.sin(((x-96)/12)*Math.PI);     // R
+    if(x>=108&&x<116) return mid+18*Math.sin(((x-108)/8)*Math.PI);      // S
+    if(x>=116&&x<140) return mid;                                        // ST
+    if(x>=140&&x<200) return mid-22*Math.sin(((x-140)/60)*Math.PI);     // T
+    return mid;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+    // grid
+    ctx.strokeStyle='rgba(0,80,0,.35)'; ctx.lineWidth=.5;
+    for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    // draw points up to t
+    const SCALE=2.4, OX=30;
+    ctx.lineWidth=2.2; ctx.lineJoin='round';
+    let curPhaseIdx=-1;
+    for(let i=0;i<Math.min(t,235);i++){
+      const x=OX+i*SCALE, nx=OX+(i+1)*SCALE;
+      const y=mid+(pqrstY(i)-mid), ny=mid+(pqrstY(i+1)-mid);
+      // determine phase color
+      let col='#00ff41';
+      phases.forEach((ph,pi)=>{if(i>=ph.start&&i<ph.end){col=ph.color;curPhaseIdx=pi;}});
+      ctx.strokeStyle=col;
+      ctx.shadowColor=col; ctx.shadowBlur=6;
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(nx,ny); ctx.stroke();
+    }
+    ctx.shadowBlur=0;
+    // label
+    const lbl=document.getElementById('pqrstPhaseLabel');
+    if(lbl&&curPhaseIdx>=0) lbl.textContent=phases[curPhaseIdx].name;
+    else if(lbl&&t>235) lbl.textContent='Ciclo completo ✓';
+    t++; if(t>280) t=0;
+    requestAnimationFrame(draw);
+  }
+  const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){draw();obs.disconnect();}},{threshold:.2});
+  obs.observe(canvas);
+})();
+
+// ── M2: Grid FC Calculator ──
+function calcFC(val){
+  val=parseInt(val||document.getElementById('rrSlider')?.value||4);
+  const fc=Math.round(300/val);
+  document.getElementById('rrVal').textContent=val;
+  document.getElementById('fcResult').textContent=fc;
+  const interp=document.getElementById('fcInterp');
+  if(fc<60){interp.textContent='🔵 Bradicardia — FC < 60 lpm';interp.style.background='#dbeafe';interp.style.color='#1e40af';interp.style.borderColor='#93c5fd';}
+  else if(fc<=100){interp.textContent='✅ RSN — Frecuencia normal (60–100 lpm)';interp.style.background='#dcfce7';interp.style.color='#166534';interp.style.borderColor='#22a86b';}
+  else{interp.textContent='🔴 Taquicardia — FC > 100 lpm';interp.style.background='#fee2e2';interp.style.color='#991b1b';interp.style.borderColor='#f87171';}
+  drawGrid(val);
+}
+function drawGrid(boxes){
+  const c=document.getElementById('gridCanvas'); if(!c) return;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffef0'; ctx.fillRect(0,0,W,H);
+  // big grid (5mm)
+  const bs=40, sx=20;
+  ctx.strokeStyle='#f4a460'; ctx.lineWidth=1;
+  for(let x=sx;x<W;x+=bs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=10;y<H;y+=bs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // small grid (1mm)
+  ctx.strokeStyle='rgba(244,164,96,.3)'; ctx.lineWidth=.5;
+  for(let x=sx;x<W;x+=8){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=10;y<H;y+=8){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // ECG line
+  const mid2=H/2;
+  ctx.strokeStyle='#1D51A3'; ctx.lineWidth=2; ctx.lineJoin='round';
+  ctx.beginPath(); ctx.moveTo(0,mid2);
+  // draw 2 beats
+  [0,boxes*bs].forEach(startX=>{
+    const ox=sx+startX;
+    ctx.lineTo(ox,mid2);
+    ctx.lineTo(ox+4,mid2-6);
+    ctx.lineTo(ox+8,mid2+4);
+    ctx.lineTo(ox+14,mid2-50);
+    ctx.lineTo(ox+18,mid2+14);
+    ctx.lineTo(ox+22,mid2);
+    if(startX===0) ctx.lineTo(ox+boxes*bs,mid2);
+  });
+  ctx.stroke();
+  // R-R bracket
+  const r1=sx+14, r2=sx+boxes*bs+14;
+  ctx.strokeStyle='#dc2626'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(r1,mid2-55); ctx.lineTo(r1,mid2-62); ctx.lineTo(r2,mid2-62); ctx.lineTo(r2,mid2-55); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#dc2626'; ctx.font='bold 11px monospace'; ctx.textAlign='center';
+  ctx.fillText(`R-R = ${boxes} cuadros grandes`,((r1+r2)/2),mid2-66);
+}
+(function initGrid(){
+  const s=document.getElementById('rrSlider');
+  if(s){calcFC(s.value);}
+})();
+
+// ── M3: Electrode animation ──
+function animElectrodes(){
+  const steps=[
+    {id:'el-RA',txt:'1. <b style="color:#f0c319">RA</b> (Right Arm) — Brazo derecho'},
+    {id:'el-LA',txt:'2. <b style="color:#f0c319">LA</b> (Left Arm) — Brazo izquierdo'},
+    {id:'el-RL',txt:'3. <b style="color:#94a3b8">RL</b> (Right Leg) — Pierna derecha (tierra)'},
+    {id:'el-LL',txt:'4. <b style="color:#94a3b8">LL</b> (Left Leg) — Pierna izquierda'},
+    {id:'el-V1',txt:'5. <b style="color:#60a5fa">V1</b> — 4.° EI, borde esternal derecho'},
+    {id:'el-V2',txt:'6. <b style="color:#60a5fa">V2</b> — 4.° EI, borde esternal izquierdo'},
+    {id:'el-V3',txt:'7. <b style="color:#60a5fa">V3</b> — Entre V2 y V4'},
+    {id:'el-V4',txt:'8. <b style="color:#60a5fa">V4</b> — 5.° EI, línea medioclavicular'},
+    {id:'el-V5',txt:'9. <b style="color:#60a5fa">V5</b> — 5.° EI, línea axilar anterior'},
+    {id:'el-V6',txt:'10. <b style="color:#60a5fa">V6</b> — 5.° EI, línea axilar media'},
+  ];
+  // reset
+  steps.forEach(s=>{const el=document.getElementById(s.id);if(el)el.style.opacity='0';});
+  const log=document.getElementById('electrodeLog');
+  if(log) log.innerHTML='';
+  steps.forEach((s,i)=>{
+    setTimeout(()=>{
+      const el=document.getElementById(s.id);
+      if(el){ el.style.transition='opacity .4s'; el.style.opacity='1'; }
+      if(log){ const d=document.createElement('div'); d.innerHTML=s.txt; d.style.opacity='0'; d.style.transition='opacity .4s'; log.appendChild(d); setTimeout(()=>d.style.opacity='1',50); }
+    },i*700);
+  });
+}
+
+// ── M4: RSN Annotated Trace ──
+(function initRSN(){
+  const canvas=document.getElementById('rsnCanvas'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height, mid=H/2;
+  const SCALE=3, OX=40;
+  const annots=[
+    {x:10,end:50,label:'P',color:'#2563eb',y:mid-45},
+    {x:55,end:90,label:'PR',color:'#7c3aed',y:mid-35},
+    {x:90,end:130,label:'QRS',color:'#16a34a',y:mid-80},
+    {x:130,end:165,label:'ST',color:'#ca8a04',y:mid-25},
+    {x:165,end:210,label:'T',color:'#dc2626',y:mid-55},
+  ];
+  function rsnY(x){
+    if(x<10||x>225) return mid;
+    if(x>=10&&x<50) return mid-14*Math.sin(((x-10)/40)*Math.PI);
+    if(x>=50&&x<90) return mid;
+    if(x>=90&&x<96) return mid+9*((x-90)/6);
+    if(x>=96&&x<108) return mid+9-75*Math.sin(((x-96)/12)*Math.PI);
+    if(x>=108&&x<116) return mid+20*Math.sin(((x-108)/8)*Math.PI);
+    if(x>=116&&x<140) return mid;
+    if(x>=140&&x<200) return mid-25*Math.sin(((x-140)/60)*Math.PI);
+    return mid;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#fffef8'; ctx.fillRect(0,0,W,H);
+    // grid
+    ctx.strokeStyle='rgba(244,164,96,.25)'; ctx.lineWidth=.5;
+    for(let x=0;x<W;x+=15){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=15){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.strokeStyle='rgba(244,164,96,.5)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=75){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=75){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    // 2 beats
+    [0,215].forEach(off=>{
+      ctx.strokeStyle='#1D51A3'; ctx.lineWidth=2.2; ctx.lineJoin='round';
+      ctx.beginPath();
+      for(let i=0;i<225;i++){
+        const px=OX+off*SCALE/215*W/2+(i*SCALE), py=rsnY(i);
+        if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+      }
+      ctx.stroke();
+      // annotations (only first beat)
+      if(off===0) annots.forEach(a=>{
+        const cx=OX+(a.x+((a.end-a.x)/2))*SCALE;
+        ctx.strokeStyle=a.color; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+        ctx.beginPath(); ctx.moveTo(OX+a.x*SCALE,mid-10); ctx.lineTo(OX+a.x*SCALE,H-16); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(OX+a.end*SCALE,mid-10); ctx.lineTo(OX+a.end*SCALE,H-16); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle=a.color; ctx.font='bold 11px monospace'; ctx.textAlign='center';
+        ctx.fillText(a.label,cx,H-4);
+      });
+    });
+    // FC label
+    ctx.fillStyle='#1D51A3'; ctx.font='bold 13px monospace'; ctx.textAlign='right';
+    ctx.fillText('RSN • FC 75 lpm',W-10,18);
+  }
+  const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){draw();obs.disconnect();}},{threshold:.2});
+  obs.observe(canvas);
+})();
+
 // ── INIT: apply module lock state ──
 (function initLocks(){
+  // Admin bypass: skip all locks
+  if(sessionStorage.getItem('ph_admin')==='1') return;
   for(let n=2;n<=6;n++){
     const card=document.getElementById('m'+n);
     if(!card) continue;
