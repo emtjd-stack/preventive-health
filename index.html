@@ -317,7 +317,9 @@ section { padding: 80px 24px; }
   transition: background .2s, border-color .2s;
 }
 .course-card:hover { background: rgba(255,255,255,.11); border-color: rgba(240,195,25,.35); }
-.course-card-icon { font-size: 30px; line-height: 1; }
+.course-card-cover{height:155px;border-radius:10px;background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:14px;margin:-26px -24px 14px -24px;position:relative;overflow:hidden}
+.course-card-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 60%);border-radius:inherit}
+.course-card-icon{font-size:36px;line-height:1;position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
 .course-card h3 { font-size: 1.05rem; color: #fff; line-height: 1.3; }
 .course-card > p { font-size: .875rem; color: rgba(255,255,255,.6); line-height: 1.7; flex: 1; }
 .course-card-tags { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -569,7 +571,7 @@ footer {
     </div>
     <div class="courses-grid">
       <div class="course-card">
-        <div class="course-card-icon">🩹</div>
+        <div class="course-card-cover" style="background-image:linear-gradient(rgba(22,61,122,.4),rgba(22,61,122,.6)),url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=700&q=80')"><div class="course-card-icon">🩹</div></div>
         <h3>Brigadas de Primeros Auxilios</h3>
         <p>Secuencia PAS, evaluación primaria, manejo de quemaduras, heridas y hemorragias, trauma osteoarticular y soporte vital básico (RCP).</p>
         <div class="course-card-tags">
@@ -579,7 +581,7 @@ footer {
         <a href="cursos/pab/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px">Solicitar acceso →</a>
       </div>
       <div class="course-card">
-        <div class="course-card-icon">🔥</div>
+        <div class="course-card-cover" style="background-image:linear-gradient(rgba(120,40,0,.4),rgba(120,40,0,.6)),url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=700&q=80')"><div class="course-card-icon">🔥</div></div>
         <h3>Brigadas contra Incendios</h3>
         <p>Tetraedro del fuego, clases de incendio, métodos de extinción, uso correcto de extintores portátiles y evacuación segura de instalaciones.</p>
         <div class="course-card-tags">
@@ -588,7 +590,7 @@ footer {
         <a href="cursos/brigadas/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px">Solicitar acceso →</a>
       </div>
       <div class="course-card">
-        <div class="course-card-icon">🚨</div>
+        <div class="course-card-cover" style="background-image:linear-gradient(rgba(22,61,122,.4),rgba(22,61,122,.6)),url('https://images.unsplash.com/photo-1587745416684-47953f16f02f?w=700&q=80')"><div class="course-card-icon">🚨</div></div>
         <h3>Brigadas de Emergencia</h3>
         <p>Marco legal SNGRE y MDT, evaluación de riesgos, planes de emergencia institucionales, evacuación y coordinación con organismos de socorro.</p>
         <div class="course-card-tags">
@@ -597,7 +599,7 @@ footer {
         <a href="cursos/emergencia/" class="btn btn-primary" style="text-align:center;justify-content:center;font-size:14px;margin-top:4px">Solicitar acceso →</a>
       </div>
       <div class="course-card">
-        <div class="course-card-icon">🫀</div>
+        <div class="course-card-cover" style="background-image:linear-gradient(rgba(22,61,122,.4),rgba(22,61,122,.6)),url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=700&q=80')"><div class="course-card-icon">🫀</div></div>
         <h3>Electrocardiografía Básica</h3>
         <p>Ondas P/Q/R/S/T, papel milimetrado, derivaciones 12-lead, ritmo sinusal normal, ritmos de paro (FV, TV, AESP, Asistolia) y farmacología ACLS.</p>
         <div class="course-card-tags">
@@ -614,7 +616,7 @@ footer {
     </div>
     <div class="courses-grid" style="grid-template-columns:repeat(2,1fr);max-width:560px">
       <div class="course-card">
-        <div class="course-card-icon">🚁</div>
+        <div class="course-card-cover" style="background-image:linear-gradient(rgba(6,78,59,.5),rgba(6,78,59,.65)),url('https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?w=700&q=80')"><div class="course-card-icon">🚁</div></div>
         <h3>Pilotaje Profesional de Drones</h3>
         <p>Regulaciones DGAC Ecuador, tipos de aeronaves no tripuladas, pre-vuelo, técnicas de pilotaje, fotogrametría y análisis geoespacial.</p>
         <div class="course-card-tags">
