@@ -185,6 +185,39 @@ tr:nth-child(even) td{background:#f4f8fe}
 .bitacora-title{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:20px 0 10px;padding-left:10px;border-left:4px solid var(--gold)}
 .bitacora-table{font-size:.82rem}
 .bitacora-table th{background:#163d7a}
+
+/* ══ SIMULADORES: ANIMACIONES DE MOVIMIENTO ══ */
+/* M2 — Drone hover + rotor spin + shadow */
+@keyframes droneHover{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes rotorSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes drnShad{0%,100%{transform:scaleX(1);opacity:.12}50%{transform:scaleX(.65);opacity:.05}}
+.drone-body{transform-box:fill-box;transform-origin:center;animation:droneHover 2.2s ease-in-out infinite}
+.drone-rotor-g{transform-box:fill-box;transform-origin:center;animation:rotorSpin .38s linear infinite}
+.drone-shadow-el{transform-box:fill-box;transform-origin:center;animation:drnShad 2.2s ease-in-out infinite}
+/* M3 — Radar rings + moving UAS icon */
+@keyframes radarExp{0%{transform:scale(0);opacity:.85}100%{transform:scale(2.6);opacity:0}}
+.radar-ring{fill:none;stroke-width:2.5;transform-box:fill-box;transform-origin:center;animation:radarExp 2.6s ease-out infinite}
+.rr-aep{stroke:#ea580c}.rr-uio{stroke:#1D51A3}.rr-gye{stroke:#22a86b}
+.rr-d1{animation-delay:.87s}.rr-d2{animation-delay:1.73s}
+@keyframes uasPath{0%{transform:translate(35px,340px) scale(.8)}50%{transform:translate(240px,200px) scale(.8)}100%{transform:translate(430px,120px) scale(.8)}}
+.uas-moving{animation:uasPath 10s ease-in-out infinite alternate}
+/* M4 — Checkmark bounce + progress bar + ready slide-in */
+@keyframes chkBounce{0%{transform:scale(0) rotate(-20deg)}65%{transform:scale(1.35) rotate(8deg)}80%{transform:scale(.88) rotate(-3deg)}100%{transform:scale(1) rotate(0deg)}}
+.checklist-item.done .chk-box{animation:chkBounce .48s cubic-bezier(.34,1.56,.64,1) both}
+.chk-prog-bar{height:6px;background:#d1e8f5;border-radius:3px;margin:0 18px 10px;overflow:hidden}
+.chk-prog-fill{height:100%;background:linear-gradient(90deg,#1D51A3,#22a86b);border-radius:3px;transition:width .4s cubic-bezier(.34,1.56,.64,1);width:0%}
+@keyframes readySlide{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.checklist-ready{animation:readySlide .5s ease both}
+/* M5 — SORA cell glow + badge pop */
+@keyframes soraGlow{0%,100%{box-shadow:0 0 0 3px rgba(0,0,0,.25)}50%{box-shadow:0 0 0 7px rgba(29,81,163,.18),0 0 20px rgba(29,81,163,.32)}}
+.sora-cell.selected{animation:soraGlow 1.8s ease-in-out infinite!important}
+@keyframes badgePop{from{transform:scale(.5) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+.sail-badge-big{display:inline-block;animation:badgePop .4s cubic-bezier(.34,1.56,.64,1) both}
+/* M6 — Tab slide-in + bitacora row hover */
+@keyframes tabSlide{from{transform:translateX(-12px);opacity:0}to{transform:translateX(0);opacity:1}}
+.tab-content.active{animation:tabSlide .3s ease both}
+.bitacora-table tbody tr{transition:background .18s}
+.bitacora-table tbody tr:hover td{background:#dbeafe}
 </style>
 </head>
 <body>
@@ -485,16 +518,19 @@ tr:nth-child(even) td{background:#f4f8fe}
     <div class="drone-grid">
       <!-- Nano -->
       <div class="drone-card" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);color:#0c4a6e">
-        <svg width="64" height="48" viewBox="0 0 64 48">
-          <circle cx="32" cy="24" r="5" fill="#0c4a6e" opacity=".5"/>
-          <line x1="27" y1="19" x2="14" y2="10" stroke="#0c4a6e" stroke-width="2"/>
-          <line x1="37" y1="19" x2="50" y2="10" stroke="#0c4a6e" stroke-width="2"/>
-          <line x1="27" y1="29" x2="14" y2="38" stroke="#0c4a6e" stroke-width="2"/>
-          <line x1="37" y1="29" x2="50" y2="38" stroke="#0c4a6e" stroke-width="2"/>
-          <circle cx="14" cy="10" r="6" fill="#0c4a6e" opacity=".6"/>
-          <circle cx="50" cy="10" r="6" fill="#0c4a6e" opacity=".6"/>
-          <circle cx="14" cy="38" r="6" fill="#0c4a6e" opacity=".6"/>
-          <circle cx="50" cy="38" r="6" fill="#0c4a6e" opacity=".6"/>
+        <svg width="64" height="56" viewBox="0 0 64 56" style="overflow:visible">
+          <ellipse class="drone-shadow-el" cx="32" cy="53" rx="18" ry="3" fill="#000" opacity=".12"/>
+          <g class="drone-body" style="animation-duration:2.2s">
+            <circle cx="32" cy="24" r="5" fill="#0c4a6e" opacity=".5"/>
+            <line x1="27" y1="19" x2="14" y2="10" stroke="#0c4a6e" stroke-width="2"/>
+            <line x1="37" y1="19" x2="50" y2="10" stroke="#0c4a6e" stroke-width="2"/>
+            <line x1="27" y1="29" x2="14" y2="38" stroke="#0c4a6e" stroke-width="2"/>
+            <line x1="37" y1="29" x2="50" y2="38" stroke="#0c4a6e" stroke-width="2"/>
+            <circle cx="14" cy="10" r="6" fill="#0c4a6e" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="14" cy="10" rx="6" ry="2" fill="#0c4a6e" opacity=".7"/></g>
+            <circle cx="50" cy="10" r="6" fill="#0c4a6e" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="50" cy="10" rx="6" ry="2" fill="#0c4a6e" opacity=".7"/></g>
+            <circle cx="14" cy="38" r="6" fill="#0c4a6e" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="14" cy="38" rx="6" ry="2" fill="#0c4a6e" opacity=".7"/></g>
+            <circle cx="50" cy="38" r="6" fill="#0c4a6e" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="50" cy="38" rx="6" ry="2" fill="#0c4a6e" opacity=".7"/></g>
+          </g>
         </svg>
         <div class="dc-name">Nano</div>
         <div class="dc-weight">&lt; 250 g</div>
@@ -503,16 +539,19 @@ tr:nth-child(even) td{background:#f4f8fe}
       </div>
       <!-- Micro -->
       <div class="drone-card" style="background:linear-gradient(135deg,#93c5fd,#3b82f6);color:#fff">
-        <svg width="64" height="48" viewBox="0 0 64 48">
-          <rect x="27" y="20" width="10" height="8" rx="2" fill="#fff" opacity=".5"/>
-          <line x1="27" y1="22" x2="12" y2="11" stroke="#fff" stroke-width="2.2"/>
-          <line x1="37" y1="22" x2="52" y2="11" stroke="#fff" stroke-width="2.2"/>
-          <line x1="27" y1="26" x2="12" y2="37" stroke="#fff" stroke-width="2.2"/>
-          <line x1="37" y1="26" x2="52" y2="37" stroke="#fff" stroke-width="2.2"/>
-          <circle cx="12" cy="11" r="7" fill="#fff" opacity=".6"/>
-          <circle cx="52" cy="11" r="7" fill="#fff" opacity=".6"/>
-          <circle cx="12" cy="37" r="7" fill="#fff" opacity=".6"/>
-          <circle cx="52" cy="37" r="7" fill="#fff" opacity=".6"/>
+        <svg width="64" height="56" viewBox="0 0 64 56" style="overflow:visible">
+          <ellipse class="drone-shadow-el" cx="32" cy="53" rx="19" ry="3.2" fill="#000" opacity=".15"/>
+          <g class="drone-body" style="animation-duration:2.0s">
+            <rect x="27" y="20" width="10" height="8" rx="2" fill="#fff" opacity=".5"/>
+            <line x1="27" y1="22" x2="12" y2="11" stroke="#fff" stroke-width="2.2"/>
+            <line x1="37" y1="22" x2="52" y2="11" stroke="#fff" stroke-width="2.2"/>
+            <line x1="27" y1="26" x2="12" y2="37" stroke="#fff" stroke-width="2.2"/>
+            <line x1="37" y1="26" x2="52" y2="37" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="12" cy="11" r="7" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="12" cy="11" rx="7" ry="2.4" fill="#fff" opacity=".75"/></g>
+            <circle cx="52" cy="11" r="7" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="52" cy="11" rx="7" ry="2.4" fill="#fff" opacity=".75"/></g>
+            <circle cx="12" cy="37" r="7" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="12" cy="37" rx="7" ry="2.4" fill="#fff" opacity=".75"/></g>
+            <circle cx="52" cy="37" r="7" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="52" cy="37" rx="7" ry="2.4" fill="#fff" opacity=".75"/></g>
+          </g>
         </svg>
         <div class="dc-name">Micro</div>
         <div class="dc-weight">250 g – 2 kg</div>
@@ -521,16 +560,19 @@ tr:nth-child(even) td{background:#f4f8fe}
       </div>
       <!-- Mini -->
       <div class="drone-card" style="background:linear-gradient(135deg,#1D51A3,#163d7a);color:#fff">
-        <svg width="64" height="48" viewBox="0 0 64 48">
-          <rect x="25" y="19" width="14" height="10" rx="3" fill="#F0C319" opacity=".7"/>
-          <line x1="25" y1="21" x2="10" y2="10" stroke="#fff" stroke-width="2.5"/>
-          <line x1="39" y1="21" x2="54" y2="10" stroke="#fff" stroke-width="2.5"/>
-          <line x1="25" y1="27" x2="10" y2="38" stroke="#fff" stroke-width="2.5"/>
-          <line x1="39" y1="27" x2="54" y2="38" stroke="#fff" stroke-width="2.5"/>
-          <circle cx="10" cy="10" r="7" fill="#F0C319" opacity=".7"/>
-          <circle cx="54" cy="10" r="7" fill="#F0C319" opacity=".7"/>
-          <circle cx="10" cy="38" r="7" fill="#F0C319" opacity=".7"/>
-          <circle cx="54" cy="38" r="7" fill="#F0C319" opacity=".7"/>
+        <svg width="64" height="56" viewBox="0 0 64 56" style="overflow:visible">
+          <ellipse class="drone-shadow-el" cx="32" cy="53" rx="20" ry="3.4" fill="#000" opacity=".14"/>
+          <g class="drone-body" style="animation-duration:2.4s">
+            <rect x="25" y="19" width="14" height="10" rx="3" fill="#F0C319" opacity=".7"/>
+            <line x1="25" y1="21" x2="10" y2="10" stroke="#fff" stroke-width="2.5"/>
+            <line x1="39" y1="21" x2="54" y2="10" stroke="#fff" stroke-width="2.5"/>
+            <line x1="25" y1="27" x2="10" y2="38" stroke="#fff" stroke-width="2.5"/>
+            <line x1="39" y1="27" x2="54" y2="38" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="10" cy="10" r="7" fill="#F0C319" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="10" cy="10" rx="7" ry="2.4" fill="#F0C319" opacity=".85"/></g>
+            <circle cx="54" cy="10" r="7" fill="#F0C319" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="54" cy="10" rx="7" ry="2.4" fill="#F0C319" opacity=".85"/></g>
+            <circle cx="10" cy="38" r="7" fill="#F0C319" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="10" cy="38" rx="7" ry="2.4" fill="#F0C319" opacity=".85"/></g>
+            <circle cx="54" cy="38" r="7" fill="#F0C319" opacity=".22"/><g class="drone-rotor-g"><ellipse cx="54" cy="38" rx="7" ry="2.4" fill="#F0C319" opacity=".85"/></g>
+          </g>
         </svg>
         <div class="dc-name">Mini</div>
         <div class="dc-weight">2 – 7 kg</div>
@@ -539,17 +581,20 @@ tr:nth-child(even) td{background:#f4f8fe}
       </div>
       <!-- Small -->
       <div class="drone-card" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff">
-        <svg width="64" height="48" viewBox="0 0 64 48">
-          <rect x="24" y="18" width="16" height="12" rx="3" fill="#fff" opacity=".4"/>
-          <rect x="28" y="26" width="8" height="8" rx="2" fill="#fff" opacity=".3"/>
-          <line x1="24" y1="21" x2="8" y2="10" stroke="#fff" stroke-width="3"/>
-          <line x1="40" y1="21" x2="56" y2="10" stroke="#fff" stroke-width="3"/>
-          <line x1="24" y1="27" x2="8" y2="38" stroke="#fff" stroke-width="3"/>
-          <line x1="40" y1="27" x2="56" y2="38" stroke="#fff" stroke-width="3"/>
-          <circle cx="8" cy="10" r="8" fill="#fff" opacity=".5"/>
-          <circle cx="56" cy="10" r="8" fill="#fff" opacity=".5"/>
-          <circle cx="8" cy="38" r="8" fill="#fff" opacity=".5"/>
-          <circle cx="56" cy="38" r="8" fill="#fff" opacity=".5"/>
+        <svg width="64" height="56" viewBox="0 0 64 56" style="overflow:visible">
+          <ellipse class="drone-shadow-el" cx="32" cy="53" rx="21" ry="3.5" fill="#000" opacity=".16"/>
+          <g class="drone-body" style="animation-duration:2.1s">
+            <rect x="24" y="18" width="16" height="12" rx="3" fill="#fff" opacity=".4"/>
+            <rect x="28" y="26" width="8" height="8" rx="2" fill="#fff" opacity=".3"/>
+            <line x1="24" y1="21" x2="8" y2="10" stroke="#fff" stroke-width="3"/>
+            <line x1="40" y1="21" x2="56" y2="10" stroke="#fff" stroke-width="3"/>
+            <line x1="24" y1="27" x2="8" y2="38" stroke="#fff" stroke-width="3"/>
+            <line x1="40" y1="27" x2="56" y2="38" stroke="#fff" stroke-width="3"/>
+            <circle cx="8" cy="10" r="8" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="8" cy="10" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+            <circle cx="56" cy="10" r="8" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="56" cy="10" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+            <circle cx="8" cy="38" r="8" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="8" cy="38" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+            <circle cx="56" cy="38" r="8" fill="#fff" opacity=".2"/><g class="drone-rotor-g"><ellipse cx="56" cy="38" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+          </g>
         </svg>
         <div class="dc-name">Small</div>
         <div class="dc-weight">7 – 25 kg</div>
@@ -558,17 +603,20 @@ tr:nth-child(even) td{background:#f4f8fe}
       </div>
       <!-- Medium -->
       <div class="drone-card" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff">
-        <svg width="64" height="48" viewBox="0 0 64 48">
-          <rect x="22" y="16" width="20" height="16" rx="4" fill="#fff" opacity=".35"/>
-          <rect x="27" y="28" width="10" height="10" rx="2" fill="#fff" opacity=".25"/>
-          <line x1="22" y1="20" x2="5" y2="9" stroke="#fff" stroke-width="3.5"/>
-          <line x1="42" y1="20" x2="59" y2="9" stroke="#fff" stroke-width="3.5"/>
-          <line x1="22" y1="28" x2="5" y2="39" stroke="#fff" stroke-width="3.5"/>
-          <line x1="42" y1="28" x2="59" y2="39" stroke="#fff" stroke-width="3.5"/>
-          <circle cx="5" cy="9" r="8" fill="#fff" opacity=".45"/>
-          <circle cx="59" cy="9" r="8" fill="#fff" opacity=".45"/>
-          <circle cx="5" cy="39" r="8" fill="#fff" opacity=".45"/>
-          <circle cx="59" cy="39" r="8" fill="#fff" opacity=".45"/>
+        <svg width="64" height="56" viewBox="0 0 64 56" style="overflow:visible">
+          <ellipse class="drone-shadow-el" cx="32" cy="53" rx="22" ry="3.6" fill="#000" opacity=".15"/>
+          <g class="drone-body" style="animation-duration:1.9s">
+            <rect x="22" y="16" width="20" height="16" rx="4" fill="#fff" opacity=".35"/>
+            <rect x="27" y="28" width="10" height="10" rx="2" fill="#fff" opacity=".25"/>
+            <line x1="22" y1="20" x2="5" y2="9" stroke="#fff" stroke-width="3.5"/>
+            <line x1="42" y1="20" x2="59" y2="9" stroke="#fff" stroke-width="3.5"/>
+            <line x1="22" y1="28" x2="5" y2="39" stroke="#fff" stroke-width="3.5"/>
+            <line x1="42" y1="28" x2="59" y2="39" stroke="#fff" stroke-width="3.5"/>
+            <circle cx="5" cy="9" r="8" fill="#fff" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="5" cy="9" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+            <circle cx="59" cy="9" r="8" fill="#fff" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="59" cy="9" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+            <circle cx="5" cy="39" r="8" fill="#fff" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="5" cy="39" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+            <circle cx="59" cy="39" r="8" fill="#fff" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="59" cy="39" rx="8" ry="2.8" fill="#fff" opacity=".7"/></g>
+          </g>
         </svg>
         <div class="dc-name">Medium</div>
         <div class="dc-weight">25 – 150 kg</div>
@@ -577,17 +625,20 @@ tr:nth-child(even) td{background:#f4f8fe}
       </div>
       <!-- Large -->
       <div class="drone-card" style="background:linear-gradient(135deg,#1a2840,#2e4060);color:#fff">
-        <svg width="64" height="48" viewBox="0 0 64 48">
-          <rect x="20" y="15" width="24" height="18" rx="5" fill="#F0C319" opacity=".3"/>
-          <rect x="26" y="29" width="12" height="10" rx="2" fill="#F0C319" opacity=".2"/>
-          <line x1="20" y1="19" x2="3" y2="8" stroke="#F0C319" stroke-width="4"/>
-          <line x1="44" y1="19" x2="61" y2="8" stroke="#F0C319" stroke-width="4"/>
-          <line x1="20" y1="29" x2="3" y2="40" stroke="#F0C319" stroke-width="4"/>
-          <line x1="44" y1="29" x2="61" y2="40" stroke="#F0C319" stroke-width="4"/>
-          <circle cx="3" cy="8" r="8" fill="#F0C319" opacity=".5"/>
-          <circle cx="61" cy="8" r="8" fill="#F0C319" opacity=".5"/>
-          <circle cx="3" cy="40" r="8" fill="#F0C319" opacity=".5"/>
-          <circle cx="61" cy="40" r="8" fill="#F0C319" opacity=".5"/>
+        <svg width="64" height="56" viewBox="0 0 64 56" style="overflow:visible">
+          <ellipse class="drone-shadow-el" cx="32" cy="53" rx="22" ry="3.8" fill="#000" opacity=".18"/>
+          <g class="drone-body" style="animation-duration:2.3s">
+            <rect x="20" y="15" width="24" height="18" rx="5" fill="#F0C319" opacity=".3"/>
+            <rect x="26" y="29" width="12" height="10" rx="2" fill="#F0C319" opacity=".2"/>
+            <line x1="20" y1="19" x2="3" y2="8" stroke="#F0C319" stroke-width="4"/>
+            <line x1="44" y1="19" x2="61" y2="8" stroke="#F0C319" stroke-width="4"/>
+            <line x1="20" y1="29" x2="3" y2="40" stroke="#F0C319" stroke-width="4"/>
+            <line x1="44" y1="29" x2="61" y2="40" stroke="#F0C319" stroke-width="4"/>
+            <circle cx="3" cy="8" r="8" fill="#F0C319" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="3" cy="8" rx="8" ry="2.8" fill="#F0C319" opacity=".8"/></g>
+            <circle cx="61" cy="8" r="8" fill="#F0C319" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="61" cy="8" rx="8" ry="2.8" fill="#F0C319" opacity=".8"/></g>
+            <circle cx="3" cy="40" r="8" fill="#F0C319" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="3" cy="40" rx="8" ry="2.8" fill="#F0C319" opacity=".8"/></g>
+            <circle cx="61" cy="40" r="8" fill="#F0C319" opacity=".18"/><g class="drone-rotor-g"><ellipse cx="61" cy="40" rx="8" ry="2.8" fill="#F0C319" opacity=".8"/></g>
+          </g>
         </svg>
         <div class="dc-name">Large</div>
         <div class="dc-weight">&gt; 150 kg</div>
@@ -784,6 +835,30 @@ tr:nth-child(even) td{background:#f4f8fe}
           <rect x="84" y="246" width="12" height="4" rx="1" fill="#9333ea"/>
           <rect x="88" y="242" width="4" height="12" rx="1" fill="#9333ea"/>
           <text x="90" y="266" text-anchor="middle" fill="#6b21a8" font-size="7" font-weight="700" font-family="Segoe UI,sans-serif">Hospital</text>
+          <!-- Radar rings — AEP (120,130) -->
+          <circle cx="120" cy="130" r="14" class="radar-ring rr-aep"/>
+          <circle cx="120" cy="130" r="14" class="radar-ring rr-aep rr-d1"/>
+          <circle cx="120" cy="130" r="14" class="radar-ring rr-aep rr-d2"/>
+          <!-- Radar rings — UIO (350,110) -->
+          <circle cx="350" cy="110" r="14" class="radar-ring rr-uio"/>
+          <circle cx="350" cy="110" r="14" class="radar-ring rr-uio rr-d1"/>
+          <circle cx="350" cy="110" r="14" class="radar-ring rr-uio rr-d2"/>
+          <!-- Radar rings — GYE (200,310) -->
+          <circle cx="200" cy="310" r="14" class="radar-ring rr-gye"/>
+          <circle cx="200" cy="310" r="14" class="radar-ring rr-gye rr-d1"/>
+          <circle cx="200" cy="310" r="14" class="radar-ring rr-gye rr-d2"/>
+          <!-- Moving UAS icon on authorized flight path -->
+          <g class="uas-moving">
+            <circle cx="0" cy="0" r="4" fill="#163d7a" opacity=".9"/>
+            <line x1="-4" y1="-4" x2="-9" y2="-8" stroke="#163d7a" stroke-width="1.5"/>
+            <line x1="4" y1="-4" x2="9" y2="-8" stroke="#163d7a" stroke-width="1.5"/>
+            <line x1="-4" y1="4" x2="-9" y2="8" stroke="#163d7a" stroke-width="1.5"/>
+            <line x1="4" y1="4" x2="9" y2="8" stroke="#163d7a" stroke-width="1.5"/>
+            <circle cx="-9" cy="-8" r="4" fill="#163d7a" opacity=".6"/>
+            <circle cx="9" cy="-8" r="4" fill="#163d7a" opacity=".6"/>
+            <circle cx="-9" cy="8" r="4" fill="#163d7a" opacity=".6"/>
+            <circle cx="9" cy="8" r="4" fill="#163d7a" opacity=".6"/>
+          </g>
         </svg>
       </div>
       <div class="airspace-legend">
@@ -937,6 +1012,7 @@ tr:nth-child(even) td{background:#f4f8fe}
         <h5>✅ Checklist Pre-vuelo — PAVE &amp; IMSAFE</h5>
         <span class="checklist-counter" id="chkCounter">0 / 10 verificados</span>
       </div>
+      <div class="chk-prog-bar"><div class="chk-prog-fill" id="chkProgFill"></div></div>
       <div class="checklist-body">
         <div class="checklist-section-title">PAVE — Entorno de la misión</div>
         <div class="checklist-item" onclick="toggleChk(this)" data-id="p1">
@@ -1422,10 +1498,12 @@ tr:nth-child(even) td{background:#f4f8fe}
 
     <div class="bitacora-title">Bitácora Digital — Ejemplo de Registro</div>
     <table class="bitacora-table">
-      <tr><th>Vuelo</th><th>Fecha</th><th>Lugar</th><th>Duración</th><th>Piloto</th><th>Observaciones</th></tr>
+      <thead><tr><th>Vuelo</th><th>Fecha</th><th>Lugar</th><th>Duración</th><th>Piloto</th><th>Observaciones</th></tr></thead>
+      <tbody>
       <tr><td>#001</td><td>2026-01-15</td><td>Quito, Parque La Carolina</td><td>00:18:42</td><td>J. Cazares</td><td>Sin novedad. GPS 12 sat.</td></tr>
       <tr><td>#002</td><td>2026-01-22</td><td>Guayaquil, Vía a la Costa</td><td>00:31:05</td><td>J. Cazares</td><td>Viento 8 m/s. Vuelo estable.</td></tr>
       <tr><td>#003</td><td>2026-02-03</td><td>Cuenca, Zona Industrial</td><td>00:22:18</td><td>J. Cazares</td><td>Calibración IMU realizada.</td></tr>
+      </tbody>
     </table>
 
     <!-- SIMULATOR M6 -->
@@ -1671,8 +1749,11 @@ function toggleChk(el){
   const total = document.querySelectorAll('#pavechk .checklist-item').length;
   const done  = document.querySelectorAll('#pavechk .checklist-item.done').length;
   document.getElementById('chkCounter').textContent = done + ' / ' + total + ' verificados';
+  document.getElementById('chkProgFill').style.width = Math.round(done/total*100) + '%';
   const ready = document.getElementById('chkReady');
   if(done === total){
+    ready.style.display = 'none';
+    void ready.offsetWidth; // force reflow to restart animation
     ready.style.display = 'block';
   } else {
     ready.style.display = 'none';
@@ -1724,9 +1805,16 @@ function showSoraResult(sail, desc){
 // ── M6 Maintenance Tabs ───────────────────────────────────────────
 function switchTab(btn, tabId){
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => {
+    c.classList.remove('active');
+    c.style.animation = 'none';
+  });
   btn.classList.add('active');
-  document.getElementById(tabId).classList.add('active');
+  const tc = document.getElementById(tabId);
+  tc.style.animation = 'none';
+  void tc.offsetWidth; // reflow to restart CSS animation
+  tc.style.animation = '';
+  tc.classList.add('active');
 }
 
 // ── Module Locking ──────────────────────────────────────────────────
