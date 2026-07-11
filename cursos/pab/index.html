@@ -246,65 +246,74 @@ tr:nth-child(even) td{background:#f4f8fe}
     <!-- SVG Cadena de Supervivencia — animated chain links -->
     <div class="diagram-wrap">
       <div class="diagram-title">Diagrama — Cadena de Supervivencia (AHA 2020)</div>
-      <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible">
+      <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
         <defs>
-          <linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e05c2d"/><stop offset="100%" stop-color="#f09040"/></linearGradient>
-          <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1D51A3"/><stop offset="100%" stop-color="#3a7bdc"/></linearGradient>
-          <linearGradient id="cg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d4a800"/><stop offset="100%" stop-color="#F0C319"/></linearGradient>
-          <linearGradient id="cg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22a86b"/><stop offset="100%" stop-color="#2fd886"/></linearGradient>
-          <linearGradient id="cg5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a855f7"/></linearGradient>
-          <linearGradient id="cg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0e7490"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+          <!-- Background gradient -->
+          <linearGradient id="cds-bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#091629"/>
+            <stop offset="100%" stop-color="#0f2040"/>
+          </linearGradient>
+          <!-- Link fill gradients -->
+          <linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c0391b"/><stop offset="100%" stop-color="#f06030"/></linearGradient>
+          <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1540a0"/><stop offset="100%" stop-color="#2a6acc"/></linearGradient>
+          <linearGradient id="cg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a87000"/><stop offset="100%" stop-color="#f0c020"/></linearGradient>
+          <linearGradient id="cg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a7a40"/><stop offset="100%" stop-color="#28c860"/></linearGradient>
+          <linearGradient id="cg5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6020b0"/><stop offset="100%" stop-color="#9040e0"/></linearGradient>
+          <linearGradient id="cg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a5a70"/><stop offset="100%" stop-color="#0eaac8"/></linearGradient>
+          <!-- Clip paths for LOWER half of odd links (go behind even links) -->
+          <!-- Lower = y > 0 in the link's own rotated coordinate frame -->
+          <clipPath id="cds-lo1"><rect x="-80" y="0" width="160" height="45" transform="translate(143,112) rotate(-20)"/></clipPath>
+          <clipPath id="cds-lo3"><rect x="-80" y="0" width="160" height="45" transform="translate(333,112) rotate(-20)"/></clipPath>
+          <clipPath id="cds-lo5"><rect x="-80" y="0" width="160" height="45" transform="translate(523,112) rotate(-20)"/></clipPath>
+          <!-- Clip paths for UPPER half of odd links (go in front of even links) -->
+          <!-- Upper = y < 0 in the link's own rotated coordinate frame -->
+          <clipPath id="cds-up1"><rect x="-80" y="-45" width="160" height="45" transform="translate(143,112) rotate(-20)"/></clipPath>
+          <clipPath id="cds-up3"><rect x="-80" y="-45" width="160" height="45" transform="translate(333,112) rotate(-20)"/></clipPath>
+          <clipPath id="cds-up5"><rect x="-80" y="-45" width="160" height="45" transform="translate(523,112) rotate(-20)"/></clipPath>
         </defs>
 
-        <!-- Link 1: Reconocimiento / SEM — orange -->
-        <g class="chain-link-1" color="#e05c2d" transform="translate(62,90)">
-          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg1)" stroke-width="16" transform="rotate(-38)"/>
-          <text y="-44" text-anchor="middle" fill="#e05c2d" font-size="11" font-weight="800">📞 Llamar 911</text>
-          <text y="-30" text-anchor="middle" fill="#a03020" font-size="9">Reconocimiento</text>
-        </g>
+        <!-- Dark background -->
+        <rect width="760" height="200" fill="url(#cds-bg)" rx="10"/>
 
-        <!-- Link 2: RCP Precoz — blue (overlaps link 1 at right) -->
-        <g class="chain-link-2" color="#1D51A3" transform="translate(182,90)">
-          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg2)" stroke-width="16" transform="rotate(38)"/>
-          <text y="-44" text-anchor="middle" fill="#1D51A3" font-size="11" font-weight="800">🤝 RCP Precoz</text>
-          <text y="-30" text-anchor="middle" fill="#163d7a" font-size="9">Por testigos</text>
-        </g>
+        <!-- PASS 1 — Lower arcs of ODD links (render first = behind even links) -->
+        <ellipse class="chain-link-1" cx="143" cy="112" rx="65" ry="32" fill="url(#cg1)" stroke="white" stroke-width="3" transform="rotate(-20,143,112)" clip-path="url(#cds-lo1)"/>
+        <ellipse class="chain-link-3" cx="333" cy="112" rx="65" ry="32" fill="url(#cg3)" stroke="white" stroke-width="3" transform="rotate(-20,333,112)" clip-path="url(#cds-lo3)"/>
+        <ellipse class="chain-link-2" cx="523" cy="112" rx="65" ry="32" fill="url(#cg5)" stroke="white" stroke-width="3" transform="rotate(-20,523,112)" clip-path="url(#cds-lo5)"/>
 
-        <!-- Link 3: DEA — gold -->
-        <g class="chain-link-3" color="#d4a800" transform="translate(302,90)">
-          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg3)" stroke-width="16" transform="rotate(-38)"/>
-          <text y="-44" text-anchor="middle" fill="#b45309" font-size="11" font-weight="800">⚡ Desfibrilación</text>
-          <text y="-30" text-anchor="middle" fill="#92400e" font-size="9">DEA Precoz</text>
-        </g>
+        <!-- PASS 2 — Full EVEN links (render second = in front of odd lower arcs) -->
+        <ellipse class="chain-link-2" cx="238" cy="112" rx="65" ry="32" fill="url(#cg2)" stroke="white" stroke-width="3" transform="rotate(20,238,112)"/>
+        <ellipse class="chain-link-4" cx="428" cy="112" rx="65" ry="32" fill="url(#cg4)" stroke="white" stroke-width="3" transform="rotate(20,428,112)"/>
+        <ellipse class="chain-link-1" cx="618" cy="112" rx="65" ry="32" fill="url(#cg6)" stroke="white" stroke-width="3" transform="rotate(20,618,112)"/>
 
-        <!-- Link 4: SVA — green -->
-        <g class="chain-link-4" color="#22a86b" transform="translate(422,90)">
-          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg4)" stroke-width="16" transform="rotate(38)"/>
-          <text y="-44" text-anchor="middle" fill="#22a86b" font-size="11" font-weight="800">🏥 Soporte Vital</text>
-          <text y="-30" text-anchor="middle" fill="#166a45" font-size="9">SVA Avanzado</text>
-        </g>
+        <!-- PASS 3 — Upper arcs of ODD links (render last = in front of even links) -->
+        <ellipse class="chain-link-1" cx="143" cy="112" rx="65" ry="32" fill="url(#cg1)" stroke="white" stroke-width="3" transform="rotate(-20,143,112)" clip-path="url(#cds-up1)"/>
+        <ellipse class="chain-link-3" cx="333" cy="112" rx="65" ry="32" fill="url(#cg3)" stroke="white" stroke-width="3" transform="rotate(-20,333,112)" clip-path="url(#cds-up3)"/>
+        <ellipse class="chain-link-2" cx="523" cy="112" rx="65" ry="32" fill="url(#cg5)" stroke="white" stroke-width="3" transform="rotate(-20,523,112)" clip-path="url(#cds-up5)"/>
 
-        <!-- Link 5: Cuidados Intensivos — purple (chain-link-1 reused timing offset) -->
-        <g style="animation:chainPulse 4s ease-in-out 0.5s infinite" color="#7c3aed" transform="translate(542,90)">
-          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg5)" stroke-width="16" transform="rotate(-38)"/>
-          <text y="-44" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="800">🫀 Cuidados</text>
-          <text y="-30" text-anchor="middle" fill="#6d28d9" font-size="9">Intensivos</text>
-        </g>
-
-        <!-- Link 6: Recuperación — teal -->
-        <g style="animation:chainPulse 4s ease-in-out 1.5s infinite" color="#0e7490" transform="translate(662,90)">
-          <ellipse rx="52" ry="30" fill="none" stroke="url(#cg6)" stroke-width="16" transform="rotate(38)"/>
-          <text y="-44" text-anchor="middle" fill="#0e7490" font-size="11" font-weight="800">♻️ Recuperación</text>
-          <text y="-30" text-anchor="middle" fill="#155e75" font-size="9">Rehabilitación</text>
-        </g>
-
-        <!-- Step labels below -->
-        <text x="62"  y="148" text-anchor="middle" fill="#e05c2d" font-size="9.5" font-weight="700">Eslabón 1</text>
-        <text x="182" y="148" text-anchor="middle" fill="#1D51A3" font-size="9.5" font-weight="700">Eslabón 2</text>
-        <text x="302" y="148" text-anchor="middle" fill="#b45309" font-size="9.5" font-weight="700">Eslabón 3</text>
-        <text x="422" y="148" text-anchor="middle" fill="#22a86b" font-size="9.5" font-weight="700">Eslabón 4</text>
-        <text x="542" y="148" text-anchor="middle" fill="#7c3aed" font-size="9.5" font-weight="700">Eslabón 5</text>
-        <text x="662" y="148" text-anchor="middle" fill="#0e7490" font-size="9.5" font-weight="700">Eslabón 6</text>
+        <!-- TEXT LABELS — all white for contrast on dark background -->
+        <!-- Line 1: icon + main name (bright tinted white) -->
+        <text x="143" y="44" text-anchor="middle" fill="#ff9878" font-size="10.5" font-weight="800" font-family="Arial,sans-serif">📞 Llamar 911</text>
+        <text x="238" y="44" text-anchor="middle" fill="#78b8ff" font-size="10.5" font-weight="800" font-family="Arial,sans-serif">🤝 RCP Precoz</text>
+        <text x="333" y="44" text-anchor="middle" fill="#ffe070" font-size="10.5" font-weight="800" font-family="Arial,sans-serif">⚡ Desfibrilación</text>
+        <text x="428" y="44" text-anchor="middle" fill="#70e898" font-size="10.5" font-weight="800" font-family="Arial,sans-serif">🏥 Soporte Vital</text>
+        <text x="523" y="44" text-anchor="middle" fill="#c888ff" font-size="10.5" font-weight="800" font-family="Arial,sans-serif">🫀 Cuidados</text>
+        <text x="618" y="44" text-anchor="middle" fill="#40d8f8" font-size="10.5" font-weight="800" font-family="Arial,sans-serif">♻️ Recuperación</text>
+        <!-- Line 2: sub-label in white -->
+        <text x="143" y="59" text-anchor="middle" fill="#ffffff" font-size="8.5" font-family="Arial,sans-serif" opacity="0.85">Reconocimiento</text>
+        <text x="238" y="59" text-anchor="middle" fill="#ffffff" font-size="8.5" font-family="Arial,sans-serif" opacity="0.85">Por testigos</text>
+        <text x="333" y="59" text-anchor="middle" fill="#ffffff" font-size="8.5" font-family="Arial,sans-serif" opacity="0.85">DEA Precoz</text>
+        <text x="428" y="59" text-anchor="middle" fill="#ffffff" font-size="8.5" font-family="Arial,sans-serif" opacity="0.85">SVA Avanzado</text>
+        <text x="523" y="59" text-anchor="middle" fill="#ffffff" font-size="8.5" font-family="Arial,sans-serif" opacity="0.85">Intensivos</text>
+        <text x="618" y="59" text-anchor="middle" fill="#ffffff" font-size="8.5" font-family="Arial,sans-serif" opacity="0.85">Rehabilitación</text>
+        <!-- Eslabón labels below chain -->
+        <text x="143" y="171" text-anchor="middle" fill="#ff9878" font-size="9.5" font-weight="700" font-family="Arial,sans-serif">Eslabón 1</text>
+        <text x="238" y="171" text-anchor="middle" fill="#78b8ff" font-size="9.5" font-weight="700" font-family="Arial,sans-serif">Eslabón 2</text>
+        <text x="333" y="171" text-anchor="middle" fill="#ffe070" font-size="9.5" font-weight="700" font-family="Arial,sans-serif">Eslabón 3</text>
+        <text x="428" y="171" text-anchor="middle" fill="#70e898" font-size="9.5" font-weight="700" font-family="Arial,sans-serif">Eslabón 4</text>
+        <text x="523" y="171" text-anchor="middle" fill="#c888ff" font-size="9.5" font-weight="700" font-family="Arial,sans-serif">Eslabón 5</text>
+        <text x="618" y="171" text-anchor="middle" fill="#40d8f8" font-size="9.5" font-weight="700" font-family="Arial,sans-serif">Eslabón 6</text>
+        <!-- Footer credit -->
+        <text x="380" y="192" text-anchor="middle" fill="#5588aa" font-size="8" font-family="Arial,sans-serif">American Heart Association · ILCOR 2020 Guidelines</text>
       </svg>
     </div>
 
