@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Brigadas de Emergencia — Preventive Health</title>
+<title>Brigadas contra Incendios — Preventive Health</title>
 <script src="../../js/auth.js" type="module"></script>
 <style>
 :root{
@@ -157,7 +157,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 <nav>
   <div class="brand">
     <img src="../../assets/logo.png" alt="Preventive Health">
-    <p>Brigadas de Emergencia</p>
+    <p>Brigadas contra Incendios</p>
   </div>
   <ul>
     <li><a href="#m1" class="active">📋 M1 · Marco Legal</a></li>
@@ -180,7 +180,7 @@ tr:nth-child(even) td{background:#f4f8fe}
 
 <main>
 <div class="page-hero anim-fadein">
-  <h1>Brigadas de Emergencia</h1>
+  <h1>Brigadas contra Incendios</h1>
   <p>Formación integral para la prevención y control de incendios, evacuación y gestión de riesgos laborales conforme al marco legal ecuatoriano.</p>
   <div class="badges">
     <span class="badge">6 Módulos</span>
@@ -268,9 +268,133 @@ tr:nth-child(even) td{background:#f4f8fe}
       <tr><td><strong>NFPA 101</strong></td><td>Código de Seguridad Humana</td><td>Rutas de evacuación y salidas</td></tr>
     </table>
 
-    <div class="vid-label">Video — Normativa y Brigadas de Emergencia (NFPA)</div>
-    <div class="vid-wrap">
-      <iframe src="https://www.youtube.com/embed/_RqdVXMRLW4" allowfullscreen loading="lazy" title="Brigadas de Emergencia NFPA"></iframe>
+    <!-- Animated NFPA Standards infographic -->
+    <div style="margin:20px 0">
+      <div style="font-size:.8rem;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Normativa NFPA — Estándares clave</div>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:12px;overflow:hidden">
+        <defs>
+          <linearGradient id="nfpaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a1a2e"/>
+            <stop offset="100%" style="stop-color:#16213e"/>
+          </linearGradient>
+          <linearGradient id="flamGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" style="stop-color:#e74c3c"/>
+            <stop offset="50%" style="stop-color:#f39c12"/>
+            <stop offset="100%" style="stop-color:#f1c40f"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <style>
+            @keyframes nfpaFlameDance {
+              0%,100%{d:path("M360 290 C340 260 330 230 350 200 C340 220 360 210 355 185 C370 210 380 200 370 225 C390 205 385 235 375 250 C390 240 395 260 380 280 Z")}
+              33%{d:path("M360 290 C335 258 328 225 352 198 C342 218 363 207 357 183 C373 208 383 197 372 223 C393 202 388 233 377 248 C392 238 397 258 382 278 Z")}
+              66%{d:path("M360 290 C345 262 332 228 348 202 C338 222 358 213 353 187 C367 212 377 203 368 227 C387 208 382 238 373 252 C388 242 393 262 378 282 Z")}
+            }
+            @keyframes nfpaCounterUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+            @keyframes nfpaPulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+            @keyframes nfpaSlideIn { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
+            @keyframes nfpaBadgeGlow { 0%,100%{filter:drop-shadow(0 0 4px #e74c3c88)} 50%{filter:drop-shadow(0 0 12px #e74c3ccc)} }
+          </style>
+        </defs>
+        <!-- Background -->
+        <rect width="720" height="320" fill="url(#nfpaBg)"/>
+        <!-- Subtle grid lines -->
+        <g stroke="#ffffff08" stroke-width="1">
+          <line x1="0" y1="80" x2="720" y2="80"/>
+          <line x1="0" y1="160" x2="720" y2="160"/>
+          <line x1="0" y1="240" x2="720" y2="240"/>
+          <line x1="180" y1="0" x2="180" y2="320"/>
+          <line x1="360" y1="0" x2="360" y2="320"/>
+          <line x1="540" y1="0" x2="540" y2="320"/>
+        </g>
+        <!-- NFPA Logo badge -->
+        <rect x="20" y="20" width="80" height="44" rx="6" fill="#e74c3c" style="animation:nfpaBadgeGlow 2s ease-in-out infinite"/>
+        <text x="60" y="38" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="11" font-weight="900" fill="white">NFPA</text>
+        <text x="60" y="54" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#ffcccc">National Fire Protection</text>
+
+        <!-- Title -->
+        <text x="120" y="38" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="white">Estándares de Protección contra Incendios</text>
+        <text x="120" y="55" font-family="Arial,sans-serif" font-size="11" fill="#aaaacc">Marco normativo aplicable en Ecuador — Decreto Ejecutivo 2393</text>
+
+        <!-- Flame animation center-right -->
+        <g transform="translate(630,120)" style="animation:nfpaPulse 1.8s ease-in-out infinite">
+          <path d="M0 170 C-20 140 -30 110 -10 80 C-20 100 0 90 -5 65 C10 90 20 80 10 105 C30 85 25 115 15 130 C30 120 35 140 20 160 Z" fill="url(#flamGrad)" opacity=".9"/>
+        </g>
+
+        <!-- 4 NFPA standard cards -->
+        <!-- Card 1: NFPA 10 -->
+        <g style="animation:nfpaSlideIn .5s .1s both ease-out">
+          <rect x="20" y="90" width="155" height="100" rx="10" fill="#ffffff10" stroke="#e74c3c44" stroke-width="1.5"/>
+          <rect x="20" y="90" width="155" height="6" rx="3" fill="#e74c3c"/>
+          <text x="97" y="115" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#e74c3c">NFPA 10</text>
+          <text x="97" y="132" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="white">Extintores Portátiles</text>
+          <text x="97" y="148" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">Selección, instalación</text>
+          <text x="97" y="161" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">y mantenimiento</text>
+          <text x="97" y="180" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#f39c12">⚡ Revisión anual obligatoria</text>
+        </g>
+        <!-- Card 2: NFPA 13 -->
+        <g style="animation:nfpaSlideIn .5s .25s both ease-out">
+          <rect x="190" y="90" width="155" height="100" rx="10" fill="#ffffff10" stroke="#3498db44" stroke-width="1.5"/>
+          <rect x="190" y="90" width="155" height="6" rx="3" fill="#3498db"/>
+          <text x="267" y="115" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#3498db">NFPA 13</text>
+          <text x="267" y="132" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="white">Sistemas de Rociadores</text>
+          <text x="267" y="148" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">Edificios &gt; 3 plantas</text>
+          <text x="267" y="161" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">o riesgo alto</text>
+          <text x="267" y="180" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#3498db">💧 Activación automática 68°C</text>
+        </g>
+        <!-- Card 3: NFPA 72 -->
+        <g style="animation:nfpaSlideIn .5s .4s both ease-out">
+          <rect x="360" y="90" width="155" height="100" rx="10" fill="#ffffff10" stroke="#2ecc7144" stroke-width="1.5"/>
+          <rect x="360" y="90" width="155" height="6" rx="3" fill="#2ecc71"/>
+          <text x="437" y="115" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#2ecc71">NFPA 72</text>
+          <text x="437" y="132" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="white">Alarmas de Incendio</text>
+          <text x="437" y="148" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">Detectores, sirenas</text>
+          <text x="437" y="161" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">y paneles de control</text>
+          <text x="437" y="180" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#2ecc71">🔔 Prueba semestral requerida</text>
+        </g>
+        <!-- Card 4: NFPA 101 -->
+        <g style="animation:nfpaSlideIn .5s .55s both ease-out">
+          <rect x="530" y="90" width="155" height="100" rx="10" fill="#ffffff10" stroke="#f39c1244" stroke-width="1.5"/>
+          <rect x="530" y="90" width="155" height="6" rx="3" fill="#f39c12"/>
+          <text x="607" y="115" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#f39c12">NFPA 101</text>
+          <text x="607" y="132" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="white">Seguridad Humana</text>
+          <text x="607" y="148" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">Rutas de evacuación</text>
+          <text x="607" y="161" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">y salidas de emergencia</text>
+          <text x="607" y="180" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#f39c12">🚪 Señalización iluminada 24/7</text>
+        </g>
+
+        <!-- Bottom bar: compliance stats -->
+        <rect x="0" y="220" width="720" height="100" fill="#00000030"/>
+        <text x="20" y="248" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#aaaacc" text-anchor="start">CUMPLIMIENTO DECRETO 2393 · ECUADOR</text>
+
+        <g style="animation:nfpaCounterUp .6s .7s both">
+          <text x="90" y="285" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#e74c3c">25+</text>
+          <text x="90" y="304" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">trabajadores</text>
+          <text x="90" y="315" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">obliga a brigada</text>
+        </g>
+        <g style="animation:nfpaCounterUp .6s .85s both">
+          <text x="250" y="285" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#3498db">4</text>
+          <text x="250" y="304" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">brigadas</text>
+          <text x="250" y="315" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">mínimo requeridas</text>
+        </g>
+        <g style="animation:nfpaCounterUp .6s 1s both">
+          <text x="410" y="285" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#2ecc71">100%</text>
+          <text x="410" y="304" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">cobertura en</text>
+          <text x="410" y="315" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">simulacros anuales</text>
+        </g>
+        <g style="animation:nfpaCounterUp .6s 1.15s both">
+          <text x="570" y="285" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#f39c12">IESS</text>
+          <text x="570" y="304" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">supervisión</text>
+          <text x="570" y="315" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#aaaacc">y auditoría</text>
+        </g>
+
+        <!-- Dividers -->
+        <line x1="170" y1="240" x2="170" y2="315" stroke="#ffffff15" stroke-width="1"/>
+        <line x1="330" y1="240" x2="330" y2="315" stroke="#ffffff15" stroke-width="1"/>
+        <line x1="490" y1="240" x2="490" y2="315" stroke="#ffffff15" stroke-width="1"/>
+      </svg>
     </div>
 
     <div class="vid-label">Video — Brigadas contra Incendios: Organización y Protocolos</div>
