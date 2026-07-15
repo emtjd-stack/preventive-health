@@ -38,6 +38,11 @@ Guarda como: Archivo → Guardar como → CSV UTF-8 (delimitado por comas)
 Nómbralo: estudiantes.csv
 Mueve ese archivo a esta misma carpeta "Upload Students"
 
+NOTAS SOBRE EXCEL:
+- Excel puede usar ; en vez de , como separador → el script lo detecta automáticamente
+- Excel puede agregar "Table 1" al inicio → el script lo omite automáticamente
+- Los títulos de columna pueden ser mayúsculas (Email, Nombre, Cursos) → también funciona
+
 
 PASO 2 — ABRE LA TERMINAL
 ---------------------------

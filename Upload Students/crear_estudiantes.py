@@ -32,7 +32,7 @@ SUPABASE_URL = "https://lqcvdhgjdotsmivwerfa.supabase.co"
 
 # ⚠ Pega aquí tu service_role key (Settings → API → service_role secret)
 # NUNCA compartas ni publiques esta clave
-SERVICE_ROLE_KEY = ""
+SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxY3ZkaGdqZG90c21pdndlcmZhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MjY5MDIzMiwiZXhwIjoyMDk4MjY2MjMyfQ.OBVImNJv5ycwH0FEliGF_xtUs0Dhk1AkUu-s3uCDj-4"
 
 SLUGS_VALIDOS = {"pab", "brigadas", "emergencia", "ecg", "drones"}
 
@@ -111,15 +111,38 @@ def main():
         sys.exit(1)
 
     csv_path = sys.argv[1]
-    with open(csv_path, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        filas = list(reader)
+
+    # Leer el archivo completo y detectar separador + saltar líneas no-datos al inicio
+    with open(csv_path, newline='', encoding='utf-8-sig') as f:
+        texto = f.read()
+
+    lineas = texto.splitlines()
+
+    # Encontrar la primera línea que contiene "email" (la cabecera real)
+    inicio = 0
+    for i, linea in enumerate(lineas):
+        if 'email' in linea.lower():
+            inicio = i
+            break
+
+    texto_limpio = '\n'.join(lineas[inicio:])
+
+    # Auto-detectar separador (coma o punto y coma)
+    muestra = texto_limpio[:500]
+    separador = ';' if muestra.count(';') > muestra.count(',') else ','
+
+    import io
+    reader = csv.DictReader(io.StringIO(texto_limpio), delimiter=separador)
+    filas = list(reader)
 
     print(f"\n{'='*60}")
     print(f"  Preventive Health — Creando {len(filas)} estudiante(s)")
     print(f"{'='*60}\n")
 
     resultados = []
+
+    # Normalizar nombres de columna a minúsculas para evitar problemas con Excel
+    filas = [{k.lower().strip(): v for k, v in f.items() if k} for f in filas]
 
     for fila in filas:
         email      = fila.get('email', '').strip()
