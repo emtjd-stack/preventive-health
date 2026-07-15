@@ -185,5 +185,46 @@ nav{background:#1D51A3;padding:0 24px;height:64px;display:flex;align-items:cente
   }
 })();
 </script>
+
+<style>
+.acceso-banner{display:none;align-items:center;gap:14px;background:#fef2f2;border:1.5px solid #fca5a5;
+  border-radius:12px;padding:16px 20px;margin:0 auto 28px;max-width:680px;animation:fadeInDown .4s ease}
+.acceso-banner.show{display:flex}
+.acceso-banner-icon{font-size:2rem;flex-shrink:0}
+.acceso-banner h3{margin:0 0 4px;color:#991b1b;font-size:1rem}
+.acceso-banner p{margin:0;font-size:.88rem;color:#7f1d1d}
+.acceso-banner a{color:#1D51A3;font-weight:600;text-decoration:underline}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<div class="acceso-banner" id="accesoBanner">
+  <div class="acceso-banner-icon">🔒</div>
+  <div>
+    <h3>Acceso no habilitado</h3>
+    <p>No tienes acceso al curso <strong id="nombreCursoBloqueo"></strong>. Si ya realizaste el pago, contáctanos en
+       <a href="mailto:emtjdbenavides@gmail.com">emtjdbenavides@gmail.com</a> para activar tu cuenta.</p>
+  </div>
+</div>
+<script>
+(function(){
+  const NOMBRES = {
+    pab:'Brigadas de Primeros Auxilios',
+    brigadas:'Brigadas contra Incendios',
+    emergencia:'Brigadas de Emergencia',
+    ecg:'Electrocardiografía Básica',
+    drones:'Pilotaje Profesional de Drones'
+  };
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('sin_acceso');
+  if(slug){
+    const banner = document.getElementById('accesoBanner');
+    const nombreEl = document.getElementById('nombreCursoBloqueo');
+    if(banner && nombreEl){
+      nombreEl.textContent = NOMBRES[slug] || slug;
+      banner.classList.add('show');
+      banner.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+})();
+</script>
 </body>
 </html>

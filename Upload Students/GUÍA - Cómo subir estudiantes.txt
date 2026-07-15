@@ -1,0 +1,109 @@
+============================================================
+  PREVENTIVE HEALTH — GUÍA PARA SUBIR ESTUDIANTES
+============================================================
+
+ANTES DE EMPEZAR (solo la primera vez)
+---------------------------------------
+1. Abre el archivo "crear_estudiantes.py" con cualquier editor de texto.
+2. Busca la línea que dice:  SERVICE_ROLE_KEY = ""
+3. Ve a Supabase → Settings → API → copia la clave "service_role (secret)"
+4. Pégala entre las comillas:  SERVICE_ROLE_KEY = "pega aquí la clave"
+5. Guarda el archivo. (No repitas este paso las próximas veces)
+
+
+PASO 1 — PREPARA EL CSV EN EXCEL
+----------------------------------
+Crea un archivo Excel con TRES columnas exactamente:
+
+    email                        | nombre          | cursos
+    -----------------------------|-----------------|----------------------
+    ana.torres@empresa.com       | Ana Torres      | pab|ecg
+    luis.vega@empresa.com        | Luis Vega       | brigadas
+    mario.paz@empresa.com        | Mario Paz       | pab|brigadas|ecg
+
+SLUGS DISPONIBLES (escríbelos en minúsculas, separados por |):
+  pab          → Brigadas de Primeros Auxilios
+  brigadas     → Brigadas contra Incendios
+  emergencia   → Brigadas de Emergencia
+  ecg          → Electrocardiografía Básica
+  drones       → Pilotaje Profesional de Drones
+
+Ejemplo columna cursos:
+  Un solo curso   →  pab
+  Dos cursos      →  pab|ecg
+  Todos           →  pab|brigadas|emergencia|ecg|drones
+  Sin cursos aún  →  (dejar celda vacía)
+
+Guarda como: Archivo → Guardar como → CSV UTF-8 (delimitado por comas)
+Nómbralo: estudiantes.csv
+Mueve ese archivo a esta misma carpeta "Upload Students"
+
+
+PASO 2 — ABRE LA TERMINAL
+---------------------------
+- En tu Mac: presiona  Cmd + Espacio
+- Escribe: Terminal  y presiona Enter
+
+
+PASO 3 — NAVEGA A LA CARPETA
+------------------------------
+Copia y pega este comando en la Terminal:
+
+  cd "/Users/diegocunalata/Library/Mobile Documents/com~apple~CloudDocs/Documents/Artefactos E&H Services/Upload Students"
+
+Presiona Enter.
+
+
+PASO 4 — EJECUTA EL SCRIPT
+----------------------------
+Copia y pega este comando:
+
+  python3 crear_estudiantes.py estudiantes.csv
+
+Presiona Enter. Verás en pantalla cada cuenta creada con su contraseña y cursos asignados.
+
+
+PASO 5 — REVISA EL RESULTADO
+------------------------------
+- El script genera automáticamente: estudiantes_credenciales.csv
+- Ábrelo en Excel → contiene email, contraseña y cursos de cada estudiante.
+- Entrega esas credenciales a cada uno.
+
+
+QUÉ VE EL ESTUDIANTE SI INTENTA ENTRAR A UN CURSO SIN PAGAR
+--------------------------------------------------------------
+Es redirigido al catálogo de cursos y ve un aviso rojo:
+
+  🔒 "Acceso no habilitado — No tienes acceso al curso [nombre].
+       Si ya realizaste el pago, contáctanos para activar tu cuenta."
+
+Para habilitarle un nuevo curso a un estudiante que ya existe:
+  → Ve a Supabase → Table Editor → tabla "accesos"
+  → Inserta una fila:  user_id | curso | activo = true
+  (Próximamente esto también lo podrá hacer el script)
+
+
+NOMENCLATURA DE CONTRASEÑAS
+-----------------------------
+Formato:  PH-[AAAAMM]-[3letrasApellido][2digitos]
+
+Ejemplos:
+  PH-202607-TOR42   → Torres
+  PH-202607-VEG17   → Vega
+  PH-202607-CUN83   → Cunalata
+
+
+ERRORES COMUNES
+----------------
+- "Ya existe en Supabase" → ese email ya tiene cuenta. Los cursos no se modifican.
+  Para añadirle un curso nuevo usa Supabase directamente (tabla accesos).
+- "service_role vacía" → falta pegar la clave en el script (ver sección inicial).
+- El CSV no carga → guárdalo como "CSV UTF-8", no como .xlsx
+
+
+============================================================
+  Archivos en esta carpeta:
+  - crear_estudiantes.py          → el script (no modificar, solo la clave)
+  - estudiantes.csv               → tu lista (la preparas tú antes de cada carga)
+  - estudiantes_credenciales.csv  → resultado generado automáticamente
+============================================================
