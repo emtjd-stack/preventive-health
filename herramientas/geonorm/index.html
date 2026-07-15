@@ -366,6 +366,9 @@ footer{
   /* Map toolbar reposicionado */
   #mtbar{top:8px;padding:4px 12px;font-size:10px}
 
+  /* Atribución de Leaflet: no debe quedar detrás de la barra de navegación inferior */
+  .leaflet-bottom{bottom:calc(var(--bnav) + 4px) !important}
+
   /* Legend: más pequeña y a la izquierda */
   #leg{bottom:calc(var(--bnav) + 12px);right:8px;min-width:110px;padding:8px}
   .leg-t{font-size:9px}
