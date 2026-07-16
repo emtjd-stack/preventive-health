@@ -134,6 +134,8 @@ h1.course-title{font-size:1.9rem;font-weight:800;color:var(--blue-dark);margin-b
 .gate-result{margin-top:12px;padding:10px 16px;border-radius:8px;font-weight:700;font-size:.9rem;display:none}
 .gate-result.pass{background:rgba(74,222,128,.2);color:#4ade80;border:1.5px solid #4ade80}
 .gate-result.fail{background:rgba(248,113,113,.15);color:#f87171;border:1.5px solid #f87171}
+.retry-btn{background:#F5B300;color:#1a2840;border:none;border-radius:8px;padding:8px 22px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:10px;display:inline-block;transition:.15s}
+.retry-btn:hover{background:#d9a000}
 .unlock-anim{animation:unlockPop .5s ease}
 @keyframes unlockPop{0%{transform:scale(.97);opacity:.5}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 .locked-final{opacity:.5;filter:grayscale(.5);pointer-events:none;user-select:none}
@@ -1664,19 +1666,21 @@ function checkGate(modNum, answers){
   } else {
     res.style.display='block';
     res.className='gate-result fail';
-    res.textContent=`⚠️ ${ok}/5 — Debes responder las 5 preguntas correctamente para avanzar. Revisa el módulo e inténtalo de nuevo.`;
-    // reset after 3 seconds
-    setTimeout(()=>{
-      document.querySelectorAll(`[name^="g${modNum}q"]`).forEach(i=>{
-        i.disabled=false; i.checked=false;
-        const l=i.closest('.gate-opt');
-        l.classList.remove('correct','wrong');
-      });
-      res.style.display='none';
-    },3000);
+    res.innerHTML=`⚠️ ${ok}/5 — Debes responder las 5 preguntas correctamente para avanzar. Revisa el módulo.<br><button class="retry-btn" onclick="resetGate(${modNum})">↺ Volver a intentar</button>`;
   }
 }
 window.checkGate = checkGate;
+
+function resetGate(modNum){
+  const res=document.getElementById('gate'+modNum+'-result');
+  document.querySelectorAll(`[name^="g${modNum}q"]`).forEach(i=>{
+    i.disabled=false; i.checked=false;
+    const l=i.closest('.gate-opt');
+    if(l) l.classList.remove('correct','wrong');
+  });
+  res.style.display='none';
+}
+window.resetGate=resetGate;
 
 // ── MINI QUIZ ──
 function checkMiniQuiz(name, correct){
@@ -1708,10 +1712,26 @@ function runSim(simId, answers){
   if(!all){alert('Responde todas las preguntas del simulador.');return;}
   const r=document.getElementById(simId+'-result');
   r.style.display='block';
-  r.className='sim-result '+(ok>=4?'pass':'fail');
-  r.textContent=ok>=4?`✅ ${ok}/5 — Excelente dominio`:`⚠️ ${ok}/5 — Repase el módulo`;
+  if(ok>=4){
+    r.className='sim-result pass';
+    r.textContent=`✅ ${ok}/5 — Excelente dominio`;
+  } else {
+    r.className='sim-result fail';
+    r.innerHTML=`⚠️ ${ok}/5 — Repase el módulo e inténtalo de nuevo.<br><button class="retry-btn" onclick="resetSim('${simId}')">↺ Volver a intentar</button>`;
+  }
 }
 window.runSim = runSim;
+
+function resetSim(simId){
+  const r=document.getElementById(simId+'-result');
+  document.querySelectorAll(`input[name^="${simId}"]`).forEach(i=>{
+    i.disabled=false; i.checked=false;
+    const l=i.closest('.sim-opt');
+    if(l) l.classList.remove('correct','wrong');
+  });
+  r.style.display='none';
+}
+window.resetSim=resetSim;
 
 // ── FINAL QUIZ ──
 function submitFinalQuiz(){
@@ -1727,9 +1747,11 @@ function submitFinalQuiz(){
   r.style.display='block';
   const pass=ok>=6;
   r.className='sim-result '+(pass?'pass':'fail');
-  r.textContent=pass
-    ?`✅ ${ok}/8 — Aprobado. Excelente manejo de Electrocardiografía Básica.`
-    :`⚠️ ${ok}/8 — No aprobado. Mínimo 6/8. Revise los módulos e intente nuevamente.`;
+  if(pass){
+    r.textContent=`✅ ${ok}/8 — Aprobado. Excelente manejo de Electrocardiografía Básica.`;
+  } else {
+    r.innerHTML=`⚠️ ${ok}/8 — No aprobado. Mínimo 6/8. Revise los módulos e intente nuevamente.<br><button class="retry-btn" onclick="resetFinalQuiz()">↺ Volver a intentar</button>`;
+  }
   if(pass){
     localStorage.setItem('ecg_done',JSON.stringify([1,2,3,4,5,6]));
     localStorage.setItem('ecg_progress','100');
@@ -1738,6 +1760,15 @@ function submitFinalQuiz(){
   }
 }
 window.submitFinalQuiz = submitFinalQuiz;
+
+function resetFinalQuiz(){
+  document.querySelectorAll('input[name^="fq"]').forEach(i=>{
+    i.checked=false;
+  });
+  const r=document.getElementById('fq-result');
+  r.style.display='none';
+}
+window.resetFinalQuiz=resetFinalQuiz;
 
 // ══════════════════════════════════════
 // ECG MONITOR SIMULATOR

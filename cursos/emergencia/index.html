@@ -69,6 +69,8 @@ main{flex:1;padding:32px 40px;max-width:960px}
 .sim-result{display:none;margin-top:12px;padding:12px 16px;border-radius:8px;font-weight:700;font-size:.95rem}
 .pass{background:#e6f9f1;color:#166a45;border:1.5px solid #22a86b}
 .fail{background:#fdf0eb;color:#b63b1b;border:1.5px solid #e05c2d}
+.retry-btn{background:#F5B300;color:#1a2840;border:none;border-radius:8px;padding:8px 22px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:10px;display:inline-block;transition:.15s}
+.retry-btn:hover{background:#d9a000}
 .final-section{background:linear-gradient(135deg,#1a2840,#163d7a);border-radius:14px;padding:32px;margin-top:36px;color:#fff}
 .final-section h3{font-size:1.25rem;font-weight:800;margin-bottom:6px}
 .final-section p.sub{opacity:.7;font-size:.88rem;margin-bottom:20px}
@@ -1300,10 +1302,26 @@ function runSimBase(simId, answers){
   if(!all){ alert('Responde todas las preguntas del simulador.'); return; }
   const r = document.getElementById(simId+'-result');
   r.style.display='block';
-  r.className = 'sim-result ' + (ok>=4?'pass':'fail');
-  r.textContent = ok>=4 ? `✅ ${ok}/5 — Excelente dominio` : `⚠️ ${ok}/5 — Repase el módulo`;
+  if(ok>=4){
+    r.className='sim-result pass';
+    r.textContent=`✅ ${ok}/5 — Excelente dominio`;
+  } else {
+    r.className='sim-result fail';
+    r.innerHTML=`⚠️ ${ok}/5 — Repase el módulo e inténtalo de nuevo.<br><button class="retry-btn" onclick="resetSim('${simId}')">↺ Volver a intentar</button>`;
+  }
   return ok;
 }
+
+function resetSim(simId){
+  const r=document.getElementById(simId+'-result');
+  document.querySelectorAll(`input[name^="${simId}"]`).forEach(i=>{
+    i.disabled=false; i.checked=false;
+    const l=i.closest('.sim-opt');
+    if(l) l.classList.remove('correct','wrong');
+  });
+  r.style.display='none';
+}
+window.resetSim=resetSim;
 
 // ── Module Locking ────────────────────────────────────────
 const COURSE_KEY = 'emergencia';
@@ -1369,9 +1387,20 @@ function submitFinalQuiz(){
     saveProg('final');
   } else {
     r.className='final-result fail';
-    r.innerHTML=`❌ ${ok}/20 — Necesitas 14 (70%) para aprobar. Revisa los módulos e intenta nuevamente.`;
+    r.innerHTML=`❌ ${ok}/20 — Necesitas 14 (70%) para aprobar. Revisa los módulos e intenta nuevamente.<br><button class="retry-btn" onclick="resetFinalQuiz()">↺ Volver a intentar</button>`;
   }
 }
+
+function resetFinalQuiz(){
+  document.querySelectorAll('input[name^="fq"]').forEach(i=>{
+    i.disabled=false; i.checked=false;
+    const l=i.closest('.final-opt');
+    if(l) l.classList.remove('correct','wrong');
+  });
+  const r=document.getElementById('final-result');
+  r.style.display='none';
+}
+window.resetFinalQuiz=resetFinalQuiz;
 
 // ── Nav scroll active ─────────────────────────────────────
 const sections = document.querySelectorAll('[id^="m"],[id="final"]');
