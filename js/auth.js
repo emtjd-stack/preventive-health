@@ -61,6 +61,9 @@ if (!session) {
   window._sb   = sb;
   window._user = session.user;
 
+  // Notifica a los cursos que la autenticación completó (para initLocks con timing correcto)
+  document.dispatchEvent(new CustomEvent('ph-auth-ready', { detail: { isAdmin } }));
+
   const style = document.createElement('style');
   style.textContent = `
     .nav-user { display:flex; align-items:center; gap:10px; margin-left:auto }

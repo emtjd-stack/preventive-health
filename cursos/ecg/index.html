@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="visibility:hidden">
 <head>
+<script src="../../js/auth.js" type="module"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Electrocardiografía Básica – Preventive Health</title>
@@ -2124,15 +2125,14 @@ function animElectrodes(){
 })();
 
 // ── INIT: apply module lock state ──
-(function initLocks(){
-  // Admin bypass: skip all locks
-  if(sessionStorage.getItem('ph_admin')==='1') return;
+// Espera el evento de auth.js para saber si el usuario es admin antes de bloquear
+function initLocks(isAdmin){
+  if(isAdmin) { updateProgress(); return; } // Admin: sin bloqueos
   for(let n=2;n<=6;n++){
     const card=document.getElementById('m'+n);
     if(!card) continue;
     if(!isUnlocked(n)){
       card.classList.add('locked');
-      // Add lock badge to header
       const hdr = card.querySelector('.mod-header');
       if(hdr && !hdr.querySelector('.lock-badge')){
         const lb=document.createElement('span');
@@ -2141,23 +2141,31 @@ function animElectrodes(){
       }
     }
   }
-  // Lock final quiz until gate6 passed
+  // Bloquear evaluación final hasta completar módulo 6
   const fq = document.getElementById('final-quiz');
   if(fq && localStorage.getItem('ecg_mod_6_pass')!=='1'){
     fq.classList.add('locked-final');
     if(!fq.querySelector('.lock-badge-final')){
       const lb=document.createElement('div');
       lb.className='lock-badge-final';
-      lb.innerHTML='🔒 Completa el Módulo 6 y pasa la evaluación de acceso para habilitar la Evaluación Final.';
+      lb.innerHTML='🔒 Completa el Módulo 6 y pasa la evaluación para habilitar la Evaluación Final.';
       fq.insertBefore(lb, fq.firstChild);
     }
   }
-  // Restore done array completeness
   for(let n=1;n<=6;n++){
     if(localStorage.getItem('ecg_mod_'+n+'_pass')==='1' && !done.includes(n)) done.push(n);
   }
   updateProgress();
-})();
+}
+
+// Escucha el evento de auth.js (garantiza timing correcto en sesión nueva)
+document.addEventListener('ph-auth-ready', function(e){
+  initLocks(e.detail.isAdmin);
+});
+// Fallback: si el evento ya ocurrió (navegación entre páginas con sessionStorage activo)
+if(sessionStorage.getItem('ph_admin') !== null){
+  initLocks(sessionStorage.getItem('ph_admin') === '1');
+}
 </script>
 </body>
 </html>
