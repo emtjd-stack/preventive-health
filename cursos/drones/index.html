@@ -1742,7 +1742,7 @@ function submitFinalQuiz(){
   r.style.display='block';
   if(ok>=6){
     r.className='final-result pass';
-    r.innerHTML=`🎉 ¡Aprobado! ${ok}/8 correctas<br><small>Certificado disponible en tu perfil</small>`;
+    r.innerHTML=`🎉 ¡Felicidades! Has aprobado el curso con <strong>${ok}/8</strong> correctas.<br><small style="font-weight:400;display:block;margin-top:6px">Dentro de los próximos 5 días hábiles recibirás tu certificado al correo.</small><button style="margin-top:14px;padding:11px 24px;background:#1A509E;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;font-family:inherit" onclick="window.showCertificateModal(${ok},8)">📜 Descargar Certificado PDF</button>`;
     localStorage.setItem('drones_done','1');
     saveProg('final');
   } else {
@@ -1886,5 +1886,6 @@ window.runSim = function(simId, answers){
   }
 })();
 </script>
+<script src="../../js/certificate.js"></script>
 </body>
 </html>

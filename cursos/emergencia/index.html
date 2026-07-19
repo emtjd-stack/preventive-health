@@ -1382,7 +1382,7 @@ function submitFinalQuiz(){
   r.style.display='block';
   if(ok>=14){
     r.className='final-result pass';
-    r.innerHTML=`🎉 ¡Aprobado! ${ok}/20 correctas (${Math.round(ok/20*100)}%)<br><small>Certificado disponible en tu perfil</small>`;
+    r.innerHTML=`🎉 ¡Felicidades! Has aprobado el curso con <strong>${ok}/20</strong> correctas (${Math.round(ok/20*100)}%).<br><small style="font-weight:400;display:block;margin-top:6px">Dentro de los próximos 5 días hábiles recibirás tu certificado al correo.</small><button style="margin-top:14px;padding:11px 24px;background:#1A509E;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;font-family:inherit" onclick="window.showCertificateModal(${ok},20)">📜 Descargar Certificado PDF</button>`;
     localStorage.setItem('emergencia_done','1');
     saveProg('final');
   } else {
@@ -1823,5 +1823,6 @@ window._qgQ = {};
   initQuizGame(id, qgQuestions[id]);
 });
 </script>
+<script src="../../js/certificate.js"></script>
 </body>
 </html>

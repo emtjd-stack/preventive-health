@@ -1748,7 +1748,7 @@ function submitFinalQuiz(){
   const pass=ok>=6;
   r.className='sim-result '+(pass?'pass':'fail');
   if(pass){
-    r.textContent=`✅ ${ok}/8 — Aprobado. Excelente manejo de Electrocardiografía Básica.`;
+    r.innerHTML=`🎉 ¡Felicidades! Has aprobado el curso con <strong>${ok}/8</strong> correctas.<br><small style="font-weight:400;display:block;margin-top:6px">Dentro de los próximos 5 días hábiles recibirás tu certificado al correo.</small><button style="margin-top:14px;padding:11px 24px;background:#1A509E;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;font-family:inherit" onclick="window.showCertificateModal(${ok},8)">📜 Descargar Certificado PDF</button>`;
   } else {
     r.innerHTML=`⚠️ ${ok}/8 — No aprobado. Mínimo 6/8. Revise los módulos e intente nuevamente.<br><button class="retry-btn" onclick="resetFinalQuiz()">↺ Volver a intentar</button>`;
   }
@@ -2198,5 +2198,6 @@ if(sessionStorage.getItem('ph_admin') !== null){
   initLocks(sessionStorage.getItem('ph_admin') === '1');
 }
 </script>
+<script src="../../js/certificate.js"></script>
 </body>
 </html>

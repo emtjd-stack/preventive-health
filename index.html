@@ -772,12 +772,12 @@ footer {
       </div>
       <form class="contact-form" onsubmit="handleSubmit(event)">
         <div class="form-row">
-          <input type="text" placeholder="Nombre" required>
-          <input type="text" placeholder="Empresa / Organización">
+          <input id="cf-nombre" type="text" placeholder="Nombre" required>
+          <input id="cf-empresa" type="text" placeholder="Empresa / Organización">
         </div>
-        <input type="email" placeholder="Correo electrónico" required>
-        <input type="tel" placeholder="Teléfono (opcional)">
-        <textarea placeholder="¿En qué podemos ayudarte? Cuéntanos sobre tu equipo o necesidades de capacitación..."></textarea>
+        <input id="cf-email" type="email" placeholder="Correo electrónico" required>
+        <input id="cf-telefono" type="tel" placeholder="Teléfono (opcional)">
+        <textarea id="cf-mensaje" placeholder="¿En qué podemos ayudarte? Cuéntanos sobre tu equipo o necesidades de capacitación..."></textarea>
         <button type="submit" class="btn-submit">Enviar mensaje →</button>
       </form>
     </div>
@@ -819,13 +819,44 @@ const navLinks  = document.getElementById('navLinks');
 navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.btn-submit');
-  btn.textContent = '¡Mensaje enviado! ✓';
-  btn.style.background = '#15803d';
-  setTimeout(() => { btn.textContent = 'Enviar mensaje →'; btn.style.background = ''; e.target.reset(); }, 3000);
+  btn.textContent = 'Enviando…';
+  btn.disabled = true;
+
+  const params = {
+    from_name:  document.getElementById('cf-nombre').value,
+    company:    document.getElementById('cf-empresa').value,
+    from_email: document.getElementById('cf-email').value,
+    phone:      document.getElementById('cf-telefono').value,
+    message:    document.getElementById('cf-mensaje').value,
+  };
+
+  const sent = await window.sendContactForm?.(params);
+
+  if (sent) {
+    btn.textContent = '✓ Mensaje enviado';
+    btn.style.background = '#15803d';
+  } else {
+    // EmailJS no configurado aún → muestra instrucción + abre cliente de correo como respaldo
+    const subject = encodeURIComponent('Consulta desde preventivehealth.ec — ' + params.from_name);
+    const body = encodeURIComponent(
+      `Nombre: ${params.from_name}\nEmpresa: ${params.company}\nEmail: ${params.from_email}\nTeléfono: ${params.phone}\n\n${params.message}`
+    );
+    window.location.href = `mailto:info.preventiveh@gmail.com?subject=${subject}&body=${body}`;
+    btn.textContent = '✓ Abriendo correo…';
+    btn.style.background = '#15803d';
+  }
+
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensaje →';
+    btn.style.background = '';
+    btn.disabled = false;
+    e.target.reset();
+  }, 4000);
 }
 </script>
+<script src="js/certificate.js"></script>
 </body>
 </html>
