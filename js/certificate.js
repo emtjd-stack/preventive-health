@@ -18,10 +18,10 @@
  */
 
 const EMAILJS_CONFIG = {
-  publicKey:           'TU_PUBLIC_KEY',       // Dashboard → Account → Public Key
-  serviceId:           'TU_SERVICE_ID',       // Email Services → tu servicio
-  completionTemplateId:'TU_COMPLETION_TEMPLATE', // plantilla de aprobación
-  contactTemplateId:   'TU_CONTACT_TEMPLATE',    // plantilla de contacto
+  publicKey:           'qdNcAKO2gHN1dY3Bp',
+  serviceId:           'service_dqtf7l9',
+  completionTemplateId:'template_86plsfs',
+  contactTemplateId:   'template_pxq1tos',
 };
 
 const ADMIN_EMAIL = 'emtjdbenavides@gmail.com';
