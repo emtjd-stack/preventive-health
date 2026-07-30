@@ -38,46 +38,47 @@ const COURSE_NAMES = {
    1. EMAILJS — notificación al admin
 ═══════════════════════════════════════════════════════════════════ */
 
-function loadEmailJS() {
-  if (window.emailjs) return Promise.resolve();
-  return new Promise((resolve) => {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    s.onload = () => {
-      if (EMAILJS_CONFIG.publicKey !== 'TU_PUBLIC_KEY') {
-        window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
-      }
+// Carga EmailJS de inmediato al arrancar el script
+const _ejsReady = new Promise((resolve, reject) => {
+  if (window.emailjs) { resolve(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+  s.onload = () => {
+    try {
+      window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
       resolve();
-    };
-    document.head.appendChild(s);
-  });
-}
+    } catch(e) { reject(e); }
+  };
+  s.onerror = reject;
+  document.head.appendChild(s);
+});
 
 async function notifyAdminCompletion(studentEmail, courseSlug, score, total) {
-  if (EMAILJS_CONFIG.publicKey === 'TU_PUBLIC_KEY') return; // sin configurar
   try {
-    await loadEmailJS();
-    await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.completionTemplateId, {
-      student_name:  studentEmail,
+    await _ejsReady;
+    const res = await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.completionTemplateId, {
       student_email: studentEmail,
       course_name:   COURSE_NAMES[courseSlug] || courseSlug,
-      score:         `${score}/${total} (${Math.round(score/total*100)}%)`,
+      score:         score,
+      total:         total,
       date:          new Date().toLocaleDateString('es-EC', { day:'numeric', month:'long', year:'numeric' }),
-      to_email:      ADMIN_EMAIL,
     });
-  } catch(e) { console.warn('EmailJS no configurado o error al enviar:', e); }
+    console.log('Email aprobación enviado:', res.status, res.text);
+  } catch(e) {
+    console.error('Error al enviar email de aprobación:', e);
+  }
 }
 
 window.sendContactForm = async function(params) {
-  if (EMAILJS_CONFIG.publicKey === 'TU_PUBLIC_KEY') return false;
   try {
-    await loadEmailJS();
-    await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.contactTemplateId, {
-      ...params,
-      to_email: ADMIN_EMAIL,
-    });
+    await _ejsReady;
+    const res = await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.contactTemplateId, params);
+    console.log('Email contacto enviado:', res.status, res.text);
     return true;
-  } catch(e) { console.warn('Error al enviar formulario:', e); return false; }
+  } catch(e) {
+    console.error('Error al enviar formulario de contacto:', e);
+    return false;
+  }
 };
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -126,6 +127,9 @@ function getCourseSlug() {
 window.showCertificateModal = function(score, total) {
   injectCertStyles();
   const slug = getCourseSlug();
+  // Notificar al admin en cuanto el estudiante aprueba (no esperar al PDF)
+  const studentEmail = window._user?.email || 'estudiante@desconocido';
+  notifyAdminCompletion(studentEmail, slug, score, total);
   const courseName = COURSE_NAMES[slug] || slug;
 
   const overlay = document.createElement('div');
@@ -293,10 +297,6 @@ window._generateCertPDF = async function(score, total, slug) {
   doc.save(`Certificado_${slug}_${apellidos.replace(/\s/g,'_')}.pdf`);
 
   document.querySelector('.cert-overlay')?.remove();
-
-  // Notificar al admin
-  const userEmail = window._user?.email || 'estudiante@desconocido';
-  notifyAdminCompletion(userEmail, slug, score, total);
 };
 
 /* ═══════════════════════════════════════════════════════════════════
