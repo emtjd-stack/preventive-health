@@ -1,30 +1,4 @@
-/**
- * certificate.js — Preventive Health
- * Certificados PDF, notificación al admin, navegación entre módulos.
- *
- * ──────────────────────────────────────────────────────────────────
- * CONFIGURACIÓN EMAILJS (para recibir emails de finalización y contacto)
- * 1. Ve a https://www.emailjs.com/ y crea una cuenta gratuita.
- * 2. Conecta tu Gmail como servicio ("Email Services" → Add New Service).
- * 3. Crea una plantilla para finalización ("Email Templates" → Create New Template):
- *    Subject: 🎓 Nuevo aprobado: {{student_name}} — {{course_name}}
- *    Body: El estudiante {{student_name}} ({{student_email}}) aprobó {{course_name}}
- *          Calificación: {{score}} · Fecha: {{date}}
- * 4. Crea otra plantilla para el formulario de contacto:
- *    Subject: Mensaje desde la web: {{from_name}}
- *    Body: De: {{from_name}} ({{from_email}}) — Tel: {{phone}}\n{{message}}
- * 5. Rellena los 4 valores de abajo con tus datos de EmailJS.
- * ──────────────────────────────────────────────────────────────────
- */
-
-const EMAILJS_CONFIG = {
-  publicKey:           'qdNcAKO2gHN1dY3Bp',
-  serviceId:           'service_dqtf7l9',
-  completionTemplateId:'template_86plsfs',
-  contactTemplateId:   'template_pxq1tos',
-};
-
-const ADMIN_EMAIL = 'emtjdbenavides@gmail.com';
+const W3F_KEY = 'a9ef29c2-cd48-4910-bcc8-375fcd2a0b54';
 
 const COURSE_NAMES = {
   pab:       'Brigadas de Primeros Auxilios',
@@ -35,48 +9,48 @@ const COURSE_NAMES = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   1. EMAILJS — notificación al admin
+   1. WEB3FORMS — notificaciones al admin
 ═══════════════════════════════════════════════════════════════════ */
 
-// Carga EmailJS de inmediato al arrancar el script
-const _ejsReady = new Promise((resolve, reject) => {
-  if (window.emailjs) { resolve(); return; }
-  const s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  s.onload = () => {
-    try {
-      window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
-      resolve();
-    } catch(e) { reject(e); }
-  };
-  s.onerror = reject;
-  document.head.appendChild(s);
-});
+async function w3fSend(payload) {
+  const res = await fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ access_key: W3F_KEY, ...payload }),
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.message || 'Web3Forms error');
+  return data;
+}
 
 async function notifyAdminCompletion(studentEmail, courseSlug, score, total) {
+  const fecha = new Date().toLocaleDateString('es-EC', { day: 'numeric', month: 'long', year: 'numeric' });
+  const courseName = COURSE_NAMES[courseSlug] || courseSlug;
   try {
-    await _ejsReady;
-    const res = await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.completionTemplateId, {
-      student_email: studentEmail,
-      course_name:   COURSE_NAMES[courseSlug] || courseSlug,
-      score:         score,
-      total:         total,
-      date:          new Date().toLocaleDateString('es-EC', { day:'numeric', month:'long', year:'numeric' }),
+    await w3fSend({
+      subject: `✅ Estudiante aprobó: ${courseName}`,
+      name:    studentEmail,
+      email:   studentEmail,
+      message: `Un estudiante ha aprobado el curso.\n\nEstudiante: ${studentEmail}\nCurso: ${courseName}\nPuntaje: ${score}/${total} (${Math.round(score/total*100)}%)\nFecha: ${fecha}`,
     });
-    console.log('Email aprobación enviado:', res.status, res.text);
+    console.log('Email aprobación enviado');
   } catch(e) {
-    console.error('Error al enviar email de aprobación:', e);
+    console.error('Error notificación aprobación:', e);
   }
 }
 
 window.sendContactForm = async function(params) {
   try {
-    await _ejsReady;
-    const res = await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.contactTemplateId, params);
-    console.log('Email contacto enviado:', res.status, res.text);
+    await w3fSend({
+      subject: `Consulta de ${params.from_name} — ${params.company || 'sin empresa'}`,
+      name:    params.from_name,
+      email:   params.from_email,
+      message: `Empresa: ${params.company || '—'}\nTeléfono: ${params.phone || '—'}\n\n${params.message}`,
+    });
+    console.log('Formulario de contacto enviado');
     return true;
   } catch(e) {
-    console.error('Error al enviar formulario de contacto:', e);
+    console.error('Error formulario contacto:', e);
     return false;
   }
 };
