@@ -306,6 +306,80 @@ header{
   text-transform:uppercase;letter-spacing:.05em;margin-left:5px;vertical-align:middle
 }
 
+/* ══ TOOLTIPS FLOTANTES ══════════════════════════════════ */
+[data-tt]{
+  position:relative;cursor:help;
+  border-bottom:1.5px dashed var(--gold);
+  text-decoration:none;
+}
+[data-tt]::after{
+  content:attr(data-tt);
+  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) scale(.92);
+  background:#12243E;color:#EAF0FA;
+  padding:10px 14px;border-radius:10px;
+  font:500 12.5px/1.6 var(--font);white-space:normal;width:230px;z-index:500;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;
+}
+[data-tt]::before{
+  content:'';position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%) scale(.92);
+  border:6px solid transparent;border-top-color:#12243E;
+  opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;z-index:500;
+}
+[data-tt]:hover::after,[data-tt]:hover::before{opacity:1;transform:translateX(-50%) scale(1)}
+[data-tt]:hover::before{transform:translateX(-50%) scale(1)}
+
+/* ══ CHALLENGE BANNERS ══════════════════════════════════ */
+.challenge-banner{
+  background:linear-gradient(135deg,var(--blue) 0%,#2B7FCB 100%);
+  border-radius:var(--r);padding:18px 24px;
+  display:flex;align-items:center;gap:16px;
+  margin:24px 0;box-shadow:0 4px 20px rgba(26,80,158,.35);
+}
+.challenge-banner .ch-icon{font-size:32px;flex-shrink:0}
+.challenge-banner .ch-body{flex:1}
+.challenge-banner .ch-title{
+  font:800 15px/1 var(--font);color:#fff;
+  margin-bottom:4px;letter-spacing:-.01em;
+}
+.challenge-banner .ch-sub{font-size:12.5px;color:rgba(255,255,255,.75);line-height:1.5}
+.challenge-banner .ch-badge{
+  background:var(--gold);color:#1A2A3A;
+  font:800 11px/1 var(--font);padding:6px 14px;border-radius:20px;
+  white-space:nowrap;letter-spacing:.04em;text-transform:uppercase;
+  animation:badge-pulse 2.2s ease-in-out infinite;
+  box-shadow:0 3px 12px rgba(245,179,0,.5);
+}
+
+/* ══ HOVER HIGHLIGHT ZONES ══════════════════════════════ */
+.hover-zone{
+  border:2px dashed transparent;border-radius:var(--r);
+  transition:border-color .25s,background .25s;padding:2px;
+}
+.hover-zone:hover{
+  border-color:var(--gold);
+  background:rgba(245,179,0,.06);
+}
+.hover-zone:hover .hover-hint{opacity:1;transform:translateY(0)}
+.hover-hint{
+  font-size:11px;color:var(--gold-ink);font-weight:700;
+  text-transform:uppercase;letter-spacing:.05em;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .2s,transform .2s;margin-top:6px;
+}
+
+/* ══ LEARNING PILL BADGES ═══════════════════════════════ */
+.learn-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--gold-soft);color:var(--gold-ink);
+  border:1px solid rgba(245,179,0,.4);
+  font:700 11px/1 var(--font);padding:4px 12px;border-radius:20px;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;
+}
+.learn-pill::before{content:'🎯';font-size:13px}
+
 /* ── RESPONSIVE ───────────────────────────────────────── */
 @media(max-width:640px){
   .hdr-title{font-size:14px}
@@ -329,14 +403,14 @@ header{
 
 <!-- ── TAB NAV ───────────────────────────────────────── -->
 <nav class="tab-nav" id="tabNav">
-  <button class="tab-btn active" data-tab="variables">📊 Variables</button>
-  <button class="tab-btn" data-tab="normalidad">📈 Normalidad</button>
-  <button class="tab-btn" data-tab="tstudent">🧪 T-Student</button>
-  <button class="tab-btn" data-tab="chi2">χ² Chi-Cuadrado</button>
-  <button class="tab-btn" data-tab="anova">📊 ANOVA</button>
-  <button class="tab-btn" data-tab="colinealidad">🔗 Colinealidad</button>
-  <button class="tab-btn" data-tab="probabilidad">🎲 Probabilidad</button>
-  <button class="tab-btn" data-tab="disenio">🧬 Diseño Exp.</button>
+  <button class="tab-btn active" data-tab="variables" title="¡Empieza aquí! Aprende a clasificar variables antes de elegir cualquier prueba estadística.">📊 Variables</button>
+  <button class="tab-btn" data-tab="normalidad" title="¿Tus datos son normales? Esto determina qué prueba estadística debes usar.">📈 Normalidad</button>
+  <button class="tab-btn" data-tab="tstudent" title="Compara medias: ¿tu grupo difiere de un valor o de otro grupo?">🧪 T-Student</button>
+  <button class="tab-btn" data-tab="chi2" title="Trabaja con frecuencias y categorías: ¿dos variables son independientes?">χ² Chi-Cuadrado</button>
+  <button class="tab-btn" data-tab="anova" title="Compara 3 o más grupos a la vez con un solo análisis robusto.">📊 ANOVA</button>
+  <button class="tab-btn" data-tab="colinealidad" title="Detecta predictores redundantes antes de correr una regresión.">🔗 Colinealidad</button>
+  <button class="tab-btn" data-tab="probabilidad" title="Todo p-valor es una probabilidad. Entiende el lenguaje de la estadística.">🎲 Probabilidad</button>
+  <button class="tab-btn" data-tab="disenio" title="Planifica tu experimento antes de recolectar datos. El diseño lo es todo.">🧬 Diseño Exp.</button>
 </nav>
 
 <!-- ── TAB PANELS (vacíos por ahora) ─────────────────── -->
@@ -344,8 +418,8 @@ header{
   <div class="tab-panel active" id="tab-variables">
     <div class="sec-head">
       <span class="sec-num">01 · Fundamento</span>
-      <h2>Variables y Escalas de Medición</h2>
-      <p class="sec-kicker">Antes de elegir cualquier prueba estadística, debes saber qué tipo de dato tienes. No es opcional — es la base de todo.</p>
+      <h2>Variables y <span data-tt="Una escala de medición define qué operaciones matemáticas son válidas con tus datos. Elegir mal la escala = análisis incorrecto.">Escalas de Medición</span></h2>
+      <p class="sec-kicker">Antes de elegir cualquier <span data-tt="Una prueba estadística evalúa si un resultado puede ser producto del azar. Cada prueba tiene supuestos — la escala de la variable es el primero.">prueba estadística</span>, debes saber qué tipo de dato tienes. No es opcional — es la base de todo.</p>
     </div>
     <div class="tip-box">Antes de correr cualquier prueba estadística, debes identificar el tipo de variable. Este es el paso 0 — no lo saltes.</div>
 
@@ -410,8 +484,15 @@ header{
 
       <!-- ③ Quiz -->
       <div class="step">
-        <div class="step-label"><div class="step-num">3</div><div class="step-title">¡Pon a prueba tu criterio! — clasifica estas variables</div></div>
-        <div class="tip-box" style="margin-bottom:14px">Lee la variable, decide qué escala es y selecciona tu respuesta. ¡Sin trampa!</div>
+        <div class="challenge-banner">
+          <span class="ch-icon">🧠</span>
+          <div class="ch-body">
+            <div class="ch-title">¡Pon a prueba tu conocimiento!</div>
+            <div class="ch-sub">Clasifica cada variable sin mirar la teoría — 10 preguntas, ¿cuántas aciertas?</div>
+          </div>
+          <span class="ch-badge">Desafío</span>
+        </div>
+        <div class="step-label"><div class="step-num">3</div><div class="step-title">¡Clasifica estas variables! — aprendizaje basado en problemas reales</div></div>
         <div id="quizContainer"></div>
         <button class="btn btn-cta" style="margin-top:16px" onclick="nextQuiz()">Siguiente variable →</button>
         <div id="quizResult" class="verdict" style="display:none;margin-top:14px"></div>
@@ -422,8 +503,8 @@ header{
   <div class="tab-panel" id="tab-normalidad">
     <div class="sec-head">
       <span class="sec-num">02 · Diagnóstico</span>
-      <h2>¿Tus datos son normales?</h2>
-      <p class="sec-kicker">Ingresa o sube tus datos — el laboratorio genera histograma, gráfico Q-Q y aplica la prueba D'Agostino-Pearson K².</p>
+      <h2>¿Tus datos son <span data-tt="Distribución normal = campana de Gauss. Simétrica, con media = mediana = moda. Muchas pruebas paramétricas la exigen como supuesto.">normales</span>?</h2>
+      <p class="sec-kicker">Ingresa o sube tus datos — el laboratorio genera histograma, gráfico <span data-tt="Quantile-Quantile plot: compara los cuantiles de tus datos con los de una distribución normal teórica. Si los puntos siguen la línea = normalidad.">Q-Q</span> y aplica la prueba <span data-tt="Test de D'Agostino-Pearson K²: combina asimetría y curtosis en un estadístico chi² con 2 grados de libertad. Robusto para n ≥ 8.">D'Agostino-Pearson K²</span>.</p>
     </div>
 
     <details class="explainer">
@@ -457,6 +538,14 @@ header{
       </div>
 
       <div class="step">
+        <div class="challenge-banner">
+          <span class="ch-icon">🔬</span>
+          <div class="ch-body">
+            <div class="ch-title">¡Descubre la forma de tus datos!</div>
+            <div class="ch-sub">El histograma y el Q-Q plot te revelarán si tus datos siguen la campana de Gauss.</div>
+          </div>
+          <span class="ch-badge">Analizar</span>
+        </div>
         <div class="step-label"><div class="step-num">2</div><div class="step-title">Haz clic para analizar — verás el histograma y el Q-Q plot</div></div>
         <span class="arrow-down">↓</span>
         <button class="btn btn-cta" onclick="runNormalidad()">▶ Analizar normalidad</button>
@@ -476,8 +565,8 @@ header{
   <div class="tab-panel" id="tab-tstudent">
     <div class="sec-head">
       <span class="sec-num">03 · Comparación de medias</span>
-      <h2>Prueba T de Student</h2>
-      <p class="sec-kicker">¿Tu media es diferente de un valor de referencia? ¿Dos grupos difieren? ¿Mediste antes y después? Hay una T para cada escenario.</p>
+      <h2>Prueba <span data-tt="La T de Student evalúa si la diferencia entre medias es estadísticamente significativa o producto del azar. Aquí usamos la versión Welch (no asume varianzas iguales).">T de Student</span></h2>
+      <p class="sec-kicker">¿Tu <span data-tt="Media aritmética: suma de valores dividida entre n. Es el 'centro de gravedad' de tus datos. Sensible a valores extremos.">media</span> es diferente de un valor de referencia? ¿Dos grupos difieren? ¿Mediste antes y después? Hay una T para cada escenario.</p>
     </div>
 
     <details class="explainer">
@@ -518,6 +607,14 @@ header{
       </div>
 
       <div class="step">
+        <div class="challenge-banner">
+          <span class="ch-icon">⚡</span>
+          <div class="ch-body">
+            <div class="ch-title">¿Hay diferencia real o es azar?</div>
+            <div class="ch-sub">El p-valor y la curva T te dirán si la diferencia es estadísticamente significativa.</div>
+          </div>
+          <span class="ch-badge">Calcular</span>
+        </div>
         <div class="step-label"><div class="step-num">3</div><div class="step-title">¡Ya casi! — Haz clic para ver el resultado</div></div>
         <span class="arrow-down">↓</span>
         <button class="btn btn-cta" onclick="runTStudent()">▶ Calcular T de Student</button>
@@ -534,8 +631,8 @@ header{
   <div class="tab-panel" id="tab-chi2">
     <div class="sec-head">
       <span class="sec-num">04 · Variables categóricas</span>
-      <h2>Chi-Cuadrado χ²</h2>
-      <p class="sec-kicker">Para comparar frecuencias observadas vs. esperadas, o para saber si dos variables categóricas son independientes entre sí.</p>
+      <h2><span data-tt="Chi-Cuadrado χ²: mide la discrepancia entre frecuencias observadas y las esperadas bajo la hipótesis nula de independencia. Trabaja con conteos, nunca con porcentajes.">Chi-Cuadrado χ²</span></h2>
+      <p class="sec-kicker">Para comparar frecuencias observadas vs. esperadas, o para saber si dos <span data-tt="Variable categórica: toma valores de categorías discretas sin orden numérico significativo. Ej: tipo de suelo, género, región geográfica.">variables categóricas</span> son <span data-tt="Independencia estadística: que el valor de una variable no afecta la distribución de la otra. Si son dependientes, existe una asociación.">independientes</span> entre sí.</p>
     </div>
     <details class="explainer">
       <summary>¿Qué mide Chi-Cuadrado? — Ver explicación <span>▾</span></summary>
@@ -588,8 +685,8 @@ header{
   <div class="tab-panel" id="tab-anova">
     <div class="sec-head">
       <span class="sec-num">05 · Más de dos grupos</span>
-      <h2>ANOVA — Análisis de Varianza (F de Fisher)</h2>
-      <p class="sec-kicker">Compara tres o más grupos simultáneamente. Si p &lt; 0.05, al menos un grupo difiere — luego aplica Tukey para saber cuáles.</p>
+      <h2>ANOVA — <span data-tt="ANOVA descompone la variación total en: variación entre grupos (señal) y variación dentro de grupos (ruido). El cociente es F.">Análisis de Varianza</span> (<span data-tt="El estadístico F = varianza entre grupos / varianza dentro de grupos. Si F >> 1, los grupos difieren más de lo esperado por azar.">F de Fisher</span>)</h2>
+      <p class="sec-kicker">Compara tres o más grupos simultáneamente. Si <span data-tt="p-valor: probabilidad de obtener este resultado (o uno más extremo) si la hipótesis nula fuera cierta. p < 0.05 = evidencia significativa contra H₀.">p &lt; 0.05</span>, al menos un grupo difiere — luego aplica <span data-tt="Tukey HSD (Honest Significant Difference): prueba post-hoc que compara todos los pares de grupos controlando el error tipo I global.">Tukey</span> para saber cuáles.</p>
     </div>
     <details class="explainer">
       <summary>¿Por qué no hacer varias T-Student? — Ver explicación <span>▾</span></summary>
@@ -627,6 +724,14 @@ header{
       </div>
 
       <div class="step">
+        <div class="challenge-banner">
+          <span class="ch-icon">🏆</span>
+          <div class="ch-body">
+            <div class="ch-title">¿Cuál grupo rompe el patrón?</div>
+            <div class="ch-sub">ANOVA revelará si hay diferencias significativas — luego aplica post-hoc para identificar exactamente cuáles grupos difieren.</div>
+          </div>
+          <span class="ch-badge">Calcular</span>
+        </div>
         <div class="step-label"><div class="step-num">3</div><div class="step-title">¡Ya casi! — Haz clic para calcular</div></div>
         <span class="arrow-down">↓</span>
         <button class="btn btn-cta" onclick="runAnova()">▶ Calcular ANOVA</button>
@@ -644,8 +749,8 @@ header{
   <div class="tab-panel" id="tab-colinealidad">
     <div class="sec-head">
       <span class="sec-num">06 · Regresión</span>
-      <h2>Diagnóstico de Colinealidad</h2>
-      <p class="sec-kicker">Si dos predictores están muy correlacionados, la regresión no puede separar sus efectos individuales. VIF &gt; 10 es señal de alarma.</p>
+      <h2>Diagnóstico de <span data-tt="Colinealidad: dos o más predictores en una regresión están tan correlacionados que el modelo no puede separar sus efectos. Los coeficientes se vuelven inestables.">Colinealidad</span></h2>
+      <p class="sec-kicker">Si dos predictores están muy correlacionados, la regresión no puede separar sus efectos individuales. <span data-tt="VIF (Variance Inflation Factor) = 1 / (1 - R²ᵢ). Mide cuánto se infla la varianza del coeficiente por colinealidad. VIF < 5: OK · 5-10: precaución · > 10: problema grave.">VIF &gt; 10</span> es señal de alarma.</p>
     </div>
     <details class="explainer">
       <summary>¿Qué es la colinealidad y por qué importa? — Ver explicación <span>▾</span></summary>
@@ -682,6 +787,14 @@ header{
       </div>
 
       <div class="step">
+        <div class="challenge-banner">
+          <span class="ch-icon">🌡️</span>
+          <div class="ch-body">
+            <div class="ch-title">¿Tus predictores se están copiando?</div>
+            <div class="ch-sub">El heatmap te mostrará en colores qué variables están demasiado correlacionadas — y el VIF te dará el veredicto exacto.</div>
+          </div>
+          <span class="ch-badge">Diagnosticar</span>
+        </div>
         <div class="step-label"><div class="step-num">3</div><div class="step-title">¡Ya casi! — Haz clic para ver heatmap + VIF</div></div>
         <span class="arrow-down">↓</span>
         <button class="btn btn-cta" onclick="runColinealidad()">▶ Diagnosticar colinealidad</button>
@@ -708,7 +821,7 @@ header{
     <div class="sec-head">
       <span class="sec-num">07 · Fundamento probabilístico</span>
       <h2>Probabilidades</h2>
-      <p class="sec-kicker">Todo p-valor es una probabilidad. Entender probabilidades es entender qué significa rechazar una hipótesis.</p>
+      <p class="sec-kicker">Todo <span data-tt="p-valor: probabilidad de observar tus datos (o algo más extremo) si la hipótesis nula fuera verdadera. NO es la probabilidad de que H₀ sea cierta.">p-valor</span> es una probabilidad. Entender probabilidades es entender qué significa <span data-tt="Rechazar H₀ significa que los datos son muy poco probables bajo la hipótesis nula. No prueba que H₁ sea verdadera — solo que H₀ es improbable.">rechazar una hipótesis</span>.</p>
     </div>
 
     <div class="steps">
@@ -773,7 +886,7 @@ header{
     <div class="sec-head">
       <span class="sec-num">08 · Planificación</span>
       <h2>Diseño Experimental</h2>
-      <p class="sec-kicker">Un experimento mal diseñado no se puede arreglar con estadística. El diseño define qué puedes concluir.</p>
+      <p class="sec-kicker">Un experimento mal diseñado no se puede arreglar con estadística. El diseño define qué puedes concluir. Calcula el <span data-tt="Cohen's d: mide el tamaño de efecto en unidades de desviación estándar. Pequeño: 0.2 · Mediano: 0.5 · Grande: 0.8. A mayor d, menos muestra necesitas para detectarlo.">tamaño de efecto</span> y el <span data-tt="Poder estadístico (1-β): probabilidad de detectar una diferencia real si existe. El estándar mínimo es 80%. Con poco poder, arriesgas un falso negativo.">poder estadístico</span> antes de empezar.</p>
     </div>
 
     <div class="steps">

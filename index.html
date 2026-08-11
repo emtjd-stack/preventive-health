@@ -410,6 +410,91 @@ footer {
   .client-logo { padding: 12px 20px; }
   .client-logo img { height: 40px; }
 }
+
+/* ══ HERO ENHANCEMENTS ══════════════════════════════════ */
+.hero-eyebrow {
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;
+}
+.hero-pill {
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(245,179,0,.18);border:1px solid rgba(245,179,0,.5);
+  color:var(--gold,#F5B300);font:700 11px/1 'Montserrat',-apple-system,sans-serif;
+  padding:5px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;
+}
+.hero-pill-new {
+  background:rgba(233,30,99,.2);border-color:rgba(233,30,99,.5);color:#FF80AB;
+  animation:pulse-new 2s ease-in-out infinite;
+}
+@keyframes pulse-new {
+  0%,100%{box-shadow:0 0 0 0 rgba(233,30,99,.3)}
+  50%{box-shadow:0 0 0 8px rgba(233,30,99,0)}
+}
+.btn-gold-hero {
+  display:inline-flex;align-items:center;gap:8px;
+  background:#F5B300;color:#1A2840;
+  font:800 14px/1 'Montserrat',-apple-system,sans-serif;
+  padding:14px 28px;border-radius:30px;text-decoration:none;
+  box-shadow:0 4px 24px rgba(245,179,0,.45);
+  animation:gold-glow 2.5s ease-in-out infinite;
+  transition:transform .15s;
+}
+.btn-gold-hero:hover{transform:scale(1.04);text-decoration:none}
+@keyframes gold-glow {
+  0%,100%{box-shadow:0 4px 24px rgba(245,179,0,.4)}
+  50%{box-shadow:0 4px 40px rgba(245,179,0,.8),0 0 0 10px rgba(245,179,0,.08)}
+}
+.hero-stat-new { border-top:2px solid #F5B300!important; }
+
+/* ══ TOOLS SECTION ENHANCEMENTS ════════════════════════ */
+.tools-challenge {
+  background:linear-gradient(135deg,#1A509E 0%,#0F3470 100%);
+  border-radius:16px;padding:28px 32px;margin-bottom:36px;
+  display:flex;align-items:center;gap:24px;
+  box-shadow:0 8px 32px rgba(26,80,158,.35);
+}
+.tools-challenge .tc-icon { font-size:48px;flex-shrink:0 }
+.tools-challenge .tc-body { flex:1 }
+.tools-challenge .tc-label {
+  font:700 11px/1 'Montserrat',-apple-system,sans-serif;
+  color:#F5B300;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;
+}
+.tools-challenge .tc-title {
+  font:800 20px/1.2 'Montserrat',-apple-system,sans-serif;
+  color:#fff;margin-bottom:6px;
+}
+.tools-challenge .tc-sub {
+  font-size:13.5px;color:rgba(255,255,255,.72);line-height:1.6;
+}
+.tools-challenge .tc-cta {
+  display:inline-flex;align-items:center;gap:7px;
+  background:#F5B300;color:#1A2840;
+  font:800 13px/1 'Montserrat',-apple-system,sans-serif;
+  padding:12px 22px;border-radius:24px;text-decoration:none;
+  white-space:nowrap;box-shadow:0 3px 16px rgba(245,179,0,.45);
+  transition:transform .15s;flex-shrink:0;
+}
+.tools-challenge .tc-cta:hover{transform:scale(1.04)}
+
+.tool-card-featured {
+  border:2px solid #F5B300!important;
+  box-shadow:0 0 0 4px rgba(245,179,0,.12),0 8px 32px rgba(245,179,0,.2)!important;
+  position:relative;
+}
+.tool-card-featured::before {
+  content:'⭐ DESTACADO';position:absolute;top:-1px;right:16px;
+  background:#F5B300;color:#1A2840;
+  font:800 9px/1 'Montserrat',-apple-system,sans-serif;
+  padding:4px 10px;border-radius:0 0 8px 8px;
+  letter-spacing:.06em;
+}
+
+/* Tooltip nativo mejorado */
+[title]:not(input):not(select):not(button) { cursor:help }
+@media(max-width:640px){
+  .tools-challenge{flex-direction:column;text-align:center}
+  .tools-challenge .tc-icon{font-size:36px}
+  .hero-eyebrow{justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -438,17 +523,22 @@ footer {
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-badge">Certificados por el Ministerio del Trabajo</div>
-    <h1>Preparados para <span>proteger vidas</span>, en cualquier momento</h1>
-    <p>Capacitaciones certificadas en primeros auxilios, contra incendios y emergencias. Asesoría especializada en Seguridad y Salud Ocupacional para empresas e individuos.</p>
+    <div class="hero-eyebrow">
+      <span class="hero-badge">✦ Certificados por el Ministerio del Trabajo</span>
+      <span class="hero-pill hero-pill-new">🔬 Nuevo · Laboratorio Estadístico</span>
+    </div>
+    <h1>Preparados para <span>proteger vidas</span> — y tomar <span>decisiones con datos</span></h1>
+    <p>Capacitaciones certificadas en SSO y emergencias + herramientas estadísticas interactivas para investigadores, estudiantes y profesionales. Todo gratuito, todo en tu navegador.</p>
     <div class="hero-ctas">
+      <a href="herramientas/laboratorio-estadistico/" class="btn-gold-hero">🚀 Probar el Laboratorio</a>
       <a href="#servicios" class="btn btn-primary">Ver servicios</a>
-      <a href="#contacto" class="btn btn-outline">Contáctanos</a>
+      <a href="#herramientas" class="btn btn-outline">Explorar herramientas</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><strong>100%</strong><span>Certificados oficiales</span></div>
       <div class="hero-stat"><strong>SSO</strong><span>Asesoría especializada</span></div>
-      <div class="hero-stat"><strong>Gratis</strong><span>Herramientas disponibles</span></div>
+      <div class="hero-stat"><strong>8</strong><span>Módulos estadísticos</span></div>
+      <div class="hero-stat hero-stat-new"><strong>Gratis</strong><span>Todas las herramientas</span></div>
     </div>
   </div>
 </section>
@@ -529,8 +619,19 @@ footer {
 <section class="tools" id="herramientas">
   <div class="container">
     <span class="section-label">Herramientas gratuitas</span>
-    <h2 class="section-title">Tecnología al servicio<br>de la seguridad</h2>
-    <p class="section-sub">Herramientas web gratuitas desarrolladas por Preventive Health para el análisis geoespacial y la seguridad ambiental.</p>
+    <h2 class="section-title">Aprende haciendo —<br>con tus propios datos</h2>
+    <p class="section-sub">Herramientas web 100% gratuitas. Sin instalación, sin registro. Sube tus datos y obtén resultados en segundos.</p>
+
+    <div class="tools-challenge">
+      <span class="tc-icon">🧠</span>
+      <div class="tc-body">
+        <div class="tc-label">Aprendizaje basado en problemas reales</div>
+        <div class="tc-title">¿Tienes datos pero no sabes qué prueba usar?</div>
+        <div class="tc-sub">El Laboratorio Estadístico te guía paso a paso: identifica tu variable, prueba normalidad, corre la prueba correcta e interpreta el resultado — con tus propios datos o los ejemplos incluidos.</div>
+      </div>
+      <a href="herramientas/laboratorio-estadistico/" class="tc-cta">🚀 Entrar al laboratorio →</a>
+    </div>
+
     <div class="tools-grid">
       <div class="tool-card">
         <div class="tool-preview tool-preview-sat">
@@ -574,18 +675,18 @@ footer {
           <a href="herramientas/metodologia-estadistica/index.html" class="tool-link">Abrir →</a>
         </div>
       </div>
-      <div class="tool-card">
+      <div class="tool-card tool-card-featured">
         <div class="tool-preview tool-preview-stat">
           <div class="tool-preview-icon">🔬</div>
           <span class="tool-preview-badge">Gratis</span>
         </div>
         <div class="tool-body">
           <h3>Laboratorio Estadístico Interactivo</h3>
-          <p>Aplica estadística con tus propios datos: prueba normalidad, corre t-tests y ANOVA, detecta colinealidad con VIF y mapa de calor, calcula probabilidades (Bayes, distribución normal) y diseña experimentos con análisis de poder y tamaño de efecto (Cohen's d). Sube archivos CSV o Excel.</p>
+          <p>8 módulos de estadística aplicada con tus propios datos: variables y escalas, normalidad, T-Student, Chi², ANOVA, colinealidad (VIF + heatmap), probabilidades (Bayes) y diseño experimental. Sube CSV o Excel — obtén resultados al instante.</p>
         </div>
         <div class="tool-footer">
-          <span class="tool-tech">T-Student · ANOVA · VIF · Probabilidades</span>
-          <a href="herramientas/laboratorio-estadistico/" class="tool-link">Abrir →</a>
+          <span class="tool-tech">T-Student · ANOVA · VIF · Bayes · Cohen's d</span>
+          <a href="herramientas/laboratorio-estadistico/" class="tool-link" style="background:#F5B300;color:#1A2840;font-weight:800;border-radius:20px;padding:8px 18px">🚀 Abrir →</a>
         </div>
       </div>
     </div>
