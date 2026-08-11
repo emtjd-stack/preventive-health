@@ -513,7 +513,175 @@ footer a.btn{margin-top:0;}
   .upload-zone{ padding:28px 14px; }
   table.ref-table{ font-size:12.5px; }
   .method-list, .grid-3, .grid-2{ grid-template-columns:1fr; }
+  .hero-journey{display:none}
+  .challenge-block{flex-direction:column;text-align:center;gap:12px}
+  .challenge-block .cb-cta{margin:0 auto}
 }
+
+/* ══ TOOLTIPS FLOTANTES ══════════════════════════════════ */
+[data-tt]{
+  position:relative;cursor:help;
+  border-bottom:1.5px dashed var(--gold);
+  text-decoration:none;color:inherit;
+}
+[data-tt]::after{
+  content:attr(data-tt);
+  position:absolute;bottom:calc(100%+10px);left:50%;
+  transform:translateX(-50%) scale(.92);
+  background:#0C1F36;color:#EAF0FA;
+  padding:10px 14px;border-radius:10px;
+  font:500 12.5px/1.6 var(--font,inherit);
+  white-space:normal;width:240px;z-index:600;
+  box-shadow:0 8px 32px rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;
+}
+[data-tt]::before{
+  content:'';position:absolute;
+  bottom:calc(100%+4px);left:50%;
+  transform:translateX(-50%) scale(.92);
+  border:6px solid transparent;border-top-color:#0C1F36;
+  opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;z-index:600;
+}
+[data-tt]:hover::after,[data-tt]:hover::before{
+  opacity:1;transform:translateX(-50%) scale(1)
+}
+[data-tt]:hover::before{transform:translateX(-50%) scale(1)}
+
+/* ══ CHALLENGE BLOCK ════════════════════════════════════ */
+.challenge-block{
+  background:linear-gradient(135deg,var(--blue) 0%,#0F3470 100%);
+  border-radius:16px;padding:22px 28px;
+  display:flex;align-items:center;gap:20px;
+  margin:28px 0;
+  box-shadow:0 8px 32px rgba(26,80,158,.3);
+}
+.challenge-block .cb-icon{font-size:38px;flex-shrink:0;line-height:1}
+.challenge-block .cb-body{flex:1}
+.challenge-block .cb-label{
+  font:700 10px/1 var(--font-mono,monospace);
+  color:var(--gold);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:7px;
+}
+.challenge-block .cb-title{
+  font:800 17px/1.25 var(--font-display,inherit);
+  color:#fff;margin-bottom:5px;letter-spacing:-.01em;
+}
+.challenge-block .cb-sub{
+  font-size:13px;color:rgba(255,255,255,.72);line-height:1.6;
+}
+.challenge-block .cb-cta{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--gold);color:#1A2840;
+  font:800 12px/1 var(--font-display,inherit);
+  padding:11px 20px;border-radius:24px;
+  text-decoration:none;white-space:nowrap;flex-shrink:0;
+  box-shadow:0 3px 16px rgba(245,179,0,.5);
+  transition:transform .15s;animation:gold-pulse 2.5s ease-in-out infinite;
+}
+.challenge-block .cb-cta:hover{transform:scale(1.04);text-decoration:none}
+@keyframes gold-pulse{
+  0%,100%{box-shadow:0 3px 16px rgba(245,179,0,.45)}
+  50%{box-shadow:0 3px 28px rgba(245,179,0,.85),0 0 0 8px rgba(245,179,0,.1)}
+}
+
+/* ══ POST-IT TIP BOX ════════════════════════════════════ */
+.tip-box{
+  background:var(--gold);color:#1A2840;
+  border-radius:3px 12px 12px 3px;
+  padding:12px 16px 12px 48px;
+  font-size:13px;font-weight:600;line-height:1.6;
+  position:relative;
+  box-shadow:4px 4px 16px rgba(0,0,0,.18),inset 4px 0 0 rgba(0,0,0,.15);
+  margin:18px 0;
+}
+.tip-box::before{
+  content:attr(data-icon);position:absolute;
+  left:13px;top:50%;transform:translateY(-50%);
+  font-size:20px;line-height:1;
+}
+.tip-box.tip-warn{
+  background:#FFE0B2;
+  box-shadow:4px 4px 14px rgba(0,0,0,.13),inset 4px 0 0 #E65100;
+}
+.tip-box.tip-ok{
+  background:#C8F7DC;
+  box-shadow:4px 4px 14px rgba(0,0,0,.12),inset 4px 0 0 #1A8040;
+}
+
+/* ══ START BADGE ════════════════════════════════════════ */
+.start-here{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--gold);color:#1A2840;
+  font:800 11px/1 var(--font-display,inherit);
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:7px 16px 7px 11px;border-radius:24px;
+  margin-bottom:16px;
+  box-shadow:0 3px 14px rgba(245,179,0,.5);
+  animation:start-pulse 2s ease-in-out infinite;
+}
+.start-here::before{content:'👆';font-size:16px}
+@keyframes start-pulse{
+  0%,100%{box-shadow:0 3px 14px rgba(245,179,0,.45)}
+  50%{box-shadow:0 3px 28px rgba(245,179,0,.85),0 0 0 8px rgba(245,179,0,.1)}
+}
+
+/* ══ HERO JOURNEY PILLS ══════════════════════════════════ */
+.hero-journey{
+  display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 0;
+}
+.hj-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.8);
+  font:700 11px/1 var(--font-mono,monospace);
+  padding:5px 11px;border-radius:16px;
+  letter-spacing:.03em;
+  transition:background .2s,color .2s,border-color .2s;
+  cursor:default;
+}
+.hj-pill:hover{background:rgba(245,179,0,.2);border-color:rgba(245,179,0,.5);color:#F5B300}
+.hj-pill .hj-num{
+  background:rgba(245,179,0,.3);color:var(--gold);
+  border-radius:50%;width:16px;height:16px;
+  font:800 9px/16px var(--font-mono,monospace);
+  text-align:center;flex-shrink:0;
+}
+
+/* ══ ARROW DOWN ANIMATED ════════════════════════════════ */
+.arrow-cta{
+  display:flex;align-items:center;gap:8px;
+  color:var(--gold);font:700 12px/1 var(--font-mono,monospace);
+  text-transform:uppercase;letter-spacing:.05em;margin:10px 0;
+}
+.arrow-cta span{animation:bounce-y 1.1s ease-in-out infinite}
+@keyframes bounce-y{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* ══ BTN PULSANTE DORADO ════════════════════════════════ */
+.btn-gold-pulse{
+  background:var(--gold)!important;color:#1A2840!important;
+  border-radius:28px!important;font-weight:800!important;
+  padding:13px 30px!important;
+  animation:gold-pulse 2.5s ease-in-out infinite;
+  box-shadow:0 4px 20px rgba(245,179,0,.45);
+}
+
+/* ══ SECTION HOOK ═══════════════════════════════════════ */
+.section-hook{
+  background:var(--gold-soft,rgba(245,179,0,.15));
+  border-left:4px solid var(--gold);
+  border-radius:0 8px 8px 0;
+  padding:11px 16px;
+  font:600 13.5px/1.6 var(--font,inherit);
+  color:var(--gold-ink);
+  margin:0 0 22px;
+}
+.section-hook strong{color:var(--ink)}
+
+/* ══ RESULT SLIDE-IN ════════════════════════════════════ */
+.animate-in{animation:slide-up .35s ease-out}
+@keyframes slide-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 
 <div class="container">
@@ -527,13 +695,22 @@ footer a.btn{margin-top:0;}
 
   <header class="hero wrap" id="hero">
     <div class="hero-text">
-      <span class="eyebrow">● Guía para investigación universitaria</span>
-      <h1>Dale a tu metodología la <em>robustez estadística</em> que tu tesis necesita</h1>
-      <p class="lead">Desde identificar qué tipo de dato tienes hasta elegir la prueba correcta — con simuladores reales, no solo teoría. Incluye el caso específico de datos geoespaciales (SIG) y AHP.</p>
+      <span class="eyebrow">🧠 Aprendizaje Basado en Problemas · Metodología Estadística</span>
+      <h1>¿Cuándo tus datos <em>mienten</em> — y cuándo <em>revelan</em> la verdad?</h1>
+      <p class="lead">Aprende a elegir la prueba correcta <strong>antes</strong> de recolectar un solo dato. 8 módulos interactivos con simuladores reales: desde el tipo de <span data-tt="Variable: cualquier característica medible que varía entre observaciones. Puede ser cuantitativa (números) o cualitativa (categorías). Identificarla bien determina TODO el análisis posterior.">variable</span> hasta <span data-tt="AHP (Analytic Hierarchy Process): método multicriterio que convierte juicios cualitativos en pesos numéricos comparables. Ideal para decisiones con criterios mixtos en estudios SIG o de gestión.">AHP</span> geoespacial.</p>
       <div class="hero-cta">
-        <a href="#tipo-dato" class="btn btn-primary">Empezar por mis datos →</a>
+        <a href="#tipo-dato" class="btn btn-primary btn-gold-pulse">🚀 Comenzar el recorrido guiado</a>
         <a href="#sig" class="btn btn-ghost">Ir directo a SIG / AHP</a>
       </div>
+      <nav class="hero-journey" aria-label="Módulos del recorrido">
+        <span class="hj-pill"><span class="hj-num">1</span> Tipo de dato</span>
+        <span class="hj-pill"><span class="hj-num">2</span> Muestra</span>
+        <span class="hj-pill"><span class="hj-num">3</span> Normalidad</span>
+        <span class="hj-pill"><span class="hj-num">4</span> Decisión</span>
+        <span class="hj-pill"><span class="hj-num">5</span> SIG / AHP</span>
+        <span class="hj-pill"><span class="hj-num">6</span> Tus datos</span>
+        <span class="hj-pill"><span class="hj-num">7</span> Laboratorio</span>
+      </nav>
     </div>
     <svg class="hero-illustration" viewBox="0 0 340 300" aria-hidden="true">
       <rect x="14" y="18" width="312" height="264" rx="26" fill="var(--blue-soft)"/>
@@ -554,7 +731,15 @@ footer a.btn{margin-top:0;}
   <!-- 1 FUNDAMENTOS -->
   <section class="wrap" id="fundamentos" data-wp-label="01 · Fundamentos">
     <div class="section-head"><span class="section-num">01</span><h2>Lo básico, sin rodeos</h2></div>
-    <p class="section-kicker">Dos preguntas antes de tocar cualquier fórmula: ¿qué quieres decir de tus datos, y para quién lo vas a decir?</p>
+    <p class="section-kicker">Dos preguntas antes de tocar cualquier fórmula: ¿qué quieres decir de tus <span data-tt="Dato: valor registrado de una variable en una observación concreta. Dato ≠ información; la información emerge cuando analizas el conjunto.">datos</span>, y para quién lo vas a decir?</p>
+    <div class="challenge-block">
+      <span class="cb-icon">🎯</span>
+      <div class="cb-body">
+        <div class="cb-label">Desafío de entrada</div>
+        <div class="cb-title">¿Estadística descriptiva o inferencial?</div>
+        <div class="cb-sub">Antes de seguir: ¿quieres <em>describir</em> lo que ya tienes, o <em>generalizar</em> a una población mayor? Esa diferencia cambia todo el análisis.</div>
+      </div>
+    </div>
     <div class="grid-2">
       <div class="card">
         <span class="chip">Estadística descriptiva</span>
@@ -572,7 +757,11 @@ footer a.btn{margin-top:0;}
   <!-- 2 TIPO DE DATO -->
   <section class="wrap" id="tipo-dato" data-wp-label="02 · Tipo de dato">
     <div class="section-head"><span class="section-num">02</span><h2>¿Qué tipo de dato tienes?</h2></div>
-    <p class="section-kicker">Toda decisión estadística posterior depende de esto. Responde dos preguntas sobre tu variable.</p>
+    <p class="section-kicker">Toda <span data-tt="Decisión estadística: elegir la prueba correcta NO es opcional. Aplicar una prueba paramétrica a datos ordinales puede dar resultados completamente erróneos aunque el software lo calcule igual.">decisión estadística</span> posterior depende de esto. Responde dos preguntas sobre tu <span data-tt="Variable: característica que varía entre unidades de análisis. Cuantitativa continua (temperatura), cuantitativa discreta (hijos), cualitativa ordinal (satisfacción 1-5), cualitativa nominal (género).">variable</span>.</p>
+    <div class="tip-box" data-icon="💡">
+      <strong>¿Por dónde empiezo?</strong> Haz clic en cada pregunta abajo. El identificador te lleva directo al tipo de escala — y ese tipo de escala dicta tu prueba.
+    </div>
+    <span class="start-here">Empieza aquí</span>
 
     <div class="instrument" data-instrument="Clasificador de variables">
       <div class="dial-dot"></div>
@@ -603,6 +792,18 @@ footer a.btn{margin-top:0;}
   <section class="wrap" id="muestra" data-wp-label="03 · Tamaño de muestra">
     <div class="section-head"><span class="section-num">03</span><h2>Calculadora de tamaño de muestra</h2></div>
     <p class="section-kicker">Elige el tipo de estudio y tu área — la fórmula y el ejemplo se ajustan automáticamente.</p>
+    <div class="challenge-block">
+      <span class="cb-icon">🔬</span>
+      <div class="cb-body">
+        <div class="cb-label">¡Pon a prueba tu intuición!</div>
+        <div class="cb-title">¿Cuántas muestras necesita tu estudio?</div>
+        <div class="cb-sub">Antes de calcular: ¿cuántos puntos crees que necesitas? La fórmula de <span data-tt="Cochran (1977): n = Z²·p·q / e². Donde Z=nivel de confianza (1.96 para 95%), p=proporción esperada, q=1-p, e=margen de error. Para poblaciones finitas: n' = n / (1 + (n-1)/N).">Cochran</span> suele sorprender — adivina y luego calcula.</div>
+      </div>
+      <span class="cb-cta">Calcular ahora ↓</span>
+    </div>
+    <div class="tip-box tip-warn" data-icon="⚠️">
+      <strong>Error frecuente:</strong> usar el n de otra investigación sin verificar que comparte tu nivel de confianza, margen de error y proporción esperada.
+    </div>
 
     <div class="instrument" data-instrument="Calculadora de muestreo">
       <div class="dial-dot"></div>
@@ -671,8 +872,17 @@ footer a.btn{margin-top:0;}
 
   <!-- 4 NORMALIDAD -->
   <section class="wrap" id="normalidad" data-wp-label="04 · Normalidad">
-    <div class="section-head"><span class="section-num">04</span><h2>¿Tus datos siguen una distribución normal?</h2></div>
-    <p class="section-kicker">Genera una muestra simulada de 200 datos y observa el histograma y el gráfico Q-Q. La forma de tu distribución decide qué familia de pruebas puedes usar.</p>
+    <div class="section-head"><span class="section-num">04</span><h2>¿Tus datos siguen una <span data-tt="Distribución normal (campana de Gauss): simétrica, con media = mediana = moda. Parámetros: μ (media) y σ (desviación estándar). El 68% de datos cae en μ±σ, el 95% en μ±2σ, el 99.7% en μ±3σ.">distribución normal</span>?</h2></div>
+    <p class="section-kicker">Genera una muestra simulada de 200 datos y observa el <span data-tt="Histograma: gráfico de barras de frecuencias. Cada barra cubre un intervalo de valores. La altura = frecuencia. Permite ver forma, sesgo y valores atípicos de un vistazo.">histograma</span> y el gráfico <span data-tt="Q-Q (Quantile-Quantile plot): compara los cuantiles de tus datos vs. los de una distribución normal teórica. Si los puntos caen sobre la línea diagonal → normalidad. Desviaciones en los extremos = colas pesadas o ligeras.">Q-Q</span>. La forma de tu distribución decide qué familia de pruebas puedes usar.</p>
+    <div class="challenge-block">
+      <span class="cb-icon">📊</span>
+      <div class="cb-body">
+        <div class="cb-label">Experimento mental</div>
+        <div class="cb-title">¿Puedes predecir la forma antes de simular?</div>
+        <div class="cb-sub">Cambia la asimetría (<span data-tt="Sesgo (skewness): mide la asimetría de la distribución. Sesgo>0: cola derecha larga. Sesgo<0: cola izquierda larga. Sesgo=0: simétrica. En datos de salario, altura o peso suele haber sesgo positivo.">skewness</span>) a 2 antes de generar. ¿Qué esperas ver en el Q-Q? Luego confirma — la intuición estadística se entrena así.</div>
+      </div>
+      <span class="cb-cta">Simular ahora ↓</span>
+    </div>
 
     <div class="instrument" data-instrument="Simulador de normalidad">
       <div class="dial-dot"></div>
@@ -706,8 +916,19 @@ footer a.btn{margin-top:0;}
 
   <!-- 5 DECISION TREE -->
   <section class="wrap" id="decision" data-wp-label="05 · Paramétrica o no">
-    <div class="section-head"><span class="section-num">05</span><h2>Paramétrica o no paramétrica: la decisión</h2></div>
-    <p class="section-kicker">Cruza tu escenario de comparación con el resultado de normalidad del paso anterior (o cámbialo manualmente).</p>
+    <div class="section-head"><span class="section-num">05</span><h2><span data-tt="Prueba paramétrica: asume que los datos provienen de una distribución conocida (generalmente normal) y trabaja con parámetros poblacionales (μ, σ). Más potente cuando se cumplen los supuestos.">Paramétrica</span> o <span data-tt="Prueba no paramétrica (libre de distribución): no asume una distribución específica. Trabaja con rangos u ordenamientos en lugar de valores crudos. Menos potente pero más robusta con datos ordinales o no normales.">no paramétrica</span>: la decisión</h2></div>
+    <p class="section-kicker">Cruza tu escenario de comparación con el resultado de <span data-tt="Normalidad: supuesto clave de las pruebas paramétricas. Se puede verificar visualmente (Q-Q plot) o con pruebas formales: Shapiro-Wilk (n<50), Kolmogorov-Smirnov, D'Agostino-Pearson K².">normalidad</span> del paso anterior (o cámbialo manualmente).</p>
+    <div class="tip-box" data-icon="💡">
+      <strong>Regla de oro:</strong> Con n &gt; 30 y distribución <em>aproximadamente</em> normal, las pruebas paramétricas son robustas al incumplimiento leve. Con datos ordinales o n pequeño, ve siempre a la no paramétrica.
+    </div>
+    <div class="challenge-block">
+      <span class="cb-icon">⚡</span>
+      <div class="cb-body">
+        <div class="cb-label">¡Pon a prueba tu conocimiento!</div>
+        <div class="cb-title">¿Paramétrica o no? — 3 casos reales</div>
+        <div class="cb-sub">Caso 1: pendiente de ladera (continua, n=45, normal). Caso 2: nivel de satisfacción (ordinal 1-5, n=80). Caso 3: proporción de cobertura vegetal (%, n=12, no normal). ¿Cuál prueba usarías para cada uno?</div>
+      </div>
+    </div>
 
     <div class="instrument" data-instrument="Árbol de decisión">
       <div class="dial-dot"></div>
@@ -757,6 +978,14 @@ footer a.btn{margin-top:0;}
 
   <!-- 6 SIG -->
   <section class="wrap" id="sig" data-wp-label="06 · SIG y AHP">
+    <div class="challenge-block">
+      <span class="cb-icon">🗺️</span>
+      <div class="cb-body">
+        <div class="cb-label">Módulo especial · SIG &amp; AHP</div>
+        <div class="cb-title">¿Tu mapa tiene evidencia o solo colores?</div>
+        <div class="cb-sub">Los datos espaciales violan un supuesto clave: la <span data-tt="Independencia espacial: supuesto de que cada observación es independiente de las demás. En datos geográficos esto casi nunca se cumple — los puntos cercanos se parecen más (autocorrelación espacial).">independencia espacial</span>. Aprende a detectar <span data-tt="Autocorrelación espacial (índice de Moran's I): mide si valores similares se agrupan en el espacio. I>0: agrupamiento. I<0: dispersión. I≈0: aleatorio. Si I es significativo, debes usar métodos espaciales, no OLS estándar.">autocorrelación</span> y a usar <span data-tt="AHP (Saaty, 1980): estructura una decisión multicriterio en jerarquías. Compara criterios por pares en escala 1-9 (1=igual importancia, 9=extremadamente más importante). Calcula vector de prioridades por eigenvector dominante.">AHP</span> para decisiones multicriterio.</div>
+      </div>
+    </div>
     <div class="sig-intro">
       <div class="sig-intro-text">
         <div class="section-head"><span class="section-num">06</span><h2>¿Por qué tus datos geográficos también necesitan estadística?</h2></div>
@@ -832,7 +1061,19 @@ footer a.btn{margin-top:0;}
   <!-- 7 SUBE TUS DATOS -->
   <section class="wrap" id="tus-datos" data-wp-label="07 · Tus datos">
     <div class="section-head"><span class="section-num">07</span><h2>Analiza tus propios datos</h2></div>
-    <p class="section-kicker">Sube tu tabla de datos estadísticos (CSV/Excel) o tu capa geográfica (Shapefile .zip/.dbf o ráster GeoTIFF .tif). Detectamos el tipo de cada columna o banda, probamos normalidad con pruebas reales y te damos un reporte descargable para tu metodología.</p>
+    <p class="section-kicker">Sube tu tabla de datos estadísticos (CSV/Excel) o tu capa geográfica (<span data-tt="Shapefile: formato vectorial de ESRI. Requiere mínimo 3 archivos: .shp (geometría), .dbf (tabla de atributos), .shx (índice). Para subir aquí, comprímelos en un .zip.">Shapefile</span> .zip/.dbf o ráster <span data-tt="GeoTIFF: imagen rasterizada con metadatos geoespaciales incrustados (proyección, coordenadas, resolución). Cada píxel = un valor (elevación, temperatura, índice NDVI, etc.).">GeoTIFF</span> .tif). Detectamos el tipo de cada columna o banda, probamos <span data-tt="Prueba de normalidad en tus datos: usamos Shapiro-Wilk para n≤50 y D'Agostino-Pearson K² para n>50. Ambas dan p-valor: si p<0.05 rechazas normalidad al 95% de confianza.">normalidad</span> con pruebas reales y te damos un reporte descargable para tu metodología.</p>
+    <div class="challenge-block">
+      <span class="cb-icon">📁</span>
+      <div class="cb-body">
+        <div class="cb-label">Momento de verdad</div>
+        <div class="cb-title">¿Tus datos reales confirman lo que aprendiste?</div>
+        <div class="cb-sub">Sube tu archivo y comprueba: ¿son normales tus variables? ¿Hay <span data-tt="Outlier (valor atípico): observación que se aleja significativamente del patrón general. Puede ser un error de medición, un evento real extremo, o una observación de una población diferente. Distorsiona la media y la varianza.">outliers</span>? ¿Cuántas muestras tienes realmente? El sistema te dice qué prueba deberías usar — ¿coincide con lo que elegiste?</div>
+      </div>
+      <span class="cb-cta">Subir mis datos ↑</span>
+    </div>
+    <div class="tip-box tip-ok" data-icon="✅">
+      <strong>100% privado:</strong> tus datos se procesan en tu navegador y <strong>nunca se envían a ningún servidor</strong>. Puedes subir datos sensibles con total seguridad.
+    </div>
 
     <div class="instrument" data-instrument="Analizador de datos">
       <div class="dial-dot"></div>
@@ -879,7 +1120,16 @@ footer a.btn{margin-top:0;}
   <!-- 8 CIERRE -->
   <section class="wrap" id="cierre" data-wp-label="08 · Ruta completa">
     <div class="section-head"><span class="section-num">08</span><h2>Tu ruta, en una hoja</h2></div>
-    <p class="section-kicker">Guarda este orden — es la secuencia que sostiene cualquier metodología cuantitativa.</p>
+    <p class="section-kicker">Guarda este orden — es la secuencia que sostiene cualquier <span data-tt="Metodología cuantitativa: enfoque de investigación que usa medición numérica y análisis estadístico para describir, explicar o predecir fenómenos. Se opone a la metodología cualitativa (entrevistas, etnografía, análisis temático).">metodología cuantitativa</span>.</p>
+    <div class="challenge-block">
+      <span class="cb-icon">🏆</span>
+      <div class="cb-body">
+        <div class="cb-label">¡Llegaste al final del recorrido!</div>
+        <div class="cb-title">¿Listo para el Laboratorio Estadístico?</div>
+        <div class="cb-sub">Ya dominas la teoría. Ahora sube tus propios datos, calcula pruebas reales y genera resultados listos para tu tesis — con el Laboratorio Estadístico Interactivo.</div>
+      </div>
+      <a href="../laboratorio-estadistico/" class="cb-cta">Ir al Laboratorio →</a>
+    </div>
     <div class="grid-3">
       <div class="card"><span class="chip">Paso 1–2</span><h3>Define el dato</h3><p>Identifica el tipo de variable y calcula el tamaño de muestra que tu diseño exige.</p></div>
       <div class="card"><span class="chip">Paso 3–4</span><h3>Evalúa el supuesto</h3><p>Prueba normalidad y elige entre estadística paramétrica o no paramétrica con evidencia, no por costumbre.</p></div>
