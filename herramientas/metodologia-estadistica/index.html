@@ -687,17 +687,20 @@ footer a.btn{margin-top:0;}
 .abp-case{
   position:relative;
   border-left:4px solid #00C896;
-  background:linear-gradient(135deg,rgba(0,200,150,.1) 0%,rgba(0,200,150,.03) 100%);
+  background:rgba(0,200,150,.09);
   border-radius:0 14px 14px 0;
   padding:20px 24px;
   margin:24px 0;
+  /* Explicit text color for contrast in both themes */
+  color:var(--ink);
 }
+/* Eyebrow label — plain text, not a pill badge */
 .abp-label{
-  display:inline-flex;align-items:center;gap:6px;
-  background:#00C896;color:#0A2820;
-  font:700 10px/1 var(--font,inherit);
-  text-transform:uppercase;letter-spacing:.1em;
-  padding:5px 13px;border-radius:20px;
+  display:block;
+  font:700 11px/1 var(--font,inherit);
+  text-transform:uppercase;letter-spacing:.12em;
+  color:#00C896;
+  background:none;padding:0;border-radius:0;
   margin-bottom:12px;
 }
 .abp-body{font-size:14px;line-height:1.75;color:var(--ink)}
@@ -706,10 +709,12 @@ footer a.btn{margin-top:0;}
 .abp-answers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 .abp-ans{
   display:flex;align-items:flex-start;gap:10px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
+  /* Neutral background — readable on both dark and light panels */
+  background:rgba(128,128,128,.1);
+  border:1px solid rgba(128,128,128,.18);
   border-radius:10px;padding:10px 14px;
   font-size:13px;line-height:1.6;
+  color:var(--ink);
 }
 .aa-tag{
   flex-shrink:0;font:700 10px/1 var(--font,inherit);
@@ -920,22 +925,6 @@ footer a.btn{margin-top:0;}
       </div>
     </div>
 
-    <div class="abp-case">
-      <span class="abp-label">📋 Caso real · ABP</span>
-      <p class="abp-body">
-        <strong>Contexto:</strong> Un inspector de SSO recopiló datos de <em>accidentalidad laboral</em> en una planta embotelladora de Guayaquil durante 2019–2023: 120 trabajadores, registros de tipo de lesión, turno y días de incapacidad.
-      </p>
-      <div class="abp-answers">
-        <div class="abp-ans">
-          <span class="aa-tag teal">Descriptiva</span>
-          <span>Reporta: <strong>"El promedio de días de incapacidad en la planta fue 4.2 días (DE = 2.1)"</strong> — solo describe su muestra, sin generalizar.</span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag blue">Inferencial</span>
-          <span>Concluye: <strong>"Los trabajadores de turno nocturno presentan significativamente más días de incapacidad (t = 3.12, p = 0.002)"</strong> — generaliza a toda la planta con evidencia estadística.</span>
-        </div>
-      </div>
-    </div>
     <div class="grid-2">
       <div class="card">
         <span class="chip">Estadística descriptiva</span>
@@ -948,45 +937,28 @@ footer a.btn{margin-top:0;}
         <p>Usa tu muestra para concluir algo sobre la población completa, con un margen de error controlado. Aquí viven las pruebas de hipótesis, los intervalos de confianza y los modelos — y aquí es donde la robustez metodológica se juega de verdad.</p>
       </div>
     </div>
+    <div class="abp-case">
+      <span class="abp-label">Ejemplo real:</span>
+      <p class="abp-body">
+        Un inspector de SSO recopiló datos de <em>accidentalidad laboral</em> en una planta embotelladora de Guayaquil (2019–2023): 120 trabajadores, tipo de lesión, turno y días de incapacidad. ¿Cómo aplica la diferencia entre estadística descriptiva e inferencial?
+      </p>
+      <div class="abp-answers">
+        <div class="abp-ans">
+          <span class="aa-tag teal">Descriptiva</span>
+          <span>Reporta: <strong>"El promedio de días de incapacidad en la planta fue 4.2 días (DE = 2.1)"</strong> — describe la muestra, sin generalizar más allá de ella.</span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag blue">Inferencial</span>
+          <span>Concluye: <strong>"Los trabajadores de turno nocturno presentan significativamente más días de incapacidad (t = 3.12, p = 0.002)"</strong> — generaliza con evidencia estadística controlada.</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 2 TIPO DE DATO -->
   <section class="wrap" id="tipo-dato" data-wp-label="02 · Tipo de dato">
     <div class="section-head"><span class="section-num">02</span><h2>¿Qué tipo de dato tienes?</h2></div>
     <p class="section-kicker">Toda <span data-tt="Decisión estadística: elegir la prueba correcta NO es opcional. Aplicar una prueba paramétrica a datos ordinales puede dar resultados completamente erróneos aunque el software lo calcule igual.">decisión estadística</span> posterior depende de esto. Responde dos preguntas sobre tu <span data-tt="Variable: característica que varía entre unidades de análisis. Cuantitativa continua (temperatura), cuantitativa discreta (hijos), cualitativa ordinal (satisfacción 1-5), cualitativa nominal (género).">variable</span>.</p>
-    <div class="abp-case">
-      <span class="abp-label">📋 Caso real · ABP</span>
-      <p class="abp-body">
-        <strong>Evaluación ergonómica</strong> en un call center de Quito (95 empleados). El equipo de SSO midió 4 variables — identifica el tipo de cada una antes de elegir la prueba:
-      </p>
-      <div class="var-tree-grid" id="varTreeGrid">
-        <div class="var-card">
-          <div class="vc-type">Cuantitativa continua</div>
-          <div class="vc-name">Dolor lumbar (0–10 cm en escala EVA)</div>
-          <div class="vc-ex">Puede tomar cualquier valor decimal. Ej.: 3.7 cm, 8.2 cm.</div>
-          <div class="vc-badge">Intervalo / Razón</div>
-        </div>
-        <div class="var-card">
-          <div class="vc-type">Cuantitativa discreta</div>
-          <div class="vc-name">N° de pausas activas / día</div>
-          <div class="vc-ex">Solo valores enteros no negativos. Ej.: 0, 1, 2, 3...</div>
-          <div class="vc-badge">Razón</div>
-        </div>
-        <div class="var-card">
-          <div class="vc-type">Cualitativa nominal</div>
-          <div class="vc-name">Área de trabajo (Ventas / Soporte / Admin)</div>
-          <div class="vc-ex">Categorías sin orden natural entre ellas.</div>
-          <div class="vc-badge">Nominal</div>
-        </div>
-        <div class="var-card">
-          <div class="vc-type">Cualitativa ordinal</div>
-          <div class="vc-name">Nivel de riesgo ergonómico (Bajo / Medio / Alto)</div>
-          <div class="vc-ex">Categorías con orden lógico, pero sin distancia numérica exacta.</div>
-          <div class="vc-badge">Ordinal</div>
-        </div>
-      </div>
-    </div>
-
     <div class="tip-box" data-icon="💡">
       <strong>¿Por dónde empiezo?</strong> Haz clic en cada pregunta abajo. El identificador te lleva directo al tipo de escala — y ese tipo de escala dicta tu prueba.
     </div>
@@ -1015,6 +987,39 @@ footer a.btn{margin-top:0;}
         <div class="examples" id="typeExamples"></div>
       </div>
     </div>
+
+    <div class="abp-case">
+      <span class="abp-label">Ejemplo real:</span>
+      <p class="abp-body">
+        <strong>Evaluación ergonómica</strong> en un call center de Quito (95 empleados). El equipo de SSO midió 4 variables — ¿puedes clasificarlas ahora que conoces las escalas?
+      </p>
+      <div class="var-tree-grid" id="varTreeGrid">
+        <div class="var-card">
+          <div class="vc-type">Cuantitativa continua</div>
+          <div class="vc-name">Dolor lumbar (0–10 cm en escala EVA)</div>
+          <div class="vc-ex">Puede tomar cualquier valor decimal. Ej.: 3.7 cm, 8.2 cm.</div>
+          <div class="vc-badge">Intervalo / Razón</div>
+        </div>
+        <div class="var-card">
+          <div class="vc-type">Cuantitativa discreta</div>
+          <div class="vc-name">N° de pausas activas / día</div>
+          <div class="vc-ex">Solo valores enteros no negativos. Ej.: 0, 1, 2, 3...</div>
+          <div class="vc-badge">Razón</div>
+        </div>
+        <div class="var-card">
+          <div class="vc-type">Cualitativa nominal</div>
+          <div class="vc-name">Área de trabajo (Ventas / Soporte / Admin)</div>
+          <div class="vc-ex">Categorías sin orden natural entre ellas.</div>
+          <div class="vc-badge">Nominal</div>
+        </div>
+        <div class="var-card">
+          <div class="vc-type">Cualitativa ordinal</div>
+          <div class="vc-name">Nivel de riesgo ergonómico (Bajo / Medio / Alto)</div>
+          <div class="vc-ex">Categorías con orden lógico, pero sin distancia numérica exacta.</div>
+          <div class="vc-badge">Ordinal</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 3 TAMAÑO DE MUESTRA -->
@@ -1029,26 +1034,6 @@ footer a.btn{margin-top:0;}
         <div class="cb-sub">Antes de calcular: ¿cuántos puntos crees que necesitas? La fórmula de <span data-tt="Cochran (1977): n = Z²·p·q / e². Donde Z=nivel de confianza (1.96 para 95%), p=proporción esperada, q=1-p, e=margen de error. Para poblaciones finitas: n' = n / (1 + (n-1)/N).">Cochran</span> suele sorprender — adivina y luego calcula.</div>
       </div>
       <span class="cb-cta">Calcular ahora ↓</span>
-    </div>
-    <div class="abp-case" id="sampleAbp">
-      <span class="abp-label">📋 Caso real · ABP</span>
-      <p class="abp-body">
-        <strong>Estudio de estrés laboral</strong> en los 1,500 trabajadores de la red de salud pública de Pichincha. Quieres aplicar el Cuestionario de Demandas-Control-Apoyo (JCQ). ¿Cuántos necesitas encuestar?
-      </p>
-      <div class="abp-counter" id="sampleCounter">
-        <div class="abp-counter-num" id="sampleNum">0</div>
-        <div class="abp-counter-desc">
-          <strong>encuestas mínimas</strong> para ser riguroso<br>
-          z=1.96 · p=0.5 · e=5% · N=1,500<br>
-          <span style="font-size:11px;opacity:.7">n₀ = 384 → corregido por N finito: n = 384 / (1 + 383/1500) = <strong>307</strong></span>
-        </div>
-      </div>
-      <div class="abp-answers">
-        <div class="abp-ans">
-          <span class="aa-tag teal">Clave</span>
-          <span>Con <strong>p = 0.5</strong> (máxima varianza) obtienes el n más conservador. Si una investigación previa dice que el 35% tiene estrés alto, usas <strong>p = 0.35</strong> → n se reduce a 276.</span>
-        </div>
-      </div>
     </div>
     <div class="tip-box tip-warn" data-icon="⚠️">
       <strong>Error frecuente:</strong> usar el n de otra investigación sin verificar que comparte tu nivel de confianza, margen de error y proporción esperada.
@@ -1117,6 +1102,27 @@ footer a.btn{margin-top:0;}
       </div>
       <p class="hint" id="areaHint"></p>
     </div>
+
+    <div class="abp-case" id="sampleAbp">
+      <span class="abp-label">Ejemplo real:</span>
+      <p class="abp-body">
+        <strong>Estudio de estrés laboral</strong> en los 1,500 trabajadores de la red de salud pública de Pichincha. Aplica el Cuestionario JCQ (Demandas-Control-Apoyo). ¿Cuántas encuestas necesitas? Ingresa estos valores en la calculadora de arriba: z=1.96, p=50%, e=5%, N=1,500.
+      </p>
+      <div class="abp-counter" id="sampleCounter">
+        <div class="abp-counter-num" id="sampleNum">0</div>
+        <div class="abp-counter-desc">
+          <strong>encuestas mínimas</strong> para ser riguroso<br>
+          z=1.96 · p=0.5 · e=5% · N=1,500<br>
+          <span style="font-size:11px;opacity:.7">n₀ = 384 → corregido por N finito: n = 384 / (1 + 383/1500) = <strong>307</strong></span>
+        </div>
+      </div>
+      <div class="abp-answers">
+        <div class="abp-ans">
+          <span class="aa-tag teal">¿Por qué 307 y no 384?</span>
+          <span>Cuando la población es finita (1,500 es conocida), la corrección reduce el n porque no necesitas muestrear con la misma intensidad. Con p=0.35 (prevalencia conocida por estudios previos), bajaría a 276 encuestas.</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 4 NORMALIDAD -->
@@ -1131,45 +1137,6 @@ footer a.btn{margin-top:0;}
         <div class="cb-sub">Cambia la asimetría (<span data-tt="Sesgo (skewness): mide la asimetría de la distribución. Sesgo>0: cola derecha larga. Sesgo<0: cola izquierda larga. Sesgo=0: simétrica. En datos de salario, altura o peso suele haber sesgo positivo.">skewness</span>) a 2 antes de generar. ¿Qué esperas ver en el Q-Q? Luego confirma — la intuición estadística se entrena así.</div>
       </div>
       <span class="cb-cta">Simular ahora ↓</span>
-    </div>
-
-    <div class="abp-case">
-      <span class="abp-label">📋 Caso real · ABP</span>
-      <p class="abp-body">
-        <strong>Monitoreo de PM2.5</strong> (concentración de partículas finas, µg/m³) en 200 turnos de trabajo de una fundidora de Cuenca. Antes de elegir la prueba, debes saber si los datos son normales:
-      </p>
-      <!-- Animated bell curve SVG -->
-      <svg class="bell-svg" id="bellSvg" viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- Grid -->
-        <line x1="30" y1="140" x2="490" y2="140" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
-        <line x1="30" y1="100" x2="490" y2="100" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-        <line x1="30" y1="60" x2="490" y2="60" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-        <!-- 68% fill area -->
-        <path class="bell-fill" d="M143 140 C 170 140, 210 22, 260 18 C 310 22, 350 140, 377 140 Z" fill="rgba(26,80,158,.35)"/>
-        <!-- 95% fill area (lighter) -->
-        <path class="bell-fill" d="M80 140 C 100 140, 130 135, 143 140 C 170 140, 210 22, 260 18 C 310 22, 350 140, 377 140 C 390 135, 420 140, 440 140 Z" fill="rgba(26,80,158,.15)" style="animation-delay:.4s"/>
-        <!-- Bell curve path -->
-        <path class="bell-curve" d="M30 140 C 55 140, 70 140, 80 140 C 100 140, 130 136, 143 140 C 168 142, 200 30, 260 18 C 320 30, 352 142, 377 140 C 390 136, 420 140, 440 140 C 450 140, 465 140, 490 140" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
-        <!-- Mean line -->
-        <line x1="260" y1="22" x2="260" y2="140" stroke="rgba(245,179,0,.5)" stroke-width="1.5" stroke-dasharray="5,4"/>
-        <!-- Labels -->
-        <text x="260" y="158" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.7)" font-family="monospace">μ = 48.3</text>
-        <text x="143" y="158" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.45)" font-family="monospace">μ−σ</text>
-        <text x="377" y="158" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.45)" font-family="monospace">μ+σ</text>
-        <text x="260" y="10" text-anchor="middle" font-size="10" fill="var(--gold)" font-family="monospace" font-weight="700">68% de los turnos (µg/m³)</text>
-        <!-- σ = 12.1 label -->
-        <text x="380" y="95" font-size="10" fill="rgba(255,255,255,.55)" font-family="monospace">σ = 12.1</text>
-      </svg>
-      <div class="abp-answers">
-        <div class="abp-ans">
-          <span class="aa-tag teal">H₀</span>
-          <span>Los datos de PM2.5 siguen distribución normal (campana simétrica centrada en µ=48.3)</span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag red">Resultado</span>
-          <span>D'Agostino-Pearson K² = 18.4, <strong>p = 0.0001</strong> → Se rechaza H₀. Los datos están sesgados (cola derecha: algunos turnos con PM2.5 extremadamente alto). <strong>→ Usar pruebas no paramétricas.</strong></span>
-        </div>
-      </div>
     </div>
 
     <div class="instrument" data-instrument="Simulador de normalidad">
@@ -1199,6 +1166,37 @@ footer a.btn{margin-top:0;}
       </div>
       <div class="verdict" id="normVerdict"></div>
       <p class="hint">Esta es una heurística visual para construir intuición (regla de asimetría/curtosis entre −2 y +2, George &amp; Mallery). Para tu tesis, confirma con Shapiro-Wilk (n&lt;50) o Kolmogorov-Smirnov (n≥50) en SPSS, R o Python.</p>
+    </div>
+
+    <div class="abp-case" id="bellAbpCase">
+      <span class="abp-label">Ejemplo real:</span>
+      <p class="abp-body">
+        <strong>Monitoreo de PM2.5</strong> (µg/m³) en 200 turnos de trabajo de una fundidora de Cuenca. Selecciona "Asimetría derecha" en el simulador y observa cómo el Q-Q se aleja de la diagonal — así lucen los datos de contaminación con episodios pico:
+      </p>
+      <svg class="bell-svg" id="bellSvg" viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="30" y1="140" x2="490" y2="140" stroke="rgba(128,128,128,.2)" stroke-width="1"/>
+        <line x1="30" y1="100" x2="490" y2="100" stroke="rgba(128,128,128,.1)" stroke-width="1"/>
+        <line x1="30" y1="60" x2="490" y2="60" stroke="rgba(128,128,128,.1)" stroke-width="1"/>
+        <path class="bell-fill" d="M143 140 C 170 140, 210 22, 260 18 C 310 22, 350 140, 377 140 Z" fill="rgba(26,80,158,.35)"/>
+        <path class="bell-fill" d="M80 140 C 100 140, 130 135, 143 140 C 170 140, 210 22, 260 18 C 310 22, 350 140, 377 140 C 390 135, 420 140, 440 140 Z" fill="rgba(26,80,158,.15)" style="animation-delay:.4s"/>
+        <path class="bell-curve" d="M30 140 C 55 140, 70 140, 80 140 C 100 140, 130 136, 143 140 C 168 142, 200 30, 260 18 C 320 30, 352 142, 377 140 C 390 136, 420 140, 440 140 C 450 140, 465 140, 490 140" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="260" y1="22" x2="260" y2="140" stroke="rgba(245,179,0,.5)" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="260" y="158" text-anchor="middle" font-size="12" fill="var(--ink)" font-family="monospace">μ = 48.3</text>
+        <text x="143" y="158" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="monospace">μ−σ</text>
+        <text x="377" y="158" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="monospace">μ+σ</text>
+        <text x="260" y="10" text-anchor="middle" font-size="10" fill="var(--gold)" font-family="monospace" font-weight="700">68% de los turnos (µg/m³)</text>
+        <text x="380" y="95" font-size="10" fill="var(--ink-faint)" font-family="monospace">σ = 12.1</text>
+      </svg>
+      <div class="abp-answers">
+        <div class="abp-ans">
+          <span class="aa-tag teal">H₀</span>
+          <span>Los datos de PM2.5 siguen distribución normal (campana simétrica centrada en µ=48.3)</span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag red">Resultado</span>
+          <span>D'Agostino-Pearson K² = 18.4, <strong>p = 0.0001</strong> → Se rechaza H₀. Distribución con sesgo derecho (episodios de alta contaminación). <strong>→ Usar Mann-Whitney o Kruskal-Wallis.</strong></span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1270,26 +1268,8 @@ footer a.btn{margin-top:0;}
         <text x="489" y="183" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.5)" font-family="monospace">3+ grupos</text>
       </g>
       <!-- Guía -->
-      <text x="280" y="214" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.35)" font-family="monospace">Para comparación de medias. Escalas nominales → Chi-cuadrado.</text>
+      <text x="280" y="214" text-anchor="middle" font-size="9.5" fill="var(--ink-faint)" font-family="monospace">Para comparación de medias. Escalas nominales → Chi-cuadrado.</text>
     </svg>
-
-    <div class="abp-case">
-      <span class="abp-label">📋 Caso real · ABP — 3 escenarios SSO</span>
-      <div class="abp-answers">
-        <div class="abp-ans">
-          <span class="aa-tag teal">Caso 1</span>
-          <span><strong>Ruido (dB) en 2 turnos</strong>, n=45/turno, Shapiro-Wilk p=0.34 (normal) → <strong>t de Student para muestras independientes</strong>. Resultado: turno nocturno tiene 3.8 dB más (p=0.031).</span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag gold">Caso 2</span>
-          <span><strong>Satisfacción laboral (1–5 Likert)</strong> entre 3 departamentos, n=80 — escala ordinal, no asumir normalidad → <strong>Kruskal-Wallis</strong>. H=9.42, p=0.009: hay diferencias significativas.</span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag red">Caso 3</span>
-          <span><strong>Uso correcto de EPP (Sí/No)</strong> entre 2 plantas — variable nominal dicotómica → <strong>Chi-cuadrado de proporciones</strong>. χ²=7.1, p=0.008: diferencia significativa en la tasa de uso.</span>
-        </div>
-      </div>
-    </div>
 
     <div class="instrument" data-instrument="Árbol de decisión">
       <div class="dial-dot"></div>
@@ -1335,6 +1315,24 @@ footer a.btn{margin-top:0;}
         </table>
       </div>
     </div>
+
+    <div class="abp-case">
+      <span class="abp-label">Ejemplo real:</span>
+      <div class="abp-answers">
+        <div class="abp-ans">
+          <span class="aa-tag teal">Caso 1</span>
+          <span><strong>Ruido (dB) en 2 turnos</strong>, n=45/turno, Shapiro-Wilk p=0.34 (normal) → <strong>t de Student para muestras independientes</strong>. Resultado: turno nocturno tiene 3.8 dB más (p=0.031).</span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag gold">Caso 2</span>
+          <span><strong>Satisfacción laboral (1–5 Likert)</strong> entre 3 departamentos, n=80 — escala ordinal, no asumir normalidad → <strong>Kruskal-Wallis</strong>. H=9.42, p=0.009: hay diferencias significativas.</span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag red">Caso 3</span>
+          <span><strong>Uso correcto de EPP (Sí/No)</strong> entre 2 plantas — variable nominal dicotómica → <strong>Chi-cuadrado de proporciones</strong>. χ²=7.1, p=0.008: diferencia significativa en la tasa de uso.</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 6 SIG -->
@@ -1348,31 +1346,6 @@ footer a.btn{margin-top:0;}
       </div>
     </div>
 
-    <div class="abp-case">
-      <span class="abp-label">📋 Caso real · ABP</span>
-      <p class="abp-body">
-        <strong>Zonificación de riesgo de incendio forestal</strong> en la Reserva Cotacachi-Cayapas (Ecuador). El equipo técnico identifica 3 criterios y los compara por pares usando la escala de Saaty:
-      </p>
-      <div class="risk-map-wrap">
-        <div>
-          <div class="risk-map-grid" id="riskMapGrid"></div>
-          <p style="font-size:11px;text-align:center;margin-top:8px;color:var(--ink-faint)">Índice de riesgo simulado</p>
-        </div>
-        <div style="flex:1;min-width:200px">
-          <div class="risk-legend" style="margin-bottom:14px">
-            <div class="risk-swatch"><div class="risk-dot" style="background:#FF4444"></div><span><strong>Alto</strong> — Vegetación seca + pendiente &gt;30°</span></div>
-            <div class="risk-swatch"><div class="risk-dot" style="background:#FF9900"></div><span><strong>Medio</strong> — Acceso vehicular + pendiente 15–30°</span></div>
-            <div class="risk-swatch"><div class="risk-dot" style="background:#00C896"></div><span><strong>Bajo</strong> — Cobertura vegetal densa + plano</span></div>
-          </div>
-          <div class="abp-answers">
-            <div class="abp-ans">
-              <span class="aa-tag gold">AHP</span>
-              <span><strong>Pesos finales:</strong> Densidad vegetal seca 0.45 · Distancia a vías 0.32 · Pendiente 0.23 · IC = 0.04 &lt; 0.10 ✓</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="sig-intro">
       <div class="sig-intro-text">
         <div class="section-head"><span class="section-num">06</span><h2>¿Por qué tus datos geográficos también necesitan estadística?</h2></div>
@@ -1443,6 +1416,32 @@ footer a.btn{margin-top:0;}
       <div class="card"><h3>Regresión Ponderada Geográficamente (GWR)</h3><p>A diferencia de una regresión global, ajusta coeficientes distintos para cada ubicación — captura relaciones que cambian en el espacio.</p></div>
       <div class="card"><h3>Índice de Moran (I de Moran)</h3><p>Mide si un patrón espacial está agrupado, disperso o es aleatorio. Es el primer chequeo antes de aplicar cualquier estadística clásica sobre datos con coordenadas.</p></div>
     </div>
+
+    <div class="abp-case">
+      <span class="abp-label">Ejemplo real:</span>
+      <p class="abp-body">
+        <strong>Zonificación de riesgo de incendio forestal</strong> en la Reserva Cotacachi-Cayapas (Ecuador). Tras calcular la Calculadora AHP con 3 criterios comparados por pares (escala de Saaty), el equipo obtiene los pesos que ves abajo — el mapa de riesgo es el resultado:
+      </p>
+      <div class="risk-map-wrap">
+        <div>
+          <div class="risk-map-grid" id="riskMapGrid"></div>
+          <p style="font-size:11px;text-align:center;margin-top:8px;color:var(--ink-faint)">Índice de riesgo simulado</p>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div class="risk-legend" style="margin-bottom:14px">
+            <div class="risk-swatch"><div class="risk-dot" style="background:#FF4444"></div><span><strong>Alto</strong> — Vegetación seca + pendiente &gt;30°</span></div>
+            <div class="risk-swatch"><div class="risk-dot" style="background:#FF9900"></div><span><strong>Medio</strong> — Acceso vehicular + pendiente 15–30°</span></div>
+            <div class="risk-swatch"><div class="risk-dot" style="background:#00C896"></div><span><strong>Bajo</strong> — Cobertura vegetal densa + plano</span></div>
+          </div>
+          <div class="abp-answers">
+            <div class="abp-ans">
+              <span class="aa-tag gold">AHP</span>
+              <span><strong>Pesos finales:</strong> Densidad vegetal seca 0.45 · Distancia a vías 0.32 · Pendiente 0.23 · IC = 0.04 &lt; 0.10 ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 7 SUBE TUS DATOS -->
@@ -1457,30 +1456,6 @@ footer a.btn{margin-top:0;}
         <div class="cb-sub">Sube tu archivo y comprueba: ¿son normales tus variables? ¿Hay <span data-tt="Outlier (valor atípico): observación que se aleja significativamente del patrón general. Puede ser un error de medición, un evento real extremo, o una observación de una población diferente. Distorsiona la media y la varianza.">outliers</span>? ¿Cuántas muestras tienes realmente? El sistema te dice qué prueba deberías usar — ¿coincide con lo que elegiste?</div>
       </div>
       <span class="cb-cta">Subir mis datos ↑</span>
-    </div>
-    <div class="abp-case">
-      <span class="abp-label">📋 Caso real · ABP — Resultado esperado</span>
-      <p class="abp-body">
-        Archivo <strong>evaluacion_riesgos_2023.csv</strong> — 312 trabajadores, 6 columnas. Así se vería tu diagnóstico:
-      </p>
-      <div class="abp-answers">
-        <div class="abp-ans">
-          <span class="aa-tag teal">Normal</span>
-          <span><strong>edad (continua)</strong> — Media: 34.2 · DE: 7.8 · D'Agostino K²: p=0.23 → Normal → usar <strong>t-test / ANOVA</strong></span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag red">No normal</span>
-          <span><strong>dias_incapacidad (continua)</strong> — Media: 4.1 · DE: 6.9 · Sesgo: 2.8 · p=0.0003 → No normal → usar <strong>Mann-Whitney</strong></span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag blue">Nominal</span>
-          <span><strong>tipo_lesion (nominal: corte/golpe/caída/quemadura)</strong> — No aplica prueba de normalidad → usar <strong>Chi-cuadrado</strong></span>
-        </div>
-        <div class="abp-ans">
-          <span class="aa-tag gold">Ordinal</span>
-          <span><strong>nivel_riesgo (bajo/medio/alto)</strong> — 3 niveles ordenados → usar <strong>Kruskal-Wallis</strong> para comparar entre grupos</span>
-        </div>
-      </div>
     </div>
     <div class="tip-box tip-ok" data-icon="✅">
       <strong>100% privado:</strong> tus datos se procesan en tu navegador y <strong>nunca se envían a ningún servidor</strong>. Puedes subir datos sensibles con total seguridad.
@@ -1524,6 +1499,31 @@ footer a.btn{margin-top:0;}
 
         <button class="btn btn-primary" id="downloadPdfBtn" style="margin-top:22px;">Descargar reporte PDF ↓</button>
         <p class="hint">El reporte incluye clasificación de variables, varianza, covarianza, prueba de normalidad (Shapiro-Wilk para n≤50, D'Agostino-Pearson K² para n&gt;50), histogramas y sugerencias de tratamiento — listo para anexar a tu metodología. Sigue siendo tu responsabilidad interpretarlo y citarlo correctamente.</p>
+      </div>
+    </div>
+
+    <div class="abp-case">
+      <span class="abp-label">Ejemplo real:</span>
+      <p class="abp-body">
+        Archivo <strong>evaluacion_riesgos_2023.csv</strong> — 312 trabajadores, 6 columnas. Así se vería tu diagnóstico después de usar el analizador:
+      </p>
+      <div class="abp-answers">
+        <div class="abp-ans">
+          <span class="aa-tag teal">Normal</span>
+          <span><strong>edad (continua)</strong> — Media: 34.2 · DE: 7.8 · D'Agostino K²: p=0.23 → Normal → usar <strong>t-test / ANOVA</strong></span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag red">No normal</span>
+          <span><strong>dias_incapacidad (continua)</strong> — Media: 4.1 · DE: 6.9 · Sesgo: 2.8 · p=0.0003 → No normal → usar <strong>Mann-Whitney</strong></span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag blue">Nominal</span>
+          <span><strong>tipo_lesion (nominal: corte/golpe/caída/quemadura)</strong> — No aplica prueba de normalidad → usar <strong>Chi-cuadrado</strong></span>
+        </div>
+        <div class="abp-ans">
+          <span class="aa-tag gold">Ordinal</span>
+          <span><strong>nivel_riesgo (bajo/medio/alto)</strong> — 3 niveles ordenados → usar <strong>Kruskal-Wallis</strong> para comparar entre grupos</span>
+        </div>
       </div>
     </div>
   </section>
