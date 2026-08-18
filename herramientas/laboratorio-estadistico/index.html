@@ -388,6 +388,31 @@ header{
   .result-grid{grid-template-columns:1fr 1fr}
   .steps::before{display:none}
 }
+
+/* ── ABP LAB EXAMPLES ─────────────────────────────── */
+.abp-lab-case{margin-top:22px;background:linear-gradient(135deg,rgba(26,80,158,.06),rgba(245,179,0,.04));border:1px solid rgba(26,80,158,.2);border-left:4px solid var(--blue);border-radius:var(--r);padding:20px 22px}
+.abp-lab-label{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.abp-lab-label::before{content:'';display:inline-block;width:16px;height:3px;background:var(--blue);border-radius:2px}
+.abp-lab-scenario{font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:4px}
+.abp-lab-scenario strong{color:var(--ink)}
+.abp-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.load-ex-btn,.next-ex-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border:none;border-radius:var(--r-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s,transform .1s;line-height:1}
+.load-ex-btn:hover,.next-ex-btn:hover{opacity:.85;transform:translateY(-1px)}
+.load-ex-btn{background:var(--blue);color:#fff}
+.next-ex-btn{background:var(--gold);color:var(--gold-ink)}
+.exp-expected{margin-top:14px;padding:12px 16px;background:var(--ok-soft);border-radius:var(--r-sm);border-left:3px solid var(--ok);font-size:13px;color:var(--ink);line-height:1.6;display:none}
+.exp-expected.show{display:block}
+.exp-expected strong{color:var(--ok)}
+.abp-var-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin-top:14px}
+.abp-var-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px}
+.abp-var-card .vc-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.abp-var-card .vc-scale{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.vc-scale.nominal{background:rgba(92,154,224,.18);color:var(--blue)}
+.vc-scale.ordinal{background:rgba(245,179,0,.25);color:var(--gold-ink)}
+.vc-scale.intervalo{background:rgba(26,128,64,.15);color:var(--ok)}
+.vc-scale.razon{background:rgba(185,28,28,.12);color:var(--bad)}
+.abp-var-card .vc-why{font-size:12px;color:var(--ink-soft);line-height:1.55}
+.abp-ex-counter{font-size:11.5px;color:var(--ink-faint);margin-top:8px}
 </style>
 </head>
 <body>
@@ -482,7 +507,41 @@ header{
         </div>
       </div>
 
-      <!-- ③ Quiz -->
+      <!-- ③ Ejemplo real — ABP -->
+      <div class="step">
+        <div class="step-label"><div class="step-num">3</div><div class="step-title">Ejemplo real — clasifica las variables de un caso SSO antes del desafío</div></div>
+        <div class="abp-lab-case">
+          <div class="abp-lab-label">Ejemplo real</div>
+          <p class="abp-lab-scenario"><strong>Centro de llamadas, Quito — 40 operadores.</strong> Una especialista en salud y seguridad ocupacional realiza un levantamiento de condiciones laborales. Antes de aplicar cualquier prueba estadística, debe clasificar correctamente las cuatro variables que va a analizar. Haz clic para ver cómo se clasifican.</p>
+          <div class="abp-var-grid" id="varAbpGrid" style="display:none">
+            <div class="abp-var-card">
+              <div class="vc-name">Puesto de trabajo</div>
+              <div class="vc-scale nominal">Nominal</div>
+              <div class="vc-why">Operador / Supervisor / Soporte Técnico. Son categorías sin orden lógico entre sí — no se puede decir que un puesto es "mayor" que otro en sentido numérico.</div>
+            </div>
+            <div class="abp-var-card">
+              <div class="vc-name">Nivel de riesgo ergonómico</div>
+              <div class="vc-scale ordinal">Ordinal</div>
+              <div class="vc-why">Bajo / Medio / Alto / Crítico. Hay orden claro, pero la distancia entre niveles no es uniforme ni cuantificable con exactitud.</div>
+            </div>
+            <div class="abp-var-card">
+              <div class="vc-name">Temperatura ambiente (°C)</div>
+              <div class="vc-scale intervalo">Intervalo</div>
+              <div class="vc-why">El 0 °C no significa "ausencia de temperatura" — es un punto arbitrario. Las diferencias entre valores sí son iguales (1 °C = 1 °C), pero no hay cero absoluto.</div>
+            </div>
+            <div class="abp-var-card">
+              <div class="vc-name">Horas de exposición a pantallas (h/día)</div>
+              <div class="vc-scale razon">Razón</div>
+              <div class="vc-why">0 horas = ninguna exposición. Cero absoluto real. Tiene sentido decir "el doble de horas" o "tres veces más exposición diaria".</div>
+            </div>
+          </div>
+          <div class="abp-btn-row">
+            <button class="load-ex-btn" onclick="loadLabVarsExample()">📋 Ver clasificación del caso</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ Quiz -->
       <div class="step">
         <div class="challenge-banner">
           <span class="ch-icon">🧠</span>
@@ -492,7 +551,7 @@ header{
           </div>
           <span class="ch-badge">Desafío</span>
         </div>
-        <div class="step-label"><div class="step-num">3</div><div class="step-title">¡Clasifica estas variables! — aprendizaje basado en problemas reales</div></div>
+        <div class="step-label"><div class="step-num">4</div><div class="step-title">¡Clasifica estas variables! — aprendizaje basado en problemas reales</div></div>
         <div id="quizContainer"></div>
         <button class="btn btn-cta" style="margin-top:16px" onclick="nextQuiz()">Siguiente variable →</button>
         <div id="quizResult" class="verdict" style="display:none;margin-top:14px"></div>
@@ -535,6 +594,10 @@ header{
         </div>
         <div class="tip-box warn-box" style="margin-top:14px">Necesitas al menos <strong>8 datos</strong> para que la prueba sea confiable. Con menos de 8 el resultado es orientativo.</div>
         <p class="hint-txt">CSV: una columna de números. Excel: datos en la columna A, sin encabezado (o con encabezado en fila 1).</p>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--blue-soft);border-radius:var(--r-sm)">
+          <span style="font-size:22px;flex-shrink:0">↓</span>
+          <p style="font-size:13px;color:var(--blue-ink);margin:0;line-height:1.55">Cuando tus datos estén listos, el botón del siguiente paso generará el histograma, el Q-Q plot y la prueba estadística — todo en un solo clic.</p>
+        </div>
       </div>
 
       <div class="step">
@@ -559,6 +622,15 @@ header{
           <div id="normInterp" class="interp" style="margin-top:10px"></div>
         </div>
       </div>
+    </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario" id="normAbpScenario"><strong>Planta metalmecánica, Guayaquil — 40 puestos de trabajo.</strong> Una técnica en SSO mide los niveles de ruido (dB) en cada puesto para determinar si siguen una distribución normal y qué prueba estadística aplicar. Haz clic en "Cargar ejemplo" para pre-llenar el laboratorio con los 40 valores reales del estudio.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('normalidad')">📋 Cargar ejemplo</button>
+      </div>
+      <div class="exp-expected" id="normAbpExpected"></div>
     </div>
   </div>
 
@@ -626,6 +698,17 @@ header{
         </div>
       </div>
     </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario" id="tAbpScenario">Haz clic en "Cargar ejemplo" para pre-llenar el laboratorio con datos reales de SSO, luego ejecuta la prueba y compara con el resultado esperado.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('tstudent')">📋 Cargar ejemplo</button>
+        <button class="next-ex-btn" onclick="nextLabExample('tstudent')">↻ Probar otro ejemplo</button>
+      </div>
+      <div class="exp-expected" id="tAbpExpected"></div>
+      <p class="abp-ex-counter" id="tAbpCounter"></p>
+    </div>
   </div>
 
   <div class="tab-panel" id="tab-chi2">
@@ -680,6 +763,17 @@ header{
         </div>
       </div>
     </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario" id="chi2AbpScenario">Haz clic en "Cargar ejemplo" para pre-llenar la tabla con frecuencias reales de un estudio SSO, luego calcula Chi-Cuadrado y compara con el resultado esperado.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('chi2')">📋 Cargar ejemplo</button>
+        <button class="next-ex-btn" onclick="nextLabExample('chi2')">↻ Probar otro ejemplo</button>
+      </div>
+      <div class="exp-expected" id="chi2AbpExpected"></div>
+      <p class="abp-ex-counter" id="chi2AbpCounter"></p>
+    </div>
   </div>
 
   <div class="tab-panel" id="tab-anova">
@@ -689,12 +783,14 @@ header{
       <p class="sec-kicker">Compara tres o más grupos simultáneamente. Si <span data-tt="p-valor: probabilidad de obtener este resultado (o uno más extremo) si la hipótesis nula fuera cierta. p < 0.05 = evidencia significativa contra H₀.">p &lt; 0.05</span>, al menos un grupo difiere — luego aplica <span data-tt="Tukey HSD (Honest Significant Difference): prueba post-hoc que compara todos los pares de grupos controlando el error tipo I global.">Tukey</span> para saber cuáles.</p>
     </div>
     <details class="explainer">
-      <summary>¿Por qué no hacer varias T-Student? — Ver explicación <span>▾</span></summary>
+      <summary>¿Qué es ANOVA y cuándo usarlo? — Ver explicación completa <span>▾</span></summary>
       <div class="explainer-body">
-        <div class="exp-step"><div class="exp-icon">🎲</div><div class="exp-num">El problema</div><p>Con 3 grupos harías 3 comparaciones T. Cada una tiene 5% de error. Combinadas, el error real sube al ~14%.</p></div>
-        <div class="exp-step"><div class="exp-icon">⚖️</div><div class="exp-num">La solución</div><p>ANOVA compara toda la variabilidad entre grupos vs. dentro de grupos en una sola prueba. El error se mantiene al 5%.</p></div>
-        <div class="exp-step"><div class="exp-icon">📐</div><div class="exp-num">El estadístico F</div><p>F = varianza entre grupos / varianza dentro de grupos. Si los grupos son iguales, F ≈ 1. Si difieren, F crece.</p></div>
-        <div class="exp-step"><div class="exp-icon">🔍</div><div class="exp-num">Post-hoc</div><p>ANOVA dice "algo difiere". Para saber qué pares difieren, usa Tukey HSD o Bonferroni después.</p></div>
+        <div class="exp-step"><div class="exp-icon">🎯</div><div class="exp-num">La pregunta que responde</div><p>¿Las medias de tres o más grupos son realmente diferentes, o las diferencias que veo pueden explicarse simplemente por azar? ANOVA (Análisis de Varianza) da una respuesta estadística rigurosa a esa pregunta con una sola prueba.</p></div>
+        <div class="exp-step"><div class="exp-icon">🎲</div><div class="exp-num">¿Por qué no varias T-Student?</div><p>Con 3 grupos necesitarías 3 comparaciones T (A vs B, A vs C, B vs C). Cada una tiene un 5% de probabilidad de error (α=0.05). Al combinarlas, el error real acumulado sube al ~14%. Con 5 grupos serían 10 comparaciones y el error acumulado llegaría al ~40%. ANOVA elimina este problema haciendo <em>todo en una sola prueba</em>, controlando el error global al 5%.</p></div>
+        <div class="exp-step"><div class="exp-icon">⚖️</div><div class="exp-num">La lógica del análisis</div><p>ANOVA descompone la variación total de tus datos en dos fuentes: <strong>variación entre grupos</strong> (¿los grupos son distintos entre sí?) y <strong>variación dentro de grupos</strong> (¿cuánto varían los datos dentro de cada grupo?). Si la variación entre grupos es mucho mayor que la variación interna, hay diferencias reales.</p></div>
+        <div class="exp-step"><div class="exp-icon">📐</div><div class="exp-num">El estadístico F</div><p>F = varianza entre grupos / varianza dentro de grupos. Si todos los grupos son iguales, ambas varianzas son similares y F ≈ 1. Si al menos un grupo difiere, el numerador crece y F >> 1. Un F grande genera un p-valor pequeño → evidencia de diferencias reales.</p></div>
+        <div class="exp-step"><div class="exp-icon">⚠️</div><div class="exp-num">Supuestos importantes</div><p>ANOVA asume que los datos son aproximadamente normales dentro de cada grupo, que las varianzas entre grupos son similares (homocedasticidad), y que las observaciones son independientes. Si los datos no son normales o las varianzas son muy distintas, considera Kruskal-Wallis (la alternativa no paramétrica).</p></div>
+        <div class="exp-step"><div class="exp-icon">🔍</div><div class="exp-num">Después de ANOVA: prueba post-hoc</div><p>Un p-valor significativo en ANOVA solo dice "algo difiere" — no dice <em>qué</em> grupos son diferentes entre sí. Para eso aplica <strong>Tukey HSD</strong> (el más usado, controla el error global) o <strong>Bonferroni</strong> (más conservador). Estas pruebas comparan todos los pares posibles con la corrección adecuada.</p></div>
       </div>
     </details>
 
@@ -744,6 +840,17 @@ header{
         </div>
       </div>
     </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario" id="anovaAbpScenario">Haz clic en "Cargar ejemplo" para pre-llenar los grupos con datos reales de un estudio SSO, ejecuta ANOVA y compara con el resultado esperado.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('anova')">📋 Cargar ejemplo</button>
+        <button class="next-ex-btn" onclick="nextLabExample('anova')">↻ Probar otro ejemplo</button>
+      </div>
+      <div class="exp-expected" id="anovaAbpExpected"></div>
+      <p class="abp-ex-counter" id="anovaAbpCounter"></p>
+    </div>
   </div>
 
   <div class="tab-panel" id="tab-colinealidad">
@@ -752,13 +859,15 @@ header{
       <h2>Diagnóstico de <span data-tt="Colinealidad: dos o más predictores en una regresión están tan correlacionados que el modelo no puede separar sus efectos. Los coeficientes se vuelven inestables.">Colinealidad</span></h2>
       <p class="sec-kicker">Si dos predictores están muy correlacionados, la regresión no puede separar sus efectos individuales. <span data-tt="VIF (Variance Inflation Factor) = 1 / (1 - R²ᵢ). Mide cuánto se infla la varianza del coeficiente por colinealidad. VIF < 5: OK · 5-10: precaución · > 10: problema grave.">VIF &gt; 10</span> es señal de alarma.</p>
     </div>
-    <details class="explainer">
-      <summary>¿Qué es la colinealidad y por qué importa? — Ver explicación <span>▾</span></summary>
+    <details class="explainer" open>
+      <summary>¿Qué es la colinealidad? — Empieza aquí antes de usar el diagnóstico <span>▾</span></summary>
       <div class="explainer-body">
-        <div class="exp-step"><div class="exp-icon">🔗</div><div class="exp-num">El problema</div><p>Si X₁ y X₂ son casi lo mismo, el modelo no sabe a cuál dar crédito. Los coeficientes se vuelven inestables e imposibles de interpretar.</p></div>
-        <div class="exp-step"><div class="exp-icon">🌡️</div><div class="exp-num">Matriz de correlación</div><p>r &gt; 0.8 entre dos predictores ya es señal de colinealidad potencial. El heatmap te lo muestra de un vistazo.</p></div>
-        <div class="exp-step"><div class="exp-icon">📊</div><div class="exp-num">VIF</div><p>Variance Inflation Factor = 1/(1−R²ᵢ). VIF &lt; 5: OK. VIF 5–10: precaución. VIF &gt; 10: problema grave.</p></div>
-        <div class="exp-step"><div class="exp-icon">🛠️</div><div class="exp-num">Soluciones</div><p>Eliminar una variable redundante, combinarlas en un índice, usar regresión ridge, o PCA para reducir dimensiones.</p></div>
+        <div class="exp-step"><div class="exp-icon">🧩</div><div class="exp-num">Partamos de cero</div><p>Cuando construyes un modelo de regresión, metes varias variables predictoras (X₁, X₂, X₃…) para explicar una variable respuesta (Y). El modelo calcula cuánto aporta <em>cada predictor por separado</em>. Aquí empieza el problema: ¿qué pasa cuando dos predictores miden casi lo mismo?</p></div>
+        <div class="exp-step"><div class="exp-icon">👥</div><div class="exp-num">Un ejemplo intuitivo</div><p>Imagina que quieres predecir el riesgo de accidentes laborales usando "horas trabajadas" y "nivel de fatiga". Resulta que a más horas, más fatiga — siempre. Son casi lo mismo. El modelo no puede saber si el accidente lo causa la fatiga, las horas, o ambas. Se "confunde" y sus coeficientes se vuelven inestables, gigantes o incluso con el signo equivocado.</p></div>
+        <div class="exp-step"><div class="exp-icon">🔗</div><div class="exp-num">¿Qué es la colinealidad exactamente?</div><p>Colinealidad (o multicolinealidad) ocurre cuando dos o más predictores en una regresión están tan correlacionados entre sí que el modelo no puede separar sus efectos individuales. El resultado: coeficientes inestables, errores estándar inflados, p-valores sin sentido y conclusiones erróneas — aunque el modelo en su conjunto tenga un R² alto.</p></div>
+        <div class="exp-step"><div class="exp-icon">🌡️</div><div class="exp-num">Cómo detectarla: la matriz de correlación</div><p>Una correlación r &gt; 0.8 entre dos predictores ya es señal de alerta. El heatmap del laboratorio te muestra todas las correlaciones en una cuadrícula de colores: azul intenso = correlación positiva alta, rojo intenso = correlación negativa alta. Cualquier celda con color saturado entre dos predictores (que no sea la diagonal) merece atención.</p></div>
+        <div class="exp-step"><div class="exp-icon">📊</div><div class="exp-num">El VIF: el indicador definitivo</div><p>El Factor de Inflación de Varianza (VIF) mide cuánto se infla la varianza del coeficiente de un predictor por culpa de su correlación con los demás. <strong>VIF &lt; 5: OK</strong> — el predictor es independiente. <strong>VIF 5–10: precaución</strong> — hay correlación notable, revisa si necesitas ambas variables. <strong>VIF &gt; 10: problema grave</strong> — debes actuar antes de interpretar la regresión.</p></div>
+        <div class="exp-step"><div class="exp-icon">🛠️</div><div class="exp-num">¿Y qué hago si tengo colinealidad?</div><p>Tienes tres caminos principales: <strong>(1) Eliminar</strong> una de las variables redundantes (la que aporte menos información única). <strong>(2) Combinarlas</strong> en un índice compuesto (por ejemplo, un puntaje promedio de fatiga + estrés). <strong>(3) Usar regresión regularizada</strong> (Ridge o LASSO), que maneja colinealidad distribuyendo los coeficientes de forma más estable. PCA también puede ayudar si tienes muchos predictores correlacionados.</p></div>
       </div>
     </details>
 
@@ -815,6 +924,15 @@ header{
         </div>
       </div>
     </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario"><strong>Análisis de accidentabilidad laboral — 4 predictores.</strong> Una investigadora en SSO quiere predecir la tasa de accidentes usando Horas Trabajadas, Nivel de Fatiga, Nivel de Estrés y Temperatura Ambiente. Sospecha que fatiga y estrés están muy correlacionados. Haz clic para cargar los datos y verificarlo con el VIF.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('colinealidad')">📋 Cargar ejemplo</button>
+      </div>
+      <div class="exp-expected" id="colAbpExpected"></div>
+    </div>
   </div>
 
   <div class="tab-panel" id="tab-probabilidad">
@@ -823,6 +941,17 @@ header{
       <h2>Probabilidades</h2>
       <p class="sec-kicker">Todo <span data-tt="p-valor: probabilidad de observar tus datos (o algo más extremo) si la hipótesis nula fuera verdadera. NO es la probabilidad de que H₀ sea cierta.">p-valor</span> es una probabilidad. Entender probabilidades es entender qué significa <span data-tt="Rechazar H₀ significa que los datos son muy poco probables bajo la hipótesis nula. No prueba que H₁ sea verdadera — solo que H₀ es improbable.">rechazar una hipótesis</span>.</p>
     </div>
+
+    <details class="explainer" open>
+      <summary>¿Qué son las probabilidades y por qué importan en SSO? — Empieza aquí <span>▾</span></summary>
+      <div class="explainer-body">
+        <div class="exp-step"><div class="exp-icon">🎯</div><div class="exp-num">La idea fundamental</div><p>Una probabilidad es un número entre 0 y 1 que expresa cuán probable es un evento. P=0 = imposible. P=1 = seguro. P=0.05 = ocurre 5% de las veces. Todo p-valor que calculas en las demás pestañas de este laboratorio <em>es</em> una probabilidad — la probabilidad de ver tus datos si no hubiera ninguna diferencia real.</p></div>
+        <div class="exp-step"><div class="exp-icon">➕</div><div class="exp-num">Probabilidad de unión — P(A ∪ B)</div><p>¿Cuál es la probabilidad de que ocurra A <em>o</em> B? Si un trabajador tiene 20% de probabilidad de sufrir una lesión de espalda y 15% de sufrir una lesión de mano, ¿cuál es la probabilidad de que sufra alguna de las dos? Si los eventos pueden ocurrir juntos (no son mutuamente excluyentes), debes restar la intersección para no contarla dos veces: P(A∪B) = P(A) + P(B) − P(A∩B).</p></div>
+        <div class="exp-step"><div class="exp-icon">✖️</div><div class="exp-num">Probabilidad condicional — P(A | B)</div><p>La probabilidad de A <em>dado que ya sabemos que B ocurrió</em>. Este concepto cambia todo: no es lo mismo la probabilidad de que alguien tenga un accidente grave (P=0.04) que la probabilidad de que lo tenga dado que ya fue al servicio de emergencias (P mucho mayor). La condición filtra el espacio de posibilidades y actualiza la probabilidad.</p></div>
+        <div class="exp-step"><div class="exp-icon">🔄</div><div class="exp-num">Teorema de Bayes — actualizar creencias</div><p>Bayes es la fórmula más poderosa de la probabilidad: te permite actualizar una probabilidad inicial (prior) cuando recibes nueva evidencia. En SSO y diagnóstico médico es fundamental: ¿qué tan probable es que un trabajador tenga síndrome del túnel carpiano dado que el test de Phalen fue positivo? La respuesta depende de cuántos casos realmente existen (prevalencia), de cuán sensible es el test, y de cuántos falsos positivos produce.</p></div>
+        <div class="exp-step"><div class="exp-icon">⚠️</div><div class="exp-num">La trampa de los falsos positivos</div><p>Incluso un test excelente (95% sensibilidad) puede producir más falsos positivos que verdaderos positivos cuando la condición es rara. Si la prevalencia de una enfermedad es 1%, un resultado positivo puede significar que <em>el 90% de los positivos son falsos</em>. Bayes te ayuda a calcular exactamente eso — y evitar tomar decisiones costosas basadas en resultados positivos que son mayoritariamente ruido.</p></div>
+      </div>
+    </details>
 
     <div class="steps">
       <!-- Conceptos clave -->
@@ -880,6 +1009,15 @@ header{
         </div>
       </div>
     </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario"><strong>P(accidente grave | acudió a emergencias) — Teorema de Bayes en SSO.</strong> En una empresa de construcción, el 4% de los trabajadores experimenta un accidente grave al año. El servicio médico tiene un protocolo de triaje con 92% de sensibilidad y 85% de especificidad. Si un trabajador acude a emergencias y el triaje sugiere accidente grave, ¿cuál es la probabilidad real de que lo sea? Haz clic para cargar los valores en la calculadora Bayes y descubrir la respuesta.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('probabilidad')">📋 Cargar ejemplo Bayes</button>
+      </div>
+      <div class="exp-expected" id="probAbpExpected"></div>
+    </div>
   </div>
 
   <div class="tab-panel" id="tab-disenio">
@@ -888,6 +1026,18 @@ header{
       <h2>Diseño Experimental</h2>
       <p class="sec-kicker">Un experimento mal diseñado no se puede arreglar con estadística. El diseño define qué puedes concluir. Calcula el <span data-tt="Cohen's d: mide el tamaño de efecto en unidades de desviación estándar. Pequeño: 0.2 · Mediano: 0.5 · Grande: 0.8. A mayor d, menos muestra necesitas para detectarlo.">tamaño de efecto</span> y el <span data-tt="Poder estadístico (1-β): probabilidad de detectar una diferencia real si existe. El estándar mínimo es 80%. Con poco poder, arriesgas un falso negativo.">poder estadístico</span> antes de empezar.</p>
     </div>
+
+    <details class="explainer" open>
+      <summary>¿Qué es el diseño experimental y por qué diseñar antes de recolectar? — Empieza aquí <span>▾</span></summary>
+      <div class="explainer-body">
+        <div class="exp-step"><div class="exp-icon">🏗️</div><div class="exp-num">La idea central</div><p>El diseño experimental es el plan que defines <em>antes</em> de recolectar datos: cuántos grupos, cuántas personas, qué mides, cómo asignas los tratamientos. Es el paso más crítico de cualquier investigación — no porque sea difícil, sino porque un diseño pobre hace que todos los análisis posteriores sean inútiles, sin importar cuán sofisticados sean.</p></div>
+        <div class="exp-step"><div class="exp-icon">🎲</div><div class="exp-num">¿Por qué aleatorizar?</div><p>La aleatorización es el corazón del experimento. Al asignar tratamientos al azar, garantizas que los grupos sean comparables — cualquier diferencia entre ellos al final del estudio se debe al tratamiento, no a quién casualmente quedó en cada grupo. Sin aleatorización solo puedes hablar de correlaciones, nunca de causalidad.</p></div>
+        <div class="exp-step"><div class="exp-icon">📏</div><div class="exp-num">Tamaño de efecto — ¿cuán grande es la diferencia?</div><p>El tamaño de efecto (Cohen's d) mide qué tan grande es la diferencia entre grupos en unidades de desviación estándar. Un d = 0.5 significa que los grupos difieren en media desviación estándar — una diferencia moderada. ¿Por qué importa? Porque determina cuánta muestra necesitas: efectos pequeños requieren muchos participantes para detectarse; efectos grandes, menos. Calcular d <em>antes</em> del estudio (con datos previos o una estimación conservadora) te da el tamaño de muestra correcto.</p></div>
+        <div class="exp-step"><div class="exp-icon">⚡</div><div class="exp-num">Poder estadístico — ¿detectarás una diferencia real?</div><p>El poder (1−β) es la probabilidad de detectar una diferencia real si existe. El estándar mínimo es 80%. Si tu estudio tiene poder del 40%, estás lanzando una moneda al aire — podrías pasar por alto una intervención genuinamente efectiva (error tipo II). Un estudio subpotenciado no es solo un desperdicio de recursos: sus conclusiones negativas son engañosas.</p></div>
+        <div class="exp-step"><div class="exp-icon">🔢</div><div class="exp-num">Diseños disponibles</div><p><strong>DCA (Diseño Completamente Aleatorio):</strong> Cuando las unidades experimentales son homogéneas — el más simple. <strong>DBCA (Bloques al Azar):</strong> Agrupa unidades similares para eliminar una fuente de variación conocida (por ejemplo, mismo técnico, misma semana). <strong>Factorial:</strong> Estudia dos o más factores simultáneamente y detecta si interactúan entre sí. <strong>Cuadrado Latino:</strong> Controla dos fuentes de variación con el mínimo de unidades necesarias.</p></div>
+        <div class="exp-step"><div class="exp-icon">🛡️</div><div class="exp-num">El error tipo II en SSO — el riesgo menos visible</div><p>En salud ocupacional, el error tipo I (falso positivo) es declarar que una intervención funciona cuando no funciona. Pero el error tipo II (falso negativo) puede ser más costoso: declarar que una intervención ergonómica <em>no funciona</em> cuando sí funciona, y mantener condiciones que siguen lesionando trabajadores. Un diseño con buen poder protege contra ambos tipos de error.</p></div>
+      </div>
+    </details>
 
     <div class="steps">
       <!-- Tipos de diseño -->
@@ -959,6 +1109,15 @@ header{
           <div id="powerInterp" class="interp" style="margin-top:12px"></div>
         </div>
       </div>
+    </div>
+
+    <div class="abp-lab-case">
+      <div class="abp-lab-label">Ejemplo real</div>
+      <p class="abp-lab-scenario"><strong>Intervención ergonómica — Diseño Factorial 2×2 (Turno × Puesto).</strong> Una empresa manufacturera quiere evaluar si una intervención ergonómica reduce la fatiga percibida (escala 1–10). El investigador elige un diseño factorial 2×2: Factor A = Turno (Diurno / Nocturno), Factor B = Puesto (Operario / Administrativo). Las medias esperadas son 8.5 (sin intervención) vs 6.2 (con intervención). Haz clic para cargar los valores en las calculadoras de tamaño de efecto y poder estadístico.</p>
+      <div class="abp-btn-row">
+        <button class="load-ex-btn" onclick="loadLabExample('disenio')">📋 Cargar ejemplo</button>
+      </div>
+      <div class="exp-expected" id="disenioAbpExpected"></div>
     </div>
   </div>
 </main>
@@ -1883,6 +2042,242 @@ function runPower() {
   document.getElementById('powerInterp').innerHTML=
     `<strong>Interpretación:</strong> Con n=${n} por grupo, d=${d} y α=${alpha}, el poder es <strong>${(power*100).toFixed(1)}%</strong>. ${power>=0.8?'✅ Cumple el estándar recomendado (≥ 80%).':'❌ Poder insuficiente. Necesitas al menos '+nNeeded80+' observaciones por grupo para alcanzar 80% de poder.'} Un poder bajo significa que podrías pasar por alto una diferencia real (error tipo II).`;
   document.getElementById('powerResult').classList.add('show');
+}
+
+// ════════════════════════════════════════════════════════
+// ABP LAB EXAMPLES — datos y funciones de carga
+// ════════════════════════════════════════════════════════
+const LAB_EXAMPLES = {
+  normalidad: {
+    idx: 0,
+    cases: [{
+      label: 'Ruido dB — Planta metalmecánica, Guayaquil (40 puestos)',
+      data: [82.3,85.1,79.4,91.2,95.8,88.6,83.0,77.5,101.4,92.3,78.2,84.9,86.1,94.5,80.3,97.8,88.0,82.7,89.4,93.1,76.8,85.3,90.6,79.1,87.5,95.2,83.8,78.9,92.7,86.4,103.2,81.0,77.3,89.8,84.6,96.0,91.5,80.7,87.2,94.8],
+      expected: '<strong>Resultado esperado:</strong> Distribución sesgada a la derecha — algunos puestos con ruido &gt; 95 dB elevan la cola derecha. La prueba D\'Agostino K² debería dar p &lt; 0.05 → los datos NO son normales. Recomendación: usar Mann-Whitney o Kruskal-Wallis para comparar puestos. El histograma mostrará la asimetría positiva y el Q-Q plot desviará los puntos en los extremos.'
+    }]
+  },
+  tstudent: {
+    idx: 0,
+    cases: [
+      {
+        label: 'Una muestra: Iluminación vs. norma 300 lux — 15 oficinas',
+        scenario: '<strong>Una muestra · Iluminación vs. norma 300 lux.</strong> Una inspectora de SSO mide la iluminación (lux) en 15 oficinas de una empresa de servicios. La norma INSHT exige ≥ 300 lux para trabajo con pantallas. ¿El nivel promedio cumple la norma?',
+        type: 'one',
+        data1: [285,292,278,301,265,288,310,275,298,283,269,307,291,276,294],
+        mu0: 300,
+        expected: '<strong>Resultado esperado:</strong> Media ≈ 287.5 lux, por debajo de la norma de 300 lux. Se espera t negativo significativo (p &lt; 0.05) → las oficinas incumplen el estándar de iluminación. Acción: revisar las luminarias y redistribuir puestos.'
+      },
+      {
+        label: 'Dos independientes: Ruido Planta A vs Planta B',
+        scenario: '<strong>Dos muestras independientes · Ruido Planta A vs Planta B.</strong> Un técnico compara los niveles de ruido (dB) entre dos plantas del mismo complejo industrial. La Planta A tiene maquinaria antigua; la B fue renovada. ¿Existe diferencia significativa?',
+        type: 'two',
+        data1: [72.3,68.1,75.4,70.2,73.8,69.5,74.1,71.6,72.9,70.8],
+        data2: [82.5,79.3,84.1,81.7,83.0,80.4,85.2,78.9,82.8,81.1],
+        mu0: null,
+        expected: '<strong>Resultado esperado:</strong> Planta A ≈ 71.9 dB vs Planta B ≈ 81.9 dB. Diferencia de ~10 dB → t muy significativo (p &lt; 0.001). La Planta B supera el límite de 80 dB para jornadas de 8h. Aunque la A cumple, ambas plantas requieren monitoreo continuo.'
+      },
+      {
+        label: 'Pareadas: Temperatura antes/después de instalar A/C',
+        scenario: '<strong>Muestras pareadas · Temperatura antes/después de instalar A/C.</strong> En 10 puestos de trabajo se mide la temperatura (°C) antes y después de instalar un sistema de aire acondicionado. El objetivo es mantener ≤ 26 °C. ¿El A/C redujo significativamente la temperatura?',
+        type: 'paired',
+        data1: [29.1,30.4,28.7,31.2,29.8,30.6,31.8,28.3,30.1,29.5],
+        data2: [24.8,25.3,24.1,25.7,24.5,25.1,26.0,23.9,24.6,25.2],
+        mu0: null,
+        expected: '<strong>Resultado esperado:</strong> Reducción promedio ≈ 5 °C por puesto. La diferencia es altamente significativa (p &lt; 0.001). Después del A/C, todos los puestos están ≤ 26 °C → se cumple el objetivo de confort térmico.'
+      }
+    ]
+  },
+  chi2: {
+    idx: 0,
+    cases: [
+      {
+        label: 'EPP (Sí/No) × Planta (Norte/Sur)',
+        scenario: '<strong>Uso de EPP × Planta de trabajo.</strong> Un auditor SSO registra si 100 trabajadores usan correctamente el EPP, desagregado por planta. ¿Existe asociación entre la planta y el cumplimiento del EPP?',
+        rows: 2, cols: 2,
+        data: [[45,12],[18,25]],
+        expected: '<strong>Resultado esperado:</strong> χ² significativo (p &lt; 0.05). La Planta Norte muestra mayor cumplimiento de EPP (79%) que la Planta Sur (42%). Existe asociación entre planta y uso de EPP → revisar protocolos y supervisión en la Planta Sur.'
+      },
+      {
+        label: 'Tipo de lesión × Turno de trabajo',
+        scenario: '<strong>Tipo de lesión × Turno.</strong> El departamento de seguridad analiza si el tipo de lesión (muscular, corte, contusión) se distribuye igual en los tres turnos. ¿Existe patrón según el turno?',
+        rows: 3, cols: 3,
+        data: [[15,8,5],[6,18,12],[3,5,20]],
+        expected: '<strong>Resultado esperado:</strong> χ² significativo. Cada turno tiene un perfil lesional distinto: el Turno A concentra lesiones musculares (posturas forzadas en maquinaria), el B registra más cortes (carga de materiales), el C tiene más contusiones (baja visibilidad nocturna). Esto permite focalizar las intervenciones por turno.'
+      },
+      {
+        label: 'Capacitación SSO recibida × Departamento',
+        scenario: '<strong>Capacitación SSO × Departamento.</strong> RRHH verifica si la cobertura de capacitación es homogénea entre los tres departamentos. ¿La tasa de capacitación depende del departamento?',
+        rows: 2, cols: 3,
+        data: [[42,35,28],[8,15,22]],
+        expected: '<strong>Resultado esperado:</strong> χ² significativo (p &lt; 0.05). Producción tiene mayor cobertura (84%), Logística es media (70%), Administración tiene la mayor brecha (56% sin capacitar). Existe asociación → priorizar Administración en el próximo plan de capacitación.'
+      }
+    ]
+  },
+  anova: {
+    idx: 0,
+    cases: [
+      {
+        label: 'Satisfacción laboral (1–10) × 3 turnos',
+        scenario: '<strong>Satisfacción laboral × Turno de trabajo.</strong> Una psicóloga organizacional mide la satisfacción laboral (escala 1–10) en 8 trabajadores de cada turno. ¿El turno afecta significativamente la satisfacción percibida?',
+        k: 3,
+        groups: [[7.2,6.8,7.5,7.0,6.9,7.3,7.1,6.7],[5.8,6.1,5.5,5.9,6.0,5.7,5.6,5.8],[6.5,6.8,6.3,6.7,6.9,6.4,6.6,6.5]],
+        expected: '<strong>Resultado esperado:</strong> F significativo (p &lt; 0.05). Medias: Turno A ≈ 7.1, Turno C ≈ 6.6, Turno B ≈ 5.8. Post-hoc Tukey confirmaría: Turno A &gt; Turno C &gt; Turno B. El Turno B nocturno requiere intervención de bienestar laboral prioritaria.'
+      },
+      {
+        label: 'PM2.5 (μg/m³) × 4 zonas industriales',
+        scenario: '<strong>Concentración PM2.5 × Zona geográfica.</strong> Un ingeniero ambiental mide PM2.5 en 5 puntos de cada zona. ¿Difieren significativamente las concentraciones entre zonas?',
+        k: 4,
+        groups: [[35.2,38.1,34.7,36.8,37.3],[52.4,55.1,51.8,53.9,54.2],[28.6,27.9,29.4,28.1,30.2],[68.5,72.3,69.1,71.4,70.8]],
+        expected: '<strong>Resultado esperado:</strong> F altamente significativo (p &lt; 0.001). Zona Industrial (≈70 μg/m³) supera el límite OPS de 50 μg/m³. Zona Rural (≈29 μg/m³) es la más limpia. Post-hoc mostraría Zona Industrial &gt; Zona Sur &gt; Zona Norte &gt; Zona Rural.'
+      },
+      {
+        label: 'Tiempo de recuperación (días) × 3 protocolos SSO',
+        scenario: '<strong>Tiempo de recuperación × Protocolo de rehabilitación.</strong> Un médico laboral compara tres protocolos de rehabilitación para lesiones musculoesqueléticas. ¿Existe diferencia significativa en el tiempo de recuperación?',
+        k: 3,
+        groups: [[12,15,11,14,13,12,14,11],[8,9,7,10,8,9,8,7],[10,11,10,12,11,10,11,10]],
+        expected: '<strong>Resultado esperado:</strong> F significativo (p &lt; 0.01). Medias: Protocolo A ≈ 12.8 días, Protocolo C ≈ 10.6 días, Protocolo B ≈ 8.3 días. Protocolo B es el más eficiente. Tukey confirmaría B &lt; C &lt; A en tiempo de recuperación.'
+      }
+    ]
+  },
+  colinealidad: {
+    idx: 0,
+    cases: [{
+      label: 'Predictores de accidentabilidad: Horas, Fatiga, Estrés, Temperatura',
+      vars: ['HorasTrab','Fatiga','Estres','TempAmb'],
+      nObs: 10,
+      data: [
+        [48,7.2,7.5,28.3],[45,6.8,7.0,27.9],[52,7.8,8.1,29.1],[40,5.5,5.8,26.5],
+        [55,8.1,8.5,30.2],[43,6.2,6.5,27.4],[49,7.4,7.7,28.8],[51,7.6,7.9,29.4],
+        [38,5.1,5.3,25.8],[57,8.5,8.8,30.9]
+      ],
+      expected: '<strong>Resultado esperado:</strong> Fatiga y Estrés tendrán VIF &gt; 10 (colinealidad grave) — están casi perfectamente correlacionados (r ≈ 0.99). HorasTrab y TempAmb tendrán VIF &lt; 5 (OK). <strong>Solución:</strong> Eliminar Estres o Fatiga del modelo (o crear un índice compuesto "carga psicofísica" que los combine).'
+    }]
+  },
+  probabilidad: {
+    idx: 0,
+    cases: [{
+      label: 'Bayes: P(accidente grave | positivo en triaje)',
+      probType: 'bayes',
+      bPrior: 0.04,
+      bSens: 0.92,
+      bSpec: 0.85,
+      expected: '<strong>Resultado esperado:</strong> Con prevalencia 4%, sensibilidad 92% y especificidad 85%, la probabilidad posterior P(accidente grave | triaje positivo) ≈ 20%. Es decir, solo 1 de cada 5 personas con triaje positivo tiene realmente un accidente grave. El 80% son falsos positivos — porque la prevalencia baja diluye la sensibilidad. Este resultado justifica un protocolo de confirmación secundaria antes de activar recursos costosos.'
+    }]
+  },
+  disenio: {
+    idx: 0,
+    cases: [{
+      label: 'Factorial 2×2: intervención ergonómica × Turno × Puesto',
+      dM1: 8.5, dM2: 6.2, dS1: 1.8, dS2: 2.1, dN1: 25, dN2: 25,
+      powD: 1.1, powN: 14, powAlpha: 0.05,
+      expected: '<strong>Resultado esperado:</strong> Cohen\'s d ≈ 1.13 (efecto grande según Cohen). Con d ≈ 1.1 y α=0.05, se necesitan solo ~14 participantes por celda para alcanzar poder ≥ 80%. El diseño factorial 2×2 también permite detectar si la intervención es más efectiva en un turno o puesto específico (interacción) — una ventaja clave sobre dos experimentos separados.'
+    }]
+  }
+};
+
+function loadLabVarsExample() {
+  const grid = document.getElementById('varAbpGrid');
+  grid.style.display = 'grid';
+}
+
+function loadLabExample(tab) {
+  const ex = LAB_EXAMPLES[tab];
+  const data = ex.cases[ex.idx];
+  if (tab === 'normalidad') {
+    document.getElementById('normData').value = data.data.join('\n');
+    document.getElementById('normAbpExpected').innerHTML = data.expected;
+    document.getElementById('normAbpExpected').classList.add('show');
+  } else if (tab === 'tstudent') {
+    document.getElementById('tAbpScenario').innerHTML = data.scenario;
+    tType = data.type;
+    document.querySelectorAll('#tTypeRow .radio-pill').forEach(p => p.classList.remove('checked'));
+    const tMap = {one:0,two:1,paired:2};
+    document.querySelectorAll('#tTypeRow .radio-pill')[tMap[data.type]].classList.add('checked');
+    renderTInputs();
+    document.getElementById('tData1').value = data.data1.join('\n');
+    if (data.type === 'one') {
+      document.getElementById('tMu0').value = data.mu0;
+    } else {
+      document.getElementById('tData2').value = data.data2.join('\n');
+    }
+    document.getElementById('tAbpExpected').innerHTML = data.expected;
+    document.getElementById('tAbpExpected').classList.add('show');
+    const total = ex.cases.length;
+    document.getElementById('tAbpCounter').textContent = `Ejemplo ${ex.idx+1} de ${total}`;
+  } else if (tab === 'chi2') {
+    document.getElementById('chi2AbpScenario').innerHTML = data.scenario;
+    document.getElementById('chi2Rows').value = data.rows;
+    document.getElementById('chi2Cols').value = data.cols;
+    buildChi2Table();
+    data.data.forEach((row,r) => row.forEach((val,c) => {
+      const el = document.querySelector(`.chi2-cell[data-r="${r}"][data-c="${c}"]`);
+      if (el) el.value = val;
+    }));
+    document.getElementById('chi2AbpExpected').innerHTML = data.expected;
+    document.getElementById('chi2AbpExpected').classList.add('show');
+    document.getElementById('chi2AbpCounter').textContent = `Ejemplo ${ex.idx+1} de ${ex.cases.length}`;
+  } else if (tab === 'anova') {
+    document.getElementById('anovaAbpScenario').innerHTML = data.scenario;
+    document.getElementById('anovaK').value = data.k;
+    buildAnovaInputs();
+    data.groups.forEach((grp,i) => {
+      const el = document.getElementById(`anovaG${i}`);
+      if (el) el.value = grp.join('\n');
+    });
+    document.getElementById('anovaAbpExpected').innerHTML = data.expected;
+    document.getElementById('anovaAbpExpected').classList.add('show');
+    document.getElementById('anovaAbpCounter').textContent = `Ejemplo ${ex.idx+1} de ${ex.cases.length}`;
+  } else if (tab === 'colinealidad') {
+    document.getElementById('colNVars').value = data.vars.length;
+    document.getElementById('colNObs').value = data.nObs;
+    buildColTable();
+    data.vars.forEach((name,j) => {
+      colVarNames[j] = name;
+      const el = document.getElementById(`colHead${j}`);
+      if (el) el.value = name;
+    });
+    data.data.forEach((row,i) => row.forEach((val,j) => {
+      const el = document.querySelector(`.col-cell[data-r="${i}"][data-c="${j}"]`);
+      if (el) el.value = val;
+    }));
+    document.getElementById('colAbpExpected').innerHTML = data.expected;
+    document.getElementById('colAbpExpected').classList.add('show');
+  } else if (tab === 'probabilidad') {
+    probType = data.probType;
+    document.querySelectorAll('#probTypeRow .radio-pill').forEach(p => p.classList.remove('checked'));
+    const pMap = {union:0,cond:1,bayes:2,normal:3};
+    document.querySelectorAll('#probTypeRow .radio-pill')[pMap[data.probType]].classList.add('checked');
+    renderProbInputs();
+    if (data.probType === 'bayes') {
+      document.getElementById('bPrior').value = data.bPrior;
+      document.getElementById('bSens').value = data.bSens;
+      document.getElementById('bSpec').value = data.bSpec;
+    }
+    document.getElementById('probAbpExpected').innerHTML = data.expected;
+    document.getElementById('probAbpExpected').classList.add('show');
+  } else if (tab === 'disenio') {
+    document.querySelectorAll('#tab-disenio .scale-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('#tab-disenio .scale-card')[2].classList.add('selected');
+    document.getElementById('designDetailText').textContent = designInfo['factorial'];
+    document.getElementById('designDetail').style.display = 'block';
+    document.getElementById('dM1').value = data.dM1;
+    document.getElementById('dM2').value = data.dM2;
+    document.getElementById('dS1').value = data.dS1;
+    document.getElementById('dS2').value = data.dS2;
+    document.getElementById('dN1').value = data.dN1;
+    document.getElementById('dN2').value = data.dN2;
+    document.getElementById('powD').value = data.powD;
+    document.getElementById('powN').value = data.powN;
+    document.getElementById('powAlpha').value = data.powAlpha;
+    document.getElementById('disenioAbpExpected').innerHTML = data.expected;
+    document.getElementById('disenioAbpExpected').classList.add('show');
+  }
+}
+
+function nextLabExample(tab) {
+  const ex = LAB_EXAMPLES[tab];
+  ex.idx = (ex.idx + 1) % ex.cases.length;
+  loadLabExample(tab);
 }
 
 // ── THEME ────────────────────────────────────────────────
