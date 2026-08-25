@@ -68,7 +68,8 @@ header{
 .hdr-back:hover{color:#fff}
 .hdr-sep{color:rgba(255,255,255,.3);font-size:18px}
 .hdr-title{color:#fff;font-weight:800;font-size:16px;letter-spacing:-.01em}
-.hdr-badge{margin-left:auto;background:var(--gold);color:#1a2840;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.hdr-badge{margin-left:auto;background:var(--gold);color:#1a2840;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;text-decoration:none;cursor:pointer;transition:opacity .15s}
+.hdr-badge:hover{opacity:.82}
 .theme-btn{margin-left:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;cursor:pointer;border-radius:6px;padding:4px 10px;font-size:12px;font-family:var(--font)}
 
 /* ── TAB NAV ─────────────────────────────────────────── */
@@ -422,7 +423,7 @@ header{
   <a class="hdr-back" href="../metodologia-estadistica/">← Metodología</a>
   <span class="hdr-sep">|</span>
   <span class="hdr-title">Laboratorio Estadístico</span>
-  <span class="hdr-badge">Preventive Health</span>
+  <a class="hdr-badge" href="../../index.html" title="Ir a la página principal de Preventive Health">Preventive Health</a>
   <button class="theme-btn" id="themeBtn">🌙</button>
 </header>
 
