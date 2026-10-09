@@ -238,6 +238,9 @@ header{
   0%,100%{transform:scale(1);box-shadow:0 3px 12px rgba(245,179,0,.45)}
   50%{transform:scale(1.05);box-shadow:0 3px 24px rgba(245,179,0,.8),0 0 0 8px rgba(245,179,0,.1)}
 }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
 
 /* Línea conectora entre pasos */
 .steps{position:relative}
@@ -2540,7 +2543,7 @@ themeBtn.addEventListener('click', () => {
 .glos-fab svg{flex-shrink:0}
 .glos-overlay{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:8999;display:none;backdrop-filter:blur(2px)}
 .glos-overlay.open{display:block}
-.glos-panel{position:fixed;right:0;top:0;bottom:0;width:min(410px,95vw);background:var(--panel);z-index:9001;box-shadow:-4px 0 40px rgba(0,0,0,.18);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .26s cubic-bezier(.4,0,.2,1)}
+.glos-panel{position:fixed;right:0;top:0;bottom:0;width:min(410px,95vw);background:var(--panel);z-index:9001;box-shadow:-4px 0 40px rgba(0,0,0,.18);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .26s cubic-bezier(0.23,1,0.32,1)}
 .glos-panel.open{transform:translateX(0)}
 .glos-head{padding:16px 18px 13px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
 .glos-title{font-size:14px;font-weight:700;color:var(--ink)}
