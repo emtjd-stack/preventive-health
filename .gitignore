@@ -1,3 +1,14 @@
+# Credenciales y datos sensibles — NUNCA al repo
+Upload Students/
+
+# Archivos temporales de sesión de Claude
+.playwright-mcp/
+scratchpad/
+
+# Archivos de macOS
 .DS_Store
-.claude/
-*.log
+**/.DS_Store
+
+# Reportes y Excel que no son parte del sitio
+assets/images/comparacion-ahp.xlsx
+Post_pagina/*.xlsx
