@@ -699,6 +699,47 @@ nav.scrolled { padding-top: 6px; padding-bottom: 6px; box-shadow: 0 2px 20px rgb
 /* ── CLIENT LOGO REVEAL ON SCROLL ── */
 .client-logo[data-reveal] { transition: opacity .6s cubic-bezier(0.23,1,0.32,1), transform .6s cubic-bezier(0.23,1,0.32,1), filter .6s ease; }
 .client-logo[data-reveal]:not(.is-visible) { filter: grayscale(1) opacity(.4); }
+
+/* ── HERO WORD REVEAL (genjutsu cast pattern: word-by-word, not letter-by-letter) ── */
+.hw {
+  display: inline-block;
+  animation: hw-in .6s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes hw-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hw { animation: none !important; }
+}
+
+/* ── SECTION TITLE WORD REVEAL ── */
+.st-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .55s cubic-bezier(0.23,1,0.32,1), transform .55s cubic-bezier(0.23,1,0.32,1);
+}
+.section-title.words-visible .st-word { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .st-word { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ── CARD 3D TILT ── */
+.tool-card, .service-card {
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* ── ABOUT IMAGE CLIP-PATH WIPE (genjutsu: directional reveal > opacity fade) ── */
+.about-image {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path .95s cubic-bezier(0.23,1,0.32,1);
+}
+.about-image.revealed { clip-path: inset(0 0% 0 0); }
+@media (prefers-reduced-motion: reduce) {
+  .about-image { clip-path: inset(0 0% 0 0) !important; transition: none !important; }
+}
 </style>
 </head>
 <body>
@@ -1292,6 +1333,188 @@ document.querySelectorAll('[data-count]').forEach(el => {
 window.addEventListener('scroll', () => {
   document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
+
+// ── HERO CANVAS: data constellation (HyperFrames gradient-mesh / genjutsu cast pattern) ──
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0;transition:opacity 1.2s ease';
+  hero.insertBefore(canvas, hero.firstChild);
+  const ctx = canvas.getContext('2d');
+  const colors = [
+    'rgba(245,179,0,X)', 'rgba(245,179,0,X)',
+    'rgba(255,255,255,X)', 'rgba(255,255,255,X)', 'rgba(255,255,255,X)',
+    'rgba(29,81,163,X)', 'rgba(29,81,163,X)', 'rgba(29,81,163,X)', 'rgba(29,81,163,X)'
+  ];
+  let pts = [], W, H, raf;
+
+  function resize() {
+    W = canvas.width = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
+  }
+
+  function init() {
+    resize();
+    pts = Array.from({ length: 55 }, () => {
+      const col = colors[Math.floor(Math.random() * colors.length)];
+      const op = (0.25 + Math.random() * 0.35).toFixed(2);
+      return {
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .45, vy: (Math.random() - .5) * .45,
+        r: 1.2 + Math.random() * 2,
+        color: col.replace('X', op)
+      };
+    });
+    setTimeout(() => { canvas.style.opacity = '1'; }, 200);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // connections
+    for (let i = 0; i < pts.length; i++) {
+      let conn = 0;
+      for (let j = i + 1; j < pts.length; j++) {
+        if (conn >= 3) break;
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 110) {
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.strokeStyle = `rgba(255,255,255,${(0.045 * (1 - d / 110)).toFixed(3)})`;
+          ctx.lineWidth = .6;
+          ctx.stroke();
+          conn++;
+        }
+      }
+    }
+    // dots
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+    raf = requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', () => { cancelAnimationFrame(raf); init(); draw(); }, { passive: true });
+})();
+
+// ── HERO H1 WORD REVEAL ──
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const h1 = document.querySelector('.hero h1');
+  if (!h1) return;
+  // Walk child nodes, split text into words, preserve <span> children
+  const nodes = Array.from(h1.childNodes);
+  h1.innerHTML = '';
+  let delay = 300;
+  nodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      node.textContent.split(/(\s+)/).forEach(part => {
+        if (!part.trim()) { h1.appendChild(document.createTextNode(part)); return; }
+        const w = document.createElement('span');
+        w.className = 'hw';
+        w.style.animationDelay = delay + 'ms';
+        w.textContent = part;
+        h1.appendChild(w);
+        delay += 90;
+      });
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      // Gold span — split words inside too
+      const words = node.textContent.split(/\s+/).filter(Boolean);
+      words.forEach((word, i) => {
+        if (i > 0) h1.appendChild(document.createTextNode(' '));
+        const w = document.createElement('span');
+        w.className = 'hw';
+        w.style.cssText = `animation-delay:${delay}ms;color:var(--gold)`;
+        w.textContent = word;
+        h1.appendChild(w);
+        delay += 90;
+      });
+    }
+  });
+})();
+
+// ── SECTION TITLE WORD REVEAL ──
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.section-title').forEach(el => {
+    // Wrap each word in .st-word spans
+    const raw = el.innerHTML;
+    // Split on spaces/BR while preserving <br> tags
+    const parts = raw.split(/(<br\s*\/?>|\s+)/gi);
+    let i = 0;
+    el.innerHTML = parts.map(p => {
+      if (/^<br/i.test(p)) return p;
+      if (!p.trim()) return p;
+      const d = i * 80;
+      i++;
+      return `<span class="st-word" style="transition-delay:${d}ms">${p}</span>`;
+    }).join('');
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('words-visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    obs.observe(el);
+  });
+})();
+
+// ── CARD 3D TILT (genjutsu: confirm action, max 6°, perspective) ──
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  document.querySelectorAll('.tool-card, .service-card').forEach(card => {
+    card.style.transition = 'transform .15s cubic-bezier(0.23,1,0.32,1), box-shadow .15s ease';
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const dx = (e.clientX - cx) / (r.width / 2);
+      const dy = (e.clientY - cy) / (r.height / 2);
+      card.style.transform = `perspective(900px) rotateY(${dx * 6}deg) rotateX(${-dy * 6}deg) scale(1.015)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform .6s cubic-bezier(0.23,1,0.32,1), box-shadow .6s ease';
+      card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
+    });
+  });
+})();
+
+// ── ABOUT IMAGE CLIP-PATH WIPE (genjutsu: directional > opacity) ──
+(function() {
+  const img = document.querySelector('.about-image');
+  if (!img) return;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      img.classList.add('revealed');
+      obs.disconnect();
+    }
+  }, { threshold: 0, rootMargin: '0px 0px -80px 0px' });
+  obs.observe(img);
+})();
+
+// ── HERO PARALLAX ──
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const bg = document.querySelector('.hero-bg');
+  if (!bg) return;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < 700) bg.style.transform = `translateY(${window.scrollY * 0.35}px)`;
+  }, { passive: true });
+})();
 
 async function handleSubmit(e) {
   e.preventDefault();
