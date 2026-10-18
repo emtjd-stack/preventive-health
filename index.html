@@ -408,6 +408,9 @@ footer {
   font-size: 12px; color: rgba(255,255,255,.35);
 }
 .footer-gold { color: var(--gold); }
+.footer-social { display: flex; gap: 12px; margin-top: 20px; }
+.footer-social a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.5); text-decoration: none; transition: border-color .15s, color .15s; }
+.footer-social a:hover { border-color: var(--gold); color: var(--gold); }
 
 /* ── RESPONSIVE ── */
 /* GALLERY */
@@ -530,6 +533,97 @@ footer {
 .team .section-label { background: rgba(240,195,25,.15); color: var(--gold); }
 .team .section-title { color: #fff; }
 .team .section-sub { color: rgba(255,255,255,.7); }
+
+/* ── SCROLL REVEAL ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .65s cubic-bezier(0.23,1,0.32,1),
+              transform .65s cubic-bezier(0.23,1,0.32,1);
+}
+[data-reveal][data-delay="1"] { transition-delay: .1s; }
+[data-reveal][data-delay="2"] { transition-delay: .2s; }
+[data-reveal][data-delay="3"] { transition-delay: .3s; }
+[data-reveal][data-delay="4"] { transition-delay: .4s; }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── SVG TOOL ANIMATIONS ── */
+.tool-svg-wrap {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+/* Timelapse: órbita */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(34px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(34px) rotate(-360deg); }
+}
+.sat-dot { animation: orbit 3.6s linear infinite; transform-origin: 0 0; }
+@keyframes orbit-slow {
+  from { transform: rotate(180deg) translateX(22px) rotate(-180deg); }
+  to   { transform: rotate(540deg) translateX(22px) rotate(-540deg); }
+}
+.sat-dot2 { animation: orbit-slow 5.2s linear infinite; transform-origin: 0 0; }
+
+/* GeoNorm: barras que pulsan */
+@keyframes bar-pulse {
+  0%,100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.18); }
+}
+.gnbar { transform-origin: bottom; }
+.gnbar1 { animation: bar-pulse 2s ease-in-out .0s infinite; }
+.gnbar2 { animation: bar-pulse 2s ease-in-out .25s infinite; }
+.gnbar3 { animation: bar-pulse 2s ease-in-out .5s infinite; }
+.gnbar4 { animation: bar-pulse 2s ease-in-out .75s infinite; }
+.gnbar5 { animation: bar-pulse 2s ease-in-out 1s infinite; }
+
+/* Metodología: curva que se dibuja */
+@keyframes draw-curve {
+  from { stroke-dashoffset: 220; }
+  to   { stroke-dashoffset: 0; }
+}
+.stat-curve { stroke-dasharray: 220; animation: draw-curve 2.2s cubic-bezier(0.23,1,0.32,1) infinite; }
+@keyframes blink-line {
+  0%,100% { opacity: 1; } 50% { opacity: .3; }
+}
+.stat-vline { animation: blink-line 2.2s ease-in-out infinite; }
+
+/* Laboratorio: scatter animado */
+@keyframes scatter-in {
+  from { opacity: 0; r: 0; }
+  to   { opacity: 1; r: 4; }
+}
+.sc-dot { animation: scatter-in .35s ease-out both; }
+.sc-dot:nth-child(1)  { animation-delay: .0s; }
+.sc-dot:nth-child(2)  { animation-delay: .18s; }
+.sc-dot:nth-child(3)  { animation-delay: .36s; }
+.sc-dot:nth-child(4)  { animation-delay: .54s; }
+.sc-dot:nth-child(5)  { animation-delay: .72s; }
+.sc-dot:nth-child(6)  { animation-delay: .90s; }
+.sc-dot:nth-child(7)  { animation-delay: 1.08s; }
+.sc-dot:nth-child(8)  { animation-delay: 1.26s; }
+@keyframes line-draw {
+  from { stroke-dashoffset: 160; }
+  to   { stroke-dashoffset: 0; }
+}
+.sc-line { stroke-dasharray: 160; animation: line-draw 1.6s cubic-bezier(0.23,1,0.32,1) 1.4s both; }
+
+/* Banner neural SVG */
+@keyframes node-pulse {
+  0%,100% { r: 5; opacity: .7; }
+  50%      { r: 7; opacity: 1; }
+}
+.nn-node { animation: node-pulse 2s ease-in-out infinite; }
+.nn-node:nth-child(2) { animation-delay: .4s; }
+.nn-node:nth-child(3) { animation-delay: .8s; }
+.nn-node:nth-child(4) { animation-delay: 1.2s; }
+@keyframes edge-flash {
+  0%,100% { opacity: .15; } 50% { opacity: .5; }
+}
+.nn-edge { animation: edge-flash 2s ease-in-out infinite; }
+.nn-edge:nth-child(n+5) { animation-delay: .6s; }
 </style>
 </head>
 <body>
@@ -579,9 +673,9 @@ footer {
 <!-- QUIÉNES SOMOS -->
 <section class="about" id="nosotros">
   <div class="container">
-    <span class="section-label">Quiénes somos</span>
-    <h2 class="section-title">Una empresa comprometida<br>con tu seguridad</h2>
-    <div class="about-grid">
+    <span class="section-label" data-reveal>Quiénes somos</span>
+    <h2 class="section-title" data-reveal data-delay="1">Una empresa comprometida<br>con tu seguridad</h2>
+    <div class="about-grid" data-reveal data-delay="2">
       <div class="about-text">
         <p>Somos una empresa ecuatoriana que integra dos pilares complementarios: la <strong>seguridad y salud ocupacional</strong> y la <strong>asesoría ambiental</strong>. Formamos personas y organizaciones para actuar ante emergencias, y acompañamos proyectos en el uso responsable del territorio y los recursos naturales.</p>
         <p>Nuestras capacitaciones están registradas y avaladas por el <strong>Ministerio del Trabajo del Ecuador</strong>, y nuestros servicios ambientales integran tecnología geoespacial de vanguardia — imágenes satelitales, drones y análisis SIG — para diagnósticos precisos y oportunos.</p>
@@ -604,8 +698,8 @@ footer {
 <!-- SERVICIOS -->
 <section class="services" id="servicios">
   <div class="container">
-    <span class="section-label">Servicios</span>
-    <h2 class="section-title">Seguridad, salud<br>y medio ambiente</h2>
+    <span class="section-label" data-reveal>Servicios</span>
+    <h2 class="section-title" data-reveal data-delay="1">Seguridad, salud<br>y medio ambiente</h2>
     <p class="section-sub">Capacitación en brigadas de seguridad, asesoría en SSO y consultoría ambiental geoespacial para empresas e instituciones de Ecuador.</p>
     <div class="services-grid">
       <div class="service-card">
@@ -651,24 +745,62 @@ footer {
 <!-- HERRAMIENTAS -->
 <section class="tools" id="herramientas">
   <div class="container">
-    <span class="section-label">Herramientas gratuitas</span>
-    <h2 class="section-title">Aprende haciendo —<br>con tus propios datos</h2>
+    <span class="section-label" data-reveal>Herramientas gratuitas</span>
+    <h2 class="section-title" data-reveal data-delay="1">Aprende haciendo —<br>con tus propios datos</h2>
     <p class="section-sub">Herramientas web 100% gratuitas. Sin instalación, sin registro. Sube tus datos y obtén resultados en segundos.</p>
 
-    <div class="tools-challenge">
-      <span class="tc-icon">🧠</span>
+    <div class="tools-challenge" data-reveal data-delay="2">
+      <span class="tc-icon">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Neural network: 3 capas -->
+          <line class="nn-edge" x1="10" y1="14" x2="26" y2="10" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="10" y1="26" x2="26" y2="10" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="10" y1="38" x2="26" y2="26" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="10" y1="14" x2="26" y2="42" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="26" y1="10" x2="42" y2="20" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="26" y1="26" x2="42" y2="20" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="26" y1="42" x2="42" y2="32" stroke="white" stroke-width="1"/>
+          <line class="nn-edge" x1="26" y1="26" x2="42" y2="32" stroke="white" stroke-width="1"/>
+          <circle class="nn-node" cx="10" cy="14" r="5" fill="#F5B300"/>
+          <circle class="nn-node" cx="10" cy="26" r="5" fill="#F5B300"/>
+          <circle class="nn-node" cx="10" cy="38" r="5" fill="#F5B300"/>
+          <circle class="nn-node" cx="26" cy="10" r="5" fill="white" opacity=".8"/>
+          <circle class="nn-node" cx="26" cy="26" r="5" fill="white" opacity=".8"/>
+          <circle class="nn-node" cx="26" cy="42" r="5" fill="white" opacity=".8"/>
+          <circle cx="42" cy="20" r="5" fill="#1D51A3"/>
+          <circle cx="42" cy="32" r="5" fill="#1D51A3"/>
+        </svg>
+      </span>
       <div class="tc-body">
         <div class="tc-label">Aprendizaje basado en problemas reales</div>
         <div class="tc-title">¿Tienes datos pero no sabes qué prueba usar?</div>
         <div class="tc-sub">El Laboratorio Estadístico te guía paso a paso: identifica tu variable, prueba normalidad, corre la prueba correcta e interpreta el resultado — con tus propios datos o los ejemplos incluidos.</div>
       </div>
-      <a href="herramientas/laboratorio-estadistico/" class="tc-cta">🚀 Entrar al laboratorio →</a>
+      <a href="herramientas/laboratorio-estadistico/" class="tc-cta">Entrar al laboratorio →</a>
     </div>
 
     <div class="tools-grid">
-      <div class="tool-card">
+      <div class="tool-card" data-reveal data-delay="1">
         <div class="tool-preview tool-preview-sat">
-          <div class="tool-preview-icon">🛰️</div>
+          <div class="tool-svg-wrap">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Planeta -->
+              <circle cx="50" cy="50" r="14" fill="#1D51A3" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+              <ellipse cx="50" cy="50" rx="14" ry="5" fill="rgba(255,255,255,.08)"/>
+              <!-- Órbita exterior -->
+              <ellipse cx="50" cy="50" rx="36" ry="13" stroke="rgba(29,81,163,.5)" stroke-width="1" fill="none" transform="rotate(-20 50 50)"/>
+              <!-- Órbita interior -->
+              <ellipse cx="50" cy="50" rx="23" ry="8" stroke="rgba(245,179,0,.3)" stroke-width="1" fill="none" transform="rotate(15 50 50)"/>
+              <!-- Satélite en órbita exterior -->
+              <g style="transform-origin:50px 50px">
+                <circle class="sat-dot" cx="50" cy="50" r="4" fill="#F5B300"/>
+              </g>
+              <!-- Luna en órbita interior -->
+              <g style="transform-origin:50px 50px">
+                <circle class="sat-dot2" cx="50" cy="50" r="2.5" fill="rgba(255,255,255,.7)"/>
+              </g>
+            </svg>
+          </div>
           <span class="tool-preview-badge">Gratis</span>
         </div>
         <div class="tool-body">
@@ -680,9 +812,23 @@ footer {
           <a href="herramientas/timelapse/index.html" class="tool-link">Abrir →</a>
         </div>
       </div>
-      <div class="tool-card">
+      <div class="tool-card" data-reveal data-delay="2">
         <div class="tool-preview tool-preview-norm">
-          <div class="tool-preview-icon">📊</div>
+          <div class="tool-svg-wrap">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Eje X e Y -->
+              <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+              <line x1="12" y1="18" x2="12" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+              <!-- Barras pre-normalización (irregulares) -->
+              <rect class="gnbar gnbar1" x="18" y="62" width="10" height="20" rx="2" fill="rgba(29,81,163,.5)"/>
+              <rect class="gnbar gnbar2" x="32" y="42" width="10" height="40" rx="2" fill="rgba(29,81,163,.6)"/>
+              <rect class="gnbar gnbar3" x="46" y="32" width="10" height="50" rx="2" fill="#1D51A3"/>
+              <rect class="gnbar gnbar4" x="60" y="52" width="10" height="30" rx="2" fill="rgba(29,81,163,.7)"/>
+              <rect class="gnbar gnbar5" x="74" y="45" width="10" height="37" rx="2" fill="rgba(29,81,163,.5)"/>
+              <!-- Línea de normalización -->
+              <line x1="12" y1="48" x2="88" y2="48" stroke="#F5B300" stroke-width="1.5" stroke-dasharray="4 3"/>
+            </svg>
+          </div>
           <span class="tool-preview-badge">Gratis</span>
         </div>
         <div class="tool-body">
@@ -694,9 +840,27 @@ footer {
           <a href="herramientas/geonorm/index.html" class="tool-link">Abrir →</a>
         </div>
       </div>
-      <div class="tool-card">
+      <div class="tool-card" data-reveal data-delay="3">
         <div class="tool-preview tool-preview-stat">
-          <div class="tool-preview-icon">📐</div>
+          <div class="tool-svg-wrap">
+            <svg width="110" height="100" viewBox="0 0 110 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Ejes -->
+              <line x1="10" y1="80" x2="100" y2="80" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+              <!-- Campana de Gauss dibujándose -->
+              <path class="stat-curve"
+                d="M10,78 C18,78 24,76 30,68 C36,58 40,40 55,24 C70,40 74,58 80,68 C86,76 92,78 100,78"
+                stroke="#F5B300" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Área bajo la curva -->
+              <path d="M10,78 C18,78 24,76 30,68 C36,58 40,40 55,24 C70,40 74,58 80,68 C86,76 92,78 100,78 L100,80 L10,80 Z"
+                fill="rgba(245,179,0,.08)"/>
+              <!-- Línea media -->
+              <line class="stat-vline" x1="55" y1="24" x2="55" y2="80"
+                stroke="rgba(245,179,0,.5)" stroke-width="1" stroke-dasharray="3 3"/>
+              <!-- σ markers -->
+              <line x1="35" y1="62" x2="35" y2="80" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+              <line x1="75" y1="62" x2="75" y2="80" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+            </svg>
+          </div>
           <span class="tool-preview-badge">Gratis</span>
         </div>
         <div class="tool-body">
@@ -708,9 +872,27 @@ footer {
           <a href="herramientas/metodologia-estadistica/index.html" class="tool-link">Abrir →</a>
         </div>
       </div>
-      <div class="tool-card tool-card-featured">
+      <div class="tool-card tool-card-featured" data-reveal data-delay="4">
         <div class="tool-preview tool-preview-stat">
-          <div class="tool-preview-icon">🔬</div>
+          <div class="tool-svg-wrap">
+            <svg width="110" height="100" viewBox="0 0 110 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Ejes -->
+              <line x1="12" y1="82" x2="98" y2="82" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+              <line x1="12" y1="15" x2="12" y2="82" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+              <!-- Línea de regresión -->
+              <line class="sc-line" x1="15" y1="75" x2="95" y2="22"
+                stroke="#F5B300" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- Puntos scatter -->
+              <circle class="sc-dot" cx="22" cy="70" r="4" fill="rgba(29,81,163,.9)"/>
+              <circle class="sc-dot" cx="35" cy="60" r="4" fill="rgba(29,81,163,.9)"/>
+              <circle class="sc-dot" cx="42" cy="55" r="4" fill="#F5B300"/>
+              <circle class="sc-dot" cx="52" cy="48" r="4" fill="rgba(29,81,163,.9)"/>
+              <circle class="sc-dot" cx="61" cy="42" r="4" fill="rgba(29,81,163,.9)"/>
+              <circle class="sc-dot" cx="70" cy="37" r="4" fill="#F5B300"/>
+              <circle class="sc-dot" cx="80" cy="30" r="4" fill="rgba(29,81,163,.9)"/>
+              <circle class="sc-dot" cx="90" cy="26" r="4" fill="rgba(29,81,163,.9)"/>
+            </svg>
+          </div>
           <span class="tool-preview-badge">Gratis</span>
         </div>
         <div class="tool-body">
@@ -729,8 +911,8 @@ footer {
 <!-- CURSOS -->
 <section class="courses" id="cursos">
   <div class="container">
-    <span class="section-label">Plataforma de cursos</span>
-    <h2 class="section-title">Aprende a tu propio ritmo</h2>
+    <span class="section-label" data-reveal>Plataforma de cursos</span>
+    <h2 class="section-title" data-reveal data-delay="1">Aprende a tu propio ritmo</h2>
     <p class="section-sub">Accede a nuestros cursos online con certificación oficial. Contenido estructurado en módulos con evaluaciones prácticas.</p>
 
     <!-- ÁREA SALUD -->
@@ -840,8 +1022,8 @@ footer {
 <section id="clientes" style="background:#fff;padding:60px 0 70px">
   <div class="container">
     <div class="section-label" style="color:var(--blue)">Confianza corporativa</div>
-    <h2 class="section-title">Empresas que <span style="color:var(--blue)">confían en nosotros</span></h2>
-    <div class="clients-row">
+    <h2 class="section-title" data-reveal>Empresas que <span style="color:var(--blue)">confían en nosotros</span></h2>
+    <div class="clients-row" data-reveal data-delay="1">
       <div class="client-logo">
         <img src="assets/images/apz-consultora-9.jpeg" alt="APZ Consultora">
       </div>
@@ -859,10 +1041,11 @@ footer {
 </section>
 
 <!-- EQUIPO -->
-<section class="team" id="equipo" style="background:#1a2840;padding:80px 0">
-  <div class="container">
-    <span class="section-label">Nuestro equipo</span>
-    <h2 class="section-title">Las personas detrás<br>de Preventive Health</h2>
+<section class="team" id="equipo" style="background:#1a2840;padding:80px 0;position:relative;overflow:hidden">
+  <img src="assets/images/logo-oscuro.png" alt="" aria-hidden="true" style="position:absolute;right:5%;top:50%;transform:translateY(-50%);width:260px;opacity:.08;pointer-events:none;user-select:none;filter:blur(1px)">
+  <div class="container" style="position:relative;z-index:1">
+    <span class="section-label" data-reveal>Nuestro equipo</span>
+    <h2 class="section-title" data-reveal data-delay="1">Las personas detrás<br>de Preventive Health</h2>
     <p class="section-sub">Profesionales con formación técnica y académica comprometidos con la seguridad, la salud y el ambiente.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px;max-width:760px;margin-left:auto;margin-right:auto">
       <div style="text-align:center">
@@ -885,10 +1068,10 @@ footer {
 <!-- CONTACTO -->
 <section class="contact" id="contacto">
   <div class="container">
-    <span class="section-label">Contacto</span>
-    <h2 class="section-title">Escríbenos</h2>
+    <span class="section-label" data-reveal>Contacto</span>
+    <h2 class="section-title" data-reveal data-delay="1">Escríbenos</h2>
     <p class="section-sub">Contáctanos para coordinar una capacitación personalizada o resolver cualquier duda sobre nuestros servicios.</p>
-    <div class="contact-grid">
+    <div class="contact-grid" data-reveal data-delay="2">
       <div>
         <div class="contact-item">
           <div class="contact-icon">📧</div>
@@ -937,8 +1120,19 @@ footer {
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <img src="assets/images/preventive-health-0.png" alt="Preventive Health">
+      <img src="assets/images/logo-oscuro.png" alt="Preventive Health">
       <p>Capacitaciones certificadas en seguridad y salud ocupacional. Preparando personas y empresas para responder ante cualquier emergencia.</p>
+      <div class="footer-social">
+        <a href="https://wa.me/593959677718" target="_blank" aria-label="WhatsApp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </a>
+        <a href="mailto:info.preventiveh@gmail.com" aria-label="Email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+        <a href="https://instagram.com/preventivehealth.ec" target="_blank" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+        </a>
+      </div>
     </div>
     <div class="footer-col">
       <h4>Servicios</h4>
@@ -968,6 +1162,14 @@ const navToggle = document.getElementById('navToggle');
 const navLinks  = document.getElementById('navLinks');
 navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// Scroll reveal
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('is-visible'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
 
 async function handleSubmit(e) {
   e.preventDefault();
