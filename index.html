@@ -254,23 +254,47 @@ section { padding: 80px 24px; }
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
+/* Ambient glow base for all tool previews — inspired by HyperFrames gradient-mesh pattern */
+.tool-preview::before {
+  content: '';
+  position: absolute;
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: preview-ambient 4s ease-in-out infinite;
+}
+.tool-svg-wrap { position: relative; z-index: 1; }
+.tool-preview-badge { z-index: 2; }
+@keyframes preview-ambient {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .5; }
+  50%       { transform: translate(-50%, -50%) scale(1.7); opacity: 1; }
+}
 .tool-preview-sat {
-  background: #0a1428;
-  background-image: repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(29,81,163,.2) 40px),
-                    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(29,81,163,.2) 40px);
+  background: radial-gradient(ellipse 90% 70% at 50% 60%, #0d2448 0%, #060c1a 100%);
+}
+.tool-preview-sat::before {
+  background: radial-gradient(circle, rgba(29,81,163,.55) 0%, transparent 70%);
 }
 .tool-preview-norm {
-  background: #0f1e2d;
+  background: radial-gradient(ellipse 90% 70% at 40% 60%, #0a1e30 0%, #060c14 100%);
+}
+.tool-preview-norm::before {
+  background: radial-gradient(circle, rgba(29,140,100,.45) 0%, transparent 70%);
 }
 .tool-preview-stat {
-  background: #0c1e3d;
-  background-image: linear-gradient(rgba(245,179,0,.12) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(245,179,0,.12) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background: radial-gradient(ellipse 90% 70% at 50% 55%, #131c32 0%, #060910 100%);
+}
+.tool-preview-stat::before {
+  background: radial-gradient(circle, rgba(245,179,0,.38) 0%, transparent 70%);
 }
 .tool-preview-relief {
-  background: #1a1410;
-  background-image: linear-gradient(135deg, rgba(97,124,73,.35), rgba(176,132,86,.2) 45%, rgba(26,20,16,0) 70%);
+  background: radial-gradient(ellipse 90% 70% at 50% 60%, #1a150c 0%, #060402 100%);
+}
+.tool-preview-relief::before {
+  background: radial-gradient(circle, rgba(176,132,86,.4) 0%, transparent 70%);
 }
 .tool-preview-icon { font-size: 52px; opacity: .8; }
 .tool-preview-badge {
@@ -624,6 +648,57 @@ footer {
 }
 .nn-edge { animation: edge-flash 2s ease-in-out infinite; }
 .nn-edge:nth-child(n+5) { animation-delay: .6s; }
+
+/* ── HERO AMBIENT DRIFT (CSS-only, depth from synthesis.capital pattern) ── */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 82% 18%, rgba(245,179,0,.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 12% 82%, rgba(29,81,163,.13) 0%, transparent 55%);
+  animation: hero-ambient 14s ease-in-out infinite alternate;
+  pointer-events: none; z-index: 0;
+}
+@keyframes hero-ambient {
+  from { opacity: .45; transform: scale(1); }
+  to   { opacity: 1;   transform: scale(1.07); }
+}
+
+/* ── BUTTON ACTIVE FEEDBACK (from emil-design-eng: scale 0.97 on press) ── */
+.btn:active, .tool-link:active, .btn-gold-hero:active, .tc-cta:active, .btn-submit:active {
+  transform: scale(0.97) !important;
+  transition-duration: 80ms !important;
+}
+
+/* ── SERVICE CARD HOVER — gold accent bar (synthesis.capital hover pattern) ── */
+.service-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(0.23,1,0.32,1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover::after { transform: scaleX(1); }
+}
+
+/* ── NAV SHRINK ON SCROLL ── */
+nav { transition: padding .3s ease, box-shadow .3s ease; }
+nav.scrolled { padding-top: 6px; padding-bottom: 6px; box-shadow: 0 2px 20px rgba(0,0,0,.2); }
+
+/* ── FLOATING PARTICLES (HyperFrames gradient-mesh inspired) ── */
+.bg-particle {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  animation: float-particle var(--pd,8s) ease-in-out var(--py,0s) infinite;
+}
+@keyframes float-particle {
+  0%,100% { transform: translateY(0) scale(1); opacity: .12; }
+  50%      { transform: translateY(-20px) scale(1.2); opacity: .4; }
+}
+
+/* ── CLIENT LOGO REVEAL ON SCROLL ── */
+.client-logo[data-reveal] { transition: opacity .6s cubic-bezier(0.23,1,0.32,1), transform .6s cubic-bezier(0.23,1,0.32,1), filter .6s ease; }
+.client-logo[data-reveal]:not(.is-visible) { filter: grayscale(1) opacity(.4); }
 </style>
 </head>
 <body>
@@ -662,9 +737,9 @@ footer {
       <a href="#herramientas" class="btn btn-outline">Explorar herramientas</a>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>100%</strong><span>Certificados oficiales</span></div>
+      <div class="hero-stat"><strong data-count="100" data-suffix="%">100%</strong><span>Certificados oficiales</span></div>
       <div class="hero-stat"><strong>SSO</strong><span>Asesoría especializada</span></div>
-      <div class="hero-stat"><strong>8</strong><span>Módulos estadísticos</span></div>
+      <div class="hero-stat"><strong data-count="8">8</strong><span>Módulos estadísticos</span></div>
       <div class="hero-stat hero-stat-new"><strong>Gratis</strong><span>Todas las herramientas</span></div>
     </div>
   </div>
@@ -1170,6 +1245,53 @@ const revealObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
 document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+// Count-up for hero stats (easing: ease-out-cubic, from emil-design-eng)
+document.querySelectorAll('[data-count]').forEach(el => {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const target = +e.target.dataset.count;
+      const suffix = e.target.dataset.suffix || '';
+      let t0;
+      const tick = ts => {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / 1600, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        e.target.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.8 });
+  obs.observe(el);
+});
+
+// Floating particles in dark sections (HyperFrames gradient-mesh pattern)
+(function() {
+  const palettes = {
+    courses: ['rgba(245,179,0,.12)','rgba(255,255,255,.06)','rgba(29,81,163,.18)'],
+    team:    ['rgba(245,179,0,.1)','rgba(255,255,255,.05)','rgba(29,81,163,.15)']
+  };
+  [['courses','courses'],['team','team']].forEach(([cls,key]) => {
+    const section = document.querySelector('.'+cls);
+    if (!section) return;
+    const colors = palettes[key];
+    for (let i = 0; i < 8; i++) {
+      const s = 2 + Math.random() * 5;
+      const p = document.createElement('span');
+      p.className = 'bg-particle';
+      p.style.cssText = `left:${4+Math.random()*92}%;top:${4+Math.random()*92}%;width:${s}px;height:${s}px;background:${colors[i%3]};--pd:${(6+Math.random()*9).toFixed(1)}s;--py:${(Math.random()*6).toFixed(1)}s`;
+      section.appendChild(p);
+    }
+  });
+})();
+
+// Nav shrink on scroll
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
 
 async function handleSubmit(e) {
   e.preventDefault();
