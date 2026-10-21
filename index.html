@@ -1445,29 +1445,42 @@ window.addEventListener('scroll', () => {
 })();
 
 // ── SECTION TITLE WORD REVEAL ──
+// Walks DOM nodes (not innerHTML strings) so inner <span style="..."> tags are preserved intact
 (function() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.querySelectorAll('.section-title').forEach(el => {
-    // Wrap each word in .st-word spans
-    const raw = el.innerHTML;
-    // Split on spaces/BR while preserving <br> tags
-    const parts = raw.split(/(<br\s*\/?>|\s+)/gi);
-    let i = 0;
-    el.innerHTML = parts.map(p => {
-      if (/^<br/i.test(p)) return p;
-      if (!p.trim()) return p;
-      const d = i * 80;
-      i++;
-      return `<span class="st-word" style="transition-delay:${d}ms">${p}</span>`;
-    }).join('');
+    let wordIndex = 0;
+
+    function wrapTextNode(textNode) {
+      const parts = textNode.textContent.split(/(\s+)/);
+      const frag = document.createDocumentFragment();
+      parts.forEach(part => {
+        if (!part.trim()) { frag.appendChild(document.createTextNode(part)); return; }
+        const w = document.createElement('span');
+        w.className = 'st-word';
+        w.style.transitionDelay = (wordIndex * 80) + 'ms';
+        w.textContent = part;
+        frag.appendChild(w);
+        wordIndex++;
+      });
+      textNode.parentNode.replaceChild(frag, textNode);
+    }
+
+    function walk(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (node.textContent.trim()) wrapTextNode(node);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.nodeName !== 'BR') {
+        Array.from(node.childNodes).forEach(walk);
+      }
+    }
+
+    Array.from(el.childNodes).forEach(walk);
 
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('words-visible');
-          obs.unobserve(e.target);
-        }
-      });
+      if (entries[0].isIntersecting) {
+        el.classList.add('words-visible');
+        obs.disconnect();
+      }
     }, { threshold: 0.3 });
     obs.observe(el);
   });
