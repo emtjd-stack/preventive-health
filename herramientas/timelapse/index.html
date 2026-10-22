@@ -186,9 +186,9 @@ textarea.inp{resize:vertical;min-height:62px}
       <button class="btn btn-info" id="btn-gee-guide">&#128214; Ver guía paso a paso</button>
     </div>
     <label class="lbl">OAuth Client ID</label>
-    <input class="inp mb6" id="gee-cid" placeholder="xxxxxxx.apps.googleusercontent.com">
+    <input class="inp mb6" id="gee-cid" value="85055789838-4elm28mg7phcv28q9977p19f697isjkn.apps.googleusercontent.com">
     <label class="lbl">Cloud Project ID</label>
-    <input class="inp" id="gee-proj" placeholder="mi-proyecto-gee" style="margin-bottom:12px">
+    <input class="inp" id="gee-proj" value="prueba-consola-preventive" style="margin-bottom:12px">
     <div class="mbtns">
       <button class="btn btn-out btn-sm" onclick="closeM('gee')">Cancelar</button>
       <button class="btn btn-green" id="btn-gee-connect-confirm">&#128279; Conectar GEE</button>
@@ -1619,21 +1619,26 @@ function connectGEE(){
   loader(true);
   loadScript('https://cdn.jsdelivr.net/npm/@google/earthengine@1.7.31/build/ee_api_js.js',function(){
     if(typeof ee==='undefined'){loader(false);toast('Error cargando GEE JS API','err');return;}
-    ee.data.authenticateViaOauth(cid,
-      function(){
-        ee.initialize(null,null,
-          function(){
-            geeReady=true; loader(false); closeM('gee');
-            var b=document.getElementById('gee-badge');
-            b.className='gee-badge on'; b.innerHTML='&#11044; GEE conectado';
-            document.getElementById('btn-dl-gee').style.display='inline-block';
-            toast('GEE conectado. Índices calculados desde bandas reales.','ok',5000);
-          },
-          function(err){loader(false);toast('Error GEE init: '+err,'err');},
-          proj||undefined);
-      },
-      function(err){loader(false);toast('Error autenticación GEE: '+err,'err');}
-    );
+    var scopes=['https://www.googleapis.com/auth/earthengine.readonly'];
+    function onSuccess(){
+      ee.initialize(null,null,
+        function(){
+          if(proj) ee.data.setProject(proj);
+          geeReady=true; loader(false); closeM('gee');
+          var b=document.getElementById('gee-badge');
+          b.className='gee-badge on'; b.innerHTML='&#11044; GEE conectado &mdash; '+proj;
+          document.getElementById('btn-dl-gee').style.display='inline-block';
+          toast('GEE conectado. Índices calculados desde bandas reales.','ok',5000);
+        },
+        function(err){loader(false);toast('Error GEE init: '+err,'err');}
+      );
+    }
+    function onError(err){loader(false);toast('Error autenticación GEE: '+err,'err');}
+    function onImmediateFailed(){
+      loader(false);
+      ee.data.authenticateViaOauth(cid,onSuccess,onError,scopes,null,true);
+    }
+    ee.data.authenticateViaOauth(cid,onSuccess,onError,scopes,onImmediateFailed);
   });
 }
 
